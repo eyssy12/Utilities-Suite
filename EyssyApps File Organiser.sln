@@ -27,11 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Organiser Library
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Core Library", "EyssyApps Core Library\EyssyApps Core Library.csproj", "{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{A1504860-CB1A-4215-A527-6B99637DF0CE}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Desktop\file_extension_db.json = ..\..\..\..\Desktop\file_extension_db.json
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
