@@ -1,0 +1,60 @@
+{
+	"description": "File Extension JSON Database",
+	"categories":
+	[
+		{
+			"category": "Text",
+			"extensions": 
+			[
+				{
+					"description": "Standard Text File",
+					"value": "txt"
+				},
+				{
+					"description": "Microsoft Word",
+					"value": "doc"
+				},
+				{
+					"description": "Microsoft Word Open XML Document",
+					"value": "docx"
+				}
+			]
+		},
+		{
+			"category": "Developer Files",
+			"extensions":
+			[
+				{
+					"description": "Microsoft C# File",
+					"value": "cs"
+				}
+			]
+		},
+		{
+			"category": "Compressed",
+			"extensions":
+			[
+				{
+					"description": "ZIP",
+					"value": "zip"
+				},
+				{
+					"description": "7-Zip Compressed File",
+					"value": "7z"
+				},
+				{
+					"description": "WinRAR Compressed Archive",
+					"value": "rar"
+				},
+				{
+					"description": "Compressed Tarball File",
+					"value": "tar.gz"
+				},
+				{
+					"description": "Extended Zip File",
+					"value": "zipx"
+				}
+			]
+		}
+	]
+}
