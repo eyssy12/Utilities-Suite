@@ -1,6 +1,5 @@
 ﻿namespace EyssyApps.Configuration.Library
 {
-    using System;
     using Core.Library.Factories;
     using Core.Library.Managers;
     using Core.Library.Timing;
@@ -9,6 +8,7 @@
     using Ninject.Modules;
     using Organiser.Library.Factories;
     using Organiser.Library.Providers;
+    using Organiser.Library.Tasks;
 
     public class CommonBindings : NinjectModule
     {
@@ -23,7 +23,7 @@
 
         protected virtual void BindTasks()
         {
-            throw new NotImplementedException();
+            this.Bind<ITask>().To<ScheduledTask>();
         }
 
         protected virtual void BindManagers()

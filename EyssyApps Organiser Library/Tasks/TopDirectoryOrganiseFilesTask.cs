@@ -33,7 +33,6 @@
             IDirectoryManager directoryManager,
             IFileManager fileManager)
         {
-
             if (this.settings.OrgnisationType <= OrganisationType.None)
             {
                 // throw exception
