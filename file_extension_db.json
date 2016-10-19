@@ -1,11 +1,9 @@
 {
 	"description": "File Extension JSON Database",
-	"categories":
-	[
+	"categories": [
 		{
 			"category": "Text",
-			"extensions": 
-			[
+			"extensions": [
 				{
 					"description": "Standard Text File",
 					"value": "txt"
@@ -22,18 +20,20 @@
 		},
 		{
 			"category": "Developer Files",
-			"extensions":
-			[
-				{
-					"description": "Microsoft C# File",
-					"value": "cs"
-				}
-			]
+      "extensions": [
+        {
+          "description": "Microsoft C# File",
+          "value": "cs"
+        },
+        {
+          "description": "JavaScript Object Notation",
+          "value": "json"
+        }
+      ]
 		},
 		{
 			"category": "Compressed",
-			"extensions":
-			[
+			"extensions": [
 				{
 					"description": "ZIP",
 					"value": "zip"

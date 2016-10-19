@@ -2,12 +2,11 @@
 {
     using System;
     using System.Runtime.Serialization;
+    using Core.Library.Execution;
 
-    public interface ITask : ISerializable
+    public interface ITask : IExecute, ISerializable
     {
         Guid Id { get; }
-
-        void Execute();
 
         void Terminate();
     }

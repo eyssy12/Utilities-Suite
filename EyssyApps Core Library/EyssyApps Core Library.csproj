@@ -47,8 +47,10 @@
     <Compile Include="Events\EventArgs%271.cs" />
     <Compile Include="Events\EventArgs%272.cs" />
     <Compile Include="Events\Invoker.cs" />
+    <Compile Include="Execution\IExecute.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\PathExtensions.cs" />
     <Compile Include="Factories\IFactory.cs" />
     <Compile Include="Managers\IDirectoryManager.cs" />
     <Compile Include="Managers\IFileManager.cs" />

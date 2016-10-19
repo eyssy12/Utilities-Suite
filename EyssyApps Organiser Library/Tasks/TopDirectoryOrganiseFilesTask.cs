@@ -5,17 +5,17 @@
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Threading.Tasks;
     using Core.Library.Extensions;
     using Core.Library.Managers;
     using Models.Organiser;
     using Models.Settings;
     using Providers;
 
-    [Serializable]
+    [Serializable] // TODO: separate task into two tasks, one for FileOrganiserTask, other for DirectoryOrganiserTask
     public class TopDirectoryOrganiseFilesTask : ITask
     {
         public const string DefaultDirectoryName = "[Directories]",
+            DefaultMiscName = "[Unknown]", // TODO: have functionality that detects if there are new extensions found and let the user decide what category they belong to
             CategoryDirectoryFormat = "{0}/[{1}]";
 
         protected readonly IFileExtensionProvider Provider;
@@ -33,9 +33,10 @@
             IDirectoryManager directoryManager,
             IFileManager fileManager)
         {
-            if (this.settings.OrgnisationType <= OrganisationType.None)
+
+            if (settings.OrgnisationType <= OrganisationType.None)
             {
-                // throw exception
+                // TODO: throw exception
             }
 
             this.id = id;
@@ -53,59 +54,36 @@
 
         public void Execute()
         {
-            // TODO: add logic for dealing 
-
-            // pass in settings for exclusions/exmeptions
-            // i.e. ignore files with extension(s), dont move files with the following file name ... ,etc.
-
-            // Directory manager will do a lookup of all file names based on the rootPath
-            // we will filter out the 
-
-            if (this.settings.OrgnisationType.HasFlag(OrganisationType.All))
+            switch (this.settings.OrgnisationType)
             {
-                Task.WaitAll(
-                    Task.Run(() => this.OrganiseDirectories()),
-                    Task.Run(() => this.OrganiseFiles()));
-            }
-            else if (this.settings.OrgnisationType.HasFlag(OrganisationType.File))
-            {
-                this.OrganiseFiles();
-            }
-            else if (this.settings.OrgnisationType.HasFlag(OrganisationType.Directory))
-            {
-                this.OrganiseDirectories();
+                case OrganisationType.File:
+
+                    this.OrganiseFiles();
+                    break;
+
+                case OrganisationType.Directory:
+
+                    this.OrganiseDirectories();
+                    break;
+
+                case OrganisationType.All:
+
+                    this.OrganiseDirectories(); // this before files because file extensions will generate their own category foldes, unless we add or own directory exclusions
+                    this.OrganiseFiles();
+                    break;
             }
         }
 
-        protected void OrganiseFiles()
+        public void Terminate()
         {
-            IEnumerable<string> files = this.DirectoryManager
-                .GetFiles(this.settings.RootPath, searchOption: SearchOption.TopDirectoryOnly)
-                .Except(this.settings.FileExemptions) // exclude out configured full path exemptions
-                .Where(filePath => this.settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase))) // exclude files based on configured file extensions
-                .ToArray();
-
-            files
-                .GroupBy(f => Path.GetExtension(f))
-                .ForEach(filePaths =>
-                {
-                    FileExtensionCategory category = this.Provider.GetCategoryForExtension(filePaths.Key); // key is the extension
-
-                    string categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Category);
-
-                    if (this.DirectoryManager.Exists(categoryPath, create: true))
-                    {
-                        filePaths.ForEach(filePath =>
-                        {
-                            this.FileManager.Move(filePath, categoryPath);
-                        });
-                    }
-                });
+            // TODO: how to terminate code ?
+            return;
         }
 
-        protected virtual string CreateCategoryPath(string rootPath, string directoryName)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            return string.Format(TopDirectoryOrganiseFilesTask.CategoryDirectoryFormat, rootPath, directoryName);
+            // TODO: implement serialization/deserialization
+            throw new NotImplementedException();
         }
 
         protected void OrganiseDirectories()
@@ -128,13 +106,52 @@
             }
         }
 
-        public void Terminate()
+        protected void OrganiseFiles()
         {
+            this.FilterFiles(
+                    SearchOption.TopDirectoryOnly,
+                    filePath => !this.settings.FileExemptions.Any(fe => fe == filePath),
+                    filePath => !this.settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase)))
+                .GroupBy(f => Path.GetExtension(f))
+                .ForEach(filePaths =>
+                {
+                    FileExtensionCategory category = this.Provider.GetCategoryForExtension(new string(filePaths.Key.Skip(1).ToArray())); // key is the extension
+
+                    string categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Category);
+
+                    this.MoveFiles(filePaths, categoryPath);
+                });
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected void MoveFiles(IEnumerable<string> filePaths, string targetCategoryPath)
         {
-            throw new NotImplementedException();
+            if (this.DirectoryManager.Exists(targetCategoryPath, create: true))
+            {
+                filePaths.ForEach(filePath =>
+                {
+                    this.FileManager.Move(filePath, Path.Combine(targetCategoryPath, Path.GetFileName(filePath)));
+                });
+            }
+        }
+
+        protected IEnumerable<string> FilterFiles(SearchOption searchOption, params Func<string, bool>[] filters)
+        {
+            IEnumerable<string> files = this.DirectoryManager.GetFiles(this.settings.RootPath, searchOption: searchOption).ToArray();
+
+            if (filters.SafeAny())
+            {
+                filters.ForEach(filter =>
+                {
+                    files = files.Where(filter);
+                });
+            }
+
+            return files;
+        }
+
+        protected virtual string CreateCategoryPath(string rootPath, string directoryName)
+        {
+            return string.Format(TopDirectoryOrganiseFilesTask.CategoryDirectoryFormat, rootPath, directoryName);
         }
     }
 }

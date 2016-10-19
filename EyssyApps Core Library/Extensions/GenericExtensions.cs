@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public static class GenericExtensions
     {
@@ -11,6 +12,18 @@
             {
                 action(item);
             }
+        }
+
+        public static bool SafeAny<T>(this IEnumerable<T> source, Func<T, bool> filter = null)
+        {
+            if (source == null)
+            {
+                return false;
+            }
+
+            return filter == null
+                ? source.Any()
+                : source.Any(filter);
         }
     }
 }

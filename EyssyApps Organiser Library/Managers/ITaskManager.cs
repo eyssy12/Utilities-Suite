@@ -1,15 +1,14 @@
 ﻿namespace EyssyApps.Organiser.Library.Managers
 {
     using System;
+    using Core.Library.Execution;
     using Tasks;
 
-    public interface ITaskManager
+    public interface ITaskManager : IExecute
     {
-        void Add(ITask task);
+        bool Add(ITask task);
 
-        void Modify(ITask task);
-
-        void Delete(ITask task);
+        bool Delete(ITask task);
 
         ITask FindById(Guid id);
     }
