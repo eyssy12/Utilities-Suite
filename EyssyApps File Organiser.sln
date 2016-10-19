@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{9C1E7460-005B-4A4E-BD70-F2604F09FCAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{38AB0549-E6A2-49BD-B077-FC45564485F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Organiser", "Organiser", "{88DFD294-F75F-4D04-BAC1-28488AB08F4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File Organiser UI", "File Organiser UI\File Organiser UI.csproj", "{58EE5D9D-E7C1-430E-A343-5254BB1871E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DAF08323-551C-490C-8318-3DE05985BEB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4568B123-6263-473B-957F-D077F96205FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Configuration Library", "EyssyApps Configuration Library\EyssyApps Configuration Library.csproj", "{B9AD6C67-B9C3-45DC-A666-08820523B347}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{588EC185-3011-42B3-B610-213BFAEADF1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File Organiser Console", "File Organiser Console\File Organiser Console.csproj", "{EC8A6FAB-72AA-42FE-A130-2E4670A22855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Organiser Library", "EyssyApps Organiser Library\EyssyApps Organiser Library.csproj", "{E9E63EDB-A33C-47B7-960F-F26225922A86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Core Library", "EyssyApps Core Library\EyssyApps Core Library.csproj", "{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{A1504860-CB1A-4215-A527-6B99637DF0CE}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Desktop\file_extension_db.json = ..\..\..\..\Desktop\file_extension_db.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58EE5D9D-E7C1-430E-A343-5254BB1871E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58EE5D9D-E7C1-430E-A343-5254BB1871E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58EE5D9D-E7C1-430E-A343-5254BB1871E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58EE5D9D-E7C1-430E-A343-5254BB1871E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9AD6C67-B9C3-45DC-A666-08820523B347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9AD6C67-B9C3-45DC-A666-08820523B347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9AD6C67-B9C3-45DC-A666-08820523B347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9AD6C67-B9C3-45DC-A666-08820523B347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC8A6FAB-72AA-42FE-A130-2E4670A22855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC8A6FAB-72AA-42FE-A130-2E4670A22855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC8A6FAB-72AA-42FE-A130-2E4670A22855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC8A6FAB-72AA-42FE-A130-2E4670A22855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9E63EDB-A33C-47B7-960F-F26225922A86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E63EDB-A33C-47B7-960F-F26225922A86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E63EDB-A33C-47B7-960F-F26225922A86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E63EDB-A33C-47B7-960F-F26225922A86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{38AB0549-E6A2-49BD-B077-FC45564485F3} = {9C1E7460-005B-4A4E-BD70-F2604F09FCAD}
+		{88DFD294-F75F-4D04-BAC1-28488AB08F4B} = {9C1E7460-005B-4A4E-BD70-F2604F09FCAD}
+		{58EE5D9D-E7C1-430E-A343-5254BB1871E7} = {E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}
+		{DAF08323-551C-490C-8318-3DE05985BEB3} = {88DFD294-F75F-4D04-BAC1-28488AB08F4B}
+		{4568B123-6263-473B-957F-D077F96205FC} = {38AB0549-E6A2-49BD-B077-FC45564485F3}
+		{B9AD6C67-B9C3-45DC-A666-08820523B347} = {38AB0549-E6A2-49BD-B077-FC45564485F3}
+		{EC8A6FAB-72AA-42FE-A130-2E4670A22855} = {E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}
+		{E9E63EDB-A33C-47B7-960F-F26225922A86} = {88DFD294-F75F-4D04-BAC1-28488AB08F4B}
+		{DA5E6E4E-D994-4476-A53C-4A575FDA86A3} = {38AB0549-E6A2-49BD-B077-FC45564485F3}
+	EndGlobalSection
+EndGlobal
