@@ -21,7 +21,6 @@
     {
         public static void Main(string[] args)
         {
-            
             Program p = new Program();
             p.Start();
         }
@@ -53,7 +52,7 @@
                 FileExemptions = new List<string>()
             };
 
-            TopDirectoryOrganiseFilesTask task = new TopDirectoryOrganiseFilesTask(Guid.NewGuid(), settings, provider, directoryManager, fileManager);
+            DirectoryOrganiserTask task = new DirectoryOrganiserTask(Guid.NewGuid(), settings, directoryManager);
             task.Execute();
         }
     }
