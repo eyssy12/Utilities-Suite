@@ -9,10 +9,10 @@
     using Core.Library.Managers;
     using Models.Settings;
 
-    [Serializable] // TODO: separate task into two tasks, one for FileOrganiserTask, other for DirectoryOrganiserTask
-    public class DirectoryOrganiserTask : ITask
+    [Serializable]
+    public class DirectoryOrganiserTask : OrganiseTaskBase
     {
-        public const string DefaultDirectoryName = "[Directories]",
+        protected const string DefaultDirectoryName = "[Directories]",
             DefaultMiscName = "[Unknown]"; // TODO: have functionality that detects if there are new extensions found and let the user decide what category they belong to
             
         protected readonly IDirectoryManager DirectoryManager;
@@ -25,50 +25,24 @@
             Guid id,
             FileOrganiserSettings settings,
             IDirectoryManager directoryManager)
+            : base(id, OrganiseType.Directory)
         {
-
-            if (settings.OrgnisationType <= OrganisationType.None)
-            {
-                // TODO: throw exception
-            }
-
-            this.id = id;
             this.settings = settings;
             this.DirectoryManager = directoryManager;
         }
-        
-        public Guid Id
+
+        public override void Execute()
         {
-            get { return this.id; }
+            this.OrganiseDirectories();
         }
 
-        public void Execute()
-        {
-            switch (this.settings.OrgnisationType)
-            {
-                case OrganisationType.File:
-                    
-                    break;
-
-                case OrganisationType.Directory:
-
-                    this.OrganiseDirectories();
-                    break;
-
-                case OrganisationType.All:
-
-                    this.OrganiseDirectories(); // this before files because file extensions will generate their own category foldes, unless we add or own directory exclusions
-                    break;
-            }
-        }
-
-        public void Terminate()
+        public override void Terminate()
         {
             // TODO: how to terminate code ?
             return;
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // TODO: implement serialization/deserialization
             throw new NotImplementedException();

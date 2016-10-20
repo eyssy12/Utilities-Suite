@@ -4,7 +4,7 @@
 
     public class FileExtensionCategory
     {
-        public string Category { get; set; }
+        public string Value { get; set; }
 
         public IEnumerable<FileExtensionMetadata> Extensions { get; set; }
     }

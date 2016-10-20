@@ -8,11 +8,25 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
 
-        <StackPanel Margin="16px" Name="ImagePanel" Drop="ImagePanel_Drop" AllowDrop="true" Background="AliceBlue">
-            <Label HorizontalAlignment="Center" VerticalAlignment="Center">
-                Drop files here
-            </Label>
-        </StackPanel>
+
+
+        <Border Margin="16px" Name="ClearButtonBorder" Grid.Column="1" CornerRadius="0,3,3,0">
+            <Border.Style>
+                <Style>
+                    <Setter Property="Border.Background" Value="Black"/>
+                    <Style.Triggers>
+                        <Trigger Property="Border.IsMouseOver" Value="True">
+                            <Setter Property="Border.Background" Value="Green" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel Margin="1px" Name="ImagePanel" Drop="ImagePanel_Drop" AllowDrop="true" Background="AliceBlue">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center">
+                    Drop files here
+                </Label>
+            </StackPanel>
+        </Border>
 
     </Grid>
 </Window>

@@ -45,7 +45,7 @@
 
             FileOrganiserSettings settings = new FileOrganiserSettings
             {
-                OrgnisationType = OrganisationType.File,
+                OrgnisationType = OrganiseType.File,
                 RootPath = @"C:\Users\Rob\Desktop\testFolder",
                 DirectoryExemptions = new List<string>(),
                 ExtensionExemptions = new List<string> { "txt" },

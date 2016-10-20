@@ -10,7 +10,9 @@
     using Models.Organiser;
     using Models.Settings;
     using Providers;
-    public class FileOrganiserTask : ITask
+
+    [Serializable]
+    public class FileOrganiserTask : OrganiseTaskBase
     {
         protected const string CategoryDirectoryFormat = "{0}/[{1}]";
 
@@ -28,14 +30,8 @@
             IFileExtensionProvider provider,
             IDirectoryManager directoryManager,
             IFileManager fileManager)
+            : base(id, OrganiseType.File)
         {
-
-            if (settings.OrgnisationType <= OrganisationType.None)
-            {
-                // TODO: throw exception
-            }
-
-            this.id = id;
             this.settings = settings;
 
             this.Provider = provider;
@@ -43,22 +39,17 @@
             this.FileManager = fileManager;
         }
 
-        public Guid Id
-        {
-            get { return this.id; }
-        }
-
-        public void Execute()
+        public override void Execute()
         {
             this.OrganiseFiles();
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             throw new NotImplementedException();
         }
 
-        public void Terminate()
+        public override void Terminate()
         {
             throw new NotImplementedException();
         }
@@ -74,7 +65,7 @@
                 {
                     FileExtensionCategory category = this.Provider.GetCategoryForExtension(new string(filePaths.Key.Skip(1).ToArray())); // key is the extension
 
-                    string categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Category);
+                    string categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Value);
 
                     this.MoveFiles(filePaths, categoryPath);
                 });

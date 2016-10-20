@@ -56,7 +56,9 @@
     <Compile Include="Providers\FileExtensionProvider.cs" />
     <Compile Include="Providers\IFileExtensionProvider.cs" />
     <Compile Include="Tasks\FileOrganiserTask.cs" />
+    <Compile Include="Tasks\IOrganiseTask.cs" />
     <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Tasks\OrganiseTaskBase.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />
     <Compile Include="Tasks\DirectoryOrganiserTask.cs" />
   </ItemGroup>

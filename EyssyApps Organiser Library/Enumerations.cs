@@ -3,7 +3,7 @@
     using System;
 
     [Flags]
-    public enum OrganisationType : long
+    public enum OrganiseType : long
     {
         None = 0,
         File = 1,
