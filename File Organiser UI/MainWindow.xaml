@@ -4,13 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:File_Organiser_UI"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="728" Width="1024"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ContextMenu x:Key="TrayContextMenu">
+            <MenuItem Name="OpenFileOrganiserMenuItem" FontWeight="Bold" Header="Open File Organiser" Click="TrayMenu_OpenFileOrganiser">
+                <MenuItem.Icon>
+                    <Image Source="pack://application:,,,/Images/OpenApp.ico"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Name="CloseFileOrganiserMenuItem" Header="Close" Click="TrayMenu_CloseFileOrganiser">
+                <MenuItem.Icon>
+                    <Image Source="pack://application:,,,/Images/CloseApp.ico"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </Window.Resources>
+
     <Grid>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-
-        <Border Margin="16px" Name="ClearButtonBorder" Grid.Column="1" CornerRadius="0,3,3,0">
+        <Border Grid.Row="0" Margin="8px" Name="ClearButtonBorder" Grid.Column="1" CornerRadius="0,3,3,0">
             <Border.Style>
                 <Style>
                     <Setter Property="Border.Background" Value="Black"/>
@@ -21,12 +43,18 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <StackPanel Margin="1px" Name="ImagePanel" Drop="ImagePanel_Drop" AllowDrop="true" Background="AliceBlue">
-                <Label HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Margin="1px" Name="ImagePanel" Drop="ImagePanel_Drop" AllowDrop="true" Background="AliceBlue">
+                <Label Name="FilesLabel" VerticalAlignment="Center">
                     Drop files here
                 </Label>
             </StackPanel>
         </Border>
+
+        <StackPanel Grid.Row="1" Margin="8px">
+            <Button Width="100" Height="50">
+                Open window
+            </Button>
+        </StackPanel>
 
     </Grid>
 </Window>
