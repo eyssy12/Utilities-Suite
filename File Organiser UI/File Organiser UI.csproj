@@ -47,6 +47,10 @@
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -130,7 +134,20 @@
   <ItemGroup>
     <None Include="Resources\TrayIcon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EyssyApps Configuration Library\EyssyApps Configuration Library.csproj">
+      <Project>{b9ad6c67-b9c3-45dc-a666-08820523b347}</Project>
+      <Name>EyssyApps Configuration Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EyssyApps Core Library\EyssyApps Core Library.csproj">
+      <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
+      <Name>EyssyApps Core Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EyssyApps Organiser Library\EyssyApps Organiser Library.csproj">
+      <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
+      <Name>EyssyApps Organiser Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\CloseApp.ico" />
     <Resource Include="Images\OpenApp.ico" />

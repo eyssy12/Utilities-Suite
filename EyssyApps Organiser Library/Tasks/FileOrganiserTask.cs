@@ -20,17 +20,16 @@
         protected readonly IDirectoryManager DirectoryManager;
         protected readonly IFileManager FileManager;
 
-        private readonly Guid id;
-
         private FileOrganiserSettings settings;
 
         public FileOrganiserTask(
             Guid id,
+            string description,
             FileOrganiserSettings settings,
             IFileExtensionProvider provider,
             IDirectoryManager directoryManager,
             IFileManager fileManager)
-            : base(id, OrganiseType.File)
+            : base(id, OrganiseType.File, description)
         {
             this.settings = settings;
 
@@ -65,7 +64,15 @@
                 {
                     FileExtensionCategory category = this.Provider.GetCategoryForExtension(new string(filePaths.Key.Skip(1).ToArray())); // key is the extension
 
-                    string categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Value);
+                    string categoryPath;
+                    if (category == null)
+                    {
+                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, OrganiseTaskBase.DefaultUnkownName);
+                    }
+                    else
+                    {
+                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Value);
+                    }
 
                     this.MoveFiles(filePaths, categoryPath);
                 });

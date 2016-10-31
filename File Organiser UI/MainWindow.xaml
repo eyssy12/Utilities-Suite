@@ -51,8 +51,8 @@
         </Border>
 
         <StackPanel Grid.Row="1" Margin="8px">
-            <Button Width="100" Height="50">
-                Open window
+            <Button Click="Button_Click" Width="100" Height="50">
+                Sort files
             </Button>
         </StackPanel>
 

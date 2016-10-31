@@ -8,6 +8,8 @@
     {
         Guid Id { get; }
 
+        string Description { get; }
+
         void Terminate();
     }
 }

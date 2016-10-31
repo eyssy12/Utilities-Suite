@@ -14,20 +14,38 @@
             TimerPeriod;
 
         private readonly Guid id;
+        private readonly string description;
 
         public ScheduledTask(ITimer timer, ITask executable, int initialWaitTime, int timerPeriod)
         {
+            if (timer == null)
+            {
+                throw new ArgumentNullException(nameof(timer), "Timer not provided"); // TODO: more verbose messages, also add to resources
+            }
+
+            if (executable == null)
+            {
+                throw new ArgumentNullException(nameof(executable), "Executable not provided");
+            }
+
             this.id = Guid.NewGuid();
 
             this.Timer = timer;
             this.Executable = executable;
             this.InitialWaitTime = initialWaitTime;
             this.TimerPeriod = timerPeriod;
+
+            this.description = "Scheduled task that executes another task containg the desciption: '" + executable.Description + "'"; // TODO: const format
         }
 
         public Guid Id
         {
             get { return this.id; }
+        }
+
+        public string Description
+        {
+            get { return this.description; }
         }
 
         public void Execute()

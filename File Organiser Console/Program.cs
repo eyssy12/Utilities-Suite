@@ -52,8 +52,8 @@
                 FileExemptions = new List<string>()
             };
 
-            DirectoryOrganiserTask task = new DirectoryOrganiserTask(Guid.NewGuid(), settings, directoryManager);
-            task.Execute();
+            //DirectoryOrganiserTask task = new DirectoryOrganiserTask(Guid.NewGuid(), settings, directoryManager);
+            //task.Execute();
         }
     }
 }

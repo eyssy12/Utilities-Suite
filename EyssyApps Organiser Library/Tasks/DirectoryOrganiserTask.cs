@@ -12,8 +12,7 @@
     [Serializable]
     public class DirectoryOrganiserTask : OrganiseTaskBase
     {
-        protected const string DefaultDirectoryName = "[Directories]",
-            DefaultMiscName = "[Unknown]"; // TODO: have functionality that detects if there are new extensions found and let the user decide what category they belong to
+        protected const string DefaultDirectoryName = "[Directories]";
             
         protected readonly IDirectoryManager DirectoryManager;
 
@@ -23,9 +22,10 @@
 
         public DirectoryOrganiserTask(
             Guid id,
+            string description,
             FileOrganiserSettings settings,
             IDirectoryManager directoryManager)
-            : base(id, OrganiseType.Directory)
+            : base(id, OrganiseType.Directory, description)
         {
             this.settings = settings;
             this.DirectoryManager = directoryManager;

@@ -6,16 +6,19 @@
     [Serializable]
     public abstract class OrganiseTaskBase : IOrganiseTask
     {
-        protected const string KeyId = "id",
+        protected const string DefaultUnkownName = "Unknown",
+            KeyId = "id",
             KeyType = "type";
 
         private readonly Guid id;
         private readonly OrganiseType type;
+        private readonly string description;
 
-        protected OrganiseTaskBase(Guid id, OrganiseType type)
+        protected OrganiseTaskBase(Guid id, OrganiseType type, string description)
         {
             this.id = id;
             this.type = type;
+            this.description = description;
         }
 
         public Guid Id
@@ -26,6 +29,11 @@
         public OrganiseType Type
         {
             get { return this.type; }
+        }
+
+        public string Description
+        {
+            get { return this.description; }
         }
 
         public abstract void GetObjectData(SerializationInfo info, StreamingContext context);

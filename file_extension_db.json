@@ -1,25 +1,122 @@
 {
 	"description": "File Extension JSON Database",
 	"categories": [
+    {
+      "value": "Text",
+      "extensions": [
+        {
+          "description": "Standard Text File",
+          "value": "txt"
+        },
+        {
+          "description": "Microsoft Word",
+          "value": "doc"
+        },
+        {
+          "description": "Microsoft Word Open XML Document",
+          "value": "docx"
+        }
+      ]
+    },
+    {
+      "value": "Graphics",
+      "extensions": [
+        {
+          "description": "Joint Photographic Experts Group",
+          "value": "jpg"
+        },
+        {
+          "description": "Joint Photographic Experts Group",
+          "value": "jpeg"
+        },
+        {
+          "description": "Joint Photographic Experts Group",
+          "value": "jpe"
+        },
+        {
+          "description": "Joint Photographic Experts Group",
+          "value": "jif"
+        },
+        {
+          "description": "Joint Photographic Experts Group",
+          "value": "jfif"
+        },
+        {
+          "description": "Joint Photographic Experts Group",
+          "value": "jfi"
+        },
+        {
+          "description": "Portable Network Graphics",
+          "value": "png"
+        }
+      ]
+    },
+    {
+      "value": "Executables",
+      "extensions": [
+        {
+          "description": "Executable Program",
+          "value": "exe"
+        }
+      ]
+    },
+    {
+      "value": "Audio",
+      "extensions": [
+        {
+          "description": "MPEG-1 and/or MPEG-2 Audio Layer III",
+          "value": "mp3"
+        },
+        {
+          "description": "Waveform Audio File Format",
+          "value": "wav"
+        },
+        {
+          "description": "Audio Interchange File Format",
+          "value": "aiff"
+        },
+        {
+          "description": "Windows Media Audio",
+          "value": "wma"
+        }
+      ]
+    },
+    {
+      "value": "Torrent",
+      "extensions": [
+        {
+          "description": "Torrent Metadata File",
+          "value": "torrent" 
+        }
+      ]
+    },
+    {
+      "value": "Video",
+      "extensions": [
+        {
+          "description": "Audio Video Interleave",
+          "value": "avi"
+        },
+        {
+          "description": "Flash Video Format",
+          "value": "flv"
+        },
+        {
+          "description": "Windows Media Video",
+          "value": "wmv"
+        },
+        {
+          "description": "Apple QuickTime Movie",
+          "value": "mov"
+        },
+        {
+          "description": "Moving Pictures Expert Group 4",
+          "value": "mp4"
+        }
+      ]
+    },
 		{
-			"category": "Text",
-			"extensions": [
-				{
-					"description": "Standard Text File",
-					"value": "txt"
-				},
-				{
-					"description": "Microsoft Word",
-					"value": "doc"
-				},
-				{
-					"description": "Microsoft Word Open XML Document",
-					"value": "docx"
-				}
-			]
-		},
-		{
-			"category": "Developer Files",
+			"value": "Developer Files",
       "extensions": [
         {
           "description": "Microsoft C# File",
@@ -32,7 +129,7 @@
       ]
 		},
 		{
-			"category": "Compressed",
+			"value": "Compressed",
 			"extensions": [
 				{
 					"description": "ZIP",

@@ -1,15 +1,30 @@
 ﻿namespace File_Organiser_UI
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using EyssyApps.Configuration.Library;
+    using EyssyApps.Core.Library.Extensions;
+    using EyssyApps.Core.Library.Managers;
+    using EyssyApps.Core.Library.Native;
+    using EyssyApps.Core.Library.Timing;
+    using EyssyApps.Organiser.Library;
+    using EyssyApps.Organiser.Library.Models.Organiser;
+    using EyssyApps.Organiser.Library.Models.Settings;
+    using EyssyApps.Organiser.Library.Providers;
+    using EyssyApps.Organiser.Library.Tasks;
     using File.Organiser.UI;
     using Hardcodet.Wpf.TaskbarNotification;
+    using Newtonsoft.Json;
+    using Ninject;
+    using Ninject.Parameters;
+    using SystemFile = System.IO.File;
     using WindowsDataFormats = System.Windows.DataFormats;
     using WindowsDragEventArgs = System.Windows.DragEventArgs;
-
     public partial class MainWindow : Window
     {
         protected readonly TaskbarIcon TrayIcon;
@@ -17,6 +32,8 @@
         public MainWindow()
         {
             InitializeComponent();
+
+            // TODO: use modern ui wpf library to get a nice look
 
             this.TrayIcon = new TaskbarIcon();
             this.TrayIcon.MenuActivation = PopupActivationMode.LeftOrRightClick;
@@ -77,5 +94,38 @@
             this.WindowState = WindowState.Normal;
             this.TrayIcon.Visibility = Visibility.Hidden;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Do proper refactoring of this logic here when the UI has functionality for task creation and management
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory("File Organiser"), "file_extension_db.json");
+            string data = SystemFile.ReadAllText(path);
+
+            FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
+
+            StandardKernel kernel = new StandardKernel(new CommonBindings());
+
+            ConstructorArgument argument = new ConstructorArgument("database", result);
+            IFileExtensionProvider provider = kernel.Get<IFileExtensionProvider>(argument);
+            IFileManager fileManager = kernel.Get<IFileManager>();
+            IDirectoryManager directoryManager = kernel.Get<IDirectoryManager>();
+
+            FileOrganiserSettings settings = new FileOrganiserSettings
+            {
+                OrgnisationType = OrganiseType.File,
+                RootPath = KnownFolders.GetPath(KnownFolder.Downloads),
+                DirectoryExemptions = new List<string> { },
+                ExtensionExemptions = new List<string> { },
+                FileExemptions = new List<string>() { }
+            };
+
+            FileOrganiserTask fileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", settings, provider, directoryManager, fileManager);
+            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", settings, directoryManager);
+
+            ITimer timer = kernel.Get<ITimer>();
+
+            ScheduledTask schedule = new ScheduledTask(timer, fileTask, 5000, 5000);
+            schedule.Execute();
+        }
     }
-} 
+}
