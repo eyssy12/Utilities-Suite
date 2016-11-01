@@ -34,6 +34,7 @@
             InitializeComponent();
 
             // TODO: use modern ui wpf library to get a nice look
+            // TODO: add functionality for registering the application as "run on startup" using registry keying
 
             this.TrayIcon = new TaskbarIcon();
             this.TrayIcon.MenuActivation = PopupActivationMode.LeftOrRightClick;
@@ -110,6 +111,7 @@
             IFileManager fileManager = kernel.Get<IFileManager>();
             IDirectoryManager directoryManager = kernel.Get<IDirectoryManager>();
 
+            // TODO: dont allow to create tasks of the same type for the same root path, i.e. Two seperate tasks for directory organiser with the same root path
             FileOrganiserSettings settings = new FileOrganiserSettings
             {
                 RootPath = KnownFolders.GetPath(KnownFolder.Downloads),
