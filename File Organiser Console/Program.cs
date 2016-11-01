@@ -6,12 +6,10 @@
     using Configuration.Library;
     using Core.Library.Extensions;
     using Core.Library.Managers;
-    using EyssyApps.Organiser.Library;
     using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.Organiser.Library.Models.Organiser;
     using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Providers;
-    using EyssyApps.Organiser.Library.Tasks;
     using Newtonsoft.Json;
     using Ninject;
     using Ninject.Parameters;
@@ -45,8 +43,6 @@
 
             FileOrganiserSettings settings = new FileOrganiserSettings
             {
-                OrgnisationType = OrganiseType.File,
-                RootPath = @"C:\Users\Rob\Desktop\testFolder",
                 DirectoryExemptions = new List<string>(),
                 ExtensionExemptions = new List<string> { "txt" },
                 FileExemptions = new List<string>()

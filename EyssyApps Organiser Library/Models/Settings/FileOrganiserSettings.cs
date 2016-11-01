@@ -8,8 +8,6 @@
 
         public string TargetDirectoryName { get; set; }
 
-        public OrganiseType OrgnisationType { get; set; }
-
         public IEnumerable<string> ExtensionExemptions { get; set; }
 
         public IEnumerable<string> FileExemptions { get; set; }

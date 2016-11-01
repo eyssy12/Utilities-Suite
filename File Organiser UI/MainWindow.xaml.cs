@@ -112,7 +112,6 @@
 
             FileOrganiserSettings settings = new FileOrganiserSettings
             {
-                OrgnisationType = OrganiseType.File,
                 RootPath = KnownFolders.GetPath(KnownFolder.Downloads),
                 DirectoryExemptions = new List<string> { },
                 ExtensionExemptions = new List<string> { },
