@@ -35,6 +35,7 @@
 
             // TODO: use modern ui wpf library to get a nice look
             // TODO: add functionality for registering the application as "run on startup" using registry keying
+            // TODO: investigate ReactiveUI
 
             this.TrayIcon = new TaskbarIcon();
             this.TrayIcon.MenuActivation = PopupActivationMode.LeftOrRightClick;
