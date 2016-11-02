@@ -4,61 +4,40 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Runtime.Serialization;
     using Core.Library.Extensions;
     using Core.Library.Managers;
     using Models.Organiser;
     using Models.Settings;
     using Providers;
 
-    [Serializable]
     public class FileOrganiserTask : OrganiseTaskBase
     {
         protected const string CategoryDirectoryFormat = "{0}/[{1}]";
 
         protected readonly IFileExtensionProvider Provider;
-        protected readonly IDirectoryManager DirectoryManager;
         protected readonly IFileManager FileManager;
-
-        private FileOrganiserSettings settings;
+        protected readonly IDirectoryManager DirectoryManager;
 
         public FileOrganiserTask(
             Guid id,
             string description,
-            FileOrganiserSettings settings,
+            FileOrganiserSettings settings, 
             IFileExtensionProvider provider,
-            IDirectoryManager directoryManager,
-            IFileManager fileManager)
-            : base(id, OrganiseType.File, description)
+            IFileManager fileManager,
+            IDirectoryManager directoryManager)
+            : base(id, description, settings, OrganiseType.File)
         {
-            this.settings = settings;
-
             this.Provider = provider;
-            this.DirectoryManager = directoryManager;
             this.FileManager = fileManager;
+            this.DirectoryManager = directoryManager;
         }
 
-        public override void Execute()
-        {
-            this.OrganiseFiles();
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Terminate()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected void OrganiseFiles()
+        protected override void HandleExecute()
         {
             this.FilterFiles(
                     SearchOption.TopDirectoryOnly,
-                    filePath => !this.settings.FileExemptions.Any(fe => fe == filePath),
-                    filePath => !this.settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase)))
+                    filePath => !this.Settings.FileExemptions.Any(fe => fe == filePath),
+                    filePath => !this.Settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase)))
                 .GroupBy(f => Path.GetExtension(f))
                 .ForEach(filePaths =>
                 {
@@ -67,20 +46,25 @@
                     string categoryPath;
                     if (category == null)
                     {
-                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, OrganiseTaskBase.DefaultUnkownName);
+                        categoryPath = this.CreateCategoryPath(this.Settings.RootPath, OrganiseTaskBase.DefaultUnkownName);
                     }
                     else
                     {
-                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Value);
+                        categoryPath = this.CreateCategoryPath(this.Settings.RootPath, category.Value);
                     }
 
                     this.MoveFiles(filePaths, categoryPath);
                 });
         }
 
+        protected override void HandleTerminate()
+        {
+            throw new NotImplementedException();
+        }
+
         protected IEnumerable<string> FilterFiles(SearchOption searchOption, params Func<string, bool>[] filters)
         {
-            IEnumerable<string> files = this.DirectoryManager.GetFiles(this.settings.RootPath, searchOption: searchOption).ToArray();
+            IEnumerable<string> files = this.DirectoryManager.GetFiles(this.Settings.RootPath, searchOption: searchOption).ToArray();
 
             if (filters.SafeAny())
             {

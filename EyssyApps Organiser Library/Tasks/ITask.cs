@@ -1,15 +1,14 @@
 ﻿namespace EyssyApps.Organiser.Library.Tasks
 {
     using System;
-    using System.Runtime.Serialization;
     using Core.Library.Execution;
 
-    public interface ITask : IExecute, ISerializable
+    public interface ITask : IExecute, ITerminate
     {
         Guid Id { get; }
 
         string Description { get; }
 
-        void Terminate();
+        TaskState State { get; }
     }
 }

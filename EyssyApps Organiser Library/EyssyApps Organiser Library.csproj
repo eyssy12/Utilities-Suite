@@ -61,6 +61,7 @@
     <Compile Include="Tasks\OrganiseTaskBase.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />
     <Compile Include="Tasks\DirectoryOrganiserTask.cs" />
+    <Compile Include="Tasks\TaskBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EyssyApps Core Library\EyssyApps Core Library.csproj">

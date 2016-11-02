@@ -1,7 +1,9 @@
 ﻿namespace EyssyApps.Organiser.Library.Models.Settings
 {
+    using System;
     using System.Collections.Generic;
 
+    [Serializable]
     public class FileOrganiserSettings
     {
         public string RootPath { get; set; }

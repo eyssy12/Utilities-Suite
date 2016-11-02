@@ -48,6 +48,7 @@
     <Compile Include="Events\EventArgs%272.cs" />
     <Compile Include="Events\Invoker.cs" />
     <Compile Include="Execution\IExecute.cs" />
+    <Compile Include="Execution\ITerminate.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\PathExtensions.cs" />

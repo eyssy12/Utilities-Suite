@@ -1,45 +1,30 @@
 ﻿namespace EyssyApps.Organiser.Library.Tasks
 {
     using System;
-    using System.Runtime.Serialization;
+    using Models.Settings;
 
-    [Serializable]
-    public abstract class OrganiseTaskBase : IOrganiseTask
+    public abstract class OrganiseTaskBase : TaskBase, IOrganiseTask
     {
-        protected const string DefaultUnkownName = "Unknown",
-            KeyId = "id",
-            KeyType = "type";
+        protected const string DefaultUnkownName = "Unknown";
 
-        private readonly Guid id;
         private readonly OrganiseType type;
-        private readonly string description;
+        private FileOrganiserSettings settings;
 
-        protected OrganiseTaskBase(Guid id, OrganiseType type, string description)
+        protected OrganiseTaskBase(Guid id, string description, FileOrganiserSettings settings, OrganiseType type) 
+            : base(id, description)
         {
-            this.id = id;
+            this.settings = settings;
             this.type = type;
-            this.description = description;
         }
 
-        public Guid Id
+        public FileOrganiserSettings Settings
         {
-            get { return this.id; }
+            get { return this.settings; }
         }
 
         public OrganiseType Type
         {
             get { return this.type; }
         }
-
-        public string Description
-        {
-            get { return this.description; }
-        }
-
-        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
-
-        public abstract void Execute();
-
-        public abstract void Terminate();
     }
 }

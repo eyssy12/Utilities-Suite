@@ -4,25 +4,52 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:File_Organiser_UI"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="728" Width="1024"
+        Title="MainWindow" Width="1024" Height="728"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <ContextMenu x:Key="TrayContextMenu">
-            <MenuItem Name="OpenFileOrganiserMenuItem" FontWeight="Bold" Header="Open File Organiser" Click="TrayMenu_OpenFileOrganiser">
-                <MenuItem.Icon>
-                    <Image Source="pack://application:,,,/Images/OpenApp.ico"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <Separator />
-            <MenuItem Name="CloseFileOrganiserMenuItem" Header="Close" Click="TrayMenu_CloseFileOrganiser">
-                <MenuItem.Icon>
-                    <Image Source="pack://application:,,,/Images/CloseApp.ico"/>
-                </MenuItem.Icon>
-            </MenuItem>
-        </ContextMenu>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- data template used for the dialogs example, defines a View for a ViewModel of type DateTime  -->
+            <DataTemplate DataType="{x:Type system:DateTime}">
+                <StackPanel Margin="16">
+                    <TextBlock>England win the World Cup:</TextBlock>
+                    <TextBlock Margin="0 8 0 0" Text="{Binding }" />
+                    <TextBlock Margin="0 8 0 0" >You will never see that again.</TextBlock>
+                    <Button Margin="0 8 0 0" IsDefault="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}">AWESOME</Button>
+                </StackPanel>
+            </DataTemplate>
+
+            <ContextMenu x:Key="TrayContextMenu">
+                <MenuItem Name="OpenFileOrganiserMenuItem" FontWeight="Bold" Header="Open File Organiser" Click="TrayMenu_OpenFileOrganiser">
+                    <MenuItem.Icon>
+                        <Image Source="pack://application:,,,/Images/OpenApp.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Name="CloseFileOrganiserMenuItem" Header="Close" Click="TrayMenu_CloseFileOrganiser">
+                    <MenuItem.Icon>
+                        <Image Source="pack://application:,,,/Images/CloseApp.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
+        </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
@@ -51,10 +78,32 @@
         </Border>
 
         <StackPanel Grid.Row="1" Margin="8px">
-            <Button Click="Button_Click" Width="100" Height="50">
+            <Button Click="Button_Click">
                 Sort files
             </Button>
+            <TextBox VerticalAlignment="Center">
+                
+            </TextBox>
+            <materialDesign:Card>
+                Test
+            </materialDesign:Card>
         </StackPanel>
+
+        <!--<Border Background="{DynamicResource MaterialDesignSelection}" Padding="8 0 8 0">
+            <Grid>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock TextWrapping="WrapWithOverflow" Style="{DynamicResource MaterialDesignSubheadingTextBlock}">Example 1.</TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" >Simple definition within XAML. Use the toggle to display the message.</TextBlock>
+                    <ToggleButton IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}"
+                                      Margin="0 8 0 0"/>
+                </StackPanel>
+
+                --><!-- simplest form --><!--
+                <materialDesign:Snackbar Message="hello 1" 
+                                             IsActive="False"
+                                             x:Name="SnackbarOne" />
+            </Grid>
+        </Border>-->
 
     </Grid>
 </Window>

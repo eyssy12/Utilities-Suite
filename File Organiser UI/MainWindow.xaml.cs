@@ -5,14 +5,14 @@
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using EyssyApps.Configuration.Library;
     using EyssyApps.Core.Library.Extensions;
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
-    using EyssyApps.Core.Library.Timing;
-    using EyssyApps.Organiser.Library;
     using EyssyApps.Organiser.Library.Models.Organiser;
     using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Providers;
@@ -25,9 +25,12 @@
     using SystemFile = System.IO.File;
     using WindowsDataFormats = System.Windows.DataFormats;
     using WindowsDragEventArgs = System.Windows.DragEventArgs;
+
     public partial class MainWindow : Window
     {
         protected readonly TaskbarIcon TrayIcon;
+
+        protected readonly FileOrganiserTask FileTask;
 
         public MainWindow()
         {
@@ -43,6 +46,30 @@
             this.TrayIcon.Icon = UiResources.TrayIcon;
             this.TrayIcon.ToolTipText = "File Organiser";
             this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
+
+            // TODO: Do proper refactoring of this logic here when the UI has functionality for task creation and management
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory("File Organiser"), "file_extension_db.json");
+            string data = SystemFile.ReadAllText(path);
+
+            FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
+            StandardKernel kernel = new StandardKernel(new CommonBindings());
+
+            ConstructorArgument argument = new ConstructorArgument("database", result);
+            IFileExtensionProvider provider = kernel.Get<IFileExtensionProvider>(argument);
+            IFileManager fileManager = kernel.Get<IFileManager>();
+            IDirectoryManager directoryManager = kernel.Get<IDirectoryManager>();
+
+            // TODO: dont allow to create tasks of the same type for the same root path, i.e. Two seperate tasks for directory organiser with the same root path
+            FileOrganiserSettings settings = new FileOrganiserSettings
+            {
+                RootPath = KnownFolders.GetPath(KnownFolder.Downloads),
+                DirectoryExemptions = new List<string> { },
+                ExtensionExemptions = new List<string> { },
+                FileExemptions = new List<string>() { }
+            };
+
+            this.FileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", settings, provider, fileManager, directoryManager);
+            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", settings, directoryManager);
         }
 
         private void ImagePanel_Drop(object sender, WindowsDragEventArgs e)
@@ -98,35 +125,10 @@
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Do proper refactoring of this logic here when the UI has functionality for task creation and management
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory("File Organiser"), "file_extension_db.json");
-            string data = SystemFile.ReadAllText(path);
-
-            FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
-
-            StandardKernel kernel = new StandardKernel(new CommonBindings());
-
-            ConstructorArgument argument = new ConstructorArgument("database", result);
-            IFileExtensionProvider provider = kernel.Get<IFileExtensionProvider>(argument);
-            IFileManager fileManager = kernel.Get<IFileManager>();
-            IDirectoryManager directoryManager = kernel.Get<IDirectoryManager>();
-
-            // TODO: dont allow to create tasks of the same type for the same root path, i.e. Two seperate tasks for directory organiser with the same root path
-            FileOrganiserSettings settings = new FileOrganiserSettings
+            Task.Run(() =>
             {
-                RootPath = KnownFolders.GetPath(KnownFolder.Downloads),
-                DirectoryExemptions = new List<string> { },
-                ExtensionExemptions = new List<string> { },
-                FileExemptions = new List<string>() { }
-            };
-
-            FileOrganiserTask fileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", settings, provider, directoryManager, fileManager);
-            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", settings, directoryManager);
-
-            ITimer timer = kernel.Get<ITimer>();
-
-            ScheduledTask schedule = new ScheduledTask(timer, fileTask, 5000, 5000);
-            schedule.Execute();
+                this.FileTask.Execute();
+            });
         }
     }
 }
