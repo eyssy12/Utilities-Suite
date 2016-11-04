@@ -3,12 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Core.Library.Extensions;
     using Factories;
     using Tasks;
 
     public class SimpleTaskManager : ITaskManager
     {
+        // TODO: add event raiser 
+
         protected readonly IOrganiserFactory Factory;
         protected readonly IList<ITask> Tasks;
 
@@ -25,7 +28,19 @@
 
         public void Execute()
         {
-            this.Tasks.ForEach(t => t.Execute());
+            try
+            {
+                this.Tasks.ForEach(t => Task.Run(() => t.Execute()));
+            }
+            catch (Exception ex)
+            {
+                // TODO: raise exception
+            }
+        }
+
+        public void Terminate()
+        {
+            
         }
 
         public bool Add(ITask task)

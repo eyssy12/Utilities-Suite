@@ -52,6 +52,7 @@
     <Compile Include="Models\Organiser\FileExtensionDatabaseModel.cs" />
     <Compile Include="Models\Organiser\FileExtensionMetadata.cs" />
     <Compile Include="Models\Settings\FileOrganiserSettings.cs" />
+    <Compile Include="Models\TaskMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\FileExtensionProvider.cs" />
     <Compile Include="Providers\IFileExtensionProvider.cs" />
