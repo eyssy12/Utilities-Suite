@@ -13,7 +13,7 @@
             TimerPeriod;
 
         public ScheduledTask(Guid id, string description, ITimer timer, ITask executable, int initialWaitTime, int timerPeriod)
-            : base(id, description)
+            : base(id, description, TaskType.Scheduled)
         {
             if (timer == null)
             {

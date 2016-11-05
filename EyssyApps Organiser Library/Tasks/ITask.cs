@@ -10,5 +10,7 @@
         string Description { get; }
 
         TaskState State { get; }
+
+        TaskType TaskType { get; }
     }
 }

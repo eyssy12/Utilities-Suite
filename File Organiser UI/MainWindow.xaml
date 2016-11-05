@@ -21,9 +21,11 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
 
             <!-- data template used for the dialogs example, defines a View for a ViewModel of type DateTime  -->
@@ -52,58 +54,82 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        <!--<Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="200" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Border Grid.Row="0" Margin="8px" Name="ClearButtonBorder" Grid.Column="1" CornerRadius="0,3,3,0">
-            <Border.Style>
-                <Style>
-                    <Setter Property="Border.Background" Value="Black"/>
-                    <Style.Triggers>
-                        <Trigger Property="Border.IsMouseOver" Value="True">
-                            <Setter Property="Border.Background" Value="Green" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <StackPanel Orientation="Horizontal" Margin="1px" Name="ImagePanel" Drop="ImagePanel_Drop" AllowDrop="true" Background="AliceBlue">
+            <StackPanel Orientation="Horizontal" Margin="8px" Name="ImagePanel" Drop="ImagePanel_Drop" AllowDrop="true" Background="AliceBlue">
                 <Label Name="FilesLabel" VerticalAlignment="Center">
                     Drop files here
                 </Label>
+                <materialDesign:Card Margin="8" Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    <StackPanel>
+                        <TextBlock Margin="16 16 12 8" FontSize="16">Notes</TextBlock>
+                        <CheckBox Margin="16 4 16 0" Style="{StaticResource MaterialDesignUserForegroundCheckBox}">Do something good</CheckBox>
+                        <CheckBox Margin="16 4 16 0" Style="{StaticResource MaterialDesignUserForegroundCheckBox}">Take a breather</CheckBox>
+                        <CheckBox Margin="16 4 16 0" Style="{StaticResource MaterialDesignUserForegroundCheckBox}">And go create</CheckBox>
+                        <Separator Style="{StaticResource MaterialDesignLightSeparator}"/>
+                        <StackPanel Margin="8 0 8 8" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 0 0"
+                            materialDesign:RippleAssist.IsCentered="True">
+                                <materialDesign:PackIcon Kind="CheckAll" />
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:Card>
             </StackPanel>
-        </Border>
+            <StackPanel Grid.Row="1" Margin="8">
+                <Button Click="Button_Click">
+                    Sort files
+                </Button>
+            </StackPanel>
+            <DockPanel Grid.Row="2" Margin="8">
+                <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
+            </DockPanel>
 
-        <StackPanel Grid.Row="1" Margin="8px">
-            <Button Click="Button_Click">
-                Sort files
-            </Button>
-            <TextBox VerticalAlignment="Center">
-                
-            </TextBox>
-            <materialDesign:Card>
-                Test
-            </materialDesign:Card>
-        </StackPanel>
 
-        <!--<Border Background="{DynamicResource MaterialDesignSelection}" Padding="8 0 8 0">
-            <Grid>
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock TextWrapping="WrapWithOverflow" Style="{DynamicResource MaterialDesignSubheadingTextBlock}">Example 1.</TextBlock>
-                    <TextBlock TextWrapping="WrapWithOverflow" >Simple definition within XAML. Use the toggle to display the message.</TextBlock>
-                    <ToggleButton IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}"
-                                      Margin="0 8 0 0"/>
+        </Grid>-->
+
+        <materialDesign:Card Margin="8">
+            <ScrollViewer Margin="8">
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center">Tasks</TextBlock>
+                    <DataGrid Margin="0 8 0 0" ItemsSource="{Binding Path=Tasks}" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
+                            materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding ID}"
+                                            Header="Identity"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            />
+                            <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding Type}"
+                                                        Header="Type"                                                        
+                                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" 
+                                                        />
+                            <!-- set a max length to get an indicator in the editor -->
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding Description}"
+                                                        Header="Description"                                                        
+                                                        MaxLength="255" 
+                                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" 
+                                                        />
+
+                            <DataGridTemplateColumn >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="RunTask">Run</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
-
-                --><!-- simplest form --><!--
-                <materialDesign:Snackbar Message="hello 1" 
-                                             IsActive="False"
-                                             x:Name="SnackbarOne" />
-            </Grid>
-        </Border>-->
-
-    </Grid>
+            </ScrollViewer>
+        </materialDesign:Card>
+    </materialDesign:DialogHost>
 </Window>

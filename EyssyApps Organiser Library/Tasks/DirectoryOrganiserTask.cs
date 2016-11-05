@@ -19,7 +19,7 @@
             string description,
             FileOrganiserSettings settings,
             IDirectoryManager directoryManager)
-            : base(id, description, settings, OrganiseType.Directory)
+            : base(id, description, settings, OrganiseType.Directory, TaskType.Organiser)
         {
             this.DirectoryManager = directoryManager;
         }

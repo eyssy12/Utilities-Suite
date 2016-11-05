@@ -7,14 +7,14 @@
     {
         protected const string DefaultUnkownName = "Unknown";
 
-        private readonly OrganiseType type;
+        private readonly OrganiseType organiseType;
         private FileOrganiserSettings settings;
 
-        protected OrganiseTaskBase(Guid id, string description, FileOrganiserSettings settings, OrganiseType type) 
-            : base(id, description)
+        protected OrganiseTaskBase(Guid id, string description, FileOrganiserSettings settings, OrganiseType organiseType, TaskType taskType) 
+            : base(id, description, taskType)
         {
             this.settings = settings;
-            this.type = type;
+            this.organiseType = organiseType;
         }
 
         public FileOrganiserSettings Settings
@@ -22,9 +22,9 @@
             get { return this.settings; }
         }
 
-        public OrganiseType Type
+        public OrganiseType OrganiseType
         {
-            get { return this.type; }
+            get { return this.organiseType; }
         }
     }
 }

@@ -4,7 +4,7 @@
 
     public interface IOrganiseTask : ITask
     {
-        OrganiseType Type { get; }
+        OrganiseType OrganiseType { get; }
 
         FileOrganiserSettings Settings { get; }
     }

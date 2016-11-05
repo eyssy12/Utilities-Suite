@@ -25,7 +25,7 @@
             IFileExtensionProvider provider,
             IFileManager fileManager,
             IDirectoryManager directoryManager)
-            : base(id, description, settings, OrganiseType.File)
+            : base(id, description, settings, OrganiseType.File, TaskType.Organiser)
         {
             this.Provider = provider;
             this.FileManager = fileManager;

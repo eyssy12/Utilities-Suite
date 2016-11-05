@@ -72,6 +72,11 @@
             return this.Tasks.FirstOrDefault(t => t.Id == id);
         }
 
+        public IEnumerable<ITask> GetAll()
+        {
+            return this.Tasks;
+        }
+
         protected bool Contains(ITask task)
         {
             return this.Tasks.Any(t => t.Id == task.Id);

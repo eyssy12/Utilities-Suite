@@ -11,6 +11,12 @@
         All = 4
     }
 
+    public enum TaskType : byte
+    {
+        Scheduled = 0,
+        Organiser
+    }
+
     public enum TaskState : byte
     {
         NotStarted = 0,

@@ -1,6 +1,7 @@
 ﻿namespace EyssyApps.Organiser.Library.Managers
 {
     using System;
+    using System.Collections.Generic;
     using Core.Library.Execution;
     using Tasks;
 
@@ -11,5 +12,7 @@
         bool Delete(ITask task);
 
         ITask FindById(Guid id);
+
+        IEnumerable<ITask> GetAll();
     }
 }

@@ -6,13 +6,15 @@
     {
         private readonly Guid id;
         private readonly string description;
+        private readonly TaskType taskType;
 
         private TaskState state;
 
-        protected TaskBase(Guid id, string description)
+        protected TaskBase(Guid id, string description, TaskType taskType)
         {
             this.id = id;
             this.description = description;
+            this.taskType = taskType;
 
             this.state = TaskState.NotStarted;
         }
@@ -30,6 +32,11 @@
         public TaskState State
         {
             get { return this.state; }
+        }
+
+        public TaskType TaskType
+        {
+            get { return this.taskType; }
         }
 
         public void Execute()

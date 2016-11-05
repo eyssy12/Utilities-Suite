@@ -12,22 +12,22 @@
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
     using EyssyApps.Organiser.Library.Factories;
+    using EyssyApps.Organiser.Library.Managers;
     using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
     using File.Organiser.UI;
+    using File.Organiser.UI.ViewModels;
     using Hardcodet.Wpf.TaskbarNotification;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
     using SimpleInjectorContainer = SimpleInjector.Container;
-    using WindowsDataFormats = System.Windows.DataFormats;
-    using WindowsDragEventArgs = System.Windows.DragEventArgs;
 
     public partial class MainWindow : Window
     {
         protected readonly TaskbarIcon TrayIcon;
 
-        protected readonly FileOrganiserTask FileTask;
+        protected readonly ITaskManager Manager;
 
         public MainWindow()
         {
@@ -53,7 +53,9 @@
             // 2. Configure the container (register)
             SimpleInjectorBindings bindings = new SimpleInjectorBindings();
             bindings.RegisterBindingsToContainer(container);
-            
+
+            this.Manager = container.GetInstance<ITaskManager>();
+
             IOrganiserFactory factory = container.GetInstance<IOrganiserFactory>();
             IFileManager fileManager = factory.Create<IFileManager>();
             IDirectoryManager directoryManager = factory.Create<IDirectoryManager>();
@@ -68,8 +70,33 @@
                 FileExemptions = new List<string>() { }
             };
 
-            this.FileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", settings, provider, fileManager, directoryManager);
+            // TODO: save/laod feature
+            FileOrganiserTask fileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", settings, provider, fileManager, directoryManager);
             DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", settings, directoryManager);
+
+            this.Manager.Add(fileTask);
+            this.Manager.Add(directoryTask);
+
+            this.DataContext = this;
+        }
+
+        public IEnumerable<TaskViewModel> Tasks
+        {
+            get
+            {
+                return this.Manager
+                    .GetAll()
+                    .Select(t =>
+                    {
+                        return new TaskViewModel
+                        {
+                            ID = t.Id.ToString(),
+                            Type = t.TaskType,
+                            Description = t.Description
+                        };
+                    })
+                    .ToArray();
+            }
         }
 
         private void InitializeMaterialDesign()
@@ -82,18 +109,18 @@
             var hue = new Hue("Dummy", Colors.Black, Colors.White);
         }
 
-        private void ImagePanel_Drop(object sender, WindowsDragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(WindowsDataFormats.FileDrop))
-            {
-                // Note that you can have more than one file.
-                string[] files = (string[])e.Data.GetData(WindowsDataFormats.FileDrop);
+        //private void ImagePanel_Drop(object sender, WindowsDragEventArgs e)
+        //{
+        //    if (e.Data.GetDataPresent(WindowsDataFormats.FileDrop))
+        //    {
+        //        // Note that you can have more than one file.
+        //        string[] files = (string[])e.Data.GetData(WindowsDataFormats.FileDrop);
 
-                Console.WriteLine(files);
+        //        Console.WriteLine(files);
 
-                this.FilesLabel.Content = files.Aggregate((a, b) => a + "\n" + b);
-            }
-        }
+        //        this.FilesLabel.Content = files.Aggregate((a, b) => a + "\n" + b);
+        //    }
+        //}
 
         // minimize to system tray when applicaiton is closed
         protected override void OnClosing(CancelEventArgs e)
@@ -133,12 +160,16 @@
             this.TrayIcon.Visibility = Visibility.Hidden;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RunTask(object sender, RoutedEventArgs e)
         {
-            Task.Run(() =>
+            if (sender is Button)
             {
-                this.FileTask.Execute();
-            });
+                Button runTask = sender as Button;
+
+                this.Manager
+                    .FindById(Guid.Parse((runTask.DataContext as TaskViewModel).ID))
+                    .Execute();
+            }
         }
     }
 }

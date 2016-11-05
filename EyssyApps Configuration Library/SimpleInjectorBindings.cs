@@ -10,6 +10,7 @@
     using Extensions;
     using Newtonsoft.Json;
     using Organiser.Library.Factories;
+    using Organiser.Library.Managers;
     using Organiser.Library.Models.Organiser;
     using Organiser.Library.Providers;
     using SimpleInjector;
@@ -61,6 +62,7 @@
         {
             this.Bind<IFileManager, LocalFileManager>();
             this.Bind<IDirectoryManager, LocalDirectoryManager>();
+            this.Bind<ITaskManager, SimpleTaskManager>();
         }
 
         protected virtual void BindProviders()
