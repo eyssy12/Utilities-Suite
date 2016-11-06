@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Media;
     using EyssyApps.Configuration.Library;
     using EyssyApps.Core.Library.Managers;
@@ -42,7 +42,7 @@
             this.TrayIcon.MenuActivation = PopupActivationMode.LeftOrRightClick;
             this.TrayIcon.Visibility = Visibility.Hidden;
             this.TrayIcon.ContextMenu = this.FindResource("TrayContextMenu") as ContextMenu;
-            this.TrayIcon.Icon = UiResources.TrayIcon;
+            this.TrayIcon.Icon = UiResources.App;
             this.TrayIcon.ToolTipText = "File Organiser";
             this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
 
@@ -91,7 +91,8 @@
                         return new TaskViewModel
                         {
                             ID = t.Id.ToString(),
-                            Type = t.TaskType,
+                            TaskType = t.TaskType,
+                            State = t.State,
                             Description = t.Description
                         };
                     })
@@ -138,7 +139,7 @@
 
         private void TrayMenu_CloseFileOrganiser(object sender, EventArgs e)
         {
-            Environment.Exit(0);
+            this.TerminateApplication(sender, null);
         }
 
         private void TrayIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
@@ -166,10 +167,33 @@
             {
                 Button runTask = sender as Button;
 
-                this.Manager
-                    .FindById(Guid.Parse((runTask.DataContext as TaskViewModel).ID))
-                    .Execute();
+                string id = (runTask.DataContext as TaskViewModel).ID;
+
+                ITask task = this.Manager.FindById(Guid.Parse(id));
+
+                this.MainSnackbar
+                    .MessageQueue
+                    .Enqueue("Task '" + id + "' invoked");
+
+                task.Execute();
             }
+        }
+
+        private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.MainSnackbar
+                .MessageQueue
+                .Enqueue(((ButtonBase)sender).Content.ToString());
+        }
+
+        private void Button_AddTask_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("clicked");
+        }
+        
+        private void TerminateApplication(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

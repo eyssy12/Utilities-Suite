@@ -55,6 +55,38 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharpVectors.Converters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b532964b8548be77, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Converters.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Core, Version=0.3.1.1588, Culture=neutral, PublicKeyToken=7407205e337c98ef, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Css, Version=0.3.1.1590, Culture=neutral, PublicKeyToken=7a46e3f532fdb787, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Css.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Dom, Version=0.3.1.1589, Culture=neutral, PublicKeyToken=517340b6277b1a7a, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Dom.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Model, Version=0.3.1.1592, Culture=neutral, PublicKeyToken=2236cfc76b505845, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Rendering.Gdi, Version=0.3.1.1595, Culture=neutral, PublicKeyToken=03902092284347e3, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Rendering.Gdi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Rendering.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d0902381100df30e, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Rendering.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpVectors.Runtime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d16e717f0a981fb9, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpVectors.1.0\lib\net20\SharpVectors.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SimpleInjector, Version=3.2.7.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleInjector.3.2.7\lib\net45\SimpleInjector.dll</HintPath>
       <Private>True</Private>
@@ -90,6 +122,9 @@
     <Compile Include="Views\Cards.xaml.cs">
       <DependentUpon>Cards.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +138,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Cards.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,18 +200,16 @@
     <Resource Include="Images\OpenApp.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Chartridge046_small.jpg" />
-    <Resource Include="Resources\Contact.png" />
-    <Resource Include="Resources\favicon.ico" />
-    <Resource Include="Resources\ms-icon-310x310.png" />
-    <Resource Include="Resources\ProfilePic.jpg" />
+    <Resource Include="Images\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Chartridge046_small.jpg" />
-    <Resource Include="Images\Contact.png" />
-    <Resource Include="Images\favicon.ico" />
-    <Resource Include="Images\ms-icon-310x310.png" />
-    <Resource Include="Images\ProfilePic.jpg" />
+    <Resource Include="Images\app.ico" />
+    <Resource Include="Images\social.ico" />
+    <Resource Include="Images\structure-1.ico" />
+    <Resource Include="Images\structure.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\app.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
