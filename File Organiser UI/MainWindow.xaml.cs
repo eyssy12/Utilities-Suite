@@ -1,27 +1,15 @@
 ﻿namespace File_Organiser_UI
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
     using System.Windows.Media;
-    using EyssyApps.Configuration.Library;
-    using EyssyApps.Core.Library.Managers;
-    using EyssyApps.Core.Library.Native;
-    using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.Organiser.Library.Managers;
-    using EyssyApps.Organiser.Library.Models.Settings;
-    using EyssyApps.Organiser.Library.Providers;
-    using EyssyApps.Organiser.Library.Tasks;
     using File.Organiser.UI;
-    using File.Organiser.UI.ViewModels;
     using Hardcodet.Wpf.TaskbarNotification;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
-    using SimpleInjectorContainer = SimpleInjector.Container;
 
     public partial class MainWindow : Window
     {
@@ -46,58 +34,7 @@
             this.TrayIcon.ToolTipText = "File Organiser";
             this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
 
-            // TODO: Do proper refactoring of this logic here when the UI has functionality for task creation and management
-            // 1. Create a new Simple Injector container
-            SimpleInjectorContainer container = new SimpleInjectorContainer();
-
-            // 2. Configure the container (register)
-            SimpleInjectorBindings bindings = new SimpleInjectorBindings();
-            bindings.RegisterBindingsToContainer(container);
-
-            this.Manager = container.GetInstance<ITaskManager>();
-
-            IOrganiserFactory factory = container.GetInstance<IOrganiserFactory>();
-            IFileManager fileManager = factory.Create<IFileManager>();
-            IDirectoryManager directoryManager = factory.Create<IDirectoryManager>();
-            IFileExtensionProvider provider = factory.Create<IFileExtensionProvider>();
-
-            // TODO: dont allow to create tasks of the same type for the same root path, i.e. Two seperate tasks for directory organiser with the same root path
-            FileOrganiserSettings settings = new FileOrganiserSettings
-            {
-                RootPath = KnownFolders.GetPath(KnownFolder.Downloads),
-                DirectoryExemptions = new List<string> { },
-                ExtensionExemptions = new List<string> { },
-                FileExemptions = new List<string>() { }
-            };
-
-            // TODO: save/laod feature
-            FileOrganiserTask fileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", settings, provider, fileManager, directoryManager);
-            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", settings, directoryManager);
-
-            this.Manager.Add(fileTask);
-            this.Manager.Add(directoryTask);
-
             this.DataContext = this;
-        }
-
-        public IEnumerable<TaskViewModel> Tasks
-        {
-            get
-            {
-                return this.Manager
-                    .GetAll()
-                    .Select(t =>
-                    {
-                        return new TaskViewModel
-                        {
-                            ID = t.Id.ToString(),
-                            TaskType = t.TaskType,
-                            State = t.State,
-                            Description = t.Description
-                        };
-                    })
-                    .ToArray();
-            }
         }
 
         private void InitializeMaterialDesign()
@@ -123,11 +60,9 @@
         //    }
         //}
 
-        // minimize to system tray when applicaiton is closed
+        // minimize to system tray when main window is closed
         protected override void OnClosing(CancelEventArgs e)
         {
-            // setting cancel to true will cancel the close request
-            // so the application is not closed
             e.Cancel = true;
 
             this.Hide();
@@ -159,36 +94,6 @@
 
             this.WindowState = WindowState.Normal;
             this.TrayIcon.Visibility = Visibility.Hidden;
-        }
-
-        private void RunTask(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button)
-            {
-                Button runTask = sender as Button;
-
-                string id = (runTask.DataContext as TaskViewModel).ID;
-
-                ITask task = this.Manager.FindById(Guid.Parse(id));
-
-                this.MainSnackbar
-                    .MessageQueue
-                    .Enqueue("Task '" + id + "' invoked");
-
-                task.Execute();
-            }
-        }
-
-        private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.MainSnackbar
-                .MessageQueue
-                .Enqueue(((ButtonBase)sender).Content.ToString());
-        }
-
-        private void Button_AddTask_Click(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("clicked");
         }
         
         private void TerminateApplication(object sender, RoutedEventArgs e)

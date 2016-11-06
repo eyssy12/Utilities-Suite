@@ -46,8 +46,6 @@
                     }
                 }
             });
-
-            container.Verify();
         }
 
         protected void RegisterBindings()

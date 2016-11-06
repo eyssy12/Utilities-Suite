@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E9E63EDB-A33C-47B7-960F-F26225922A86}</ProjectGuid>
+    <ProjectGuid>{44C7EA2A-1A34-4716-AB4E-8C217A035FD8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EyssyApps.Organiser.Library</RootNamespace>
-    <AssemblyName>EyssyApps.Organiser.Library</AssemblyName>
+    <RootNamespace>EyssyApps.UI.Library</RootNamespace>
+    <AssemblyName>EyssyApps.UI.Library</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,14 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NodaTime.1.3.2\lib\net35-Client\NodaTime.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.2.0.725, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.2.0.725\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,27 +52,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enumerations.cs" />
-    <Compile Include="Factories\IOrganiserFactory.cs" />
-    <Compile Include="Managers\ITaskManager.cs" />
-    <Compile Include="Managers\SimpleTaskManager.cs" />
-    <Compile Include="Models\Organiser\FileExtensionCategory.cs" />
-    <Compile Include="Models\Organiser\FileExtensionDatabaseModel.cs" />
-    <Compile Include="Models\Organiser\FileExtensionMetadata.cs" />
-    <Compile Include="Models\Settings\FileOrganiserSettings.cs" />
-    <Compile Include="Models\TaskMetadata.cs" />
+    <Compile Include="Extensions\WpfExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\FileExtensionProvider.cs" />
-    <Compile Include="Providers\IFileExtensionProvider.cs" />
-    <Compile Include="Tasks\FileOrganiserTask.cs" />
-    <Compile Include="Tasks\IOrganiseTask.cs" />
-    <Compile Include="Tasks\ITask.cs" />
-    <Compile Include="Tasks\OrganiseTaskBase.cs" />
-    <Compile Include="Tasks\ScheduledTask.cs" />
-    <Compile Include="Tasks\DirectoryOrganiserTask.cs" />
-    <Compile Include="Tasks\TaskBase.cs" />
+    <Compile Include="Services\ISnackbarNotificationService.cs" />
+    <Compile Include="Services\SnackbarNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EyssyApps Core Library\EyssyApps Core Library.csproj">
@@ -76,9 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Messaging\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

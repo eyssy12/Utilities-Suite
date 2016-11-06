@@ -113,17 +113,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IoC\DependencyProvider.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UiResources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\TaskViewModel.cs" />
-    <Compile Include="Views\Cards.xaml.cs">
-      <DependentUpon>Cards.xaml</DependentUpon>
+    <Compile Include="Views\AddTask.xaml.cs">
+      <DependentUpon>AddTask.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IndividualTask.xaml.cs">
+      <DependentUpon>IndividualTask.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -137,11 +141,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Cards.xaml">
+    <Page Include="Views\AddTask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IndividualTask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -193,6 +201,10 @@
     <ProjectReference Include="..\EyssyApps Organiser Library\EyssyApps Organiser Library.csproj">
       <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
       <Name>EyssyApps Organiser Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EyssyApps UI Library\EyssyApps UI Library.csproj">
+      <Project>{44c7ea2a-1a34-4716-ab4e-8c217a035fd8}</Project>
+      <Name>EyssyApps UI Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
