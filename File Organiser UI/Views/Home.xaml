@@ -15,7 +15,7 @@
                     <StackPanel>
                         <DockPanel Margin="8">
                             <TextBlock>Run on Startup</TextBlock>
-                            <ToggleButton Click="StartupToggleButton_Click" Margin="8 0 0 0" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" ToolTip="Run Application on Window Startup"/>
+                            <ToggleButton Click="StartupToggleButton_Click" IsChecked="{Binding RunOnStartup}" Margin="8 0 0 0" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" ToolTip="Run Application on Window Startup"/>
                         </DockPanel>
                         <Separator/>
                         <Button 

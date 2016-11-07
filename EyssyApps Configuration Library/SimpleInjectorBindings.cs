@@ -7,6 +7,7 @@
     using Core.Library.Factories;
     using Core.Library.Managers;
     using Core.Library.Timing;
+    using Core.Library.Windows;
     using Extensions;
     using Newtonsoft.Json;
     using Organiser.Library.Factories;
@@ -61,6 +62,10 @@
             this.Bind<IFileManager, LocalFileManager>();
             this.Bind<IDirectoryManager, LocalDirectoryManager>();
             this.Bind<ITaskManager, SimpleTaskManager>();
+            this.Bind<IApplicationRegistryManager>(container =>
+            {
+                return new ApplicationRegistryManager("File-Organiser");
+            }, Lifestyle.Singleton);
         }
 
         protected virtual void BindProviders()

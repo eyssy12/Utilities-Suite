@@ -3,13 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
+    using EyssyApps.Core.Library.Windows;
     using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.Organiser.Library.Managers;
     using EyssyApps.Organiser.Library.Models.Settings;
@@ -17,7 +17,6 @@
     using EyssyApps.Organiser.Library.Tasks;
     using IoC;
     using MaterialDesignThemes.Wpf;
-    using Microsoft.Win32;
     using ViewModels;
 
     public partial class Home : UserControl
@@ -25,6 +24,7 @@
         protected readonly IOrganiserFactory Factory;
 
         protected readonly ITaskManager Manager;
+        protected readonly IApplicationRegistryManager RegistryManager;
 
         private readonly Snackbar Snackbar;
 
@@ -36,6 +36,7 @@
 
             this.Factory = DependencyProvider.Get<IOrganiserFactory>();
             this.Manager = this.Factory.Create<ITaskManager>();
+            this.RegistryManager = this.Factory.Create<IApplicationRegistryManager>();
 
             IFileManager fileManager = this.Factory.Create<IFileManager>();
             IDirectoryManager directoryManager = this.Factory.Create<IDirectoryManager>();
@@ -58,6 +59,12 @@
             this.Manager.Add(directoryTask);
 
             this.DataContext = this;
+        }
+
+        public bool RunOnStartup
+        {
+            get { return bool.Parse(this.RegistryManager.GetValue("runOnStartup").ToString()); }
+            set { this.RegistryManager.SetValue("runOnStartup", value); }
         }
 
         public IEnumerable<TaskViewModel> Tasks
@@ -130,16 +137,7 @@
         {
             ToggleButton toggle = (ToggleButton)sender;
 
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-            if (toggle.IsChecked.Value)
-            {
-                key.SetValue("File-Organiser", Assembly.GetExecutingAssembly().Location);
-            }
-            else
-            {
-                key.DeleteValue("File-Organiser", false);
-            }
+            this.RegistryManager.SetRunOnStartup(toggle.IsChecked.Value);
         }
     }
 }
