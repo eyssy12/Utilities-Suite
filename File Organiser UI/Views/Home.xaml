@@ -13,6 +13,11 @@
             <DockPanel>
                 <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" ToolTip="Options">
                     <StackPanel>
+                        <DockPanel Margin="8">
+                            <TextBlock>Run on Startup</TextBlock>
+                            <ToggleButton Click="StartupToggleButton_Click" Margin="8 0 0 0" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" ToolTip="Run Application on Window Startup"/>
+                        </DockPanel>
+                        <Separator/>
                         <Button 
                             x:Name="TerminateButton" 
                             Click="TerminateApplication"
@@ -35,7 +40,7 @@
             </Grid.RowDefinitions>
 
             <materialDesign:Card Grid.Row="0">
-                <ScrollViewer Margin="8"  >
+                <ScrollViewer Margin="8" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
                     
                     <StackPanel>
                         <DataGrid

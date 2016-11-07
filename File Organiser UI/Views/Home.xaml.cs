@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using System.Windows.Input;
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
     using EyssyApps.Organiser.Library.Factories;
@@ -15,6 +17,7 @@
     using EyssyApps.Organiser.Library.Tasks;
     using IoC;
     using MaterialDesignThemes.Wpf;
+    using Microsoft.Win32;
     using ViewModels;
 
     public partial class Home : UserControl
@@ -112,6 +115,31 @@
         private void TerminateApplication(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+
+            e.Handled = true;
+        }
+
+        private void StartupToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toggle = (ToggleButton)sender;
+
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            if (toggle.IsChecked.Value)
+            {
+                key.SetValue("File-Organiser", Assembly.GetExecutingAssembly().Location);
+            }
+            else
+            {
+                key.DeleteValue("File-Organiser", false);
+            }
         }
     }
 }
