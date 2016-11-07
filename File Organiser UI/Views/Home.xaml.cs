@@ -59,6 +59,8 @@
 
         public IEnumerable<TaskViewModel> Tasks
         {
+            // TODO: this should be properly wired up through eventhandlers so that the ui knows when the viewmodels property has changed
+        
             get
             {
                 return this.Manager
