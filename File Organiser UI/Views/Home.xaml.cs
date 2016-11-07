@@ -23,13 +23,13 @@
 
         protected readonly ITaskManager Manager;
 
-        private readonly Lazy<Snackbar> Snackbar;
+        private readonly Snackbar Snackbar;
 
         public Home()
         {
             InitializeComponent();
-
-            this.Snackbar = new Lazy<Snackbar>(() => (Snackbar)Application.Current.MainWindow.FindName("MainSnackbar"));
+            
+            this.Snackbar = (Snackbar)Application.Current.MainWindow.FindName("MainSnackbar");
 
             this.Factory = DependencyProvider.Get<IOrganiserFactory>();
             this.Manager = this.Factory.Create<ITaskManager>();
@@ -87,7 +87,7 @@
 
                 ITask task = this.Manager.FindById(Guid.Parse(id));
 
-                this.Snackbar.Value.MessageQueue.Enqueue("Task '" + id + "' invoked");
+                this.Snackbar.MessageQueue.Enqueue("Task '" + id + "' invoked");
 
                 task.Execute();
             }
@@ -95,7 +95,7 @@
 
         private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Snackbar.Value.MessageQueue.Enqueue(((ButtonBase)sender).Content.ToString());
+            this.Snackbar.MessageQueue.Enqueue(((ButtonBase)sender).Content.ToString());
         }
 
         private void Button_AddTask_Click(object sender, RoutedEventArgs e)
@@ -104,7 +104,7 @@
             this.TasksGrid.ItemsSource = null;
             this.TasksGrid.ItemsSource = this.Tasks;
 
-            this.Snackbar.Value.MessageQueue.Enqueue("New task created");
+            this.Snackbar.MessageQueue.Enqueue("New task created");
         }
 
         private void TerminateApplication(object sender, RoutedEventArgs e)

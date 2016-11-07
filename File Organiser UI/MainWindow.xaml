@@ -50,56 +50,18 @@
     <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <materialDesign:Snackbar HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0" MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
             <DockPanel Grid.Row="0" Grid.Column="0">
                 <views:Home/>
             </DockPanel>
-            <materialDesign:Snackbar Grid.Row="1" Grid.Column="0" MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
         </Grid>
     </materialDesign:DialogHost>
-
-    <!--<Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="300" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Horizontal" Margin="8px" Name="ImagePanel" Drop="ImagePanel_Drop" AllowDrop="true" Background="AliceBlue">
-                <Label Name="FilesLabel" VerticalAlignment="Center">
-                    Drop files here
-                </Label>
-                <materialDesign:Card Margin="8" Background="{DynamicResource PrimaryHueDarkBrush}"
-                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                    <StackPanel>
-                        <TextBlock Margin="16 16 12 8" FontSize="16">Notes</TextBlock>
-                        <CheckBox Margin="16 4 16 0" Style="{StaticResource MaterialDesignUserForegroundCheckBox}">Do something good</CheckBox>
-                        <CheckBox Margin="16 4 16 0" Style="{StaticResource MaterialDesignUserForegroundCheckBox}">Take a breather</CheckBox>
-                        <CheckBox Margin="16 4 16 0" Style="{StaticResource MaterialDesignUserForegroundCheckBox}">And go create</CheckBox>
-                        <Separator Style="{StaticResource MaterialDesignLightSeparator}"/>
-                        <StackPanel Margin="8 0 8 8" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" Width="30" Padding="2 0 0 0"
-                            materialDesign:RippleAssist.IsCentered="True">
-                                <materialDesign:PackIcon Kind="CheckAll" />
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
-                </materialDesign:Card>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Margin="8">
-                <Button Click="Button_Click">
-                    Sort files
-                </Button>
-            </StackPanel>
-            <DockPanel Grid.Row="2" Margin="8">
-                <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
-            </DockPanel>
-        </Grid>-->
 </Window>

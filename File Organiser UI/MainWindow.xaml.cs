@@ -47,19 +47,6 @@
             var hue = new Hue("Dummy", Colors.Black, Colors.White);
         }
 
-        //private void ImagePanel_Drop(object sender, WindowsDragEventArgs e)
-        //{
-        //    if (e.Data.GetDataPresent(WindowsDataFormats.FileDrop))
-        //    {
-        //        // Note that you can have more than one file.
-        //        string[] files = (string[])e.Data.GetData(WindowsDataFormats.FileDrop);
-
-        //        Console.WriteLine(files);
-
-        //        this.FilesLabel.Content = files.Aggregate((a, b) => a + "\n" + b);
-        //    }
-        //}
-
         // minimize to system tray when main window is closed
         protected override void OnClosing(CancelEventArgs e)
         {
