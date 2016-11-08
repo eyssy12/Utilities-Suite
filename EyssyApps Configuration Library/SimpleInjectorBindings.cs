@@ -72,7 +72,8 @@
         {
             this.Bind<IFileExtensionProvider>((container) =>
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory("File Organiser"), "file_extension_db.json");
+                string applicationName = AppDomain.CurrentDomain.FriendlyName.Split(new char[] { '.' }).FirstOrDefault();
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory(applicationName), "file_extension_db.json");
                 string data = File.ReadAllText(path);
 
                 FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
