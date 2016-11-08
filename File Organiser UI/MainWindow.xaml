@@ -59,9 +59,9 @@
             </Grid.ColumnDefinitions>
 
             <materialDesign:Snackbar HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0" MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
-            <DockPanel Grid.Row="0" Grid.Column="0">
-                <views:Home/>
-            </DockPanel>
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <ContentControl Content="{Binding Path=ActiveView, Mode=OneWay}"/>
+            </StackPanel>
         </Grid>
     </materialDesign:DialogHost>
 </Window>

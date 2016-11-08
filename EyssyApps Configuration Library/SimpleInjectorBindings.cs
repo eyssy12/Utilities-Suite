@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using Core.Library.Extensions;
     using Core.Library.Factories;
     using Core.Library.Managers;
@@ -72,8 +73,7 @@
         {
             this.Bind<IFileExtensionProvider>((container) =>
             {
-                string applicationName = AppDomain.CurrentDomain.FriendlyName.Split(new char[] { '.' }).FirstOrDefault();
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory(applicationName), "file_extension_db.json");
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory("File Organiser"), "file_extension_db.json");
                 string data = File.ReadAllText(path);
 
                 FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);

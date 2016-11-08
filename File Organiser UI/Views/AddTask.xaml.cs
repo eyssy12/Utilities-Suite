@@ -1,28 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using EyssyApps.Core.Library.Events;
+using EyssyApps.UI.Library.Controls;
 
 namespace File.Organiser.UI.Views
 {
     /// <summary>
     /// Interaction logic for AddTask.xaml
     /// </summary>
-    public partial class AddTask : UserControl
+    public partial class AddTask : UserControl, IViewControl
     {
         public AddTask()
         {
             InitializeComponent();
+        }
+
+        public event EventHandler<EventArgs<string>> ChangeView;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Invoker.Raise(ref this.ChangeView, this, "HomeView");
         }
     }
 }

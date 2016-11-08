@@ -25,7 +25,7 @@
 
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Close" />
-                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Right">Terminate</TextBlock>
+                                <TextBlock ToolTip="Terminate" Margin="8 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Right">Terminate</TextBlock>
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -35,15 +35,14 @@
         </materialDesign:ColorZone>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition MinHeight="488" MaxHeight="488" Height="488" />
+                <RowDefinition Height="476" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <materialDesign:Card Grid.Row="0">
+            <materialDesign:Card Grid.Row="0" Height="476">
                 <ScrollViewer Margin="8" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
-                    
-                    <StackPanel>
-                        <DataGrid
+                    <DataGrid
+                        FrozenColumnCount ="1"
                             Name="TasksGrid"
                             Margin="0 8 0 0"
                             ItemsSource="{Binding Path=Tasks}" 
@@ -53,7 +52,7 @@
                             materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                             materialDesign:DataGridAssist.ColumnHeaderPadding="8">
 
-                            <DataGrid.Columns>
+                            <DataGrid.Columns >
 
                                 <DataGridTemplateColumn Header="Action">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -88,7 +87,6 @@
 
                             </DataGrid.Columns>
                         </DataGrid>
-                    </StackPanel>
                 </ScrollViewer>
             </materialDesign:Card>
 

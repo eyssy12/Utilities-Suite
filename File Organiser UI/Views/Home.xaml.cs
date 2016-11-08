@@ -7,6 +7,7 @@
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
+    using EyssyApps.Core.Library.Events;
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
     using EyssyApps.Core.Library.Windows;
@@ -15,11 +16,12 @@
     using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
+    using EyssyApps.UI.Library.Controls;
     using IoC;
     using MaterialDesignThemes.Wpf;
     using ViewModels;
 
-    public partial class Home : UserControl
+    public partial class Home : UserControl, IViewControl
     {
         protected readonly IOrganiserFactory Factory;
 
@@ -27,6 +29,8 @@
         protected readonly IApplicationRegistryManager RegistryManager;
 
         private readonly Snackbar Snackbar;
+
+        public event EventHandler<EventArgs<string>> ChangeView;
 
         public Home()
         {
@@ -112,11 +116,12 @@
 
         private void Button_AddTask_Click(object sender, RoutedEventArgs e)
         {
-            this.Manager.Add(new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", null, null, null, null));
-            this.TasksGrid.ItemsSource = null;
-            this.TasksGrid.ItemsSource = this.Tasks;
+            //this.Manager.Add(new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", null, null, null, null));
+            //this.TasksGrid.ItemsSource = null;
+            //this.TasksGrid.ItemsSource = this.Tasks;
+            //this.Snackbar.MessageQueue.Enqueue("New task created");
 
-            this.Snackbar.MessageQueue.Enqueue("New task created");
+            Invoker.Raise(ref this.ChangeView, this, "AddTaskView");
         }
 
         private void TerminateApplication(object sender, RoutedEventArgs e)
