@@ -56,6 +56,12 @@
             this.BindTimers();
             this.BindProviders();
             this.BindManagers();
+            this.RegisterViews();
+        }
+
+        protected virtual void RegisterViews()
+        {
+            // TODO: add IViewControl bindings here
         }
 
         protected virtual void BindManagers()

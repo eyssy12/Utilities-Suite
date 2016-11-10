@@ -1,26 +1,21 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using EyssyApps.Core.Library.Events;
-using EyssyApps.UI.Library.Controls;
-
-namespace File.Organiser.UI.Views
+﻿namespace File.Organiser.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for AddTask.xaml
-    /// </summary>
-    public partial class AddTask : UserControl, IViewControl
-    {
-        public AddTask()
-        {
-            InitializeComponent();
-        }
+    using System.Windows;
+    using Controls;
 
-        public event EventHandler<EventArgs<string>> ChangeView;
+    public partial class AddTask : ViewControlBase
+    {
+        public const string ViewName = "AddTaskView";
+
+        public AddTask()
+            : base(AddTask.ViewName, isDefault: false)
+        {
+            this.InitializeComponent();
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Invoker.Raise(ref this.ChangeView, this, "HomeView");
+            this.OnViewChange(Home.ViewName);
         }
     }
 }

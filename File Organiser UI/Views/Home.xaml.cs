@@ -7,7 +7,7 @@
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
-    using EyssyApps.Core.Library.Events;
+    using Controls;
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
     using EyssyApps.Core.Library.Windows;
@@ -16,13 +16,14 @@
     using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
-    using EyssyApps.UI.Library.Controls;
     using IoC;
     using MaterialDesignThemes.Wpf;
     using ViewModels;
 
-    public partial class Home : UserControl, IViewControl
+    public partial class Home : ViewControlBase
     {
+        public const string ViewName = "HomeView";
+
         protected readonly IOrganiserFactory Factory;
 
         protected readonly ITaskManager Manager;
@@ -30,11 +31,10 @@
 
         private readonly Snackbar Snackbar;
 
-        public event EventHandler<EventArgs<string>> ChangeView;
-
-        public Home()
+        public Home() 
+            : base(Home.ViewName, isDefault: true)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             
             this.Snackbar = (Snackbar)Application.Current.MainWindow.FindName("MainSnackbar");
 
@@ -121,7 +121,7 @@
             //this.TasksGrid.ItemsSource = this.Tasks;
             //this.Snackbar.MessageQueue.Enqueue("New task created");
 
-            Invoker.Raise(ref this.ChangeView, this, "AddTaskView");
+            this.OnViewChange(AddTask.ViewName);
         }
 
         private void TerminateApplication(object sender, RoutedEventArgs e)

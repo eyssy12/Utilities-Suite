@@ -3,15 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
     using EyssyApps.Core.Library.Events;
-    using EyssyApps.Core.Library.Extensions;
-    using EyssyApps.Organiser.Library.Managers;
+    using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.UI.Library.Controls;
     using File.Organiser.UI;
+    using File.Organiser.UI.IoC;
     using File.Organiser.UI.Views;
     using Hardcodet.Wpf.TaskbarNotification;
     using MaterialDesignColors;
@@ -21,14 +20,8 @@
     {
         protected readonly TaskbarIcon TrayIcon;
 
-        protected readonly ITaskManager Manager;
-        protected readonly IEnumerable<UserControl> Views;
-
-        protected UserControl homeView;
-        protected UserControl individualTaskView;
-        protected UserControl addTaskView;
-
-        protected UserControl activeView;
+        protected readonly IOrganiserFactory Factory;
+        protected readonly IViewNavigator Navigator;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -36,6 +29,8 @@
         {
             this.InitializeMaterialDesign();
             this.InitializeComponent();
+
+            this.Factory = DependencyProvider.Get<IOrganiserFactory>();
 
             // TODO: investigate ReactiveUI
 
@@ -47,31 +42,30 @@
             this.TrayIcon.ToolTipText = "File Organiser";
             this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
 
-            // TODO: this is shit implementation and needs rework, but serves as a first step to achieve the desired goal
-            this.Views = new List<UserControl>
+            // TODO: these should be bindings - figure out how to register a collection in simple injector the way i need it to
+            IEnumerable<IViewControl> controls = new List<IViewControl>
             {
                 new Home(),
-                new IndividualTask(),
-                new AddTask()
+                new AddTask(),
+                new IndividualTask()
             };
 
-            this.Views.ForEach(v => 
-            {
-                (v as IViewControl).ChangeView += MainWindow_ChangeView;
-            });
-
-            this.homeView = this.Views.ElementAt(0);
-            this.individualTaskView = this.Views.ElementAt(1);
-            this.addTaskView = this.Views.ElementAt(2);
-
-            this.activeView = this.homeView;
+            this.Navigator = new ViewNavigator(controls);
+            this.Navigator.OnViewChanged += Navigator_OnViewChanged;
 
             this.DataContext = this;
+
+            this.Navigator.Navigate(Home.ViewName);
         }
 
-        public UserControl ActiveView
+        private void Navigator_OnViewChanged(object sender, EventArgs<IViewControl> e)
         {
-            get { return this.activeView; }
+            this.OnPropertyChanged(nameof(this.ActiveView));
+        }
+
+        public IViewControl ActiveView
+        {
+            get { return this.Navigator.ActiveView; }
         }
 
         protected void InitializeMaterialDesign()
@@ -94,20 +88,6 @@
             this.TrayIcon.Visibility = Visibility.Visible;
 
             base.OnClosing(e);
-        }
-
-        private void MainWindow_ChangeView(object sender, EventArgs<string> e)
-        {
-            if (e.First == "HomeView")
-            {
-                this.activeView = this.homeView;
-            }
-            else if (e.First == "AddTaskView")
-            {
-                this.activeView = this.addTaskView;
-            }
-
-            this.OnPropertyChanged(nameof(this.ActiveView));
         }
 
         private void TrayMenu_CloseFileOrganiser(object sender, EventArgs e)

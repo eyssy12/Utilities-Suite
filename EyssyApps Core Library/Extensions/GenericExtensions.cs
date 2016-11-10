@@ -14,6 +14,11 @@
             }
         }
 
+        public static bool IsEmpty<T>(this IEnumerable<T> source)
+        {
+            return !source.SafeAny();
+        }
+
         public static bool SafeAny<T>(this IEnumerable<T> source, Func<T, bool> filter = null)
         {
             if (source == null)

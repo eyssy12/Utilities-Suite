@@ -1,8 +1,11 @@
 ﻿namespace File.Organiser.UI.IoC
 {
     using System;
+    using System.Collections.Generic;
     using EyssyApps.Configuration.Library;
+    using EyssyApps.UI.Library.Controls;
     using SimpleInjector;
+    using Views;
 
     public static class DependencyProvider
     {
@@ -15,6 +18,16 @@
 
             SimpleInjectorBindings bindings = new SimpleInjectorBindings();
             bindings.RegisterBindingsToContainer(DependencyProvider.container);
+
+            //IEnumerable<IViewControl> views = new IViewControl[]
+            //{
+            //    new Home(),
+            //    new AddTask(),
+            //    new IndividualTask()
+            //};
+
+            //DependencyProvider.container.RegisterCollection<IViewControl>(views);
+            DependencyProvider.container.Register<IViewNavigator, ViewNavigator>();
 
             DependencyProvider.locked = false;
         }

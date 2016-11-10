@@ -1,26 +1,21 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using EyssyApps.Core.Library.Events;
-using EyssyApps.UI.Library.Controls;
-
-namespace File.Organiser.UI.Views
+﻿namespace File.Organiser.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for IndividualTask.xaml
-    /// </summary>
-    public partial class IndividualTask : UserControl, IViewControl
-    {
-        public IndividualTask()
-        {
-            InitializeComponent();
-        }
+    using System.Windows;
+    using Controls;
 
-        public event EventHandler<EventArgs<string>> ChangeView;
+    public partial class IndividualTask : ViewControlBase
+    {
+        public const string ViewName = "IndividualTaskView";
+
+        public IndividualTask()
+            : base(IndividualTask.ViewName, isDefault: false)
+        {
+            this.InitializeComponent();
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Invoker.Raise(ref this.ChangeView, this, "HomeView");
+            this.OnViewChange(Home.ViewName);
         }
     }
 }
