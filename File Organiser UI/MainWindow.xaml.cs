@@ -31,6 +31,8 @@
             this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
 
             this.DataContext = this;
+
+            this.MainSnackbar.MessageQueue.Enqueue("Hello, user.");
         }
 
         private void InitializeMaterialDesign()

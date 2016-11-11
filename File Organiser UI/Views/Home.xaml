@@ -49,7 +49,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <materialDesign:Card Grid.Row="0" Height="476">
+            <materialDesign:Card Grid.Row="0" Height="476" materialDesign:ShadowAssist.ShadowDepth="Depth3">
                 <ScrollViewer Margin="8" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
                     <DataGrid
                         FrozenColumnCount ="1"
