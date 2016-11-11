@@ -1,7 +1,5 @@
 ﻿namespace EyssyApps.UI.Library.Controls
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using Organiser.Library.Extensions;
 
@@ -36,36 +34,9 @@
             }
         }
 
-        protected void SetEnumeration<TEnum>(object parameter, ref TEnum field)
-            where TEnum : struct
-        {
-            TEnum value;
-            if (Enum.TryParse<TEnum>(parameter.ToString(), out value))
-            {
-                field = value;
-            }
-        }
-
-        protected T ParseEnum<T>(string value)
-        {
-            return (T)Enum.Parse(typeof(T), value);
-        }
-
         protected void OnPropertyChanged(string propertyName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private static bool CompareExchange<T>(T proposedValue, ref T originalValue)
-        {
-            if (EqualityComparer<T>.Default.Equals(proposedValue, originalValue))
-            {
-                return false;
-            }
-
-            originalValue = proposedValue;
-
-            return true;
         }
     }
 }

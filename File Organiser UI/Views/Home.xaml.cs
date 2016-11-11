@@ -16,15 +16,12 @@
     using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
-    using IoC;
     using MaterialDesignThemes.Wpf;
     using ViewModels;
 
     public partial class Home : ViewControlBase
     {
-        public const string ViewName = "HomeView";
-
-        protected readonly IOrganiserFactory Factory;
+        public const string ViewName = nameof(Home);
 
         protected readonly ITaskManager Manager;
         
@@ -32,16 +29,15 @@
         // Using registry will tie the application to Windows whereas file based config promotoes portability
         protected readonly IApplicationRegistryManager RegistryManager; 
 
-        private readonly Snackbar Snackbar;
+        private readonly Lazy<Snackbar> Snackbar;
 
-        public Home() 
-            : base(Home.ViewName, isDefault: true)
+        public Home(IOrganiserFactory factory) 
+            : base(Home.ViewName, isDefault: true, factory: factory)
         {
             this.InitializeComponent();
-            
-            this.Snackbar = (Snackbar)Application.Current.MainWindow.FindName("MainSnackbar");
 
-            this.Factory = DependencyProvider.Get<IOrganiserFactory>();
+            this.Snackbar = new Lazy<Snackbar>(() => (Snackbar)Application.Current.MainWindow.FindName("MainSnackbar"));
+
             this.Manager = this.Factory.Create<ITaskManager>();
             this.RegistryManager = this.Factory.Create<IApplicationRegistryManager>();
 
@@ -106,7 +102,7 @@
 
                 ITask task = this.Manager.FindById(Guid.Parse(id));
 
-                this.Snackbar.MessageQueue.Enqueue("Task '" + id + "' invoked");
+                this.Snackbar.Value.MessageQueue.Enqueue("Task '" + id + "' invoked");
 
                 task.Execute();
             }
@@ -114,7 +110,7 @@
 
         private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Snackbar.MessageQueue.Enqueue(((ButtonBase)sender).Content.ToString());
+            this.Snackbar.Value.MessageQueue.Enqueue(((ButtonBase)sender).Content.ToString());
         }
 
         private void Button_AddTask_Click(object sender, RoutedEventArgs e)

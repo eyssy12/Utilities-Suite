@@ -2,13 +2,14 @@
 {
     using System.Windows;
     using Controls;
+    using EyssyApps.Organiser.Library.Factories;
 
     public partial class IndividualTask : ViewControlBase
     {
-        public const string ViewName = "IndividualTaskView";
+        public const string ViewName = nameof(IndividualTask);
 
-        public IndividualTask()
-            : base(IndividualTask.ViewName, isDefault: false)
+        public IndividualTask(IOrganiserFactory factory)
+            : base(IndividualTask.ViewName, isDefault: false, factory: factory)
         {
             this.InitializeComponent();
         }

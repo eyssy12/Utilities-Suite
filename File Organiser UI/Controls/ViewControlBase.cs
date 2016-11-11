@@ -4,19 +4,29 @@
     using System.ComponentModel;
     using System.Windows.Controls;
     using EyssyApps.Core.Library.Events;
+    using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.UI.Library.Controls;
 
     public abstract class ViewControlBase : UserControl, IViewControl
     {
+        protected readonly IOrganiserFactory Factory;
+
         private readonly string viewName;
         private readonly bool isDefault; // TODO: perhaps make this as an attribute that is attached to a single view control ?
 
-        protected ViewControlBase(string viewName, bool isDefault)
+        protected ViewControlBase(string viewName, bool isDefault, IOrganiserFactory factory)
         {
+            if (factory == null)
+            {
+                throw new ArgumentNullException(nameof(factory), "No factory has been provided");
+            }
+
             if (string.IsNullOrWhiteSpace(viewName))
             {
                 throw new ArgumentNullException(nameof(viewName), "No view name has been provided - the main window would not be able to route between the views.");
             }
+
+            this.Factory = factory;
 
             this.viewName = viewName;
             this.isDefault = isDefault;

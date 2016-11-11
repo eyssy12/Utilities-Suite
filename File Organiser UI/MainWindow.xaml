@@ -1,4 +1,4 @@
-﻿<Window x:Class="File_Organiser_UI.MainWindow"
+﻿<controls:MainWindowBase x:Class="File_Organiser_UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,7 +19,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         Icon="pack://application:,,,/Images/app.ico"
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -72,4 +72,4 @@
             </StackPanel>
         </Grid>
     </materialDesign:DialogHost>
-</Window>
+</controls:MainWindowBase>

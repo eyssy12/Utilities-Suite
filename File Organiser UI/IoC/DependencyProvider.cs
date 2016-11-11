@@ -6,10 +6,11 @@
     using EyssyApps.UI.Library.Controls;
     using SimpleInjector;
     using Views;
+    using SimpleInjector.Advanced;
 
     public static class DependencyProvider
     {
-        private static readonly Container container;
+        public static readonly Container container;
         private static bool locked;
 
         static DependencyProvider()

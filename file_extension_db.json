@@ -125,6 +125,10 @@
         {
           "description": "JavaScript Object Notation",
           "value": "json"
+        },
+        {
+          "description": "INI Configuration",
+          "value": "ini"
         }
       ]
 		},

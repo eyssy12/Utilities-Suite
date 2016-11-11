@@ -111,6 +111,7 @@
     </ApplicationDefinition>
     <Compile Include="Controls\ContentControlBehaviour.cs" />
     <Compile Include="Controls\ViewControlBase.cs" />
+    <Compile Include="Controls\MainWindowBase.cs" />
     <Compile Include="IoC\DependencyProvider.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
