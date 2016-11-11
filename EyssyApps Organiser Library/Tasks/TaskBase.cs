@@ -1,6 +1,7 @@
 ﻿namespace EyssyApps.Organiser.Library.Tasks
 {
     using System;
+    using Core.Library.Events;
 
     public abstract class TaskBase : ITask
     {
@@ -18,6 +19,8 @@
 
             this.state = TaskState.NotStarted;
         }
+
+        public event EventHandler<EventArgs<TaskState>> StateChanged;
 
         public Guid Id
         {
@@ -41,22 +44,33 @@
 
         public void Execute()
         {
-            this.state = TaskState.Running;
+            this.OnStateChanged(TaskState.Running);
 
             this.HandleExecute();
 
-            this.state = TaskState.Finished;
+            this.OnStateChanged(TaskState.Finished);
         }
 
         public void Terminate()
         {
             this.HandleTerminate();
 
-            this.state = TaskState.Cancelled;
+            this.OnStateChanged(TaskState.Cancelled);
         }
 
         protected abstract void HandleExecute();
 
         protected abstract void HandleTerminate();
+
+        private void OnStateChanged(TaskState state)
+        {
+            this.state = state;
+            this.OnStateChanged();
+        }
+
+        private void OnStateChanged()
+        {
+            Invoker.Raise(ref this.StateChanged, this, this.State);
+        }
     }
 }

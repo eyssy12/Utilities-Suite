@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enumerations.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Factories\IOrganiserFactory.cs" />
     <Compile Include="Managers\ITaskManager.cs" />
     <Compile Include="Managers\SimpleTaskManager.cs" />

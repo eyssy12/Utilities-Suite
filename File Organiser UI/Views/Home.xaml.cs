@@ -79,14 +79,14 @@
             {
                 return this.Manager
                     .GetAll()
-                    .Select(t =>
+                    .Select(task =>
                     {
-                        return new TaskViewModel
+                        return new TaskViewModel(task)
                         {
-                            ID = t.Id.ToString(),
-                            TaskType = t.TaskType,
-                            State = t.State,
-                            Description = t.Description
+                            ID = task.Id.ToString(), // TODO: change the model to remove public setters
+                            TaskType = task.TaskType,
+                            State = task.State,
+                            Description = task.Description
                         };
                     })
                     .ToArray();

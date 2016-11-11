@@ -1,10 +1,13 @@
 ﻿namespace EyssyApps.Organiser.Library.Tasks
 {
     using System;
+    using Core.Library.Events;
     using Core.Library.Execution;
 
     public interface ITask : IExecute, ITerminate
     {
+        event EventHandler<EventArgs<TaskState>> StateChanged;
+
         Guid Id { get; }
 
         string Description { get; }

@@ -19,14 +19,7 @@
             SimpleInjectorBindings bindings = new SimpleInjectorBindings();
             bindings.RegisterBindingsToContainer(DependencyProvider.container);
 
-            //IEnumerable<IViewControl> views = new IViewControl[]
-            //{
-            //    new Home(),
-            //    new AddTask(),
-            //    new IndividualTask()
-            //};
-
-            //DependencyProvider.container.RegisterCollection<IViewControl>(views);
+            DependencyProvider.container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
             DependencyProvider.container.Register<IViewNavigator, ViewNavigator>();
 
             DependencyProvider.locked = false;
