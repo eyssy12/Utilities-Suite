@@ -27,7 +27,10 @@
         protected readonly IOrganiserFactory Factory;
 
         protected readonly ITaskManager Manager;
-        protected readonly IApplicationRegistryManager RegistryManager;
+        
+        // TODO: remove this implementation and use file config (ini or json) instead
+        // Using registry will tie the application to Windows whereas file based config promotoes portability
+        protected readonly IApplicationRegistryManager RegistryManager; 
 
         private readonly Snackbar Snackbar;
 
