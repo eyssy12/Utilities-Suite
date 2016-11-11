@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <Button Click="Button_Click">
-            Home View
+            Add Task - Return to Home View
         </Button>
     </StackPanel>
 </controls:ViewControlBase>

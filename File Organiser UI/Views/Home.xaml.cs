@@ -143,5 +143,10 @@
 
             this.RegistryManager.SetRunOnStartup(toggle.IsChecked.Value);
         }
+
+        private void ViewTask_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnViewChange(IndividualTask.ViewName);
+        }
     }
 }
