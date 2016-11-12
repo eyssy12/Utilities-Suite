@@ -46,16 +46,15 @@
             </Grid.ColumnDefinitions>
 
             <materialDesign:Snackbar HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0" MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
-            <StackPanel Grid.Row="0" Grid.Column="0">
-                <!-- TODO: improve the animation -->
+            <DockPanel Grid.Row="0" Grid.Column="0">
                 <ContentControl Content="{Binding Path=ActiveView, Mode=OneWay}">
                     <controls:ContentControlBehaviour.ContentChangedAnimation>
                         <Storyboard>
-                            <ThicknessAnimation To="0" From="30,0,-30,0" Duration="0:0:0.3" Storyboard.TargetProperty="Margin"/>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.1"/>
                         </Storyboard>
                     </controls:ContentControlBehaviour.ContentChangedAnimation>
                 </ContentControl>
-            </StackPanel>
+            </DockPanel>
         </Grid>
     </materialDesign:DialogHost>
 </controls:MainWindowBase>

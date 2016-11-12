@@ -6,7 +6,7 @@
     {
         void SetValue(string name, object value);
 
-        object GetValue(string name);
+        object GetValue(string name, object defaultValue);
 
         void RemoveValue(string name, object value);
 

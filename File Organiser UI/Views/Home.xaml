@@ -21,7 +21,7 @@
     <StackPanel>
         <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
             <DockPanel>
-                <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" ToolTip="Options">
+                <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" ToolTip="Options" StaysOpen="True">
                     <StackPanel>
                         <DockPanel Margin="8">
                             <TextBlock>Run on Startup</TextBlock>

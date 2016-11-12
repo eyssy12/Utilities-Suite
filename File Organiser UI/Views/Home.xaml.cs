@@ -64,7 +64,7 @@
 
         public bool RunOnStartup
         {
-            get { return bool.Parse(this.RegistryManager.GetValue("runOnStartup").ToString()); }
+            get { return bool.Parse(this.RegistryManager.GetValue("runOnStartup", false).ToString()); }
             set { this.RegistryManager.SetValue("runOnStartup", value); }
         }
 

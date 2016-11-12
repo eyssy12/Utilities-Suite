@@ -36,9 +36,9 @@
             this.ApplicationKey.DeleteValue(name);
         }
 
-        public object GetValue(string name)
+        public object GetValue(string name, object defaultValue)
         {
-            return this.ApplicationKey.GetValue(name);
+            return this.ApplicationKey.GetValue(name) ?? defaultValue;
         }
 
         public RegistryKey OpenKey(string name, bool writable)
