@@ -5,7 +5,6 @@
     using System.Windows.Controls;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Organiser.Library.Factories;
-    using EyssyApps.UI.Library.Controls;
 
     public abstract class ViewControlBase : UserControl, IViewControl
     {

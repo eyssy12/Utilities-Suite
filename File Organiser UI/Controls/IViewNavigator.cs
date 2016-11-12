@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.UI.Library.Controls
+﻿namespace File.Organiser.UI.Controls
 {
     using System;
     using EyssyApps.Core.Library.Events;

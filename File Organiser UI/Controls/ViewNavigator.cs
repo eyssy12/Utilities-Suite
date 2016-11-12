@@ -1,10 +1,10 @@
-﻿namespace EyssyApps.UI.Library.Controls
+﻿namespace File.Organiser.UI.Controls
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core.Library.Events;
-    using Core.Library.Extensions;
+    using EyssyApps.Core.Library.Events;
+    using EyssyApps.Core.Library.Extensions;
 
     public class ViewNavigator : IViewNavigator
     {

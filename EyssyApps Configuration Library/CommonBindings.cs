@@ -17,15 +17,15 @@
     using Organiser.Library.Providers;
     using SimpleInjector;
 
-    public class SimpleInjectorBindings
+    public class CommonBindings
     {
         protected readonly IList<BindingMetadata> Bindings;
 
-        public SimpleInjectorBindings()
+        public CommonBindings()
         {
             this.Bindings = new List<BindingMetadata>();
 
-            this.RegisterBindings();
+            this.LoadBindings();
         }
 
         public void RegisterBindingsToContainer(Container container)
@@ -50,18 +50,12 @@
             });
         }
 
-        protected void RegisterBindings()
+        protected virtual void LoadBindings()
         {
             this.BindFactories();
             this.BindTimers();
             this.BindProviders();
             this.BindManagers();
-            this.RegisterViews();
-        }
-
-        protected virtual void RegisterViews()
-        {
-            // TODO: add IViewControl bindings here
         }
 
         protected virtual void BindManagers()
@@ -99,12 +93,12 @@
             this.Bind<ITimer, ThreadedTimer>();
         }
 
-        private void BindFactory<TFactory>()
+        protected void BindFactory<TFactory>()
         {
             this.Bind(typeof(TFactory), null, true, Lifestyle.Singleton);
         }
 
-        private void Bind<TService, TImplementation>(bool isFactory = false, Lifestyle lifestyle = null)
+        protected void Bind<TService, TImplementation>(bool isFactory = false, Lifestyle lifestyle = null)
             where TService : class
             where TImplementation : class, TService
         {
@@ -114,12 +108,12 @@
             this.Bind(service, implementation, isFactory, lifestyle);
         }
 
-        private void Bind<TService>(Func<Container, object> instanceCreator, Lifestyle lifestyle = null)
+        protected void Bind<TService>(Func<Container, object> instanceCreator, Lifestyle lifestyle = null)
         {
             this.Bind(typeof(TService), instanceCreator, lifestyle);
         }
 
-        private void Bind(Type service, Func<Container, object> instanceCreator, Lifestyle lifestyle = null)
+        protected void Bind(Type service, Func<Container, object> instanceCreator, Lifestyle lifestyle = null)
         {
             if (service == null)
             {
@@ -136,7 +130,7 @@
             this.Bindings.Add(metadata);
         }
 
-        private void Bind(Type service, Type implementation, bool isFactory = false, Lifestyle lifesyle = null)
+        protected void Bind(Type service, Type implementation, bool isFactory = false, Lifestyle lifesyle = null)
         {
             if (service == null)
             {

@@ -1,38 +1,34 @@
-﻿namespace File_Organiser_UI
+﻿namespace File.Organiser.UI
 {
-    using System;
     using System.ComponentModel;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Media;
-    using File.Organiser.UI;
+    using EyssyApps.Core.Library.Events;
+    using EyssyApps.Organiser.Library.Factories;
     using File.Organiser.UI.Controls;
-    using Hardcodet.Wpf.TaskbarNotification;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
+    using static Enumerations;
 
     public partial class MainWindow : MainWindowBase
     {
-        protected readonly TaskbarIcon TrayIcon;
+        public const string ElementMainSnackbar = "MainSnackbar",
+            ElementTrayContextMenu = "TrayContextMenu";
 
-        public MainWindow()
+        protected readonly ISystemTrayControl Tray;
+
+        public MainWindow(IOrganiserFactory factory)
+            : base(factory)
         {
             this.InitializeMaterialDesign();
             this.InitializeComponent();
 
-            // TODO: investigate ReactiveUI
-
-            this.TrayIcon = new TaskbarIcon();
-            this.TrayIcon.MenuActivation = PopupActivationMode.LeftOrRightClick;
-            this.TrayIcon.Visibility = Visibility.Hidden;
-            this.TrayIcon.ContextMenu = this.FindResource("TrayContextMenu") as ContextMenu;
-            this.TrayIcon.Icon = UiResources.App;
-            this.TrayIcon.ToolTipText = "File Organiser";
-            this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
+            this.Tray = this.Factory.Create<ISystemTrayControl>();
+            this.Tray.StateChanged += Tray_StateChanged;
 
             this.DataContext = this;
-
-            this.MainSnackbar.MessageQueue.Enqueue("Hello, user.");
+            
+            this.Notifier.Notify("Hello, user");
         }
 
         private void InitializeMaterialDesign()
@@ -45,38 +41,31 @@
             var hue = new Hue("Dummy", Colors.Black, Colors.White);
         }
 
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+
+            this.Tray.SetVisibility(Visibility.Hidden);
+        }
+
         // minimize to system tray when main window is closed
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
 
             this.Hide();
-
-            this.TrayIcon.Visibility = Visibility.Visible;
+            
+            this.Tray.SetVisibility(Visibility.Visible);
 
             base.OnClosing(e);
         }
 
-        protected override void ShowWindow()
+        private void Tray_StateChanged(object sender, EventArgs<TrayState> e)
         {
-            base.ShowWindow();
-
-            this.TrayIcon.Visibility = Visibility.Hidden;
-        }
-
-        private void TrayMenu_CloseFileOrganiser(object sender, EventArgs e)
-        {
-            this.TerminateApplication(sender, null);
-        }
-
-        private void TrayIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
-        {
-            this.ShowWindow();
-        }
-
-        private void TrayMenu_OpenFileOrganiser(object sender, RoutedEventArgs e)
-        {
-            this.ShowWindow();
+            if (e.First == TrayState.ShowApplication)
+            {
+                this.ShowWindow();
+            }
         }
     }
 }

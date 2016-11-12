@@ -4,7 +4,7 @@
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Organiser.Library;
     using EyssyApps.Organiser.Library.Tasks;
-    using EyssyApps.UI.Library.Controls;
+    using File.Organiser.UI.Controls;
 
     public class TaskViewModel : ViewModelBase
     {

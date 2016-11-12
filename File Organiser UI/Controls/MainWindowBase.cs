@@ -6,23 +6,20 @@
     using System.Windows;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Organiser.Library.Factories;
-    using EyssyApps.UI.Library.Controls;
-    using IoC;
-    using MaterialDesignThemes.Wpf;
+    using EyssyApps.UI.Library.Services;
     using Views;
 
     public abstract class MainWindowBase : Window, IMainWindow
     {
         protected readonly IOrganiserFactory Factory;
         protected readonly IViewNavigator Navigator;
+        protected readonly ISnackbarNotificationService Notifier;
 
-        private readonly Lazy<Snackbar> Snackbar;
-
-        protected MainWindowBase()
+        protected MainWindowBase(IOrganiserFactory factory)
         {
-            this.Factory = DependencyProvider.Get<IOrganiserFactory>();
+            this.Factory = factory;
 
-            this.Snackbar = new Lazy<Snackbar>(() => (Snackbar)Application.Current.MainWindow.FindName("MainSnackbar"));
+            this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
 
             // TODO: these should be bindings - figure out how to register a collection in simple injector the way i need it to
             IEnumerable<IViewControl> controls = new List<IViewControl>
@@ -44,7 +41,12 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void ShowWindow()
+        public object TryRetrieveResource(string name)
+        {
+            return this.TryFindResource(name);
+        }
+
+        public virtual void ShowWindow()
         {
             this.Show();
             this.BringIntoView();

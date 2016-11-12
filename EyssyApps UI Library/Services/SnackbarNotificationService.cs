@@ -1,14 +1,13 @@
 ﻿namespace EyssyApps.UI.Library.Services
 {
     using System;
-    using Core.Library.Messaging;
     using MaterialDesignThemes.Wpf;
 
     public class SnackbarNotificationService : ISnackbarNotificationService
     {
-        protected readonly Snackbar Snackbar;
+        protected readonly Lazy<Snackbar> Snackbar;
 
-        public SnackbarNotificationService(Snackbar snackbar)
+        public SnackbarNotificationService(Lazy<Snackbar> snackbar)
         {
             if (snackbar == null)
             {
@@ -18,9 +17,19 @@
             this.Snackbar = snackbar;
         }
 
+        public SnackbarNotificationService(Snackbar snackbar)
+        {
+            if (snackbar == null)
+            {
+                throw new ArgumentNullException(nameof(snackbar), ""); //TODO: message
+            }
+
+            this.Snackbar = new Lazy<Snackbar>(() => snackbar);
+        }
+
         public void Notify(string contents)
         {
-            this.Snackbar.MessageQueue.Enqueue(contents);
+            this.Snackbar.Value.MessageQueue.Enqueue(contents);
         }
     }
 }

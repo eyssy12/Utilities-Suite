@@ -114,9 +114,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\ContentControlBehaviour.cs" />
+    <Compile Include="Controls\IMainWindow.cs" />
+    <Compile Include="Controls\ISystemTrayControl.cs" />
+    <Compile Include="Controls\IViewControl.cs" />
+    <Compile Include="Controls\IViewModel.cs" />
+    <Compile Include="Controls\IViewNavigator.cs" />
+    <Compile Include="Controls\IWindow.cs" />
+    <Compile Include="Controls\SystemTrayControl.cs" />
     <Compile Include="Controls\ViewControlBase.cs" />
     <Compile Include="Controls\MainWindowBase.cs" />
+    <Compile Include="Controls\ViewModelBase.cs" />
+    <Compile Include="Controls\ViewNavigator.cs" />
+    <Compile Include="Enumerations.cs" />
     <Compile Include="IoC\DependencyProvider.cs" />
+    <Compile Include="IoC\UiBindings.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -213,9 +224,6 @@
   <ItemGroup>
     <Resource Include="Images\CloseApp.ico" />
     <Resource Include="Images\OpenApp.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\app.ico" />

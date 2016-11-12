@@ -1,23 +1,20 @@
 ﻿namespace File.Organiser.UI.IoC
 {
     using System;
-    using System.Collections.Generic;
-    using EyssyApps.Configuration.Library;
-    using EyssyApps.UI.Library.Controls;
+    using File.Organiser.UI.Controls;
     using SimpleInjector;
     using Views;
-    using SimpleInjector.Advanced;
 
     public static class DependencyProvider
     {
-        public static readonly Container container;
+        private static readonly Container container;
         private static bool locked;
 
         static DependencyProvider()
         {
             DependencyProvider.container = new Container();
 
-            SimpleInjectorBindings bindings = new SimpleInjectorBindings();
+            UiBindings bindings = new UiBindings();
             bindings.RegisterBindingsToContainer(DependencyProvider.container);
 
             DependencyProvider.container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });

@@ -1,14 +1,10 @@
-﻿namespace EyssyApps.UI.Library.Controls
+﻿namespace File.Organiser.UI.Controls
 {
     using System.ComponentModel;
-    using Organiser.Library.Extensions;
+    using EyssyApps.UI.Library.Extensions;
 
     public abstract class ViewModelBase : IViewModel
     {
-        protected ViewModelBase()
-        {
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Error
