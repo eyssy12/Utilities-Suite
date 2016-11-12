@@ -78,15 +78,5 @@ namespace File.Organiser.UI {
                 return ResourceManager.GetString("String", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon Tray {
-            get {
-                object obj = ResourceManager.GetObject("Tray", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
     }
 }
