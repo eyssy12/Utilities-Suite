@@ -1,5 +1,6 @@
 ﻿namespace File.Organiser.UI
 {
+    using System;
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media;
@@ -28,7 +29,7 @@
 
             this.DataContext = this;
             
-            this.Notifier.Notify("Hello, user");
+            this.Notifier.Notify("Hello, " + Environment.UserName + "!");
         }
 
         private void InitializeMaterialDesign()
