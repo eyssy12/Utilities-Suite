@@ -30,7 +30,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Style="{StaticResource OrganiserMaterialDesignFlatButton}" 
                         HorizontalAlignment="Stretch"
-                        Click="Button_Click">
+                        Click="ReturnButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Width="24" Height="24" Kind="KeyboardBackspace" Opacity="1" Foreground="White" />
                         <TextBlock TextAlignment="Center" VerticalAlignment="Center" Margin="8 0 0 0" Foreground="White" FontSize="16">
@@ -69,7 +69,8 @@
                 <materialDesign:Card Margin="8" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center" FontSize="22">Description</TextBlock>
-                        <TextBox TextWrapping="Wrap"
+                        <TextBox Name="TextBox_Description"
+                                 TextWrapping="Wrap"
                                  VerticalAlignment="Stretch"
                                  Margin="8"
                                  MinWidth="280"
@@ -78,7 +79,7 @@
                                  materialDesign:HintAssist.Hint="Task Description">
 
                             <TextBox.Text>
-                                <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="Description" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                         <validation:MinimumCharacterValidationRule MinimumCharactersRequired="3" ValidatesOnTargetUpdated="True" />
@@ -94,24 +95,22 @@
 
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
             <materialDesign:Card Margin="8" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                <DockPanel>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                <Grid Name="AddTask_Toolbar">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                        <Button Name="Name_ButtonSave" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Click="Button_Click">
-                            Save
-                        </Button>
-                        <Button Name="Name_ButtonDiscard" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Background="Red" Click="Button_Click">
-                            Discard
-                        </Button>
-                    </Grid>
-                </DockPanel>
+                    <Button Name="Name_ButtonSave" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Click="ToolbarButton_Click">
+                        Save
+                    </Button>
+                    <Button Name="Name_ButtonDiscard" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Background="Red" Click="ToolbarButton_Click">
+                        Discard
+                    </Button>
+                </Grid>
             </materialDesign:Card>
         </StackPanel>
     </Grid>

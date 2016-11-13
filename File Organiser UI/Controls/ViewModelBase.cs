@@ -22,7 +22,7 @@
             return string.Empty;
         }
 
-        protected void SetField<T>(ref T field, T value, string propertyName)
+        protected void SetFieldIfChanged<T>(ref T field, T value, string propertyName)
         {
             if (value.CompareExchange(ref field))
             {
