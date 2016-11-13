@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:File.Organiser.UI.Views"
              xmlns:controls="clr-namespace:File.Organiser.UI.Controls"
+             xmlns:validation="clr-namespace:File.Organiser.UI.Validation"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -21,31 +23,96 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <materialDesign:ColorZone Grid.Row="0" Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
+        <materialDesign:ColorZone Grid.Row="0" Padding="16" Mode="PrimaryMid" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal">
-                <!--<materialDesign:PackIcon Kind="Magnify" Opacity="1" Width="30" Height="30"/>
-                <TextBlock Margin="8 0 0 0" FontSize="22">Return</TextBlock>-->
-
                 <Button Style="{StaticResource OrganiserMaterialDesignFlatButton}" 
                         HorizontalAlignment="Stretch"
                         Click="Button_Click">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="KeyboardBackspace" Opacity="1" Foreground="White" />
-                        <TextBlock Margin="8 0 0 0" Foreground="White" >Return</TextBlock>
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="KeyboardBackspace" Opacity="1" Foreground="White" />
+                        <TextBlock TextAlignment="Center" VerticalAlignment="Center" Margin="8 0 0 0" Foreground="White" FontSize="16">
+                            Return
+                        </TextBlock>
                     </StackPanel>
                 </Button>
             </StackPanel>
         </materialDesign:ColorZone>
 
-        <StackPanel Grid.Row="1">
-            <StackPanel VerticalAlignment="Bottom">
-                <Button>
-                    Add task
-                </Button>
-            </StackPanel>
+        <DockPanel Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:Card Margin="8 8 4 0" Grid.Row="0" Grid.Column="0" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" FontSize="22">Type</TextBlock>
+
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <materialDesign:Card Margin="4 8 8 0" Grid.Row="0" Grid.Column="1" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" FontSize="22">Settings</TextBlock>
+
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <materialDesign:Card Margin="8" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" FontSize="22">Description</TextBlock>
+                        <TextBox TextWrapping="Wrap"
+                                 VerticalAlignment="Stretch"
+                                 Margin="8"
+                                 MinWidth="280"
+                                 AcceptsReturn="True"                 
+                                 VerticalScrollBarVisibility="Auto"
+                                 materialDesign:HintAssist.Hint="Task Description">
+
+                            <TextBox.Text>
+                                <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                        <validation:MinimumCharacterValidationRule MinimumCharactersRequired="3" ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                </materialDesign:Card>
+            </Grid>
+
+        </DockPanel>
+
+        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+            <materialDesign:Card Margin="8" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <DockPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Name="Name_ButtonSave" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Click="Button_Click">
+                            Save
+                        </Button>
+                        <Button Name="Name_ButtonDiscard" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Background="Red" Click="Button_Click">
+                            Discard
+                        </Button>
+                    </Grid>
+                </DockPanel>
+            </materialDesign:Card>
         </StackPanel>
-        
     </Grid>
 </controls:ViewControlBase>

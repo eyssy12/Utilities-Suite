@@ -1,5 +1,6 @@
 ﻿namespace File.Organiser.UI.IoC
 {
+    using System;
     using System.Windows.Controls;
     using Controls;
     using EyssyApps.Configuration.Library;
@@ -14,6 +15,12 @@
             this.BindWindows();
             this.BindViews();
             this.BindControls();
+            this.BindServices();
+        }
+
+        protected virtual void BindServices()
+        {
+            this.Bind<IViewNavigator, ViewNavigator>();
         }
 
         protected virtual void BindWindows()

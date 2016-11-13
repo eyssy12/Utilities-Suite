@@ -21,7 +21,9 @@
 
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
 
-            // TODO: these should be bindings - figure out how to register a collection in simple injector the way i need it to
+            //this.Navigator = this.Factory.Create<IViewNavigator>();
+
+            //// TODO: these should be bindings - figure out how to register a collection in simple injector the way i need it to
             IEnumerable<IViewControl> controls = new List<IViewControl>
             {
                 new Home(this.Factory),

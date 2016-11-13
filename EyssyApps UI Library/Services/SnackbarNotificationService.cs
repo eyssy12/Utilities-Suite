@@ -17,14 +17,8 @@
             this.Snackbar = snackbar;
         }
 
-        public SnackbarNotificationService(Snackbar snackbar)
+        public SnackbarNotificationService(Snackbar snackbar) : this(new Lazy<Snackbar>(() => snackbar))
         {
-            if (snackbar == null)
-            {
-                throw new ArgumentNullException(nameof(snackbar), ""); //TODO: message
-            }
-
-            this.Snackbar = new Lazy<Snackbar>(() => snackbar);
         }
 
         public void Notify(string contents)

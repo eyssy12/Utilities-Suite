@@ -23,6 +23,8 @@
         {
             DependencyProvider.Bind(typeof(ISnackbarNotificationService), () =>
             {
+                // Inideal but unfortunately haven't been able to find a different way around this yet.
+                // By using Lazy here we're trusting the main window that there is a snackbar component that will be available once initialization of components is done.
                 Lazy<Snackbar> snackbar = new Lazy<Snackbar>(() => (Snackbar)Application.Current.MainWindow.FindName(ApplicationMainWindow.ElementMainSnackbar));
 
                 return new SnackbarNotificationService(snackbar);

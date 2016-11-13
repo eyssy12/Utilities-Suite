@@ -17,8 +17,8 @@
             UiBindings bindings = new UiBindings();
             bindings.RegisterBindingsToContainer(DependencyProvider.container);
 
+            // TODO: add to bindings
             DependencyProvider.container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
-            DependencyProvider.container.Register<IViewNavigator, ViewNavigator>();
 
             DependencyProvider.locked = false;
         }
@@ -26,6 +26,11 @@
         public static TService Get<TService>()
             where TService : class
         {
+            if (!DependencyProvider.IsLocked)
+            {
+                DependencyProvider.locked = true;
+            }
+
             return DependencyProvider.container.GetInstance<TService>();
         }
 
@@ -37,7 +42,7 @@
             }
         }
 
-        public static void LockContainer()
+        public static void Lock()
         {
             if (!DependencyProvider.IsLocked)
             {
