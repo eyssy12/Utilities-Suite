@@ -98,7 +98,7 @@
     <Compile Include="Controls\ViewModelBase.cs" />
     <Compile Include="Controls\ViewNavigator.cs" />
     <Compile Include="Enumerations.cs" />
-    <Compile Include="IoC\DependencyProvider.cs" />
+    <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="IoC\UiBindings.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>

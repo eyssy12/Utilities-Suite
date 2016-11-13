@@ -9,9 +9,6 @@
     using SimpleInjector;
     using ApplicationMainWindow = File.Organiser.UI.MainWindow;
 
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public const string Name = "File Organiser",
@@ -21,20 +18,22 @@
 
         public App()
         {
-            DependencyProvider.Bind(typeof(ISnackbarNotificationService), () =>
-            {
-                // Inideal but unfortunately haven't been able to find a different way around this yet.
-                // By using Lazy here we're trusting the main window that there is a snackbar component that will be available once initialization of components is done.
-                Lazy<Snackbar> snackbar = new Lazy<Snackbar>(() => (Snackbar)Application.Current.MainWindow.FindName(ApplicationMainWindow.ElementMainSnackbar));
+            ServiceLocator.Bind(
+                typeof(ISnackbarNotificationService),
+                () =>
+                {
+                    // Inideal but unfortunately haven't been able to find a different way around this yet.
+                    // By using Lazy here we're trusting the main window that there is a snackbar component that will be available once initialization of components is done.
+                    Lazy<Snackbar> snackbar = new Lazy<Snackbar>(() => (Snackbar)Application.Current.MainWindow.FindName(ApplicationMainWindow.ElementMainSnackbar));
 
-                return new SnackbarNotificationService(snackbar);
-            }, Lifestyle.Singleton);
+                    return new SnackbarNotificationService(snackbar);
+                },
+                Lifestyle.Singleton);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            IMainWindow mainWindow = DependencyProvider.Get<IMainWindow>();
-            mainWindow.ShowWindow();
+            ServiceLocator.GetFactory().Create<IMainWindow>().ShowWindow();
         }
     }
 }
