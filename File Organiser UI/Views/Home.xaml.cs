@@ -9,7 +9,6 @@
     using System.Windows.Input;
     using Controls;
     using EyssyApps.Core.Library.Events;
-    using EyssyApps.Core.Library.Extensions;
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
     using EyssyApps.Core.Library.Windows;
@@ -19,6 +18,7 @@
     using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
     using EyssyApps.UI.Library.Services;
+    using IoC;
     using ViewModels;
 
     public partial class Home : ViewControlBase
@@ -30,13 +30,15 @@
         
         // TODO: remove this implementation and use file config (ini or json) instead
         // Using registry will tie the application to Windows whereas file based config promotoes portability
-        protected readonly IApplicationRegistryManager RegistryManager; 
+        protected readonly IApplicationRegistryManager RegistryManager;
+        protected readonly IApplicationConfigurationManager ConfigManager;
 
         public Home(IOrganiserFactory factory) 
             : base(Home.ViewName, isDefault: true, factory: factory)
         {
             this.InitializeComponent();
 
+            this.ConfigManager = this.Factory.Create<IApplicationConfigurationManager>();
             this.Manager = this.Factory.Create<ITaskManager>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.RegistryManager = this.Factory.Create<IApplicationRegistryManager>();
@@ -68,8 +70,8 @@
 
         public bool RunOnStartup
         {
-            get { return bool.Parse(this.RegistryManager.GetValue("runOnStartup", false).ToString()); }
-            set { this.RegistryManager.SetValue("runOnStartup", value); }
+            get { return this.ConfigManager.ReadBoolean(ApplicationConfigurationManager.SectionSettings, ApplicationConfigurationManager.KeyRunOnStartup, false); }
+            set { this.ConfigManager.SetValue(ApplicationConfigurationManager.SectionSettings, ApplicationConfigurationManager.KeyRunOnStartup, value); }
         }
 
         public IEnumerable<TaskViewModel> Tasks
@@ -152,6 +154,8 @@
         private void StartupToggleButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleButton toggle = (ToggleButton)sender;
+
+            this.ConfigManager.Save();
 
             this.RegistryManager.SetRunOnStartup(toggle.IsChecked.Value);
         }

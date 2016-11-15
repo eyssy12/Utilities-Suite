@@ -25,11 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Organiser Library
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Core Library", "EyssyApps Core Library\EyssyApps Core Library.csproj", "{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D2036B0-C00F-4192-AB6C-99B915D32880}"
-	ProjectSection(SolutionItems) = preProject
-		file_extension_db.json = file_extension_db.json
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps UI Library", "EyssyApps UI Library\EyssyApps UI Library.csproj", "{44C7EA2A-1A34-4716-AB4E-8C217A035FD8}"
 EndProject
 Global

@@ -12,9 +12,12 @@
     public partial class App : Application
     {
         public const string Name = "File Organiser",
+            ConfigurationFileName = "configuration.ini",
             ControlTrayContextMenu = "TrayContextMenu",
             MenuItemOpenApplication = "OpenApplicationMenuItem",
             MenuItemCloseApplication = "CloseApplicationMenuItem";
+
+        public static readonly string ConfigurationFilePath = AppDomain.CurrentDomain.BaseDirectory + App.ConfigurationFileName;
 
         public App()
         {

@@ -98,6 +98,8 @@
     <Compile Include="Controls\ViewModelBase.cs" />
     <Compile Include="Controls\ViewNavigator.cs" />
     <Compile Include="Enumerations.cs" />
+    <Compile Include="IoC\ApplicationConfigurationManager.cs" />
+    <Compile Include="IoC\IApplicationConfigurationManager.cs" />
     <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="IoC\UiBindings.cs" />
     <Compile Include="UiResources.Designer.cs">
@@ -169,6 +171,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UiResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="configuration.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

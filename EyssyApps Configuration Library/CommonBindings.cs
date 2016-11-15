@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using Core.Library.Extensions;
     using Core.Library.Factories;
     using Core.Library.Managers;
@@ -12,7 +11,6 @@
     using Extensions;
     using Newtonsoft.Json;
     using Organiser.Library.Factories;
-    using Organiser.Library.Managers;
     using Organiser.Library.Models.Organiser;
     using Organiser.Library.Providers;
     using SimpleInjector;
@@ -56,6 +54,12 @@
             this.BindTimers();
             this.BindProviders();
             this.BindManagers();
+            this.BindServices();
+        }
+
+        protected virtual void BindServices()
+        {
+            this.Bind<IIniFileManager, IniFileManager>();
         }
 
         protected virtual void BindManagers()
@@ -72,7 +76,7 @@
         {
             this.Bind<IFileExtensionProvider>((container) =>
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.FindParentDirectory("File Organiser"), "file_extension_db.json");
+                string path = AppDomain.CurrentDomain.BaseDirectory + "file_extension_db.json";
                 string data = File.ReadAllText(path);
 
                 FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);

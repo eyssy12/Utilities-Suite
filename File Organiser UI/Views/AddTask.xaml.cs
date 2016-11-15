@@ -27,7 +27,6 @@
 
         protected readonly ITaskManager Manager;
         protected readonly ISnackbarNotificationService Notifier;
-
         protected readonly IList<ValidationError> Errors;
 
         public AddTask(IOrganiserFactory factory)

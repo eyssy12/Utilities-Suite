@@ -16,11 +16,12 @@
             this.BindWindows();
             this.BindViews();
             this.BindControls();
-            this.BindServices();
         }
 
-        protected virtual void BindServices()
+        protected override void BindServices()
         {
+            base.BindServices();
+
             this.Bind<IViewNavigator, ViewNavigator>();
         }
 
@@ -39,6 +40,10 @@
             base.BindManagers();
 
             this.Bind<ITaskManager, SimpleTaskManager>(lifestyle: Lifestyle.Singleton);
+            this.Bind<IApplicationConfigurationManager>(container =>
+            {
+                return new ApplicationConfigurationManager(App.ConfigurationFilePath);
+            }, lifestyle: Lifestyle.Singleton);
         }
 
         protected virtual void BindControls()
