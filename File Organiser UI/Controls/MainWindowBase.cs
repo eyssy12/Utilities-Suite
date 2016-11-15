@@ -33,7 +33,6 @@
 
             this.Navigator = new ViewNavigator(controls);
             this.Navigator.OnViewChanged += Navigator_OnViewChanged;
-            this.Navigator.Navigate(Home.ViewName, null);
         }
 
         public IViewControl ActiveView
@@ -50,10 +49,10 @@
 
         public virtual void ShowWindow()
         {
+            this.WindowState = WindowState.Normal;
+
             this.Show();
             this.BringIntoView();
-
-            this.WindowState = WindowState.Normal;
         }
 
         protected void OnPropertyChanged(string name)

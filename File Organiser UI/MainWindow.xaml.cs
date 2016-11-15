@@ -9,6 +9,7 @@
     using File.Organiser.UI.Controls;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
+    using Views;
     using static Enumerations;
 
     public partial class MainWindow : MainWindowBase
@@ -28,20 +29,12 @@
             this.Tray.StateChanged += Tray_StateChanged;
 
             this.DataContext = this;
-            
+
+            this.Navigator.Navigate(Home.ViewName, null);
+
             this.Notifier.Notify("Hello, " + Environment.UserName + "!");
         }
-
-        private void InitializeMaterialDesign()
-        {
-            // Create dummy objects to force the MaterialDesign assemblies to be loaded
-            // from this assembly, which causes the MaterialDesign assemblies to be searched
-            // relative to this assembly's path. Otherwise, the MaterialDesign assemblies
-            // are searched relative to Eclipse's path, so they're not found.
-            var card = new Card();
-            var hue = new Hue("Dummy", Colors.Black, Colors.White);
-        }
-
+        
         public override void ShowWindow()
         {
             base.ShowWindow();
@@ -67,6 +60,16 @@
             {
                 this.ShowWindow();
             }
+        }
+
+        private void InitializeMaterialDesign()
+        {
+            // Create dummy objects to force the MaterialDesign assemblies to be loaded
+            // from this assembly, which causes the MaterialDesign assemblies to be searched
+            // relative to this assembly's path. Otherwise, the MaterialDesign assemblies
+            // are searched relative to Eclipse's path, so they're not found.
+            var card = new Card();
+            var hue = new Hue("Dummy", Colors.Black, Colors.White);
         }
     }
 }
