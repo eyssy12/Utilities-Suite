@@ -68,7 +68,7 @@
 
         private void Navigator_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
         {
-            e.First.ActivateView(e.s);
+            e.First.ActivateView(e.Second);
 
             this.OnPropertyChanged(nameof(this.ActiveView));
         }
