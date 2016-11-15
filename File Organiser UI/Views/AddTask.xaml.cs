@@ -1,6 +1,8 @@
 ﻿namespace File.Organiser.UI.Views
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using Controls;
@@ -26,6 +28,8 @@
         protected readonly ITaskManager Manager;
         protected readonly ISnackbarNotificationService Notifier;
 
+        protected readonly IList<ValidationError> Errors;
+
         public AddTask(IOrganiserFactory factory)
             : base(AddTask.ViewName, isDefault: false, factory: factory)
         {
@@ -37,6 +41,8 @@
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
 
             this.DataContext = this.Model;
+
+            this.Errors = new List<ValidationError>();
         }
 
         public override void ActivateView(object arg)
@@ -44,6 +50,18 @@
             this.Model.Identity = Guid.NewGuid().ToString();
             this.Model.Description = string.Empty;
             this.Model.OrganiseType = string.Empty;
+        }
+
+        private void ViewControlBase_Error(object sender, ValidationErrorEventArgs e)
+        {
+            if (e.Action == ValidationErrorEventAction.Added)
+            {
+                this.Errors.Add(e.Error);
+            }
+            else
+            {
+                this.Errors.Remove(e.Error);
+            }
         }
 
         private void ToolbarButton_Click(object sender, RoutedEventArgs e)
@@ -54,12 +72,19 @@
 
                 if (button.Name == "Name_ButtonSave")
                 {
-                    bool immediateStart = false;
+                    if (this.Errors.Any())
+                    {
+                        this.Notifier.Notify("Cannot create new task - There are " + this.Errors.Count + " validation errors.");
+                    }
+                    else
+                    {
+                        bool immediateStart = false;
 
-                    ITask task = this.CreateTask();
-                    EventArgs<ITask, bool> args = new EventArgs<ITask, bool>(task, immediateStart);
+                        ITask task = this.CreateTask();
+                        EventArgs<ITask, bool> args = new EventArgs<ITask, bool>(task, immediateStart);
 
-                    this.OnViewChange(Home.ViewName, args);
+                        this.OnViewChange(Home.ViewName, args);
+                    }
                 }
                 else if (button.Name == "Name_ButtonDiscard")
                 {

@@ -10,7 +10,7 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-                          >
+             Validation.Error="ViewControlBase_Error">
 
     <controls:ViewControlBase.Resources>
         <ResourceDictionary>
@@ -119,7 +119,7 @@
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}">
                                 
                                 <TextBox.Text>
-                                    <Binding Path="Description" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                             <validation:MinimumCharacterValidationRule MinimumCharactersRequired="3" ValidatesOnTargetUpdated="True" />
