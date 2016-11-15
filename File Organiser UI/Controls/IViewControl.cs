@@ -13,5 +13,7 @@
         bool IsActive { get; set; }
 
         event EventHandler<EventArgs<string>> OnChangeView;
+
+        void ActivateView();
     }
 }

@@ -4,6 +4,7 @@
     using System.Windows.Controls;
     using Controls;
     using EyssyApps.Configuration.Library;
+    using EyssyApps.Organiser.Library.Managers;
     using SimpleInjector;
 
     public class UiBindings : CommonBindings
@@ -31,6 +32,13 @@
         protected virtual void BindViews()
         {
             // TODO: bind views
+        }
+
+        protected override void BindManagers()
+        {
+            base.BindManagers();
+
+            this.Bind<ITaskManager, SimpleTaskManager>(lifestyle: Lifestyle.Singleton);
         }
 
         protected virtual void BindControls()

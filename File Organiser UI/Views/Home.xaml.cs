@@ -79,6 +79,12 @@
             }
         }
 
+        public override void ActivateView()
+        {
+            this.TasksGrid.ItemsSource = null;
+            this.TasksGrid.ItemsSource = this.Tasks;
+        }
+
         private void RunTask(object sender, RoutedEventArgs e)
         {
             if (sender is Button)
@@ -102,11 +108,6 @@
 
         private void Button_AddTask_Click(object sender, RoutedEventArgs e)
         {
-            //this.Manager.Add(new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", null, null, null, null));
-            //this.TasksGrid.ItemsSource = null;
-            //this.TasksGrid.ItemsSource = this.Tasks;
-            //this.Snackbar.MessageQueue.Enqueue("New task created");
-
             this.OnViewChange(AddTask.ViewName);
         }
 

@@ -5,6 +5,8 @@
 
     public class MinimumCharacterValidationRule : ValidationRule
     {
+        public int MinimumCharactersRequired { get; set; }
+
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             string data = (value ?? "").ToString();
@@ -16,7 +18,5 @@
 
             return ValidationResult.ValidResult;
         }
-
-        public int MinimumCharactersRequired { get; set; }
     }
 }

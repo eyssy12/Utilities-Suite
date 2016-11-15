@@ -22,6 +22,8 @@
 
         public event EventHandler<EventArgs<TaskState>> StateChanged;
 
+        public event EventHandler<EventArgs<Exception>> FailureRaised;
+
         public Guid Id
         {
             get { return this.id; }
@@ -46,9 +48,17 @@
         {
             this.OnStateChanged(TaskState.Running);
 
-            this.HandleExecute();
+            try
+            {
+                this.HandleExecute();
 
-            this.OnStateChanged(TaskState.Finished);
+                this.OnStateChanged(TaskState.Finished);
+            }
+            catch (Exception ex)
+            {
+                this.OnStateChanged(TaskState.Failed);
+                this.OnFailureRaised(ex);
+            }
         }
 
         public void Terminate()
@@ -71,6 +81,11 @@
         private void OnStateChanged()
         {
             Invoker.Raise(ref this.StateChanged, this, this.State);
+        }
+
+        private void OnFailureRaised(Exception ex)
+        {
+            Invoker.Raise(ref this.FailureRaised, this, ex);
         }
     }
 }

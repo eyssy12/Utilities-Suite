@@ -4,7 +4,7 @@
     using Core.Library.Events;
     using Core.Library.Execution;
 
-    public interface ITask : IExecute, ITerminate
+    public interface ITask : IExecute, ITerminate, IRaiseFailures
     {
         event EventHandler<EventArgs<TaskState>> StateChanged;
 

@@ -22,6 +22,7 @@
         NotStarted = 0,
         Running,
         Finished,
-        Cancelled
+        Cancelled,
+        Failed
     }
 }

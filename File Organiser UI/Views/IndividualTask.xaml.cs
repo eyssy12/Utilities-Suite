@@ -1,5 +1,6 @@
 ﻿namespace File.Organiser.UI.Views
 {
+    using System;
     using System.Windows;
     using Controls;
     using EyssyApps.Organiser.Library.Factories;
@@ -12,6 +13,10 @@
             : base(IndividualTask.ViewName, isDefault: false, factory: factory)
         {
             this.InitializeComponent();
+        }
+
+        public override void ActivateView()
+        {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

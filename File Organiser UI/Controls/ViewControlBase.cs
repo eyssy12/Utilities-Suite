@@ -43,6 +43,8 @@
 
         public bool IsActive { get; set; }
 
+        public abstract void ActivateView();
+
         public event EventHandler<EventArgs<string>> OnChangeView;
 
         public event PropertyChangedEventHandler PropertyChanged;

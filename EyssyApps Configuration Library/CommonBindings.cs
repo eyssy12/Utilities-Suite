@@ -62,7 +62,6 @@
         {
             this.Bind<IFileManager, LocalFileManager>();
             this.Bind<IDirectoryManager, LocalDirectoryManager>();
-            this.Bind<ITaskManager, SimpleTaskManager>();
             this.Bind<IApplicationRegistryManager>(container =>
             {
                 return new ApplicationRegistryManager("File-Organiser");
