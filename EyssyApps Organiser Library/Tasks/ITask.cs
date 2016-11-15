@@ -8,7 +8,7 @@
     {
         event EventHandler<EventArgs<TaskState>> StateChanged;
 
-        Guid Id { get; }
+        Guid Identity { get; }
 
         string Description { get; }
 

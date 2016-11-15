@@ -19,25 +19,31 @@
 
             this.Task = task;
             this.Task.StateChanged += Task_StateChanged;
-
-            this.ID = task.Id.ToString();
-            this.TaskType = task.TaskType;
-            this.State = task.State;
-            this.Description = task.Description;
         }
 
         private void Task_StateChanged(object sender, EventArgs<TaskState> e)
         {
-            this.State = e.First;
             this.OnPropertyChanged(nameof(this.State));
         }
 
-        public string ID { get; protected set; }
+        public string Identity
+        {
+            get { return this.Task.Identity.ToString(); }
+        }
 
-        public TaskType TaskType { get; protected set; }
+        public TaskType TaskType
+        {
+            get { return this.Task.TaskType; }
+        }
 
-        public TaskState State { get; protected set; }
+        public TaskState State
+        {
+            get { return this.Task.State; }
+        }
 
-        public string Description { get; protected set; }
+        public string Description
+        {
+            get { return this.Task.Description; }
+        }
     }
 }

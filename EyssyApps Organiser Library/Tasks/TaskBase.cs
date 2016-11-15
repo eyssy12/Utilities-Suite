@@ -5,15 +5,15 @@
 
     public abstract class TaskBase : ITask
     {
-        private readonly Guid id;
+        private readonly Guid identity;
         private readonly string description;
         private readonly TaskType taskType;
 
         private TaskState state;
 
-        protected TaskBase(Guid id, string description, TaskType taskType)
+        protected TaskBase(Guid identity, string description, TaskType taskType)
         {
-            this.id = id;
+            this.identity = identity;
             this.description = description;
             this.taskType = taskType;
 
@@ -24,9 +24,9 @@
 
         public event EventHandler<EventArgs<Exception>> FailureRaised;
 
-        public Guid Id
+        public Guid Identity
         {
-            get { return this.id; }
+            get { return this.identity; }
         }
 
         public string Description
@@ -46,13 +46,11 @@
 
         public void Execute()
         {
-            this.OnStateChanged(TaskState.Running);
+            this.OnStateChanged(TaskState.Started);
 
             try
             {
                 this.HandleExecute();
-
-                this.OnStateChanged(TaskState.Finished);
             }
             catch (Exception ex)
             {
@@ -72,7 +70,7 @@
 
         protected abstract void HandleTerminate();
 
-        private void OnStateChanged(TaskState state)
+        protected void OnStateChanged(TaskState state)
         {
             this.state = state;
             this.OnStateChanged();

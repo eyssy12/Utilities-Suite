@@ -43,15 +43,15 @@
 
         public bool IsActive { get; set; }
 
-        public abstract void ActivateView();
+        public abstract void ActivateView(object arg);
 
-        public event EventHandler<EventArgs<string>> OnChangeView;
+        public event EventHandler<EventArgs<string, object>> OnChangeView;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnViewChange(string viewName)
+        protected void OnViewChange(string viewName, object args = null)
         {
-            Invoker.Raise(ref this.OnChangeView, this, viewName);
+            Invoker.Raise(ref this.OnChangeView, this, viewName, args);
         }
 
         protected void OnPropertyChanged(string propertyName)

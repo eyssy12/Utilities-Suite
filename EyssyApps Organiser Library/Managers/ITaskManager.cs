@@ -5,7 +5,7 @@
     using Core.Library.Execution;
     using Tasks;
 
-    public interface ITaskManager : IExecute, ITerminate
+    public interface ITaskManager : IExecute, ITerminate, IRaiseFailures
     {
         bool Add(ITask task);
 

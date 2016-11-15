@@ -12,8 +12,8 @@
 
         bool IsActive { get; set; }
 
-        event EventHandler<EventArgs<string>> OnChangeView;
+        event EventHandler<EventArgs<string, object>> OnChangeView;
 
-        void ActivateView();
+        void ActivateView(object arg);
     }
 }

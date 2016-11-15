@@ -18,6 +18,8 @@
         protected readonly IFileManager FileManager;
         protected readonly IDirectoryManager DirectoryManager;
 
+        private FileOrganiserSettings settings;
+
         public FileOrganiserTask(
             Guid id,
             string description,
@@ -25,8 +27,10 @@
             IFileExtensionProvider provider,
             IFileManager fileManager,
             IDirectoryManager directoryManager)
-            : base(id, description, settings, OrganiseType.File, TaskType.Organiser)
+            : base(id, description,  OrganiseType.File, TaskType.Organiser)
         {
+            this.settings = settings;
+
             this.Provider = provider;
             this.FileManager = fileManager;
             this.DirectoryManager = directoryManager;
@@ -34,10 +38,12 @@
 
         protected override void HandleExecute()
         {
+            this.OnStateChanged(TaskState.Started);
+
             this.FilterFiles(
                     SearchOption.TopDirectoryOnly,
-                    filePath => !this.Settings.FileExemptions.Any(fe => fe == filePath),
-                    filePath => !this.Settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase)))
+                    filePath => !this.settings.FileExemptions.Any(fe => fe == filePath),
+                    filePath => !this.settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase)))
                 .GroupBy(f => Path.GetExtension(f))
                 .ForEach(filePaths =>
                 {
@@ -46,15 +52,17 @@
                     string categoryPath;
                     if (category == null)
                     {
-                        categoryPath = this.CreateCategoryPath(this.Settings.RootPath, OrganiseTaskBase.DefaultUnkownName);
+                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, OrganiseTaskBase.DefaultUnkownName);
                     }
                     else
                     {
-                        categoryPath = this.CreateCategoryPath(this.Settings.RootPath, category.Value);
+                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Value);
                     }
 
                     this.MoveFiles(filePaths, categoryPath);
                 });
+
+            this.OnStateChanged(TaskState.Finished);
         }
 
         protected override void HandleTerminate()
@@ -64,7 +72,7 @@
 
         protected IEnumerable<string> FilterFiles(SearchOption searchOption, params Func<string, bool>[] filters)
         {
-            IEnumerable<string> files = this.DirectoryManager.GetFiles(this.Settings.RootPath, searchOption: searchOption).ToArray();
+            IEnumerable<string> files = this.DirectoryManager.GetFiles(this.settings.RootPath, searchOption: searchOption).ToArray();
 
             if (filters.SafeAny())
             {

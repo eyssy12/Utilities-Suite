@@ -38,9 +38,9 @@
             get { return this.Views.First(v => v.IsActive); }
         }
 
-        public event EventHandler<EventArgs<IViewControl>> OnViewChanged;
+        public event EventHandler<EventArgs<IViewControl, object>> OnViewChanged;
 
-        public void Navigate(string viewName)
+        public void Navigate(string viewName, object args)
         {
             IViewControl view = this.FindView(viewName);
 
@@ -48,7 +48,7 @@
             {
                 this.SetActiveView(view);
 
-                Invoker.Raise(ref this.OnViewChanged, this, view);
+                Invoker.Raise(ref this.OnViewChanged, this, view, args);
             }
             else
             {
@@ -56,9 +56,9 @@
             }
         }
 
-        private void ChangeView(object sender, EventArgs<string> e)
+        private void ChangeView(object sender, EventArgs<string, object> e)
         {
-            this.Navigate(e.First);
+            this.Navigate(e.First, e.Second);
         }
 
         private IViewControl FindView(string viewName)

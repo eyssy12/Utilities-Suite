@@ -73,7 +73,7 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTextColumn
-                                Binding="{Binding ID}"
+                                Binding="{Binding Identity}"
                                 MinWidth="280"
                                 Header="Identity"
                                 IsReadOnly="True" />

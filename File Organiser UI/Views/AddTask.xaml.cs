@@ -4,9 +4,15 @@
     using System.Windows;
     using System.Windows.Controls;
     using Controls;
+    using EyssyApps.Core.Library.Events;
+    using EyssyApps.Core.Library.Managers;
+    using EyssyApps.Core.Library.Native;
+    using EyssyApps.Core.Library.Timing;
     using EyssyApps.Organiser.Library;
     using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.Organiser.Library.Managers;
+    using EyssyApps.Organiser.Library.Models.Settings;
+    using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
     using EyssyApps.UI.Library.Services;
     using ViewModels;
@@ -33,7 +39,7 @@
             this.DataContext = this.Model;
         }
 
-        public override void ActivateView()
+        public override void ActivateView(object arg)
         {
             this.Model.Identity = Guid.NewGuid().ToString();
             this.Model.Description = string.Empty;
@@ -48,29 +54,20 @@
 
                 if (button.Name == "Name_ButtonSave")
                 {
-                    this.PerformSave();
+                    bool immediateStart = false;
+
+                    ITask task = this.CreateTask();
+                    EventArgs<ITask, bool> args = new EventArgs<ITask, bool>(task, immediateStart);
+
+                    this.OnViewChange(Home.ViewName, args);
                 }
                 else if (button.Name == "Name_ButtonDiscard")
                 {
-                    this.PerformDiscard();
+                    this.Notifier.Notify("Item discarded.");
+
+                    this.OnViewChange(Home.ViewName);
                 }
-
-                this.OnViewChange(Home.ViewName);
             }
-        }
-
-        private void PerformSave()
-        {
-            ITask task = this.CreateTask();
-
-            this.Manager.Add(task);
-
-            this.Notifier.Notify("New task created.");
-        }
-
-        private void PerformDiscard()
-        {
-            this.Notifier.Notify("Item discarded.");
         }
 
         private void ReturnButton_Click(object sender, RoutedEventArgs e)
@@ -80,25 +77,69 @@
 
         private ITask CreateTask()
         {
-            // TODO: refactor this 
-            //TaskType enumTaskType = (TaskType)Enum.Parse(typeof(TaskType), this.Model.TaskType);
-            //OrganiseType organiseType = (OrganiseType)Enum.Parse(typeof(OrganiseType), this.Model.OrganiseType);
-            TaskType taskType = TaskType.Organiser;
+            TaskType taskType = TaskType.Scheduled;
             OrganiseType organiseType = OrganiseType.File;
 
-            Guid guid = Guid.Parse(this.Model.Identity);
+            IOrganiseTask task = this.CreateTask(Guid.Parse(this.Model.Identity), organiseType);
 
             if (taskType == TaskType.Organiser)
             {
-                if (organiseType == OrganiseType.File)
-                {
-                    return new FileOrganiserTask(guid, this.Model.Description, null, null, null, null);
-                }
-
-                return new DirectoryOrganiserTask(guid, this.Model.Description, null, null);
+                return task;
             }
 
-            return new ScheduledTask(guid, this.Model.Description, null, null, 1000, 1000);
+            return this.CreateScheduledTask(task, 5000, 7000);
+        }
+
+        private IOrganiseTask CreateTask(Guid identity, OrganiseType type)
+        {
+            // TODO: Implement Settings logic in UI
+            if (type == OrganiseType.File)
+            {
+                FileOrganiserSettings fileSettings = new FileOrganiserSettings
+                {
+                    RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
+                };
+
+                return this.CreateFileOrganiserTask(identity, this.Model.Description, fileSettings);
+            }
+
+            DirectoryOrganiserSettings directorySettings = new DirectoryOrganiserSettings
+            {
+                RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
+            };
+
+            return this.CreateDirectoryOrganiserTask(identity, this.Model.Description, directorySettings);
+        }
+
+        private IOrganiseTask CreateFileOrganiserTask(Guid identity, string description, FileOrganiserSettings settings)
+        {
+            return new FileOrganiserTask(
+                identity,
+                description,
+                settings, 
+                this.Factory.Create<IFileExtensionProvider>(), 
+                this.Factory.Create<IFileManager>(),
+                this.Factory.Create<IDirectoryManager>());
+        }
+
+        private IOrganiseTask CreateDirectoryOrganiserTask(Guid identity, string description, DirectoryOrganiserSettings settings)
+        {
+            return new DirectoryOrganiserTask(
+                identity,
+                description, 
+                settings, 
+                this.Factory.Create<IDirectoryManager>());
+        }
+
+        private ITask CreateScheduledTask(ITask executable, int initialWaitTime, int timerPeriod)
+        {
+            return new ScheduledTask(
+                Guid.NewGuid(),
+                string.Format(ScheduledTask.DescriptionFormat, this.Model.Identity, this.Model.Description),
+                this.Factory.Create<ITimer>(),
+                executable,
+                initialWaitTime,
+                timerPeriod);
         }
     }
 }

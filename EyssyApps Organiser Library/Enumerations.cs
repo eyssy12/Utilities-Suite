@@ -20,6 +20,8 @@
     public enum TaskState : byte
     {
         NotStarted = 0,
+        Pending,
+        Started,
         Running,
         Finished,
         Cancelled,

@@ -8,6 +8,8 @@
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using Controls;
+    using EyssyApps.Core.Library.Events;
+    using EyssyApps.Core.Library.Extensions;
     using EyssyApps.Core.Library.Managers;
     using EyssyApps.Core.Library.Native;
     using EyssyApps.Core.Library.Windows;
@@ -44,17 +46,19 @@
             IFileExtensionProvider provider = this.Factory.Create<IFileExtensionProvider>();
 
             // TODO: dont allow to create tasks of the same type for the same root path, i.e. Two seperate tasks for directory organiser with the same root path
-            FileOrganiserSettings settings = new FileOrganiserSettings
+            FileOrganiserSettings fileSettings = new FileOrganiserSettings
             {
-                RootPath = KnownFolders.GetPath(KnownFolder.Downloads),
-                DirectoryExemptions = new List<string> { },
-                ExtensionExemptions = new List<string> { },
-                FileExemptions = new List<string>() { }
+                RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
             };
 
-            // TODO: save/laod feature
-            FileOrganiserTask fileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", settings, provider, fileManager, directoryManager);
-            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", settings, directoryManager);
+            DirectoryOrganiserSettings directorySettings = new DirectoryOrganiserSettings
+            {
+                RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
+            };
+
+            // TODO: Save/load feature
+            FileOrganiserTask fileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", fileSettings, provider, fileManager, directoryManager);
+            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", directorySettings, directoryManager);
 
             this.Manager.Add(fileTask);
             this.Manager.Add(directoryTask);
@@ -79,10 +83,30 @@
             }
         }
 
-        public override void ActivateView()
+        public override void ActivateView(object arg)
         {
-            this.TasksGrid.ItemsSource = null;
-            this.TasksGrid.ItemsSource = this.Tasks;
+            if (arg != null)
+            {
+                EventArgs<ITask, bool> eventArgs = arg as EventArgs<ITask, bool>;
+
+                ITask task = eventArgs.First;
+                bool immediateStart = eventArgs.Second;
+
+                this.Manager.Add(task);
+
+                if (immediateStart)
+                {
+                    task.Execute();
+
+                    this.Notifier.Notify("New task with identity '" + task.Identity.ToString() + "' added and started.");
+                }
+                else
+                {
+                    this.Notifier.Notify("New task with identity '" + task.Identity.ToString() + "' added.");
+                }
+            }
+
+            this.OnPropertyChanged(nameof(this.Tasks));
         }
 
         private void RunTask(object sender, RoutedEventArgs e)
@@ -91,7 +115,7 @@
             {
                 Button runTask = sender as Button;
 
-                string id = (runTask.DataContext as TaskViewModel).ID;
+                string id = (runTask.DataContext as TaskViewModel).Identity;
 
                 ITask task = this.Manager.FindById(Guid.Parse(id));
 
@@ -134,7 +158,9 @@
 
         private void ViewTask_Click(object sender, RoutedEventArgs e)
         {
-            this.OnViewChange(IndividualTask.ViewName);
+            TaskViewModel task = ((sender as Button).DataContext as TaskViewModel);
+
+            this.OnViewChange(IndividualTask.ViewName, task);
         }
     }
 }

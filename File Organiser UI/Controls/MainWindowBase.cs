@@ -33,7 +33,7 @@
 
             this.Navigator = new ViewNavigator(controls);
             this.Navigator.OnViewChanged += Navigator_OnViewChanged;
-            this.Navigator.Navigate(Home.ViewName);
+            this.Navigator.Navigate(Home.ViewName, null);
         }
 
         public IViewControl ActiveView
@@ -66,9 +66,9 @@
             Environment.Exit(0);
         }
 
-        private void Navigator_OnViewChanged(object sender, EventArgs<IViewControl> e)
+        private void Navigator_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
         {
-            e.First.ActivateView();
+            e.First.ActivateView(e.s);
 
             this.OnPropertyChanged(nameof(this.ActiveView));
         }

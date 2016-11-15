@@ -5,9 +5,9 @@
 
     public interface IViewNavigator
     {
-        event EventHandler<EventArgs<IViewControl>> OnViewChanged;
+        event EventHandler<EventArgs<IViewControl, object>> OnViewChanged;
 
-        void Navigate(string viewName);
+        void Navigate(string viewName, object args);
 
         IViewControl ActiveView { get; }
     }

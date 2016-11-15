@@ -6,13 +6,24 @@
 
     public class ScheduledTask : TaskBase
     {
+        public const string DescriptionFormat = "Executes task '{0}' with description '{1}'";
+
+        public const int MinimumInitialWaitTime = 10000,
+            MinimumTimerPeriod = 10000;
+
         protected readonly ITimer Timer;
         protected readonly ITask Executable;
 
         protected readonly int InitialWaitTime,
             TimerPeriod;
 
-        public ScheduledTask(Guid id, string description, ITimer timer, ITask executable, int initialWaitTime, int timerPeriod)
+        public ScheduledTask(
+            Guid id, 
+            string description,
+            ITimer timer, 
+            ITask executable,
+            int initialWaitTime = ScheduledTask.MinimumInitialWaitTime, 
+            int timerPeriod = ScheduledTask.MinimumTimerPeriod)
             : base(id, description, TaskType.Scheduled)
         {
             if (timer == null)
@@ -27,8 +38,8 @@
 
             this.Timer = timer;
             this.Executable = executable;
-            this.InitialWaitTime = initialWaitTime;
-            this.TimerPeriod = timerPeriod;
+            this.InitialWaitTime = Math.Max(ScheduledTask.MinimumInitialWaitTime, initialWaitTime);
+            this.TimerPeriod = Math.Max(ScheduledTask.MinimumTimerPeriod, timerPeriod);
         }
 
         protected override void HandleExecute()
@@ -36,6 +47,8 @@
             this.Timer.TimeElapsed += this.Timer_TimeElapsed;
 
             this.Timer.Start(this.InitialWaitTime, this.TimerPeriod);
+
+            this.OnStateChanged(TaskState.Pending);
         }
 
         protected override void HandleTerminate()
@@ -47,7 +60,11 @@
 
         private void Timer_TimeElapsed(object sender, EventArgs<int> e)
         {
+            this.OnStateChanged(TaskState.Started);
+
             this.Executable.Execute();
+
+            this.OnStateChanged(TaskState.Pending);
         }
     }
 }

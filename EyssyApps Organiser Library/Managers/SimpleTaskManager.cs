@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Library.Events;
     using Core.Library.Extensions;
     using Factories;
     using Tasks;
@@ -14,6 +15,8 @@
 
         protected readonly IOrganiserFactory Factory;
         protected readonly IList<ITask> Tasks;
+
+        public event EventHandler<EventArgs<Exception>> FailureRaised;
 
         public SimpleTaskManager(IOrganiserFactory factory)
         {
@@ -34,7 +37,7 @@
             }
             catch (Exception ex)
             {
-                // TODO: raise exception
+                Invoker.Raise(ref this.FailureRaised, this, ex);
             }
         }
 
@@ -67,9 +70,9 @@
             return false;
         }
 
-        public ITask FindById(Guid id)
+        public ITask FindById(Guid identity)
         {
-            return this.Tasks.FirstOrDefault(t => t.Id == id);
+            return this.Tasks.FirstOrDefault(t => t.Identity == identity);
         }
 
         public IEnumerable<ITask> GetAll()
@@ -79,7 +82,7 @@
 
         protected bool Contains(ITask task)
         {
-            return this.Tasks.Any(t => t.Id == task.Id);
+            return this.Tasks.Any(t => t.Identity == task.Identity);
         }
 
         protected bool DoesNotContain(ITask task)
