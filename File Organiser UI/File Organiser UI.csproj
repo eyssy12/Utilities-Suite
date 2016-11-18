@@ -107,7 +107,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UiResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Validation\MinimumCharacterValidationRule.cs" />
+    <Compile Include="Validation\MaximumCharactersValidationRule.cs" />
+    <Compile Include="Validation\MinimumCharactersValidationRule.cs" />
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />

@@ -14,6 +14,6 @@
 
         event EventHandler<EventArgs<string, object>> OnChangeView;
 
-        void ActivateView(object arg);
+        void InitialiseView(object arg);
     }
 }

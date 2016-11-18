@@ -44,11 +44,11 @@
             this.Errors = new List<ValidationError>();
         }
 
-        public override void ActivateView(object arg)
+        public override void InitialiseView(object arg)
         {
             this.Model.Identity = Guid.NewGuid().ToString();
-            this.Model.Description = string.Empty;
-            this.Model.OrganiseType = string.Empty;
+            this.Model.Description = null;
+            this.Model.OrganiseType = null;
         }
 
         private void ViewControlBase_Error(object sender, ValidationErrorEventArgs e)

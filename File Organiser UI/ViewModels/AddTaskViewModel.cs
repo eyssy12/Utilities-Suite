@@ -5,7 +5,7 @@
 
     public class AddTaskViewModel : ViewModelBase
     {
-        private string identity, description, organiseType, taskType, scheduledTaskIdentity;
+        private string identity, name, description, organiseType, taskType, scheduledTaskIdentity;
 
         public AddTaskViewModel()
         {
@@ -17,6 +17,12 @@
         {
             get { return this.identity; }
             set { this.SetFieldIfChanged(ref identity, value, nameof(this.Identity)); }
+        }
+
+        public string Name
+        {
+            get { return this.name; }
+            set { this.SetFieldIfChanged(ref name, value, nameof(this.Name)); }
         }
 
         public string Description

@@ -44,6 +44,7 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Margin" Value="4 0 4 0" />
             </Style>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisiblity"/>
         </ResourceDictionary>
     </controls:ViewControlBase.Resources>
 
@@ -51,7 +52,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <materialDesign:ColorZone Grid.Row="0" Padding="16" Mode="PrimaryMid" DockPanel.Dock="Top">
@@ -77,7 +78,6 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <materialDesign:Card Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
@@ -88,16 +88,17 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="16" HorizontalAlignment="Center" FontSize="22">
-                            New Task
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="16" HorizontalAlignment="Center" FontSize="22">
+                            New Task Configuration
                         </TextBlock>
 
                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="8" >
                             <TextBox x:Name="CommentTextBox"
-                                 Margin="0 8 0 0"
+                                 Margin="0 16 0 0"
                                  IsReadOnly="True"
                                  Text="{Binding Identity, Mode=OneWay}"
 				                 Style="{StaticResource MaterialDesignFloatingHintTextBox}">
@@ -109,33 +110,84 @@
                                     </StackPanel>
                                 </materialDesign:HintAssist.Hint>
                             </TextBox>
-                            <TextBox Name="TextBox_Description" 
-                                 Margin="0 8 0 0"
-                                 TextWrapping="Wrap"
+
+                            <TextBox Name="TextBox_Name" 
+                                 Margin="0 16 0 0"
+                                 MaxLength="60"
+                                 MaxLines="1"
                                  VerticalAlignment="Stretch"
-                                 MinWidth="280"
-                                 AcceptsReturn="True"                 
-                                 VerticalScrollBarVisibility="Auto"
+                                 AcceptsReturn="False"                 
+                                 VerticalScrollBarVisibility="Disabled"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}">
-                                
+
                                 <TextBox.Text>
-                                    <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                    <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
-                                            <validation:MinimumCharacterValidationRule MinimumCharactersRequired="3" ValidatesOnTargetUpdated="True" />
+                                            <validation:MinimumCharactersValidationRule MinimumCharactersRequired="6" ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                                 <materialDesign:HintAssist.Hint>
                                     <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
                                         <materialDesign:PackIcon Kind="TagTextOutline" />
-                                        <TextBlock>Description</TextBlock>
+                                        <TextBlock>Name (Min. 6 characters)</TextBlock>
                                     </StackPanel>
                                 </materialDesign:HintAssist.Hint>
                             </TextBox>
+
                             <ComboBox 
+                                    Margin="0 16 0 0"
                                     SelectedValue="{Binding OrganiseType}"
                                     materialDesign:HintAssist.Hint="Organiser Type" />
+
+                            <CheckBox x:Name="CheckBox_Scheduled" Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
+                                Scheduled
+                            </CheckBox>
+
+                            <StackPanel Visibility="{Binding ElementName=CheckBox_Scheduled, Path=IsChecked, Converter={StaticResource BooleanToVisiblity}}">
+                                <CheckBox Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
+                                    Initial Wait Time
+                                </CheckBox>
+                                <CheckBox x:Name="CheckBox_RepeatedTask" Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
+                                    Repeated Task
+                                </CheckBox>
+                                <StackPanel Visibility="{Binding ElementName=CheckBox_RepeatedTask, Path=IsChecked, Converter={StaticResource BooleanToVisiblity}}">
+                                    <CheckBox Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
+                                        Scheduled
+                                    </CheckBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="8" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+ 
+                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="8">
+                            <TextBox Name="TextBox_Description" 
+                                 Margin="0 16 0 0"
+                                 TextWrapping="Wrap"
+                                 VerticalAlignment="Stretch"
+                                 MaxLines="6"
+                                 MaxLength="200"
+                                 AcceptsReturn="True"                 
+                                 VerticalScrollBarVisibility="Auto"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+
+                                <TextBox.Text>
+                                    <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                            <validation:MinimumCharactersValidationRule MinimumCharactersRequired="10" ValidatesOnTargetUpdated="True" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <materialDesign:HintAssist.Hint>
+                                    <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
+                                        <materialDesign:PackIcon Kind="TagTextOutline" />
+                                        <TextBlock>Description (Min. 10 characters)</TextBlock>
+                                    </StackPanel>
+                                </materialDesign:HintAssist.Hint>
+                            </TextBox>
                         </StackPanel>
                     </Grid>
                 </materialDesign:Card>
@@ -144,8 +196,8 @@
         </DockPanel>
 
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
-            <materialDesign:Card Margin="8" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                <Grid Name="AddTask_Toolbar">
+            <materialDesign:Card Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <Grid x:Name="AddTask_Toolbar">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>

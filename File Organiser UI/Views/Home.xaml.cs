@@ -27,9 +27,6 @@
 
         protected readonly ITaskManager Manager;
         protected readonly ISnackbarNotificationService Notifier;
-        
-        // TODO: remove this implementation and use file config (ini or json) instead
-        // Using registry will tie the application to Windows whereas file based config promotoes portability
         protected readonly IApplicationRegistryManager RegistryManager;
         protected readonly IApplicationConfigurationManager ConfigManager;
 
@@ -85,7 +82,7 @@
             }
         }
 
-        public override void ActivateView(object arg)
+        public override void InitialiseView(object arg)
         {
             if (arg != null)
             {

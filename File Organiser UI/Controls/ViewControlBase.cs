@@ -43,7 +43,7 @@
 
         public bool IsActive { get; set; }
 
-        public abstract void ActivateView(object arg);
+        public abstract void InitialiseView(object arg);
 
         public event EventHandler<EventArgs<string, object>> OnChangeView;
 

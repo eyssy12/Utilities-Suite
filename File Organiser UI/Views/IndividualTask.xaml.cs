@@ -20,7 +20,7 @@
             this.Notifer = this.Factory.Create<ISnackbarNotificationService>();
         }
 
-        public override void ActivateView(object arg)
+        public override void InitialiseView(object arg)
         {
             TaskViewModel task = arg as TaskViewModel;
 

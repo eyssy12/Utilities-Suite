@@ -17,14 +17,15 @@
         Organiser
     }
 
+    [Flags]
     public enum TaskState : byte
     {
         NotStarted = 0,
-        Pending,
-        Started,
-        Running,
-        Finished,
-        Cancelled,
-        Failed
+        Pending = 1,
+        Started = 2,
+        Running = 4,
+        Finished = 8,
+        Cancelled = 16,
+        Failed = 32
     }
 }

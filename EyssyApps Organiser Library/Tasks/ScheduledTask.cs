@@ -64,7 +64,7 @@
 
             this.Executable.Execute();
 
-            this.OnStateChanged(TaskState.Pending);
+            this.OnStateChanged(TaskState.Finished | TaskState.Pending);
         }
     }
 }

@@ -20,7 +20,7 @@
             }
 
             if (icon == null)
-            {
+            { 
                 throw new ArgumentNullException(nameof(icon), "No tray icon has been provided");
             }
 

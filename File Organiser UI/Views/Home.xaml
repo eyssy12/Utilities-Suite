@@ -40,7 +40,9 @@
                         </Button>
                     </StackPanel>
                 </materialDesign:PopupBox>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">File Organiser</TextBlock>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">
+                    Home
+                </TextBlock>
             </DockPanel>
         </materialDesign:ColorZone>
         <Grid>
