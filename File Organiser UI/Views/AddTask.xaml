@@ -25,7 +25,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisiblity" />
             <converters:TaskTypeToVisibilityConverter x:Key="TaskTypeToVisibility" />
             <converters:SliderValueToLabelConverter x:Key="SliderValueToLabel" />
-            <converters:OrganiserTypeToVisiblityConverter x:Key="OrganiserTypeToVisiblity" />
+            <converters:HasValueToBooleanConverter x:Key="HasValueToBoolean" /> 
         </ResourceDictionary>
     </controls:ViewControlBase.Resources>
 
@@ -123,6 +123,7 @@
                                     Margin="0 18 0 0"
                                     ItemsSource="{Binding OrganiserTypes}"
                                     SelectedValue="{Binding OrganiseType}"
+                                    SelectionChanged="ComboBox_OrganiseType_SelectionChanged"
                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                     materialDesign:HintAssist.Hint="Organiser Type" />
 
@@ -170,57 +171,152 @@
                         
                         <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="8" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
 
-                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="2" Margin="8" Background="BlanchedAlmond">
+                        <DockPanel Grid.Row="1" Grid.Column="2" Margin="8">
 
-                            <Grid>
+                            <Grid Name="Grid_AdvancedSettings">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Row="0"
+                                             Grid.Column="0"
+                                             IsReadOnly="True"
+                                             Margin="0 16 0 0"
+                                             x:Name="TextBox_RootPath"
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                             VerticalScrollBarVisibility="Disabled"
+                                             VerticalAlignment="Stretch"
+                                             TextWrapping="Wrap">
+
+                                        <TextBox.Text>
+                                            <Binding Path="RootPath" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <materialDesign:HintAssist.Hint>
+                                            <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
+                                                <materialDesign:PackIcon Kind="TagTextOutline" />
+                                                <TextBlock>Organiser Task Root Path</TextBlock>
+                                            </StackPanel>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+
+                                    <Button Grid.Row="0"
+                                            Grid.Column="1"
+                                            Command="{Binding SelectRootPathCommand}">
+                                        Select
+                                    </Button>
+                                </Grid>
+
+                                <TextBox Grid.Row="1" Grid.Column="0" Name="TextBox_Description" 
+                                     Margin="0 16 0 0"
+                                     TextWrapping="Wrap"
+                                     VerticalAlignment="Stretch"
+                                     MaxLines="6"
+                                     MaxLength="200"
+                                     AcceptsReturn="True"                 
+                                     VerticalScrollBarVisibility="Auto"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+
+                                    <TextBox.Text>
+                                        <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                            <Binding.ValidationRules>
+                                                <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                                <validation:MinimumCharactersValidationRule MinimumCharactersRequired="10" ValidatesOnTargetUpdated="True" />
+                                                <validation:MaximumCharactersValidationRule MaximumCharactersAllowed="200" ValidatesOnTargetUpdated="True" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                    <materialDesign:HintAssist.Hint>
+                                        <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
+                                            <materialDesign:PackIcon Kind="TagTextOutline" />
+                                            <TextBlock>Description (10 - 200 characters)</TextBlock>
+                                        </StackPanel>
+                                    </materialDesign:HintAssist.Hint>
+                                </TextBox>
+
+                                <Grid Grid.Row="2"
+                                      Grid.Column="0"
+                                      Name="Grid_Exemptions">
+
+                                    <Grid.Style>
+                                        <Style>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=TextBox_RootPath, Path=Text.Length, Mode=OneWay}" Value="0">
+                                                    <Setter Property="Grid.IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <DockPanel Name="Panel_FileExemptions" 
+                                        Grid.Row="0" 
+                                        Grid.Column="0" 
+                                        Margin="0 16 0 0"
+                                        Drop="Panel_FileExemptions_Drop" 
+                                        AllowDrop="true">
+                                        
+                                        <TextBlock Margin="0 8 0 0" DockPanel.Dock="Top">File Exemptions</TextBlock>
+
+                                        <Border MinHeight="100" DockPanel.Dock="Bottom" BorderBrush="Yellow">
+                                            <TextBlock Text="{Binding FileExemptions}" />
+                                        </Border>
+                                    </DockPanel>
+
+                                    <DockPanel Name="Panel_ExtensionExemptions" 
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="0 16 0 0">
+                                        
+                                        <TextBlock Margin="0 8 0 0" DockPanel.Dock="Top">Extension Exemptions</TextBlock>
+                                        
+                                        <Border MinHeight="100" DockPanel.Dock="Bottom" BorderBrush="Green">
+                                        </Border>
+                                    </DockPanel>
+
+                                    <DockPanel Name="Panel_DirectoryExemptions" 
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="0 16 0 0"
+                                        Visibility="Collapsed"
+                                        Drop="Panel_DirectoryExemptions_Drop" 
+                                        AllowDrop="True" >
+                                        
+                                        <TextBlock Margin="0 8 0 0" DockPanel.Dock="Top">Directory Exemptions</TextBlock>
+                                        
+                                        <Border MinHeight="100" DockPanel.Dock="Bottom" BorderBrush="Red">
+                                        </Border>
+                                    </DockPanel>
+                                </Grid>
                             </Grid>
-                            
-                            
-                            <TextBox Grid.Row="0" Grid.Column="0" Name="TextBox_Description" 
-                                 Margin="0 16 0 0"
-                                 TextWrapping="Wrap"
-                                 VerticalAlignment="Stretch"
-                                 MaxLines="6"
-                                 MaxLength="200"
-                                 AcceptsReturn="True"                 
-                                 VerticalScrollBarVisibility="Auto"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}">
-
-                                <TextBox.Text>
-                                    <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
-                                        <Binding.ValidationRules>
-                                            <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
-                                            <validation:MinimumCharactersValidationRule MinimumCharactersRequired="10" ValidatesOnTargetUpdated="True" />
-                                            <validation:MaximumCharactersValidationRule MaximumCharactersAllowed="200" ValidatesOnTargetUpdated="True" />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                                <materialDesign:HintAssist.Hint>
-                                    <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
-                                        <materialDesign:PackIcon Kind="TagTextOutline" />
-                                        <TextBlock>Description (10 - 200 characters)</TextBlock>
-                                    </StackPanel>
-                                </materialDesign:HintAssist.Hint>
-                            </TextBox>
-
-
-                            <StackPanel Name="Panel_FileExemptions" Grid.Row="1" Grid.Column="0" Drop="Panel_FileExemptions_Drop" AllowDrop="true" Background="Green">
-                                <TextBlock>File Exemptions</TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Name="Panel_ExtensionExemptions" Grid.Row="2" Grid.Column="0" Drop="Panel_ExtensionExemptions_Drop" AllowDrop="True" Background="Red">
-                                <TextBlock>Extension Exemptions</TextBlock>
-                            </StackPanel>
-                            
-                        </StackPanel>
+                        </DockPanel>
                     </Grid>
                 </materialDesign:Card>
             </Grid>

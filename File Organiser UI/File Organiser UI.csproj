@@ -86,6 +86,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
     <Compile Include="Controls\IMainWindow.cs" />
     <Compile Include="Controls\ISystemTrayControl.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="Controls\MainWindowBase.cs" />
     <Compile Include="Controls\ViewModelBase.cs" />
     <Compile Include="Controls\ViewNavigator.cs" />
-    <Compile Include="Converters\OrganiserTypeToVisiblityConverter.cs" />
+    <Compile Include="Converters\HasValueToBooleanConverter.cs" />
     <Compile Include="Converters\SliderValueToLabelConverter.cs" />
     <Compile Include="Converters\TaskTypeToVisibilityConverter.cs" />
     <Compile Include="Enumerations.cs" />

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Windows.Input;
     using Controls;
     using EyssyApps.Core.Library.Extensions;
     using EyssyApps.Organiser.Library.Models.Settings;
@@ -11,12 +12,14 @@
 
     public class AddTaskViewModel : ViewModelBase
     {
-        private string identity, name, description, scheduledTaskIdentity;
+        private string identity, name, description, scheduledTaskIdentity, rootPath;
 
         private double initialWaitTime, interval;
 
         private OrganiseTypeEnum organiseType;
         private TaskTypeEnum taskType;
+
+        private ICommand selectRootPathCommand;
 
         private FileOrganiserSettings FileOrganiserSettings;
         private DirectoryOrganiserSettings DirectoryOrganiserSettings;
@@ -24,6 +27,12 @@
         public AddTaskViewModel()
         {
             this.Reset();
+        }
+
+        public ICommand SelectRootPathCommand
+        {
+            get { return this.selectRootPathCommand; }
+            set { this.selectRootPathCommand = value; }
         }
 
         public IEnumerable<OrganiseTypeEnum> OrganiserTypes
@@ -52,6 +61,25 @@
         {
             get { return this.description; }
             set { this.SetFieldIfChanged(ref description, value, nameof(this.Description)); }
+        }
+
+        public string RootPath
+        {
+            get { return this.rootPath; }
+            set
+            {
+                this.SetFieldIfChanged(ref rootPath, value, nameof(this.RootPath));
+
+                if (this.FileSettings != null)
+                {
+                    this.FileSettings.RootPath = this.rootPath;
+                }
+
+                if (this.DirectorySettings != null)
+                {
+                    this.DirectorySettings.RootPath = this.rootPath;
+                }
+            }
         }
 
         public OrganiseTypeEnum OrganiseType
@@ -84,6 +112,16 @@
             set { this.SetFieldIfChanged(ref interval, value, nameof(this.Interval)); }
         }
 
+        public FileOrganiserSettings FileSettings
+        {
+            get { return this.FileOrganiserSettings; }
+        }
+
+        public DirectoryOrganiserSettings DirectorySettings
+        {
+            get { return this.DirectoryOrganiserSettings; }
+        }
+
         public IEnumerable<string> FileExemptions
         {
             get { return this.FileOrganiserSettings.FileExemptions; }
@@ -99,10 +137,11 @@
             this.Identity = Guid.NewGuid().ToString();
             this.Name = string.Empty;
             this.Description = string.Empty;
+            this.RootPath = string.Empty;
             this.OrganiseType = OrganiseTypeEnum.File;
             this.TaskType = TaskTypeEnum.Organiser;
-            this.InitialWaitTime = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumInitialWaitTime)).TotalSeconds + 1;
-            this.Interval = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumTimerPeriod)).TotalSeconds + 1;
+            this.InitialWaitTime = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumInitialWaitTime)).TotalSeconds;
+            this.Interval = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumTimerPeriod)).TotalSeconds;
 
             this.FileOrganiserSettings = new FileOrganiserSettings();
             this.DirectoryOrganiserSettings = new DirectoryOrganiserSettings();

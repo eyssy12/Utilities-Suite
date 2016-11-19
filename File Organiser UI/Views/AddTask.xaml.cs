@@ -5,10 +5,10 @@
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using Commands;
     using Controls;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Core.Library.Managers;
-    using EyssyApps.Core.Library.Native;
     using EyssyApps.Core.Library.Timing;
     using EyssyApps.Organiser.Library;
     using EyssyApps.Organiser.Library.Factories;
@@ -35,6 +35,7 @@
             this.InitializeComponent();
 
             this.Model = new AddTaskViewModel();
+            this.Model.SelectRootPathCommand = new RelayCommand<object>(value => this.Model.RootPath = this.Factory.Create<IFormsService>().SelectFolderPathDialog());
 
             this.Manager = this.Factory.Create<ITaskManager>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
@@ -114,23 +115,12 @@
 
         private IOrganiseTask CreateTask(Guid identity, OrganiseType type)
         {
-            // TODO: Implement Settings logic in UI
             if (type == OrganiseType.File)
             {
-                FileOrganiserSettings fileSettings = new FileOrganiserSettings
-                {
-                    RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
-                };
-
-                return this.CreateFileOrganiserTask(identity, this.Model.Name, this.Model.Description, fileSettings);
+                return this.CreateFileOrganiserTask(identity, this.Model.Name, this.Model.Description, this.Model.FileSettings);
             }
 
-            DirectoryOrganiserSettings directorySettings = new DirectoryOrganiserSettings
-            {
-                RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
-            };
-
-            return this.CreateDirectoryOrganiserTask(identity, this.Model.Name, this.Model.Description, directorySettings);
+            return this.CreateDirectoryOrganiserTask(identity, this.Model.Name, this.Model.Description, this.Model.DirectorySettings);
         }
 
         private IOrganiseTask CreateFileOrganiserTask(Guid identity, string name, string description, FileOrganiserSettings settings)
@@ -168,12 +158,41 @@
 
         private void Panel_FileExemptions_Drop(object sender, DragEventArgs e)
         {
+            Console.WriteLine(this.Grid_Exemptions.IsEnabled);
+        }
+
+        private void Panel_DirectoryExemptions_Drop(object sender, DragEventArgs e)
+        {
 
         }
 
-        private void Panel_ExtensionExemptions_Drop(object sender, DragEventArgs e)
+        private void ComboBox_OrganiseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ComboBox element = sender as ComboBox;
 
+            if (element.SelectedValue != null)
+            {
+                OrganiseType type = (OrganiseType)element.SelectedValue;
+
+                switch (type)
+                {
+                    case OrganiseType.File:
+                        this.Panel_DirectoryExemptions.Visibility = Visibility.Collapsed;
+                        this.Panel_ExtensionExemptions.Visibility = Visibility.Visible;
+                        this.Panel_FileExemptions.Visibility = Visibility.Visible;
+                        break;
+                    case OrganiseType.Directory:
+                        this.Panel_DirectoryExemptions.Visibility = Visibility.Visible;
+                        this.Panel_ExtensionExemptions.Visibility = Visibility.Collapsed;
+                        this.Panel_FileExemptions.Visibility = Visibility.Collapsed;
+                        break;
+                    case OrganiseType.All:
+                        this.Panel_DirectoryExemptions.Visibility = Visibility.Visible;
+                        this.Panel_ExtensionExemptions.Visibility = Visibility.Visible;
+                        this.Panel_FileExemptions.Visibility = Visibility.Visible;
+                        break;
+                }
+            }
         }
     }
 }

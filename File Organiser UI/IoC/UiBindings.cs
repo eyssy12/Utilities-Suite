@@ -7,6 +7,7 @@
     using EyssyApps.Organiser.Library.Managers;
     using EyssyApps.Organiser.Library.Models.Organiser;
     using EyssyApps.Organiser.Library.Providers;
+    using EyssyApps.UI.Library.Services;
     using Newtonsoft.Json;
     using SimpleInjector;
     using FileIO = System.IO.File;
@@ -48,6 +49,7 @@
             base.BindServices();
 
             this.Bind<IViewNavigator, ViewNavigator>();
+            this.Bind<IFormsService, FormsService>(lifestyle: Lifestyle.Singleton);
         }
 
         protected virtual void BindWindows()
