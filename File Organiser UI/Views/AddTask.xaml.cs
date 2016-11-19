@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -34,15 +36,36 @@
         {
             this.InitializeComponent();
 
-            this.Model = new AddTaskViewModel();
+            this.Model = new AddTaskViewModel(); // TODO: this doesn't seem the right way to go about it, should think about a more cleaner way...
             this.Model.SelectRootPathCommand = new RelayCommand<object>(value => this.Model.RootPath = this.Factory.Create<IFormsService>().SelectFolderPathDialog());
+            this.Model.LoadRootPathFilesCommand = new RelayCommand<object>(value =>
+            {
+                if (!string.IsNullOrWhiteSpace(this.Model.RootPath))
+                {
+                    IEnumerable<string> files = this.Factory
+                        .Create<IDirectoryManager>()
+                        .GetFiles(this.Model.RootPath, searchOption: SearchOption.TopDirectoryOnly);
+
+                    this.Model.RootPathFiles = new List<RootPathFileViewModel>(files
+                        .Select(file => new RootPathFileViewModel
+                        {
+                            File = file,
+                            Exempt = false
+                        }));
+                }
+            });
 
             this.Manager = this.Factory.Create<ITaskManager>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
-
-            this.DataContext = this.Model;
-
+            
             this.Errors = new List<ValidationError>();
+
+            this.DataContext = this;
+        }
+
+        public AddTaskViewModel TaskViewModel
+        {
+            get { return this.Model; }
         }
 
         public override void InitialiseView(object arg)
@@ -117,10 +140,18 @@
         {
             if (type == OrganiseType.File)
             {
-                return this.CreateFileOrganiserTask(identity, this.Model.Name, this.Model.Description, this.Model.FileSettings);
+                return this.CreateFileOrganiserTask(identity, this.Model.Name, this.Model.Description, new FileOrganiserSettings
+                {
+                    FileExemptions = this.Model.RootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
+                    RootPath = this.Model.RootPath,
+                    ExtensionExemptions = new string[0]
+                });
             }
 
-            return this.CreateDirectoryOrganiserTask(identity, this.Model.Name, this.Model.Description, this.Model.DirectorySettings);
+            return this.CreateDirectoryOrganiserTask(identity, this.Model.Name, this.Model.Description, new DirectoryOrganiserSettings
+            {
+                RootPath = this.Model.RootPath
+            });
         }
 
         private IOrganiseTask CreateFileOrganiserTask(Guid identity, string name, string description, FileOrganiserSettings settings)

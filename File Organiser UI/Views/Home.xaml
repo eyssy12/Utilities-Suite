@@ -52,17 +52,16 @@
             </Grid.RowDefinitions>
 
             <materialDesign:Card Grid.Row="0" Height="476" materialDesign:ShadowAssist.ShadowDepth="Depth3">
-                <ScrollViewer Margin="8" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" >
-                    <DataGrid
-                        FrozenColumnCount ="1"
-                            Name="TasksGrid"
-                            Margin="0 8 0 0"
-                            ItemsSource="{Binding Path=Tasks}" 
-                            CanUserSortColumns="True"
-                            CanUserAddRows="False" 
-                            AutoGenerateColumns="False"
-                            materialDesign:DataGridAssist.CellPadding="13 8 8 8"
-                            materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+                <DataGrid
+                        MaxHeight="468"
+                        Name="TasksGrid"
+                        Margin="0 8 0 0"
+                        ItemsSource="{Binding Path=Tasks}" 
+                        CanUserSortColumns="True"
+                        CanUserAddRows="False" 
+                        AutoGenerateColumns="False"
+                        materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                        materialDesign:DataGridAssist.ColumnHeaderPadding="8">
 
                         <DataGrid.Columns>
 
@@ -106,7 +105,7 @@
                                 CanUserSort="False" 
                                 CanUserResize="False"
                                 CanUserReorder="False">
-                                
+
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Style="{StaticResource MaterialDesignFlatButton}"
@@ -124,7 +123,6 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
-                </ScrollViewer>
             </materialDesign:Card>
 
             <Button

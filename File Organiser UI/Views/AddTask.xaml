@@ -81,7 +81,7 @@
                             <TextBox x:Name="CommentTextBox"
                                  Margin="0 16 0 0"
                                  IsReadOnly="True"
-                                 Text="{Binding Identity, Mode=OneWay}"
+                                 Text="{Binding TaskViewModel.Identity, Mode=OneWay}"
 				                 Style="{StaticResource MaterialDesignFloatingHintTextBox}">
 
                                 <materialDesign:HintAssist.Hint>
@@ -102,7 +102,7 @@
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}">
 
                                 <TextBox.Text>
-                                    <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                    <Binding Path="TaskViewModel.Name" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                             <validation:MinimumCharactersValidationRule MinimumCharactersRequired="6" ValidatesOnTargetUpdated="True" />
@@ -121,8 +121,8 @@
                             <ComboBox 
                                     Name="ComboBox_OrganiseType"
                                     Margin="0 18 0 0"
-                                    ItemsSource="{Binding OrganiserTypes}"
-                                    SelectedValue="{Binding OrganiseType}"
+                                    ItemsSource="{Binding TaskViewModel.OrganiserTypes}"
+                                    SelectedValue="{Binding TaskViewModel.OrganiseType}"
                                     SelectionChanged="ComboBox_OrganiseType_SelectionChanged"
                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                     materialDesign:HintAssist.Hint="Organiser Type" />
@@ -130,8 +130,8 @@
                             <ComboBox 
                                     Name="ComboBox_TaskType"
                                     Margin="0 18 0 0"
-                                    ItemsSource="{Binding TaskTypes}"
-                                    SelectedValue="{Binding TaskType}"
+                                    ItemsSource="{Binding TaskViewModel.TaskTypes}"
+                                    SelectedValue="{Binding TaskViewModel.TaskType}"
                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                     materialDesign:HintAssist.Hint="Task Type" />
 
@@ -145,7 +145,7 @@
                                             Maximum="100" 
                                             TickPlacement="TopLeft"
                                             TickFrequency="2"
-                                            Value="{Binding InitialWaitTime}"
+                                            Value="{Binding TaskViewModel.InitialWaitTime}"
                                             Style="{StaticResource MaterialDesignDiscreteSlider}" 
                                             ToolTip="Intial wait time for the task to start for the first time."/>
                                     
@@ -162,7 +162,7 @@
                                             Maximum="100"
                                             TickPlacement="TopLeft"
                                             TickFrequency="2"
-                                            Value="{Binding Interval}"
+                                            Value="{Binding TaskViewModel.Interval}"
                                             Style="{StaticResource MaterialDesignDiscreteSlider}" 
                                             ToolTip="Interval for how often the task repeats in seconds."/>
                                 </StackPanel>
@@ -177,8 +177,6 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -205,7 +203,7 @@
                                              TextWrapping="Wrap">
 
                                         <TextBox.Text>
-                                            <Binding Path="RootPath" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                            <Binding Path="TaskViewModel.RootPath" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                                 <Binding.ValidationRules>
                                                     <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                                 </Binding.ValidationRules>
@@ -221,7 +219,7 @@
 
                                     <Button Grid.Row="0"
                                             Grid.Column="1"
-                                            Command="{Binding SelectRootPathCommand}">
+                                            Command="{Binding TaskViewModel.SelectRootPathCommand}">
                                         Select
                                     </Button>
                                 </Grid>
@@ -237,7 +235,7 @@
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}">
 
                                     <TextBox.Text>
-                                        <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding Path="TaskViewModel.Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                             <Binding.ValidationRules>
                                                 <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                                 <validation:MinimumCharactersValidationRule MinimumCharactersRequired="10" ValidatesOnTargetUpdated="True" />
@@ -268,9 +266,9 @@
                                     </Grid.Style>
                                     
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
+                                        <RowDefinition MaxHeight="200" Height="Auto" />
+                                        <RowDefinition MaxHeight="200" Height="Auto" />
+                                        <RowDefinition MaxHeight="200" Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -280,14 +278,29 @@
                                         Grid.Row="0" 
                                         Grid.Column="0" 
                                         Margin="0 16 0 0"
+                                        MaxHeight="184" 
                                         Drop="Panel_FileExemptions_Drop" 
                                         AllowDrop="true">
                                         
                                         <TextBlock Margin="0 8 0 0" DockPanel.Dock="Top">File Exemptions</TextBlock>
 
-                                        <Border MinHeight="100" DockPanel.Dock="Bottom" BorderBrush="Yellow">
-                                            <TextBlock Text="{Binding FileExemptions}" />
-                                        </Border>
+                                        <DataGrid Name="Grid_RootPathFiles"
+                                                  ItemsSource="{Binding Path=TaskViewModel.RootPathFiles}"
+                                                  CanUserAddRows="false"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                
+                                                <DataGridCheckBoxColumn 
+                                                    Binding="{Binding Path=Exempt}"
+                                                    Header="Exempt" />
+                                                
+                                                <DataGridTextColumn
+                                                        Header="File Name"
+                                                        Binding="{Binding Path=File, Mode=OneWay}"
+                                                        IsReadOnly="True" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
                                     </DockPanel>
 
                                     <DockPanel Name="Panel_ExtensionExemptions" 

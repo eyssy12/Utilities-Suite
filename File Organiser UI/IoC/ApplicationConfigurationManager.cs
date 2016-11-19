@@ -8,7 +8,7 @@
     {
         public const string SectionSettings = "Settings",
             KeyRunOnStartup = "runOnStartup",
-            CommentIndicator = "#";
+            CommentIndicator = ";";
 
         protected readonly IniData Configuration;
 

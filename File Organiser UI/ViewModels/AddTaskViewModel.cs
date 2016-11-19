@@ -2,10 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Windows.Input;
     using Controls;
     using EyssyApps.Core.Library.Extensions;
-    using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Tasks;
     using OrganiseTypeEnum = EyssyApps.Organiser.Library.OrganiseType;
     using TaskTypeEnum = EyssyApps.Organiser.Library.TaskType;
@@ -19,10 +19,12 @@
         private OrganiseTypeEnum organiseType;
         private TaskTypeEnum taskType;
 
-        private ICommand selectRootPathCommand;
+        private IList<RootPathFileViewModel> rootPathFiles;
 
-        private FileOrganiserSettings FileOrganiserSettings;
-        private DirectoryOrganiserSettings DirectoryOrganiserSettings;
+        private ICommand selectRootPathCommand;
+        private ICommand loadRootPathFilesCommand;
+
+        private bool initialized = false;
 
         public AddTaskViewModel()
         {
@@ -33,6 +35,12 @@
         {
             get { return this.selectRootPathCommand; }
             set { this.selectRootPathCommand = value; }
+        }
+
+        public ICommand LoadRootPathFilesCommand
+        {
+            get { return this.loadRootPathFilesCommand; }
+            set { this.loadRootPathFilesCommand = value; }
         }
 
         public IEnumerable<OrganiseTypeEnum> OrganiserTypes
@@ -70,14 +78,9 @@
             {
                 this.SetFieldIfChanged(ref rootPath, value, nameof(this.RootPath));
 
-                if (this.FileSettings != null)
+                if (this.initialized)
                 {
-                    this.FileSettings.RootPath = this.rootPath;
-                }
-
-                if (this.DirectorySettings != null)
-                {
-                    this.DirectorySettings.RootPath = this.rootPath;
+                    this.LoadRootPathFilesCommand.Execute(null);
                 }
             }
         }
@@ -112,24 +115,10 @@
             set { this.SetFieldIfChanged(ref interval, value, nameof(this.Interval)); }
         }
 
-        public FileOrganiserSettings FileSettings
+        public IList<RootPathFileViewModel> RootPathFiles
         {
-            get { return this.FileOrganiserSettings; }
-        }
-
-        public DirectoryOrganiserSettings DirectorySettings
-        {
-            get { return this.DirectoryOrganiserSettings; }
-        }
-
-        public IEnumerable<string> FileExemptions
-        {
-            get { return this.FileOrganiserSettings.FileExemptions; }
-            set
-            {
-                this.FileOrganiserSettings.FileExemptions = value;
-                this.OnPropertyChanged(nameof(FileExemptions));
-            }
+            get { return this.rootPathFiles; }
+            set { this.SetFieldIfChanged(ref rootPathFiles, value, nameof(this.RootPathFiles)); }
         }
 
         public void Reset()
@@ -140,11 +129,11 @@
             this.RootPath = string.Empty;
             this.OrganiseType = OrganiseTypeEnum.File;
             this.TaskType = TaskTypeEnum.Organiser;
+            this.rootPathFiles = new ObservableCollection<RootPathFileViewModel>();
             this.InitialWaitTime = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumInitialWaitTime)).TotalSeconds;
             this.Interval = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumTimerPeriod)).TotalSeconds;
 
-            this.FileOrganiserSettings = new FileOrganiserSettings();
-            this.DirectoryOrganiserSettings = new DirectoryOrganiserSettings();
+            this.initialized = true;
         }
     }
 }
