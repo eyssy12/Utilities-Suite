@@ -17,11 +17,12 @@
         private DirectoryOrganiserSettings settings;
 
         public DirectoryOrganiserTask(
-            Guid id,
+            string name,
             string description,
             DirectoryOrganiserSettings settings,
-            IDirectoryManager directoryManager)
-            : base(id, description,  OrganiseType.Directory, TaskType.Organiser)
+            IDirectoryManager directoryManager,
+            Guid? identity = null)
+            : base(identity, name, description, OrganiseType.Directory, TaskType.Organiser)
         {
             this.settings = settings;
 

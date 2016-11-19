@@ -1,7 +1,6 @@
 ﻿namespace EyssyApps.Organiser.Library.Tasks
 {
     using System;
-    using Models.Settings;
 
     public abstract class OrganiseTaskBase : TaskBase, IOrganiseTask
     {
@@ -9,8 +8,8 @@
 
         private readonly OrganiseType organiseType;
 
-        protected OrganiseTaskBase(Guid id, string description, OrganiseType organiseType, TaskType taskType) 
-            : base(id, description, taskType)
+        protected OrganiseTaskBase(Guid? identity, string name, string description, OrganiseType organiseType, TaskType taskType) 
+            : base(identity, name, description, taskType)
         {
             this.organiseType = organiseType;
         }

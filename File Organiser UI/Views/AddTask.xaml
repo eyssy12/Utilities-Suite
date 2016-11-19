@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:File.Organiser.UI.Views"
              xmlns:controls="clr-namespace:File.Organiser.UI.Controls"
+             xmlns:converters="clr-namespace:File.Organiser.UI.Converters"
              xmlns:validation="clr-namespace:File.Organiser.UI.Validation"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
@@ -21,30 +22,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/OrganiserStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
-                <Setter Property="Margin" Value="0 8 0 8" />
-            </Style>
-            <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
-                <Setter Property="Margin" Value="0 8 0 8" />
-            </Style>
-            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignComboBox}">
-                <Setter Property="HorizontalAlignment" Value="Stretch" />
-                <Setter Property="Margin" Value="0 8 0 8" />
-            </Style>
-            <Style TargetType="{x:Type Viewbox}">
-                <Setter Property="Width" Value="18" />
-                <Setter Property="Height" Value="18" />
-                <Setter Property="Margin" Value="0 0 8 0" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-            <Style TargetType="{x:Type Slider}" BasedOn="{StaticResource MaterialDesignSlider}">
-                <Setter Property="Margin" Value="0 8 0 8" />
-            </Style>
-            <Style TargetType="{x:Type materialDesign:PackIcon}" BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}">
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Margin" Value="4 0 4 0" />
-            </Style>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisiblity"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisiblity" />
+            <converters:TaskTypeToVisibilityConverter x:Key="TaskTypeToVisibility" />
+            <converters:SliderValueToLabelConverter x:Key="SliderValueToLabel" />
+            <converters:OrganiserTypeToVisiblityConverter x:Key="OrganiserTypeToVisiblity" />
         </ResourceDictionary>
     </controls:ViewControlBase.Resources>
 
@@ -125,45 +106,85 @@
                                         <Binding.ValidationRules>
                                             <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                             <validation:MinimumCharactersValidationRule MinimumCharactersRequired="6" ValidatesOnTargetUpdated="True" />
+                                            <validation:MaximumCharactersValidationRule MaximumCharactersAllowed="60" ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                                 <materialDesign:HintAssist.Hint>
                                     <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
                                         <materialDesign:PackIcon Kind="TagTextOutline" />
-                                        <TextBlock>Name (Min. 6 characters)</TextBlock>
+                                        <TextBlock>Name (6-60 characters)</TextBlock>
                                     </StackPanel>
                                 </materialDesign:HintAssist.Hint>
                             </TextBox>
 
                             <ComboBox 
-                                    Margin="0 16 0 0"
+                                    Name="ComboBox_OrganiseType"
+                                    Margin="0 18 0 0"
+                                    ItemsSource="{Binding OrganiserTypes}"
                                     SelectedValue="{Binding OrganiseType}"
+                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                     materialDesign:HintAssist.Hint="Organiser Type" />
 
-                            <CheckBox x:Name="CheckBox_Scheduled" Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
-                                Scheduled
-                            </CheckBox>
+                            <ComboBox 
+                                    Name="ComboBox_TaskType"
+                                    Margin="0 18 0 0"
+                                    ItemsSource="{Binding TaskTypes}"
+                                    SelectedValue="{Binding TaskType}"
+                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                    materialDesign:HintAssist.Hint="Task Type" />
 
-                            <StackPanel Visibility="{Binding ElementName=CheckBox_Scheduled, Path=IsChecked, Converter={StaticResource BooleanToVisiblity}}">
-                                <CheckBox Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
-                                    Initial Wait Time
-                                </CheckBox>
+                            <StackPanel Margin="0 16 0 0" Visibility="{Binding ElementName=ComboBox_TaskType, Path=SelectedValue, Converter={StaticResource TaskTypeToVisibility}}">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding ElementName=Slider_InitialWaitTime, Path=Value, Converter={StaticResource SliderValueToLabel}, ConverterParameter=InitialWaitTime}" />
+                                    </StackPanel>
+                                    <Slider Name="Slider_InitialWaitTime"
+                                            Minimum="10"
+                                            Maximum="100" 
+                                            TickPlacement="TopLeft"
+                                            TickFrequency="2"
+                                            Value="{Binding InitialWaitTime}"
+                                            Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                                            ToolTip="Intial wait time for the task to start for the first time."/>
+                                    
+                                </StackPanel>
                                 <CheckBox x:Name="CheckBox_RepeatedTask" Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
                                     Repeated Task
                                 </CheckBox>
-                                <StackPanel Visibility="{Binding ElementName=CheckBox_RepeatedTask, Path=IsChecked, Converter={StaticResource BooleanToVisiblity}}">
-                                    <CheckBox Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
-                                        Scheduled
-                                    </CheckBox>
+                                <StackPanel Orientation="Vertical" Visibility="{Binding ElementName=CheckBox_RepeatedTask, Path=IsChecked, Converter={StaticResource BooleanToVisiblity}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding ElementName=Slider_Interval, Path=Value, Converter={StaticResource SliderValueToLabel}, ConverterParameter=Interval}" />
+                                    </StackPanel>
+                                    <Slider Name="Slider_Interval"
+                                            Minimum="10"
+                                            Maximum="100"
+                                            TickPlacement="TopLeft"
+                                            TickFrequency="2"
+                                            Value="{Binding Interval}"
+                                            Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                                            ToolTip="Interval for how often the task repeats in seconds."/>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
                         
                         <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="8" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
- 
-                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="8">
-                            <TextBox Name="TextBox_Description" 
+
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="2" Margin="8" Background="BlanchedAlmond">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                            
+                            
+                            <TextBox Grid.Row="0" Grid.Column="0" Name="TextBox_Description" 
                                  Margin="0 16 0 0"
                                  TextWrapping="Wrap"
                                  VerticalAlignment="Stretch"
@@ -178,16 +199,27 @@
                                         <Binding.ValidationRules>
                                             <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                             <validation:MinimumCharactersValidationRule MinimumCharactersRequired="10" ValidatesOnTargetUpdated="True" />
+                                            <validation:MaximumCharactersValidationRule MaximumCharactersAllowed="200" ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                                 <materialDesign:HintAssist.Hint>
                                     <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
                                         <materialDesign:PackIcon Kind="TagTextOutline" />
-                                        <TextBlock>Description (Min. 10 characters)</TextBlock>
+                                        <TextBlock>Description (10 - 200 characters)</TextBlock>
                                     </StackPanel>
                                 </materialDesign:HintAssist.Hint>
                             </TextBox>
+
+
+                            <StackPanel Name="Panel_FileExemptions" Grid.Row="1" Grid.Column="0" Drop="Panel_FileExemptions_Drop" AllowDrop="true" Background="Green">
+                                <TextBlock>File Exemptions</TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Name="Panel_ExtensionExemptions" Grid.Row="2" Grid.Column="0" Drop="Panel_ExtensionExemptions_Drop" AllowDrop="True" Background="Red">
+                                <TextBlock>Extension Exemptions</TextBlock>
+                            </StackPanel>
+                            
                         </StackPanel>
                     </Grid>
                 </materialDesign:Card>
@@ -196,7 +228,7 @@
         </DockPanel>
 
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
-            <materialDesign:Card Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+            <materialDesign:Card Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth3">
                 <Grid x:Name="AddTask_Toolbar">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -206,10 +238,21 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Name="Name_ButtonSave" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Click="ToolbarButton_Click">
+                    <Button Name="Name_ButtonSave" 
+                            Grid.Row="0" Grid.Column="0" 
+                            HorizontalAlignment="Left" 
+                            Click="ToolbarButton_Click">
+                        
                         Save
                     </Button>
-                    <Button Name="Name_ButtonDiscard" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Background="Red" Click="ToolbarButton_Click">
+                    <Button Name="Name_ButtonDiscard" 
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right" 
+                            BorderBrush="Red" 
+                            Background="OrangeRed"
+                            Click="ToolbarButton_Click">
+                        
                         Discard
                     </Button>
                 </Grid>

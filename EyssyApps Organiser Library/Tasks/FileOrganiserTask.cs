@@ -21,13 +21,14 @@
         private FileOrganiserSettings settings;
 
         public FileOrganiserTask(
-            Guid id,
+            string name,
             string description,
             FileOrganiserSettings settings, 
             IFileExtensionProvider provider,
             IFileManager fileManager,
-            IDirectoryManager directoryManager)
-            : base(id, description,  OrganiseType.File, TaskType.Organiser)
+            IDirectoryManager directoryManager,
+            Guid? identity = null)
+            : base(identity, name, description,  OrganiseType.File, TaskType.Organiser)
         {
             this.settings = settings;
 

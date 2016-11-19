@@ -46,9 +46,7 @@
 
         public override void InitialiseView(object arg)
         {
-            this.Model.Identity = Guid.NewGuid().ToString();
-            this.Model.Description = null;
-            this.Model.OrganiseType = null;
+            this.Model.Reset();
         }
 
         private void ViewControlBase_Error(object sender, ValidationErrorEventArgs e)
@@ -101,8 +99,8 @@
 
         private ITask CreateTask()
         {
-            TaskType taskType = TaskType.Scheduled;
-            OrganiseType organiseType = OrganiseType.File;
+            TaskType taskType = this.Model.TaskType;
+            OrganiseType organiseType = this.Model.OrganiseType;
 
             IOrganiseTask task = this.CreateTask(Guid.Parse(this.Model.Identity), organiseType);
 
@@ -111,7 +109,7 @@
                 return task;
             }
 
-            return this.CreateScheduledTask(task, 5000, 7000);
+            return this.CreateScheduledTask("scheduled", task, 5000, 7000);
         }
 
         private IOrganiseTask CreateTask(Guid identity, OrganiseType type)
@@ -124,7 +122,7 @@
                     RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
                 };
 
-                return this.CreateFileOrganiserTask(identity, this.Model.Description, fileSettings);
+                return this.CreateFileOrganiserTask(identity, this.Model.Name, this.Model.Description, fileSettings);
             }
 
             DirectoryOrganiserSettings directorySettings = new DirectoryOrganiserSettings
@@ -132,38 +130,50 @@
                 RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
             };
 
-            return this.CreateDirectoryOrganiserTask(identity, this.Model.Description, directorySettings);
+            return this.CreateDirectoryOrganiserTask(identity, this.Model.Name, this.Model.Description, directorySettings);
         }
 
-        private IOrganiseTask CreateFileOrganiserTask(Guid identity, string description, FileOrganiserSettings settings)
+        private IOrganiseTask CreateFileOrganiserTask(Guid identity, string name, string description, FileOrganiserSettings settings)
         {
             return new FileOrganiserTask(
-                identity,
+                name,
                 description,
                 settings, 
                 this.Factory.Create<IFileExtensionProvider>(), 
                 this.Factory.Create<IFileManager>(),
-                this.Factory.Create<IDirectoryManager>());
+                this.Factory.Create<IDirectoryManager>(),
+                identity: identity);
         }
 
-        private IOrganiseTask CreateDirectoryOrganiserTask(Guid identity, string description, DirectoryOrganiserSettings settings)
+        private IOrganiseTask CreateDirectoryOrganiserTask(Guid identity, string name, string description, DirectoryOrganiserSettings settings)
         {
             return new DirectoryOrganiserTask(
-                identity,
+                name,
                 description, 
                 settings, 
-                this.Factory.Create<IDirectoryManager>());
+                this.Factory.Create<IDirectoryManager>(),
+                identity: identity);
         }
 
-        private ITask CreateScheduledTask(ITask executable, int initialWaitTime, int timerPeriod)
+        private ITask CreateScheduledTask(string name, ITask executable, int initialWaitTime, int timerPeriod)
         {
             return new ScheduledTask(
-                Guid.NewGuid(),
-                string.Format(ScheduledTask.DescriptionFormat, this.Model.Identity, this.Model.Description),
+                name,
+                string.Format(ScheduledTask.DescriptionFormat, executable.Identity, executable.Description),
                 this.Factory.Create<ITimer>(),
                 executable,
-                initialWaitTime,
-                timerPeriod);
+                initialWaitTime: initialWaitTime,
+                timerPeriod: timerPeriod);
+        }
+
+        private void Panel_FileExemptions_Drop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void Panel_ExtensionExemptions_Drop(object sender, DragEventArgs e)
+        {
+
         }
     }
 }

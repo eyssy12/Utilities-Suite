@@ -52,7 +52,6 @@
         {
             this.BindFactories();
             this.BindTimers();
-            this.BindProviders();
             this.BindManagers();
             this.BindServices();
         }
@@ -69,19 +68,6 @@
             this.Bind<IApplicationRegistryManager>(container =>
             {
                 return new ApplicationRegistryManager("File-Organiser");
-            }, Lifestyle.Singleton);
-        }
-
-        protected virtual void BindProviders()
-        {
-            this.Bind<IFileExtensionProvider>((container) =>
-            {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "file_extension_db.json";
-                string data = File.ReadAllText(path);
-
-                FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
-
-                return new FileExtensionProvider(result);
             }, Lifestyle.Singleton);
         }
 

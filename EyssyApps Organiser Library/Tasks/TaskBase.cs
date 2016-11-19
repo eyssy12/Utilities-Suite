@@ -6,14 +6,25 @@
     public abstract class TaskBase : ITask
     {
         private readonly Guid identity;
-        private readonly string description;
+        private readonly string name, description;
         private readonly TaskType taskType;
 
         private TaskState state;
 
-        protected TaskBase(Guid identity, string description, TaskType taskType)
+        protected TaskBase(Guid? identity, string name, string description, TaskType taskType)
         {
-            this.identity = identity;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name), "No name has been provided");
+            }
+
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                throw new ArgumentNullException(nameof(description), "No description has been provided");
+            }
+
+            this.identity = identity.GetValueOrDefault(Guid.NewGuid());
+            this.name = name;
             this.description = description;
             this.taskType = taskType;
 
@@ -27,6 +38,11 @@
         public Guid Identity
         {
             get { return this.identity; }
+        }
+
+        public string Name
+        {
+            get { return this.name; }
         }
 
         public string Description

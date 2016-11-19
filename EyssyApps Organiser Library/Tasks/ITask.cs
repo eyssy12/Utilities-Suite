@@ -10,6 +10,8 @@
 
         Guid Identity { get; }
 
+        string Name { get; }
+
         string Description { get; }
 
         TaskState State { get; }

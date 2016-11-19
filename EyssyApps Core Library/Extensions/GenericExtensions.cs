@@ -30,5 +30,10 @@
                 ? source.Any()
                 : source.Any(filter);
         }
+
+        public static IEnumerable<T> Yield<T>(this T value)
+        {
+            yield return value;
+        }
     }
 }

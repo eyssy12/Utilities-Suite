@@ -18,13 +18,14 @@
             TimerPeriod;
 
         public ScheduledTask(
-            Guid id, 
+            string name,
             string description,
             ITimer timer, 
             ITask executable,
+            Guid? identity = null,
             int initialWaitTime = ScheduledTask.MinimumInitialWaitTime, 
             int timerPeriod = ScheduledTask.MinimumTimerPeriod)
-            : base(id, description, TaskType.Scheduled)
+            : base(identity, name, description, TaskType.Scheduled)
         {
             if (timer == null)
             {

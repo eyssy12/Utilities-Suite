@@ -71,11 +71,11 @@ namespace File.Organiser.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test.
+        ///   Looks up a localized string similar to {0}{1}.{2}.
         /// </summary>
-        internal static string String {
+        internal static string Format_ConfigurationFile {
             get {
-                return ResourceManager.GetString("String", resourceCulture);
+                return ResourceManager.GetString("Format_ConfigurationFile", resourceCulture);
             }
         }
     }

@@ -55,6 +55,7 @@
     <Compile Include="Execution\IExecute`1.cs" />
     <Compile Include="Execution\IRaiseFailures.cs" />
     <Compile Include="Execution\ITerminate.cs" />
+    <Compile Include="Extensions\EnumerationExtensions.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\PathExtensions.cs" />

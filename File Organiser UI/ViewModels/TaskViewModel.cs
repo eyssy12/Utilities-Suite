@@ -31,6 +31,11 @@
             get { return this.Task.Identity.ToString(); }
         }
 
+        public string Name
+        {
+            get { return this.Task.Name; }
+        }
+
         public TaskType TaskType
         {
             get { return this.Task.TaskType; }

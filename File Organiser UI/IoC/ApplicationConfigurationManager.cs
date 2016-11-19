@@ -18,13 +18,21 @@
         {
             if (string.IsNullOrWhiteSpace(configPath))
             {
-                throw new ArgumentNullException(nameof(configPath), "");
+                throw new ArgumentNullException(nameof(configPath), "A path for the configuration file has not been provided.");
             }
 
             this.configPath = configPath;
 
             this.SetCommentIndicator(commentIndicator);
-            this.Configuration = this.ReadFile(configPath);
+
+            try
+            {
+                this.Configuration = this.ReadFile(configPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Problem reading file" + ex.Message);
+            }
         }
 
         public string ConfigPath

@@ -56,8 +56,8 @@
             };
 
             // TODO: Save/load feature
-            FileOrganiserTask fileTask = new FileOrganiserTask(Guid.NewGuid(), "Sorts the files in the Downloads folder", fileSettings, provider, fileManager, directoryManager);
-            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask(Guid.NewGuid(), "Sorts the individual directories in the Downloads folder", directorySettings, directoryManager);
+            FileOrganiserTask fileTask = new FileOrganiserTask("File Organiser", "Sorts the files in the Downloads folder", fileSettings, provider, fileManager, directoryManager);
+            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask("Directory Organiser", "Sorts the individual directories in the Downloads folder", directorySettings, directoryManager);
 
             this.Manager.Add(fileTask);
             this.Manager.Add(directoryTask);
