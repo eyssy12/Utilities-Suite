@@ -166,7 +166,7 @@
                 {
                     FileExemptions = this.Model.RootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
                     RootPath = this.Model.RootPath,
-                    ExtensionExemptions = new string[0]
+                    ExtensionExemptions = this.Model.ExemptedFileExtensions.Select(e => e.Value).ToArray()
                 });
             }
 
