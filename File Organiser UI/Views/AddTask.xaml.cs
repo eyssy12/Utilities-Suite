@@ -65,6 +65,14 @@
             this.DataContext = this;
 
             this.Model.FileExtensions = this.Provider.GetAllExtensions().Select(e => new FileExtensionViewModel { Value = e.Value }).ToList();
+            this.Model.Categories = this.Provider
+                .GetAllCategories()
+                .Select(c => new CategoriesViewModel
+                {
+                    Category = c.Value,
+                    Extensions = c.Extensions.Select(e => new FileExtensionViewModel { Value = e.Value })
+                })
+                .ToList();
         }
 
         public AddTaskViewModel TaskViewModel
@@ -87,8 +95,14 @@
                 // Create chips beside the button ?
                 // or just list them
 
-                //this.OnPropertyChanged(nameof(this.Model.ExemptedFileExtensions));
+                IList<FileExtensionViewModel> temp = new List<FileExtensionViewModel>();
 
+                foreach (var item in this.ListBox_FileExtensions.SelectedItems)
+                {
+                    temp.Add(item as FileExtensionViewModel);
+                }
+
+                this.Model.ExemptedFileExtensions = temp;
                 this.ListBox_ExemptedFileExtensions.ItemsSource = this.Model.ExemptedFileExtensions;
             }
         }
@@ -244,18 +258,6 @@
                         break;
                 }
             }
-        }
-
-        private void Chip_DeleteClick(object sender, RoutedEventArgs e)
-        {
-            this.Panel_ExtensionExemptions.Children.Remove(sender as UIElement);
-
-            FileExtensionViewModel model = this.Model.FileExtensions.First(f => f.Value == (sender as Chip).Content.ToString());
-            model.Exempt = false;
-
-            // TODO: figure out why notifyproerty changed not working - possibly have to use an ObservableCollection as oppsoed to an IList
-            this.ListBox_ExemptedFileExtensions.ItemsSource = null;
-            this.ListBox_ExemptedFileExtensions.ItemsSource = this.Model.ExemptedFileExtensions;
         }
     }
 }

@@ -9,6 +9,7 @@
              xmlns:validation="clr-namespace:File.Organiser.UI.Validation"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:File.Organiser.UI.ViewModels"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
              d:DesignHeight="1280" d:DesignWidth="800"
@@ -318,10 +319,11 @@
                                                     materialDesign:DialogHost.DialogClosingAttached="Sample2_DialogHost_OnDialogClosing">
                                                 <Button.CommandParameter>
 
-                                                    <StackPanel Margin="16" Width="300">
+                                                    <StackPanel Margin="16" Width="400">
 
-                                                        <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                        <!--<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                                                  SelectionMode="Multiple"
+                                                                 Name="ListBox_FileExtensions"
                                                                  ItemsSource="{Binding TaskViewModel.FileExtensions}">
 
                                                             <ListBox.ItemsPanel>
@@ -332,13 +334,79 @@
 
                                                             <ListBox.ItemTemplate>
                                                                 <DataTemplate>
-                                                                    <StackPanel Orientation="Horizontal" Width="50" Height="50">
-                                                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Value}"/>
-                                                                    </StackPanel>
+                                                                    <Grid>
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="*" />
+                                                                        </Grid.RowDefinitions>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="*" />
+                                                                        </Grid.ColumnDefinitions>
+
+                                                                        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                                                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Value}"/>
+                                                                        </StackPanel>
+
+                                                                    </Grid>
+
                                                                 </DataTemplate>
                                                             </ListBox.ItemTemplate>
 
-                                                        </ListBox>
+                                                        </ListBox>-->
+
+                                                        <ScrollViewer MaxHeight="300">
+                                                            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                                 Name="ListBox_FileExtensions"
+                                                                 ItemsSource="{Binding TaskViewModel.Categories}">
+
+                                                                <!--<ListBox.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel />
+                                                                </ItemsPanelTemplate>
+                                                            </ListBox.ItemsPanel>-->
+
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Grid>
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition Height="Auto" />
+                                                                                <RowDefinition Height="*" />
+                                                                            </Grid.RowDefinitions>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*" />
+                                                                            </Grid.ColumnDefinitions>
+
+                                                                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Category}" FontWeight="Bold"/>
+                                                                            </StackPanel>
+
+                                                                            <ListBox Grid.Row="1" 
+                                                                                 Grid.Column="0"
+                                                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                                                 SelectionMode="Multiple"
+                                                                                 Name="ListBox_FFileExtensions"
+                                                                                 ItemsSource="{Binding Extensions}">
+
+                                                                                <ListBox.ItemsPanel>
+                                                                                    <ItemsPanelTemplate>
+                                                                                        <WrapPanel />
+                                                                                    </ItemsPanelTemplate>
+                                                                                </ListBox.ItemsPanel>
+
+                                                                                <ListBox.ItemTemplate>
+                                                                                    <DataTemplate>
+                                                                                        <StackPanel Orientation="Horizontal">
+                                                                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Value}"/>
+                                                                                        </StackPanel>
+                                                                                    </DataTemplate>
+                                                                                </ListBox.ItemTemplate>
+                                                                            </ListBox>
+                                                                        </Grid>
+
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+
+                                                            </ListBox>
+                                                        </ScrollViewer>
 
                                                         <Border Margin="16" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
 
@@ -381,7 +449,7 @@
 
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <materialDesign:Chip IsDeletable="True" DeleteClick="Chip_DeleteClick" Content="{Binding Value}" />
+                                                    <materialDesign:Chip Content="{Binding Value}" />
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
