@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using Commands;
@@ -19,6 +19,7 @@
     using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
     using EyssyApps.UI.Library.Services;
+    using MaterialDesignThemes.Wpf;
     using ViewModels;
 
     public partial class AddTask : ViewControlBase
@@ -29,12 +30,17 @@
 
         protected readonly ITaskManager Manager;
         protected readonly ISnackbarNotificationService Notifier;
+        protected readonly IFileExtensionProvider Provider;
         protected readonly IList<ValidationError> Errors;
 
         public AddTask(IOrganiserFactory factory)
             : base(AddTask.ViewName, isDefault: false, factory: factory)
         {
             this.InitializeComponent();
+
+            this.Manager = this.Factory.Create<ITaskManager>();
+            this.Provider = this.Factory.Create<IFileExtensionProvider>();
+            this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
 
             this.Model = new AddTaskViewModel(); // TODO: this doesn't seem the right way to go about it, should think about a more cleaner way...
             this.Model.SelectRootPathCommand = new RelayCommand<object>(value => this.Model.RootPath = this.Factory.Create<IFormsService>().SelectFolderPathDialog());
@@ -55,12 +61,14 @@
                 }
             });
 
-            this.Manager = this.Factory.Create<ITaskManager>();
-            this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
-            
             this.Errors = new List<ValidationError>();
 
             this.DataContext = this;
+
+            Task.Run(() =>
+            {
+                this.Model.FileExtensions = this.Provider.GetAllExtensions().Select(e => new FileExtensionViewModel { Value = e.Value }).ToList();
+            });
         }
 
         public AddTaskViewModel TaskViewModel
@@ -71,6 +79,20 @@
         public override void InitialiseView(object arg)
         {
             this.Model.Reset();
+        }
+
+        private void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
+        {
+            string param = eventArgs.Parameter.ToString();
+
+            if (param == "Command_FileExtensions_Saved")
+            {
+                // TODO: What to do with the selected exemptions:
+                // Create chips beside the button ?
+                // or just list them
+
+                this.OnPropertyChanged(nameof(this.Model.ExemptedFileExtensions));
+            }
         }
 
         private void ViewControlBase_Error(object sender, ValidationErrorEventArgs e)
@@ -224,6 +246,12 @@
                         break;
                 }
             }
+        }
+
+        private void Chip_DeleteClick(object sender, RoutedEventArgs e)
+        {
+            // TODO: adjust ExemptedFileExtensions
+            
         }
     }
 }

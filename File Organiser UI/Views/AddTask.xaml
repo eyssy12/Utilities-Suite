@@ -8,6 +8,7 @@
              xmlns:converters="clr-namespace:File.Organiser.UI.Converters"
              xmlns:validation="clr-namespace:File.Organiser.UI.Validation"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
@@ -267,7 +268,7 @@
                                     
                                     <Grid.RowDefinitions>
                                         <RowDefinition MaxHeight="200" Height="Auto" />
-                                        <RowDefinition MaxHeight="200" Height="Auto" />
+                                        <RowDefinition MaxHeight="300" Height="Auto" />
                                         <RowDefinition MaxHeight="200" Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -282,7 +283,7 @@
                                         Drop="Panel_FileExemptions_Drop" 
                                         AllowDrop="true">
                                         
-                                        <TextBlock Margin="0 8 0 0" DockPanel.Dock="Top">File Exemptions</TextBlock>
+                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">File Exemptions</TextBlock>
 
                                         <DataGrid Name="Grid_RootPathFiles"
                                                   ItemsSource="{Binding Path=TaskViewModel.RootPathFiles}"
@@ -308,10 +309,81 @@
                                         Grid.Column="0"
                                         Margin="0 16 0 0">
                                         
-                                        <TextBlock Margin="0 8 0 0" DockPanel.Dock="Top">Extension Exemptions</TextBlock>
-                                        
-                                        <Border MinHeight="100" DockPanel.Dock="Bottom" BorderBrush="Green">
-                                        </Border>
+                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Extension Exemptions</TextBlock>
+
+                                        <StackPanel VerticalAlignment="Center">
+                                            <!--the request to open the dialog will bubble up to the top-most DialogHost, but we can used the attached property based event to handle the response -->
+                                            <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                    materialDesign:DialogHost.DialogClosingAttached="Sample2_DialogHost_OnDialogClosing">
+                                                <Button.CommandParameter>
+
+                                                    <StackPanel Margin="16" Width="300">
+
+                                                        <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                                 SelectionMode="Multiple"
+                                                                 ItemsSource="{Binding TaskViewModel.FileExtensions}">
+
+                                                            <ListBox.ItemContainerStyle>
+                                                                <Style TargetType="ListBoxItem">
+                                                                    <Setter Property="IsSelected" Value="{Binding Exempt}" />
+                                                                </Style>
+                                                            </ListBox.ItemContainerStyle>
+
+                                                            <ListBox.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel />
+                                                                </ItemsPanelTemplate>
+                                                            </ListBox.ItemsPanel>
+
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Orientation="Horizontal" Width="50" Height="50">
+                                                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Value}"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+
+                                                        </ListBox>
+
+                                                        <Border Margin="16" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+
+                                                        <DockPanel>
+                                                            <Button DockPanel.Dock="Left" 
+                                                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                                                    IsCancel="True" 
+                                                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                                    CommandParameter="Command_FileExtensions_Saved"
+                                                                    HorizontalAlignment="Left">
+
+                                                                APPLY
+                                                            </Button>
+
+                                                            <Button DockPanel.Dock="Right" 
+                                                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                                                    IsCancel="True" 
+                                                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                                    CommandParameter="Command_FileExtensions_Canceled"
+                                                                    HorizontalAlignment="Right">
+
+                                                                CANCEL
+                                                            </Button>
+                                                        </DockPanel>
+
+                                                    </StackPanel>
+                                                </Button.CommandParameter>
+                                                
+                                                Configure
+                                            </Button>
+                                        </StackPanel>
+
+                                        <ListBox ItemsSource="{Binding TaskViewModel.ExemptedFileExtensions}">
+
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <materialDesign:Chip IsDeletable="True" DeleteClick="Chip_DeleteClick" Content="{Binding Value}" />
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
                                     </DockPanel>
 
                                     <DockPanel Name="Panel_DirectoryExemptions" 

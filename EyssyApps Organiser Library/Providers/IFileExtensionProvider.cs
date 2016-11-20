@@ -5,7 +5,9 @@
 
     public interface IFileExtensionProvider
     {
-        IEnumerable<FileExtensionMetadata> Get();
+        IEnumerable<FileExtensionMetadata> GetAllExtensions();
+
+        IEnumerable<FileExtensionCategory> GetAllCategories();
 
         FileExtensionCategory GetCategoryForExtension(string extension);
     }

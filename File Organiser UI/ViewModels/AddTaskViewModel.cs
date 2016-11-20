@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Input;
     using Controls;
     using EyssyApps.Core.Library.Extensions;
@@ -20,6 +20,7 @@
         private TaskTypeEnum taskType;
 
         private IList<RootPathFileViewModel> rootPathFiles;
+        private IList<FileExtensionViewModel> fileExtensions;
 
         private ICommand selectRootPathCommand;
         private ICommand loadRootPathFilesCommand;
@@ -121,6 +122,17 @@
             set { this.SetFieldIfChanged(ref rootPathFiles, value, nameof(this.RootPathFiles)); }
         }
 
+        public IList<FileExtensionViewModel> FileExtensions
+        {
+            get { return this.fileExtensions; }
+            set { this.SetFieldIfChanged(ref fileExtensions, value, nameof(this.FileExtensions)); }
+        }
+
+        public IList<FileExtensionViewModel> ExemptedFileExtensions
+        {
+            get { return this.fileExtensions.Where(f => f.Exempt).ToArray(); }
+        }
+
         public void Reset()
         {
             this.Identity = Guid.NewGuid().ToString();
@@ -129,7 +141,7 @@
             this.RootPath = string.Empty;
             this.OrganiseType = OrganiseTypeEnum.File;
             this.TaskType = TaskTypeEnum.Organiser;
-            this.rootPathFiles = new ObservableCollection<RootPathFileViewModel>();
+            this.RootPathFiles = new List<RootPathFileViewModel>();
             this.InitialWaitTime = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumInitialWaitTime)).TotalSeconds;
             this.Interval = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumTimerPeriod)).TotalSeconds;
 

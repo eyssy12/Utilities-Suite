@@ -18,7 +18,12 @@
             this.Metadatas = new Lazy<IEnumerable<FileExtensionMetadata>>(() => this.Database.Categories.SelectMany(c => c.Extensions).ToArray());
         }
 
-        public IEnumerable<FileExtensionMetadata> Get()
+        public IEnumerable<FileExtensionCategory> GetAllCategories()
+        {
+            return this.Database.Categories;
+        }
+
+        public IEnumerable<FileExtensionMetadata> GetAllExtensions()
         {
             return this.Metadatas.Value;
         }
