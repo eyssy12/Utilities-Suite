@@ -65,10 +65,7 @@
 
             this.DataContext = this;
 
-            Task.Run(() =>
-            {
-                this.Model.FileExtensions = this.Provider.GetAllExtensions().Select(e => new FileExtensionViewModel { Value = e.Value }).ToList();
-            });
+            this.Model.FileExtensions = this.Provider.GetAllExtensions().Select(e => new FileExtensionViewModel { Value = e.Value }).ToList();
         }
 
         public AddTaskViewModel TaskViewModel
