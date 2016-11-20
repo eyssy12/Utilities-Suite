@@ -11,7 +11,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="1280" d:DesignWidth="800"
              Validation.Error="ViewControlBase_Error">
 
     <controls:ViewControlBase.Resources>
@@ -314,6 +314,7 @@
                                         <StackPanel VerticalAlignment="Center">
                                             <!--the request to open the dialog will bubble up to the top-most DialogHost, but we can used the attached property based event to handle the response -->
                                             <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                    VerticalAlignment="Top"
                                                     materialDesign:DialogHost.DialogClosingAttached="Sample2_DialogHost_OnDialogClosing">
                                                 <Button.CommandParameter>
 
@@ -322,12 +323,6 @@
                                                         <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                                                  SelectionMode="Multiple"
                                                                  ItemsSource="{Binding TaskViewModel.FileExtensions}">
-
-                                                            <ListBox.ItemContainerStyle>
-                                                                <Style TargetType="ListBoxItem">
-                                                                    <Setter Property="IsSelected" Value="{Binding Exempt}" />
-                                                                </Style>
-                                                            </ListBox.ItemContainerStyle>
 
                                                             <ListBox.ItemsPanel>
                                                                 <ItemsPanelTemplate>
@@ -371,12 +366,18 @@
 
                                                     </StackPanel>
                                                 </Button.CommandParameter>
-                                                
+
                                                 Configure
                                             </Button>
                                         </StackPanel>
+                                        
+                                        <ListBox Name="ListBox_ExemptedFileExtensions" ItemsSource="{Binding TaskViewModel.ExemptedFileExtensions}">
 
-                                        <ListBox ItemsSource="{Binding TaskViewModel.ExemptedFileExtensions}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
 
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>

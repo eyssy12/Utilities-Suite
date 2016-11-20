@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using Commands;
@@ -88,7 +87,9 @@
                 // Create chips beside the button ?
                 // or just list them
 
-                this.OnPropertyChanged(nameof(this.Model.ExemptedFileExtensions));
+                //this.OnPropertyChanged(nameof(this.Model.ExemptedFileExtensions));
+
+                this.ListBox_ExemptedFileExtensions.ItemsSource = this.Model.ExemptedFileExtensions;
             }
         }
 
@@ -247,8 +248,14 @@
 
         private void Chip_DeleteClick(object sender, RoutedEventArgs e)
         {
-            // TODO: adjust ExemptedFileExtensions
-            
+            this.Panel_ExtensionExemptions.Children.Remove(sender as UIElement);
+
+            FileExtensionViewModel model = this.Model.FileExtensions.First(f => f.Value == (sender as Chip).Content.ToString());
+            model.Exempt = false;
+
+            // TODO: figure out why notifyproerty changed not working - possibly have to use an ObservableCollection as oppsoed to an IList
+            this.ListBox_ExemptedFileExtensions.ItemsSource = null;
+            this.ListBox_ExemptedFileExtensions.ItemsSource = this.Model.ExemptedFileExtensions;
         }
     }
 }
