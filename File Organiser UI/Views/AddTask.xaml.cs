@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using Commands;
     using Controls;
     using EyssyApps.Core.Library.Events;
@@ -258,6 +259,15 @@
                         break;
                 }
             }
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+
+            e.Handled = true;
         }
     }
 }

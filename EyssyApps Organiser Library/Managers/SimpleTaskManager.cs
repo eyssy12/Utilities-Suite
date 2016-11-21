@@ -82,12 +82,22 @@
 
         protected bool Contains(ITask task)
         {
+            if (task == null)
+            {
+                return false;
+            }
+
             return this.Tasks.Any(t => t.Identity == task.Identity);
         }
 
         protected bool DoesNotContain(ITask task)
         {
             return !this.Contains(task);
+        }
+
+        public bool DeleteById(Guid id)
+        {
+            return this.Delete(this.FindById(id));
         }
     }
 }

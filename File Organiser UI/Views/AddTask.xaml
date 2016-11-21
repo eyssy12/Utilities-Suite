@@ -353,7 +353,8 @@
 
                                                         </ListBox>-->
 
-                                                        <ScrollViewer MaxHeight="300">
+                                                        <ScrollViewer MaxHeight="300"
+                                                                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                                                             <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                                                  Name="ListBox_FileExtensions"
                                                                  ItemsSource="{Binding TaskViewModel.Categories}">

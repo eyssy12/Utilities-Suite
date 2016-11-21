@@ -6,7 +6,6 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
-    using System.Windows.Input;
     using Controls;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Core.Library.Managers;
@@ -153,6 +152,19 @@
             TaskViewModel task = ((sender as Button).DataContext as TaskViewModel);
 
             this.OnViewChange(IndividualTask.ViewName, task);
+        }
+
+        private void Button_DeleteTask_Click(object sender, RoutedEventArgs e)
+        {
+            Button runTask = sender as Button;
+
+            string id = (runTask.DataContext as TaskViewModel).Identity;
+
+            this.Manager.DeleteById(Guid.Parse(id));
+
+            this.Notifier.Notify("Task '" + id + "' deleted.");
+
+            this.OnPropertyChanged(nameof(this.Tasks));
         }
     }
 }

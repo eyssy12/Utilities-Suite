@@ -92,7 +92,14 @@
             {
                 filePaths.ForEach(filePath =>
                 {
-                    this.FileManager.Move(filePath, Path.Combine(targetCategoryPath, Path.GetFileName(filePath)));
+                    string destinationPath = Path.Combine(targetCategoryPath, Path.GetFileName(filePath));
+
+                    if (this.FileManager.Exists(destinationPath))
+                    {
+                        throw new DuplicateFileException(Path.GetFileName(destinationPath), this.FileManager.ReadBytes(destinationPath), "Duplicate file found at '" + destinationPath + "'");
+                    }
+
+                    this.FileManager.Move(filePath, destinationPath);
                 });
             }
         }

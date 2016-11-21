@@ -11,6 +11,8 @@
 
         bool Delete(ITask task);
 
+        bool DeleteById(Guid id);
+
         ITask FindById(Guid id);
 
         IEnumerable<ITask> GetAll();
