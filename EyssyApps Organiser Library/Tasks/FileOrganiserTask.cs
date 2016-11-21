@@ -88,6 +88,7 @@
 
         protected void MoveFiles(IEnumerable<string> filePaths, string targetCategoryPath)
         {
+            // TODO: fix an issue where a file cannot be moved to destination if it already exists
             if (this.DirectoryManager.Exists(targetCategoryPath, create: true))
             {
                 filePaths.ForEach(filePath =>
