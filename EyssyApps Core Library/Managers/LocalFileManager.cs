@@ -19,5 +19,25 @@
         {
             return File.ReadAllBytes(filePath);
         }
+
+        public IEnumerable<string> ReadAllLines(string filePath)
+        {
+            return File.ReadAllLines(filePath);
+        }
+
+        public void Write(string filePath, string contents, bool append = false)
+        {
+            if (append)
+            {
+                File.AppendAllText(filePath, contents);
+            }
+
+            File.WriteAllText(filePath, contents);
+        }
+
+        public string ReadAllText(string filePath)
+        {
+            return File.ReadAllText(filePath);
+        }
     }
 }

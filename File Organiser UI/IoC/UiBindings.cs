@@ -1,9 +1,11 @@
 ﻿namespace File.Organiser.UI.IoC
 {
+    using System;
     using System.Configuration;
     using System.Windows.Controls;
     using Controls;
     using EyssyApps.Configuration.Library;
+    using EyssyApps.Core.Library.Managers;
     using EyssyApps.Organiser.Library.Managers;
     using EyssyApps.Organiser.Library.Models.Organiser;
     using EyssyApps.Organiser.Library.Providers;
@@ -17,7 +19,8 @@
     {
         protected const string KeyApplicationPath = "Path_Application",
             KeyFileExtensionJsonFile = "Name_FileExtensionJson",
-            KeyConfigurationFileName = "Name_ConfigurationFile";
+            KeyConfigurationFileName = "Name_ConfigurationFile",
+            KeyHistoryStore = "Store_History";
 
         protected override void LoadBindings()
         {
@@ -27,6 +30,18 @@
             this.BindViews();
             this.BindControls();
             this.BindProviders();
+            this.BindLoggers();
+        }
+
+        private void BindLoggers()
+        {
+            this.Bind<ITaskLogger>(container =>
+            {
+                return new SimpleTaskLogger(
+                    container.GetInstance<IFileManager>(),
+                    container.GetInstance<IDirectoryManager>(),
+                    ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore]);
+            }, lifestyle: Lifestyle.Singleton);
         }
 
         private void BindProviders()

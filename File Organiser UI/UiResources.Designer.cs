@@ -78,5 +78,41 @@ namespace File.Organiser.UI {
                 return ResourceManager.GetString("Format_ConfigurationFile", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New task with identity &apos;{0}&apos; added..
+        /// </summary>
+        internal static string Message_TaskAdded {
+            get {
+                return ResourceManager.GetString("Message_TaskAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New task with identity &apos;{0}&apos; added and started..
+        /// </summary>
+        internal static string Message_TaskAddedAndStarted {
+            get {
+                return ResourceManager.GetString("Message_TaskAddedAndStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task &apos;{0}&apos; deleted..
+        /// </summary>
+        internal static string Message_TaskDeleted {
+            get {
+                return ResourceManager.GetString("Message_TaskDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task &apos;{0}&apos; invoked..
+        /// </summary>
+        internal static string Message_TaskInvoked {
+            get {
+                return ResourceManager.GetString("Message_TaskInvoked", resourceCulture);
+            }
+        }
     }
 }

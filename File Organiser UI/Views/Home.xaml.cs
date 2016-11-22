@@ -94,13 +94,13 @@
 
                 if (immediateStart)
                 {
-                    task.Execute();
-
-                    this.Notifier.Notify("New task with identity '" + task.Identity.ToString() + "' added and started.");
+                    this.Manager.RunTaskById(task.Identity);
+                    
+                    this.Notifier.Notify(string.Format(UiResources.Message_TaskAddedAndStarted, task.Identity));
                 }
                 else
                 {
-                    this.Notifier.Notify("New task with identity '" + task.Identity.ToString() + "' added.");
+                    this.Notifier.Notify(string.Format(UiResources.Message_TaskAdded, task.Identity));
                 }
             }
 
@@ -115,11 +115,9 @@
 
                 string id = (runTask.DataContext as TaskViewModel).Identity;
 
-                ITask task = this.Manager.FindById(Guid.Parse(id));
+                this.Notifier.Notify(string.Format(UiResources.Message_TaskInvoked, id));
 
-                this.Notifier.Notify("Task '" + id + "' invoked");
-
-                task.Execute();
+                this.Manager.RunTaskById(Guid.Parse(id));
             }
         }
 
@@ -162,7 +160,7 @@
 
             this.Manager.DeleteById(Guid.Parse(id));
 
-            this.Notifier.Notify("Task '" + id + "' deleted.");
+            this.Notifier.Notify(string.Format(UiResources.Message_TaskDeleted, id));
 
             this.OnPropertyChanged(nameof(this.Tasks));
         }

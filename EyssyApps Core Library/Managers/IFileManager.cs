@@ -9,5 +9,11 @@
         bool Exists(string filePath);
 
         IEnumerable<byte> ReadBytes(string filePath);
+
+        IEnumerable<string> ReadAllLines(string filePath);
+
+        string ReadAllText(string filePath);
+
+        void Write(string filePath, string contents, bool append = false);
     }
 }

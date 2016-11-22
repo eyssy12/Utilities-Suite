@@ -5,7 +5,7 @@
     using Core.Library.Execution;
     using Tasks;
 
-    public interface ITaskManager : IExecute, ITerminate, IRaiseFailures
+    public interface ITaskManager : IExecute, ITerminate
     {
         bool Add(ITask task);
 
@@ -16,5 +16,7 @@
         ITask FindById(Guid id);
 
         IEnumerable<ITask> GetAll();
+
+        void RunTaskById(Guid id);
     }
 }

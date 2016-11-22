@@ -3,54 +3,58 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Core.Library.Events;
     using Core.Library.Extensions;
+    using Exceptions;
     using Factories;
     using Tasks;
 
     public class SimpleTaskManager : ITaskManager
     {
-        // TODO: add event raiser 
-
         protected readonly IOrganiserFactory Factory;
-        protected readonly IList<ITask> Tasks;
+        protected readonly ITaskLogger TaskLogger;
+        protected readonly IList<TaskMetadata> Tasks;
 
-        public event EventHandler<EventArgs<Exception>> FailureRaised;
-
-        public SimpleTaskManager(IOrganiserFactory factory)
+        public SimpleTaskManager(IOrganiserFactory factory, ITaskLogger taskLogger)
         {
             if (factory == null)
             {
                 throw new ArgumentNullException(nameof(factory), "factory missing");
             }
 
+            if (taskLogger == null)
+            {
+                throw new ArgumentNullException(nameof(taskLogger), "task logger missing");
+            }
+
             this.Factory = factory;
-            this.Tasks = new List<ITask>();
+            this.TaskLogger = taskLogger;
+
+            this.Tasks = new List<TaskMetadata>();
         }
 
         public void Execute()
         {
-            try
-            {
-                this.Tasks.ForEach(t => Task.Run(() => t.Execute()));
-            }
-            catch (Exception ex)
-            {
-                Invoker.Raise(ref this.FailureRaised, this, ex);
-            }
+            this.Tasks.ForEach(t => this.RunTask(t.Task));
         }
 
         public void Terminate()
         {
-            
+            // TODO: how to do this if possible...
         }
 
         public bool Add(ITask task)
         {
             if (this.DoesNotContain(task))
             {
-                this.Tasks.Add(task);
+                TaskMetadata metadata = new TaskMetadata(
+                    task,
+                    new EventHandler<EventArgs<TaskState>>((sender, e) => this.HandleStateChanged(sender, e, task)),
+                    new EventHandler<EventArgs<Exception>>((sender, e) => this.HandleFailureRaised(sender, e, task)));
+
+                this.Tasks.Add(metadata);
+
+                this.TaskLogger.TaskCreated(task, "Task created.");
 
                 return true;
             }
@@ -60,24 +64,45 @@
 
         public bool Delete(ITask task)
         {
-            if (this.Contains(task))
-            {
-                this.Tasks.Remove(task);
+            TaskMetadata metadata = this.GetAssociatedMetadata(task);
 
-                return true;
+            if (metadata == null)
+            {
+                return false;
             }
 
-            return false;
+            this.Tasks.Remove(metadata);
+
+            metadata.Dispose();
+
+            this.TaskLogger.TaskDeleted(task, "Task was removed.");
+
+            return true;
         }
 
         public ITask FindById(Guid identity)
         {
-            return this.Tasks.FirstOrDefault(t => t.Identity == identity);
+            return this.Tasks.FirstOrDefault(t => t.Task.Identity == identity).Task;
         }
 
         public IEnumerable<ITask> GetAll()
         {
-            return this.Tasks;
+            return this.Tasks.Select(t => t.Task).ToArray();
+        }
+
+        public bool DeleteById(Guid id)
+        {
+            return this.Delete(this.FindById(id));
+        }
+
+        public void RunTaskById(Guid id)
+        {
+            this.RunTask(this.FindById(id));
+        }
+
+        protected TaskMetadata GetAssociatedMetadata(ITask task)
+        {
+            return this.Tasks.FirstOrDefault(t => t.Task.Identity == task.Identity);
         }
 
         protected bool Contains(ITask task)
@@ -87,7 +112,7 @@
                 return false;
             }
 
-            return this.Tasks.Any(t => t.Identity == task.Identity);
+            return this.Tasks.Any(t => t.Task.Identity == task.Identity);
         }
 
         protected bool DoesNotContain(ITask task)
@@ -95,9 +120,65 @@
             return !this.Contains(task);
         }
 
-        public bool DeleteById(Guid id)
+        protected void RunTask(ITask task)
         {
-            return this.Delete(this.FindById(id));
+            if (task == null)
+            {
+                throw new UnknownTaskException("Provided task '" +nameof(task) + "' is missing.");
+            }
+
+            task.Execute();
+        }
+
+        private void HandleStateChanged(object sender, EventArgs<TaskState> e, ITask task)
+        {
+            this.TaskLogger.StateChanged(task);
+        }
+
+        private void HandleFailureRaised(object sender, EventArgs<Exception> e, ITask task)
+        {
+            this.TaskLogger.Failure(task, e.First.Message);
+        }
+
+        protected class TaskMetadata : IDisposable
+        {
+            private readonly ITask task;
+            private readonly EventHandler<EventArgs<TaskState>> StateHandler;
+            private readonly EventHandler<EventArgs<Exception>> FailureHandler;
+
+            public TaskMetadata(
+                ITask task, 
+                EventHandler<EventArgs<TaskState>> stateHandler,
+                EventHandler<EventArgs<Exception>> failureHandler)
+            {
+                this.task = task;
+                this.StateHandler = stateHandler;
+                this.FailureHandler = failureHandler;
+
+                this.task.StateChanged += stateHandler;
+                this.task.FailureRaised += failureHandler;
+            }
+
+            public ITask Task
+            {
+                get { return this.task; }
+            }
+
+            public void Dispose()
+            {
+                this.Dispose(true);
+
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    this.task.StateChanged -= this.StateHandler;
+                    this.task.FailureRaised -= this.FailureHandler;
+                }
+            }
         }
     }
 }

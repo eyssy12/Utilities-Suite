@@ -124,4 +124,16 @@
   <data name="Format_ConfigurationFile" xml:space="preserve">
     <value>{0}{1}.{2}</value>
   </data>
+  <data name="Message_TaskAdded" xml:space="preserve">
+    <value>New task with identity '{0}' added.</value>
+  </data>
+  <data name="Message_TaskAddedAndStarted" xml:space="preserve">
+    <value>New task with identity '{0}' added and started.</value>
+  </data>
+  <data name="Message_TaskDeleted" xml:space="preserve">
+    <value>Task '{0}' deleted.</value>
+  </data>
+  <data name="Message_TaskInvoked" xml:space="preserve">
+    <value>Task '{0}' invoked.</value>
+  </data>
 </root>

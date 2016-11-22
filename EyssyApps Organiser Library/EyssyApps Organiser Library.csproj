@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
@@ -48,11 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DuplicateFileException.cs" />
+    <Compile Include="Exceptions\DuplicateFileException.cs" />
     <Compile Include="Enumerations.cs" />
+    <Compile Include="Exceptions\UnknownTaskException.cs" />
     <Compile Include="Factories\IOrganiserFactory.cs" />
+    <Compile Include="Managers\ITaskLogger.cs" />
     <Compile Include="Managers\ITaskManager.cs" />
     <Compile Include="Managers\SimpleTaskManager.cs" />
+    <Compile Include="Managers\SimpleTaskLogger.cs" />
     <Compile Include="Models\Organiser\FileExtensionCategory.cs" />
     <Compile Include="Models\Organiser\FileExtensionDatabaseModel.cs" />
     <Compile Include="Models\Organiser\FileExtensionMetadata.cs" />

@@ -2,8 +2,6 @@
 {
     public interface IExecute
     {
-        // TODO: add Eventhandler for triggered execution
-        
         void Execute();
     }
 }
