@@ -13,6 +13,13 @@
         <Button Click="Button_Click">
             Individual task - Return to Home View
         </Button>
+
+        <StackPanel Margin="24">
+            <Button Name="Button_OpenHistory" HorizontalAlignment="Left" Click="Button_OpenHistory_Click">
+                Open History
+            </Button>
+        </StackPanel>
+        
     </StackPanel>
 
 </controls:ViewControlBase>

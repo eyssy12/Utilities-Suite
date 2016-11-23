@@ -56,10 +56,10 @@
     <Compile Include="Enumerations.cs" />
     <Compile Include="Exceptions\UnknownTaskException.cs" />
     <Compile Include="Factories\IOrganiserFactory.cs" />
-    <Compile Include="Managers\ITaskLogger.cs" />
+    <Compile Include="Providers\ITaskHistoryProvider.cs" />
     <Compile Include="Managers\ITaskManager.cs" />
     <Compile Include="Managers\SimpleTaskManager.cs" />
-    <Compile Include="Managers\SimpleTaskLogger.cs" />
+    <Compile Include="Providers\TaskHistoryProvider.cs" />
     <Compile Include="Models\Organiser\FileExtensionCategory.cs" />
     <Compile Include="Models\Organiser\FileExtensionDatabaseModel.cs" />
     <Compile Include="Models\Organiser\FileExtensionMetadata.cs" />

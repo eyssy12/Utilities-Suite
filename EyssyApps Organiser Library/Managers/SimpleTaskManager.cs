@@ -7,28 +7,29 @@
     using Core.Library.Extensions;
     using Exceptions;
     using Factories;
+    using Providers;
     using Tasks;
 
     public class SimpleTaskManager : ITaskManager
     {
         protected readonly IOrganiserFactory Factory;
-        protected readonly ITaskLogger TaskLogger;
+        protected readonly ITaskHistoryProvider Provider;
         protected readonly IList<TaskMetadata> Tasks;
 
-        public SimpleTaskManager(IOrganiserFactory factory, ITaskLogger taskLogger)
+        public SimpleTaskManager(IOrganiserFactory factory, ITaskHistoryProvider provider)
         {
             if (factory == null)
             {
                 throw new ArgumentNullException(nameof(factory), "factory missing");
             }
 
-            if (taskLogger == null)
+            if (provider == null)
             {
-                throw new ArgumentNullException(nameof(taskLogger), "task logger missing");
+                throw new ArgumentNullException(nameof(provider), "task logger missing");
             }
 
             this.Factory = factory;
-            this.TaskLogger = taskLogger;
+            this.Provider = provider;
 
             this.Tasks = new List<TaskMetadata>();
         }
@@ -54,7 +55,7 @@
 
                 this.Tasks.Add(metadata);
 
-                this.TaskLogger.TaskCreated(task, "Task created.");
+                this.Provider.TaskCreated(task, "Task created.");
 
                 return true;
             }
@@ -75,7 +76,7 @@
 
             metadata.Dispose();
 
-            this.TaskLogger.TaskDeleted(task, "Task was removed.");
+            this.Provider.TaskDeleted(task, "Task was removed.");
 
             return true;
         }
@@ -132,12 +133,12 @@
 
         private void HandleStateChanged(object sender, EventArgs<TaskState> e, ITask task)
         {
-            this.TaskLogger.StateChanged(task);
+            this.Provider.StateChanged(task);
         }
 
         private void HandleFailureRaised(object sender, EventArgs<Exception> e, ITask task)
         {
-            this.TaskLogger.Failure(task, e.First.Message);
+            this.Provider.Failure(task, e.First.Message);
         }
 
         protected class TaskMetadata : IDisposable

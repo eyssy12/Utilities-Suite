@@ -1,6 +1,5 @@
 ﻿namespace File.Organiser.UI.IoC
 {
-    using System;
     using System.Configuration;
     using System.Windows.Controls;
     using Controls;
@@ -33,18 +32,11 @@
             this.BindLoggers();
         }
 
-        private void BindLoggers()
+        protected virtual void BindLoggers()
         {
-            this.Bind<ITaskLogger>(container =>
-            {
-                return new SimpleTaskLogger(
-                    container.GetInstance<IFileManager>(),
-                    container.GetInstance<IDirectoryManager>(),
-                    ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore]);
-            }, lifestyle: Lifestyle.Singleton);
         }
 
-        private void BindProviders()
+        protected virtual void BindProviders()
         {
             this.Bind<IFileExtensionProvider>((container) =>
             {
@@ -57,6 +49,14 @@
 
                 return new FileExtensionProvider(result);
             }, Lifestyle.Singleton);
+
+            this.Bind<ITaskHistoryProvider>(container =>
+            {
+                return new TaskHistoryProvider(
+                    container.GetInstance<IFileManager>(),
+                    container.GetInstance<IDirectoryManager>(),
+                    ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore]);
+            }, lifestyle: Lifestyle.Singleton);
         }
 
         protected override void BindServices()

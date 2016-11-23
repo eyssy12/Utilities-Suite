@@ -2,17 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using Core.Library.Extensions;
     using Core.Library.Factories;
     using Core.Library.Managers;
     using Core.Library.Timing;
     using Core.Library.Windows;
+    using Core.Library.Windows.Registry;
     using Extensions;
-    using Newtonsoft.Json;
     using Organiser.Library.Factories;
-    using Organiser.Library.Models.Organiser;
-    using Organiser.Library.Providers;
     using SimpleInjector;
 
     public class CommonBindings
@@ -59,6 +56,7 @@
         protected virtual void BindServices()
         {
             this.Bind<IIniFileManager, IniFileManager>();
+            this.Bind<IWinSystemService, WinSystemService>();
         }
 
         protected virtual void BindManagers()

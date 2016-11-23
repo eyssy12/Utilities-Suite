@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library.Managers
+﻿namespace EyssyApps.Organiser.Library.Providers
 {
     using System;
     using System.IO;
@@ -6,16 +6,16 @@
     using Core.Library.Managers;
     using Tasks;
 
-    public class SimpleTaskLogger : ITaskLogger
+    public class TaskHistoryProvider : ITaskHistoryProvider
     {
         protected const string FileFormat = "{0}.txt",
-            TimeStampFormat = "D";
+            TimeStampFormat = "F";
 
         protected readonly IFileManager FileManager;
         protected readonly IDirectoryManager DirectoryManager;
         protected readonly string HistoryPath;
 
-        public SimpleTaskLogger(IFileManager fileManager, IDirectoryManager directoryManager, string historyPath)
+        public TaskHistoryProvider(IFileManager fileManager, IDirectoryManager directoryManager, string historyPath)
         {
             if (fileManager == null)
             {
@@ -85,6 +85,7 @@
                 }
 
                 builder.Append(message);
+                builder.AppendLine();
                 builder.AppendLine(this.GetLogSection());
                 builder.AppendLine();
 
@@ -126,13 +127,18 @@
             return null;
         }
 
+        public string GetStorePath(ITask task)
+        {
+            return this.GenerateStorePath(task);
+        }
+
         protected void PerformLoggingAction(ITask task, Func<ITask, string> contentBuilder)
         {
             string storePath = this.GenerateStorePath(task);
 
             if (this.DirectoryManager.Exists(storePath, create: true))
             {
-                string filePath = this.GenerateFilePath(storePath, string.Format(SimpleTaskLogger.FileFormat, task.Identity.ToString()));
+                string filePath = this.GenerateFilePath(storePath, string.Format(TaskHistoryProvider.FileFormat, task.Name));
 
                 string contents = contentBuilder(task);
 
@@ -147,7 +153,7 @@
 
         protected string GenerateFilePath(ITask task)
         {
-            return this.GenerateFilePath(this.GenerateStorePath(task), string.Format(SimpleTaskLogger.FileFormat, task.Identity.ToString()));
+            return this.GenerateFilePath(this.GenerateStorePath(task), string.Format(TaskHistoryProvider.FileFormat, task.Name));
         }
 
         protected string GenerateFilePath(string rootPath, string fileName)
@@ -157,7 +163,7 @@
 
         protected string GetCurrentTimeStamp()
         {
-            return DateTime.Now.ToString(SimpleTaskLogger.TimeStampFormat);
+            return DateTime.Now.ToString(TaskHistoryProvider.TimeStampFormat);
         }
 
         protected string GetLogSection()

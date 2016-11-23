@@ -77,6 +77,8 @@
     <Compile Include="Timing\ThreadedTimer.cs" />
     <Compile Include="Windows\ApplicationRegistryManager.cs" />
     <Compile Include="Windows\IApplicationRegistryManager.cs" />
+    <Compile Include="Windows\IWinSystemService.cs" />
+    <Compile Include="Windows\WinSystemService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

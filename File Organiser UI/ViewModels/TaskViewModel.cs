@@ -8,7 +8,7 @@
 
     public class TaskViewModel : ViewModelBase
     {
-        protected readonly ITask Task;
+        private readonly ITask task;
 
         public TaskViewModel(ITask task)
         {
@@ -17,8 +17,8 @@
                 throw new ArgumentNullException(nameof(task), "No Task provided");
             }
 
-            this.Task = task;
-            this.Task.StateChanged += Task_StateChanged;
+            this.task = task;
+            this.task.StateChanged += Task_StateChanged;
         }
 
         private void Task_StateChanged(object sender, EventArgs<TaskState> e)
@@ -28,27 +28,32 @@
 
         public string Identity
         {
-            get { return this.Task.Identity.ToString(); }
+            get { return this.Reference.Identity.ToString(); }
         }
 
         public string Name
         {
-            get { return this.Task.Name; }
+            get { return this.Reference.Name; }
         }
 
         public TaskType TaskType
         {
-            get { return this.Task.TaskType; }
+            get { return this.Reference.TaskType; }
         }
 
         public TaskState State
         {
-            get { return this.Task.State; }
+            get { return this.Reference.State; }
         }
 
         public string Description
         {
-            get { return this.Task.Description; }
+            get { return this.Reference.Description; }
+        }
+
+        public ITask Reference
+        {
+            get { return this.task; }
         }
     }
 }

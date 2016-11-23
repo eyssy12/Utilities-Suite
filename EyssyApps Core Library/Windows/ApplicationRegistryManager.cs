@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Windows
+﻿namespace EyssyApps.Core.Library.Windows.Registry
 {
     using System;
     using System.Reflection;

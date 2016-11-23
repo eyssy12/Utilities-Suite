@@ -1,8 +1,8 @@
-﻿namespace EyssyApps.Organiser.Library.Managers
+﻿namespace EyssyApps.Organiser.Library.Providers
 {
     using Tasks;
 
-    public interface ITaskLogger
+    public interface ITaskHistoryProvider
     {
         void Failure(ITask task, string message);
 
@@ -13,5 +13,7 @@
         void TaskCreated(ITask task, string message);
 
         string GetHistory(ITask task);
+
+        string GetStorePath(ITask task);
     }
 }

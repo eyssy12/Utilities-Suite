@@ -29,7 +29,10 @@
         {
             if (append)
             {
-                File.AppendAllText(filePath, contents);
+                using (StreamWriter writer = File.AppendText(filePath))
+                {
+                    writer.WriteLine(contents);
+                }
             }
 
             File.WriteAllText(filePath, contents);
