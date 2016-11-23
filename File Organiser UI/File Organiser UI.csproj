@@ -72,6 +72,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -107,10 +108,15 @@
     <Compile Include="Converters\SliderValueToLabelConverter.cs" />
     <Compile Include="Converters\TaskTypeToVisibilityConverter.cs" />
     <Compile Include="Enumerations.cs" />
+    <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="IoC\ApplicationConfigurationManager.cs" />
     <Compile Include="IoC\IApplicationConfigurationManager.cs" />
     <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="IoC\UiBindings.cs" />
+    <Compile Include="Services\FormsService.cs" />
+    <Compile Include="Services\IFormsService.cs" />
+    <Compile Include="Services\ISnackbarNotificationService.cs" />
+    <Compile Include="Services\SnackbarNotificationService.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -213,10 +219,6 @@
     <ProjectReference Include="..\EyssyApps Organiser Library\EyssyApps Organiser Library.csproj">
       <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
       <Name>EyssyApps Organiser Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EyssyApps UI Library\EyssyApps UI Library.csproj">
-      <Project>{44c7ea2a-1a34-4716-ab4e-8c217a035fd8}</Project>
-      <Name>EyssyApps UI Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

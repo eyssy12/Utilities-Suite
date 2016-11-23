@@ -6,7 +6,7 @@
     using System.Windows;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Organiser.Library.Factories;
-    using EyssyApps.UI.Library.Services;
+    using Services;
     using Views;
 
     public abstract class MainWindowBase : Window, IMainWindow

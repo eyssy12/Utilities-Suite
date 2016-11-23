@@ -16,8 +16,8 @@
     using EyssyApps.Organiser.Library.Models.Settings;
     using EyssyApps.Organiser.Library.Providers;
     using EyssyApps.Organiser.Library.Tasks;
-    using EyssyApps.UI.Library.Services;
     using IoC;
+    using Services;
     using ViewModels;
 
     public partial class Home : ViewControlBase

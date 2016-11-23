@@ -55,7 +55,7 @@
 
                 this.Tasks.Add(metadata);
 
-                this.Provider.TaskCreated(task, "Task created.");
+                this.Provider.Log(task, LogTaskType.Created, "Task created.");
 
                 return true;
             }
@@ -76,7 +76,7 @@
 
             metadata.Dispose();
 
-            this.Provider.TaskDeleted(task, "Task was removed.");
+            this.Provider.Log(task, LogTaskType.Deleted, "Task was removed.");
 
             return true;
         }
@@ -133,12 +133,12 @@
 
         private void HandleStateChanged(object sender, EventArgs<TaskState> e, ITask task)
         {
-            this.Provider.StateChanged(task);
+            this.Provider.Log(task, LogTaskType.StateChanged, string.Empty);
         }
 
         private void HandleFailureRaised(object sender, EventArgs<Exception> e, ITask task)
         {
-            this.Provider.Failure(task, e.First.Message);
+            this.Provider.Log(task, LogTaskType.FailureRaised, e.First.Message);
         }
 
         protected class TaskMetadata : IDisposable

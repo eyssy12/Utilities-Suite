@@ -1,7 +1,7 @@
 ﻿namespace File.Organiser.UI.Controls
 {
     using System.ComponentModel;
-    using EyssyApps.UI.Library.Extensions;
+    using Extensions;
 
     public abstract class ViewModelBase : IViewModel
     {

@@ -28,4 +28,12 @@
         Cancelled = 16,
         Failed = 32
     }
+
+    public enum LogTaskType
+    {
+        FailureRaised,
+        StateChanged,
+        Created,
+        Deleted
+    }
 }

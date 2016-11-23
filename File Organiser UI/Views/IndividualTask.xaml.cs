@@ -7,7 +7,7 @@
     using EyssyApps.Core.Library.Windows;
     using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.Organiser.Library.Providers;
-    using EyssyApps.UI.Library.Services;
+    using Services;
     using ViewModels;
 
     public partial class IndividualTask : ViewControlBase

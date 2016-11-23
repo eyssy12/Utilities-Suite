@@ -8,8 +8,8 @@
     using EyssyApps.Organiser.Library.Managers;
     using EyssyApps.Organiser.Library.Models.Organiser;
     using EyssyApps.Organiser.Library.Providers;
-    using EyssyApps.UI.Library.Services;
     using Newtonsoft.Json;
+    using Services;
     using SimpleInjector;
     using FileIO = System.IO.File;
     using PathIO = System.IO.Path;

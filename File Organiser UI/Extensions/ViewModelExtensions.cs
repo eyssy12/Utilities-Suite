@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.UI.Library.Extensions
+﻿namespace File.Organiser.UI.Extensions
 {
     using System;
     using System.Collections.Generic;

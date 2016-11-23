@@ -4,13 +4,7 @@
 
     public interface ITaskHistoryProvider
     {
-        void Failure(ITask task, string message);
-
-        void StateChanged(ITask task);
-
-        void TaskDeleted(ITask task, string message);
-
-        void TaskCreated(ITask task, string message);
+        void Log(ITask task, LogTaskType logType, string message);
 
         string GetHistory(ITask task);
 

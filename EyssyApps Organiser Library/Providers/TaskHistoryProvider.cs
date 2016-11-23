@@ -37,7 +37,43 @@
             this.HistoryPath = Path.GetFullPath(historyPath);
         }
 
-        public void Failure(ITask task, string message)
+        public void Log(ITask task, LogTaskType logType, string message)
+        {
+            switch (logType)
+            {
+                case LogTaskType.Created:
+                    this.TaskCreated(task, message);
+                    break;
+                case LogTaskType.Deleted:
+                    this.TaskDeleted(task, message);
+                    break;
+                case LogTaskType.FailureRaised:
+                    this.Failure(task, message);
+                    break;
+                case LogTaskType.StateChanged:
+                    this.StateChanged(task);
+                    break;
+            }
+        }
+
+        public string GetHistory(ITask task)
+        {
+            string filePath = this.GenerateFilePath(task);
+
+            if (this.FileManager.Exists(filePath))
+            {
+                return this.FileManager.ReadAllText(filePath);
+            }
+
+            return null;
+        }
+
+        public string GetStorePath(ITask task)
+        {
+            return this.GenerateStorePath(task);
+        }
+
+        protected void Failure(ITask task, string message)
         {
             this.PerformLoggingAction(task, t =>
             {
@@ -57,7 +93,7 @@
             });
         }
 
-        public void StateChanged(ITask task)
+        protected void StateChanged(ITask task)
         {
             this.PerformLoggingAction(task, t =>
             {
@@ -71,7 +107,7 @@
             });
         }
 
-        public void TaskDeleted(ITask task, string message)
+        protected void TaskDeleted(ITask task, string message)
         {
             this.PerformLoggingAction(task, t =>
             {
@@ -93,7 +129,7 @@
             });
         }
 
-        public void TaskCreated(ITask task, string message)
+        protected void TaskCreated(ITask task, string message)
         {
             this.PerformLoggingAction(task, t =>
             {
@@ -113,23 +149,6 @@
 
                 return builder.ToString();
             });
-        }
-
-        public string GetHistory(ITask task)
-        {
-            string filePath = this.GenerateFilePath(task);
-
-            if (this.FileManager.Exists(filePath))
-            {
-                return this.FileManager.ReadAllText(filePath);
-            }
-
-            return null;
-        }
-
-        public string GetStorePath(ITask task)
-        {
-            return this.GenerateStorePath(task);
         }
 
         protected void PerformLoggingAction(ITask task, Func<ITask, string> contentBuilder)

@@ -3,9 +3,9 @@
     using System;
     using System.Windows;
     using Controls;
-    using EyssyApps.UI.Library.Services;
     using File.Organiser.UI.IoC;
     using MaterialDesignThemes.Wpf;
+    using Services;
     using SimpleInjector;
     using ApplicationMainWindow = File.Organiser.UI.MainWindow;
 
