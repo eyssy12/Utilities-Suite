@@ -5,7 +5,7 @@
     using EyssyApps.Core.Library.Events;
     using static Enumerations;
 
-    public interface ISystemTrayControl
+    public interface ISystemTrayControl : IDisposable
     {
         event EventHandler<EventArgs<TrayState>> StateChanged;
 

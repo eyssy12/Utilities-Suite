@@ -89,5 +89,20 @@
 
             return item;
         }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.TrayIcon.Dispose();
+            }
+        }
     }
 }
