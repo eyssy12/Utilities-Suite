@@ -1,8 +1,8 @@
 ﻿namespace EyssyApps.Organiser.Library.Exceptions
 {
     using System;
-    using Tasks;
 
+    [Serializable]
     public class UnknownTaskException : Exception
     {
         public UnknownTaskException(string message) : base(message)
