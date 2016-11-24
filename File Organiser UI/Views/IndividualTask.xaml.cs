@@ -20,8 +20,8 @@
 
         private ICommand openHistoryFolderCommand;
 
-        public IndividualTask(IOrganiserFactory factory)
-            : base(IndividualTask.ViewName, isDefault: false, factory: factory)
+        public IndividualTask(IOrganiserFactory factory, ICommandProvider commandProvider)
+            : base(IndividualTask.ViewName, factory, commandProvider)
         {
             this.InitializeComponent();
 
@@ -42,7 +42,7 @@
 
             this.Notifer.Notify("Viewing task " + model.Identity.ToString());
 
-            this.openHistoryFolderCommand = new RelayCommand<object>(param => this.WinSystem.OpenFolder(this.Provider.GetStorePath(model.Reference)));
+            this.openHistoryFolderCommand = this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Provider.GetStorePath(model.Reference)));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

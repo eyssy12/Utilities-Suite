@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Attributes;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Core.Library.Extensions;
 
@@ -17,7 +18,7 @@
                 throw new ArgumentNullException(nameof(views), "No views provided."); // TODO: resources
             }
 
-            int defaultViewCount = views.Count(v => v.IsDefault);
+            int defaultViewCount = views.Count(v => v.GetType().GetCustomAttribute<DefaultViewControlAttribute>() != null);
 
             if (defaultViewCount == 0)
             {

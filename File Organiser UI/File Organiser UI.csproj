@@ -91,6 +91,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Attributes\DefaultViewControlAttribute.cs" />
+    <Compile Include="Commands\CommandProvider.cs" />
+    <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
     <Compile Include="Controls\IMainWindow.cs" />

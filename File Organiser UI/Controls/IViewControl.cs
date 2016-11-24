@@ -8,8 +8,6 @@
     {
         string ViewControlName { get; }
 
-        bool IsDefault { get; }
-
         bool IsActive { get; set; }
 
         event EventHandler<EventArgs<string, object>> OnChangeView;

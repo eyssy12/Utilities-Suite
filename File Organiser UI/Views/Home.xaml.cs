@@ -6,6 +6,8 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using Attributes;
+    using Commands;
     using Controls;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Core.Library.Managers;
@@ -20,6 +22,7 @@
     using Services;
     using ViewModels;
 
+    [DefaultViewControl]
     public partial class Home : ViewControlBase
     {
         public const string ViewName = nameof(Home);
@@ -29,8 +32,8 @@
         protected readonly IApplicationRegistryManager RegistryManager;
         protected readonly IApplicationConfigurationManager ConfigManager;
 
-        public Home(IOrganiserFactory factory) 
-            : base(Home.ViewName, isDefault: true, factory: factory)
+        public Home(IOrganiserFactory factory, ICommandProvider commandProvider) 
+            : base(Home.ViewName, factory, commandProvider)
         {
             this.InitializeComponent();
 

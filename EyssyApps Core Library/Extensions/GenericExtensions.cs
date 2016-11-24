@@ -35,5 +35,17 @@
         {
             yield return value;
         }
+
+        public static TAttribute GetCustomAttribute<TAttribute>(this Type type)
+            where TAttribute : Attribute
+        {
+            return (TAttribute)Attribute.GetCustomAttribute(type, typeof(TAttribute));
+        }
+
+        public static IEnumerable<TAttribute> GetCustomAttributes<TAttribute>(this Type type)
+            where TAttribute : Attribute
+        {
+            return Attribute.GetCustomAttributes(type, typeof(TAttribute)).Select(t => (TAttribute)t).ToArray();
+        }
     }
 }

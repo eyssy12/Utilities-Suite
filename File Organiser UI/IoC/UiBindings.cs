@@ -2,6 +2,7 @@
 {
     using System.Configuration;
     using System.Windows.Controls;
+    using Commands;
     using Controls;
     using EyssyApps.Configuration.Library;
     using EyssyApps.Core.Library.Managers;
@@ -38,6 +39,7 @@
 
         protected virtual void BindProviders()
         {
+            this.Bind<ICommandProvider, CommandProvider>();
             this.Bind<IFileExtensionProvider>((container) =>
             {
                 string fileExtensionJson = ConfigurationManager.AppSettings[UiBindings.KeyFileExtensionJsonFile];
@@ -48,8 +50,7 @@
                 FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
 
                 return new FileExtensionProvider(result);
-            }, Lifestyle.Singleton);
-
+            }, lifestyle: Lifestyle.Singleton);
             this.Bind<ITaskHistoryProvider>(container =>
             {
                 return new TaskHistoryProvider(

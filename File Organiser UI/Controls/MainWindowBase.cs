@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows;
+    using Commands;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Organiser.Library.Factories;
     using Services;
@@ -21,14 +22,16 @@
 
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
 
+            ICommandProvider provider = this.Factory.Create<ICommandProvider>();
+
             //this.Navigator = this.Factory.Create<IViewNavigator>();
 
             //// TODO: these should be bindings - figure out how to register a collection in simple injector the way i need it to
             IEnumerable<IViewControl> controls = new List<IViewControl>
             {
-                new Home(this.Factory),
-                new AddTask(this.Factory),
-                new IndividualTask(this.Factory)
+                new Home(this.Factory, provider),
+                new AddTask(this.Factory, provider),
+                new IndividualTask(this.Factory, provider)
             };
 
             this.Navigator = new ViewNavigator(controls);

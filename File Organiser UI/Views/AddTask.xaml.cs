@@ -33,8 +33,11 @@
         protected readonly IFileExtensionProvider Provider;
         protected readonly IList<ValidationError> Errors;
 
-        public AddTask(IOrganiserFactory factory)
-            : base(AddTask.ViewName, isDefault: false, factory: factory)
+        public AddTask(IOrganiserFactory factory, ICommandProvider commandProvider)
+            : base(
+                  AddTask.ViewName,
+                  factory: factory,
+                  commandProvider: commandProvider)
         {
             this.InitializeComponent();
 
@@ -42,9 +45,9 @@
             this.Provider = this.Factory.Create<IFileExtensionProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
 
-            this.Model = new AddTaskViewModel(); // TODO: this doesn't seem the right way to go about it, should think about a more cleaner way...
-            this.Model.SelectRootPathCommand = new RelayCommand<object>(value => this.Model.RootPath = this.Factory.Create<IFormsService>().SelectFolderPathDialog());
-            this.Model.LoadRootPathFilesCommand = new RelayCommand<object>(value =>
+            this.Model = new AddTaskViewModel();
+            this.Model.SelectRootPathCommand = this.CommandProvider.CreateRelayCommand(() => this.Model.RootPath = this.Factory.Create<IFormsService>().SelectFolderPathDialog());
+            this.Model.LoadRootPathFilesCommand = this.CommandProvider.CreateRelayCommand(() =>
             {
                 if (!string.IsNullOrWhiteSpace(this.Model.RootPath))
                 {
@@ -57,7 +60,8 @@
                         {
                             File = file,
                             Exempt = false
-                        }));
+                        })
+                        .ToArray());
                 }
             });
 

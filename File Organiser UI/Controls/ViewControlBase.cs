@@ -3,21 +3,27 @@
     using System;
     using System.ComponentModel;
     using System.Windows.Controls;
+    using Commands;
     using EyssyApps.Core.Library.Events;
     using EyssyApps.Organiser.Library.Factories;
 
     public abstract class ViewControlBase : UserControl, IViewControl
     {
         protected readonly IOrganiserFactory Factory;
+        protected readonly ICommandProvider CommandProvider;
 
         private readonly string viewName;
-        private readonly bool isDefault; // TODO: perhaps make this as an attribute that is attached to a single view control ?
 
-        protected ViewControlBase(string viewName, bool isDefault, IOrganiserFactory factory)
+        protected ViewControlBase(string viewName, IOrganiserFactory factory, ICommandProvider commandProvider)
         {
             if (factory == null)
             {
-                throw new ArgumentNullException(nameof(factory), "No factory has been provided");
+                throw new ArgumentNullException(nameof(factory), "No factory has been provided.");
+            }
+
+            if (commandProvider == null)
+            {
+                throw new ArgumentNullException(nameof(commandProvider), "A command provider is missing.");
             }
 
             if (string.IsNullOrWhiteSpace(viewName))
@@ -26,19 +32,14 @@
             }
 
             this.Factory = factory;
+            this.CommandProvider = commandProvider;
 
             this.viewName = viewName;
-            this.isDefault = isDefault;
         }
 
         public string ViewControlName
         {
             get { return this.viewName; }
-        }
-
-        public bool IsDefault
-        {
-            get { return this.isDefault; }
         }
 
         public bool IsActive { get; set; }
