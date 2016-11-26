@@ -11,54 +11,57 @@
     using Models.Settings;
     using Providers;
 
-    public class FileOrganiserTask : OrganiseTaskBase
+    public class FileOrganiserTask : OrganiserTaskBase
     {
         protected const string CategoryDirectoryFormat = "{0}/[{1}]";
 
-        protected readonly IFileExtensionProvider Provider;
+        protected readonly IFileExtensionProvider ExtensionProvider;
         protected readonly IFileManager FileManager;
         protected readonly IDirectoryManager DirectoryManager;
-
-        private FileOrganiserSettings settings;
+        protected readonly IOrganiserSettingsProvider SettingsProvider;
 
         public FileOrganiserTask(
             string name,
             string description,
-            FileOrganiserSettings settings, 
-            IFileExtensionProvider provider,
+            IOrganiserSettingsProvider settingsProvider, 
+            IFileExtensionProvider extensionProvider,
             IFileManager fileManager,
             IDirectoryManager directoryManager,
             Guid? identity = null)
             : base(identity, name, description,  OrganiseType.File, TaskType.Organiser)
         {
-            this.settings = settings;
+            // TODO: guard conditions
 
-            this.Provider = provider;
+            this.ExtensionProvider = extensionProvider;
             this.FileManager = fileManager;
             this.DirectoryManager = directoryManager;
+            this.SettingsProvider = settingsProvider;
         }
 
         protected override void HandleExecute()
         {
             this.OnStateChanged(TaskState.Started);
 
+            FileOrganiserSettings settings = this.SettingsProvider.Get<FileOrganiserSettings>(this.Identity);
+
             this.FilterFiles(
+                    settings.RootPath,
                     SearchOption.TopDirectoryOnly,
-                    filePath => !this.settings.FileExemptions.Any(fe => fe == filePath),
-                    filePath => !this.settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase)))
+                    filePath => !settings.FileExemptions.Any(fe => fe == filePath),
+                    filePath => !settings.ExtensionExemptions.Any(extension => filePath.EndsWith(extension, StringComparison.OrdinalIgnoreCase)))
                 .GroupBy(f => Path.GetExtension(f))
                 .ForEach(filePaths =>
                 {
-                    FileExtensionCategory category = this.Provider.GetCategoryForExtension(new string(filePaths.Key.Skip(1).ToArray())); // key is the extension
+                    FileExtensionCategory category = this.ExtensionProvider.GetCategoryForExtension(new string(filePaths.Key.Skip(1).ToArray())); // key is the extension, with the '.'
 
                     string categoryPath;
                     if (category == null)
                     {
-                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, OrganiseTaskBase.DefaultUnkownName);
+                        categoryPath = this.CreateCategoryPath(settings.RootPath, OrganiserTaskBase.DefaultUnkownName);
                     }
                     else
                     {
-                        categoryPath = this.CreateCategoryPath(this.settings.RootPath, category.Value);
+                        categoryPath = this.CreateCategoryPath(settings.RootPath, category.Value);
                     }
 
                     this.MoveFiles(filePaths, categoryPath);
@@ -72,9 +75,9 @@
             throw new NotImplementedException();
         }
 
-        protected IEnumerable<string> FilterFiles(SearchOption searchOption, params Func<string, bool>[] filters)
+        protected IEnumerable<string> FilterFiles(string root, SearchOption searchOption, params Func<string, bool>[] filters)
         {
-            IEnumerable<string> files = this.DirectoryManager.GetFiles(this.settings.RootPath, searchOption: searchOption).ToArray();
+            IEnumerable<string> files = this.DirectoryManager.GetFiles(root, searchOption: searchOption).ToArray();
 
             if (filters.SafeAny())
             {

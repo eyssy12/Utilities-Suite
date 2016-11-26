@@ -1,8 +1,6 @@
 ﻿namespace EyssyApps.Organiser.Library.Tasks
 {
-    using EyssyApps.Organiser.Library.Models.Settings;
-
-    public interface IOrganiseTask : ITask
+    public interface IOrganiserTask : ITask
     {
         OrganiseType OrganiseType { get; }
     }

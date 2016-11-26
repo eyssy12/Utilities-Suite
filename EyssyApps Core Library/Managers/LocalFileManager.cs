@@ -1,8 +1,9 @@
 ﻿namespace EyssyApps.Core.Library.Managers
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
-
+    using ProtoBuf;
     public class LocalFileManager : IFileManager
     {
         public bool Exists(string filePath)
@@ -41,6 +42,22 @@
         public string ReadAllText(string filePath)
         {
             return File.ReadAllText(filePath);
+        }
+
+        public void Serialize<T>(string filePath, T instance, Action<Stream, T> serializer)
+        {
+            using (Stream stream = File.Create(filePath))
+            {
+                serializer(stream, instance);
+            }
+        }
+
+        public T Read<T>(string filePath, Func<Stream, T> deserializer)
+        {
+            using (Stream stream = File.OpenRead(filePath))
+            {
+                return deserializer(stream);
+            }
         }
     }
 }

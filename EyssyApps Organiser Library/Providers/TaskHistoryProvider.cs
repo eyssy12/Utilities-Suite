@@ -6,35 +6,14 @@
     using Core.Library.Managers;
     using Tasks;
 
-    public class TaskHistoryProvider : ITaskHistoryProvider
+    public class TaskHistoryProvider : LocalStoreProviderBase, ITaskHistoryProvider
     {
         protected const string FileFormat = "{0}.txt",
             TimeStampFormat = "F";
 
-        protected readonly IFileManager FileManager;
-        protected readonly IDirectoryManager DirectoryManager;
-        protected readonly string HistoryPath;
-
-        public TaskHistoryProvider(IFileManager fileManager, IDirectoryManager directoryManager, string historyPath)
+        public TaskHistoryProvider(string historyPath, IFileManager fileManager, IDirectoryManager directoryManager)
+            : base(historyPath, fileManager, directoryManager)
         {
-            if (fileManager == null)
-            {
-                throw new ArgumentNullException(nameof(fileManager), ""); // TODO: resources
-            }
-
-            if (directoryManager == null)
-            {
-                throw new ArgumentNullException(nameof(directoryManager), "");
-            }
-
-            if (string.IsNullOrWhiteSpace(historyPath))
-            {
-                throw new ArgumentNullException(nameof(historyPath), "Path to history directory is missing - the manager would not be able to store records for a task");
-            }
-            
-            this.FileManager = fileManager;
-            this.DirectoryManager = directoryManager;
-            this.HistoryPath = Path.GetFullPath(historyPath);
         }
 
         public void Log(ITask task, LogTaskType logType, string message)
@@ -167,7 +146,7 @@
 
         protected string GenerateStorePath(ITask task)
         {
-            return Path.Combine(this.HistoryPath, task.Identity.ToString());
+            return Path.Combine(this.BaseDirectory, task.Identity.ToString());
         }
 
         protected string GenerateFilePath(ITask task)

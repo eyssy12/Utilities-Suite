@@ -30,19 +30,18 @@
 
         protected readonly ITaskManager Manager;
         protected readonly ISnackbarNotificationService Notifier;
-        protected readonly IFileExtensionProvider Provider;
+        protected readonly IOrganiserSettingsProvider SettingsProvider;
+        protected readonly IFileExtensionProvider ExtensionProvider;
         protected readonly IList<ValidationError> Errors;
 
         public AddTask(IOrganiserFactory factory, ICommandProvider commandProvider)
-            : base(
-                  AddTask.ViewName,
-                  factory: factory,
-                  commandProvider: commandProvider)
+            : base(AddTask.ViewName, factory, commandProvider)
         {
             this.InitializeComponent();
 
             this.Manager = this.Factory.Create<ITaskManager>();
-            this.Provider = this.Factory.Create<IFileExtensionProvider>();
+            this.SettingsProvider = this.Factory.Create<IOrganiserSettingsProvider>();
+            this.ExtensionProvider = this.Factory.Create<IFileExtensionProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
 
             this.Model = new AddTaskViewModel();
@@ -69,8 +68,8 @@
 
             this.DataContext = this;
 
-            this.Model.FileExtensions = this.Provider.GetAllExtensions().Select(e => new FileExtensionViewModel { Value = e.Value }).ToList();
-            this.Model.Categories = this.Provider
+            this.Model.FileExtensions = this.ExtensionProvider.GetAllExtensions().Select(e => new FileExtensionViewModel { Value = e.Value }).ToList();
+            this.Model.Categories = this.ExtensionProvider
                 .GetAllCategories()
                 .Select(c => new CategoriesViewModel
                 {
@@ -165,7 +164,7 @@
             TaskType taskType = this.Model.TaskType;
             OrganiseType organiseType = this.Model.OrganiseType;
 
-            IOrganiseTask task = this.CreateTask(Guid.Parse(this.Model.Identity), organiseType);
+            IOrganiserTask task = this.CreateTask(Guid.Parse(this.Model.Identity), organiseType);
 
             if (taskType == TaskType.Organiser)
             {
@@ -175,42 +174,46 @@
             return this.CreateScheduledTask("scheduled", task, 5000, 7000);
         }
 
-        private IOrganiseTask CreateTask(Guid identity, OrganiseType type)
+        private IOrganiserTask CreateTask(Guid identity, OrganiseType type)
         {
             if (type == OrganiseType.File)
             {
-                return this.CreateFileOrganiserTask(identity, this.Model.Name, this.Model.Description, new FileOrganiserSettings
-                {
-                    FileExemptions = this.Model.RootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
-                    RootPath = this.Model.RootPath,
-                    ExtensionExemptions = this.Model.ExemptedFileExtensions.Select(e => e.Value).ToArray()
-                });
+                return this.CreateFileOrganiserTask(identity, this.Model);
             }
 
-            return this.CreateDirectoryOrganiserTask(identity, this.Model.Name, this.Model.Description, new DirectoryOrganiserSettings
-            {
-                RootPath = this.Model.RootPath
-            });
+            return this.CreateDirectoryOrganiserTask(identity, this.Model);
         }
 
-        private IOrganiseTask CreateFileOrganiserTask(Guid identity, string name, string description, FileOrganiserSettings settings)
+        private IOrganiserTask CreateFileOrganiserTask(Guid identity, AddTaskViewModel model)
         {
+            this.SettingsProvider.Save(new FileOrganiserSettings
+            {
+                FileExemptions = model.RootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
+                RootPath = model.RootPath,
+                ExtensionExemptions = model.ExemptedFileExtensions.Select(e => e.Value).ToArray()
+            });
+
             return new FileOrganiserTask(
-                name,
-                description,
-                settings, 
+                model.Name,
+                model.Description,
+                this.Factory.Create<IOrganiserSettingsProvider>(), 
                 this.Factory.Create<IFileExtensionProvider>(), 
                 this.Factory.Create<IFileManager>(),
                 this.Factory.Create<IDirectoryManager>(),
                 identity: identity);
         }
 
-        private IOrganiseTask CreateDirectoryOrganiserTask(Guid identity, string name, string description, DirectoryOrganiserSettings settings)
+        private IOrganiserTask CreateDirectoryOrganiserTask(Guid identity, AddTaskViewModel model)
         {
+            this.SettingsProvider.Save(new DirectoryOrganiserSettings
+            {
+                RootPath = model.RootPath
+            });
+
             return new DirectoryOrganiserTask(
-                name,
-                description, 
-                settings, 
+                model.Name,
+                model.Description,
+                this.Factory.Create<IOrganiserSettingsProvider>(),
                 this.Factory.Create<IDirectoryManager>(),
                 identity: identity);
         }
@@ -224,16 +227,6 @@
                 executable,
                 initialWaitTime: initialWaitTime,
                 timerPeriod: timerPeriod);
-        }
-
-        private void Panel_FileExemptions_Drop(object sender, DragEventArgs e)
-        {
-            Console.WriteLine(this.Grid_Exemptions.IsEnabled);
-        }
-
-        private void Panel_DirectoryExemptions_Drop(object sender, DragEventArgs e)
-        {
-
         }
 
         private void ComboBox_OrganiseType_SelectionChanged(object sender, SelectionChangedEventArgs e)

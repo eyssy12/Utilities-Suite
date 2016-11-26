@@ -1,13 +1,14 @@
 ﻿namespace EyssyApps.Organiser.Library.Models.Settings
 {
     using System.Collections.Generic;
-    using System.Linq;
+    using ProtoBuf;
 
+    [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
     public class DirectoryOrganiserSettings : OrganiserSettingsBase
     {
         public DirectoryOrganiserSettings()
         {
-            this.DirectoryExemptions = Enumerable.Empty<string>();
+            this.DirectoryExemptions = new List<string>();
         }
 
         public IEnumerable<string> DirectoryExemptions { get; set; }

@@ -7,25 +7,24 @@
     using Core.Library.Extensions;
     using Core.Library.Managers;
     using Models.Settings;
+    using Providers;
 
-    public class DirectoryOrganiserTask : OrganiseTaskBase
+    public class DirectoryOrganiserTask : OrganiserTaskBase
     {
         protected const string DefaultDirectoryName = "[Directories]";
             
         protected readonly IDirectoryManager DirectoryManager;
-
-        private DirectoryOrganiserSettings settings;
+        protected readonly IOrganiserSettingsProvider SettingsProvider;
 
         public DirectoryOrganiserTask(
             string name,
             string description,
-            DirectoryOrganiserSettings settings,
+            IOrganiserSettingsProvider settingsProvider,
             IDirectoryManager directoryManager,
             Guid? identity = null)
             : base(identity, name, description, OrganiseType.Directory, TaskType.Organiser)
         {
-            this.settings = settings;
-
+            this.SettingsProvider = settingsProvider;
             this.DirectoryManager = directoryManager;
         }
 
@@ -37,13 +36,15 @@
             // i.e. Test => Folders
             // i.e. Folders => Folders (shouldnt happen)
 
+            DirectoryOrganiserSettings settings = this.SettingsProvider.Get<DirectoryOrganiserSettings>(this.Identity);
+
             IEnumerable<string> directories = this.DirectoryManager
-                .GetDirectores(this.settings.RootPath, searchOption: SearchOption.TopDirectoryOnly)
-                .Except(this.settings.DirectoryExemptions)
+                .GetDirectores(settings.RootPath, searchOption: SearchOption.TopDirectoryOnly)
+                .Except(settings.DirectoryExemptions)
                 .ToArray();
 
-            string targetDirectoryName = string.IsNullOrWhiteSpace(this.settings.TargetDirectoryName) ? DirectoryOrganiserTask.DefaultDirectoryName : this.settings.TargetDirectoryName;
-            string targetDirectoryPath = Path.Combine(this.settings.RootPath, targetDirectoryName);
+            string targetDirectoryName = string.IsNullOrWhiteSpace(settings.TargetDirectoryName) ? DirectoryOrganiserTask.DefaultDirectoryName : settings.TargetDirectoryName;
+            string targetDirectoryPath = Path.Combine(settings.RootPath, targetDirectoryName);
 
             if (this.DirectoryManager.Exists(targetDirectoryPath, create: true))
             {

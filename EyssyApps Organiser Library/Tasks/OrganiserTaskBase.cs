@@ -2,13 +2,13 @@
 {
     using System;
 
-    public abstract class OrganiseTaskBase : TaskBase, IOrganiseTask
+    public abstract class OrganiserTaskBase : TaskBase, IOrganiserTask
     {
         protected const string DefaultUnkownName = "Unknown";
 
         private readonly OrganiseType organiseType;
 
-        protected OrganiseTaskBase(Guid? identity, string name, string description, OrganiseType organiseType, TaskType taskType) 
+        protected OrganiserTaskBase(Guid? identity, string name, string description, OrganiseType organiseType, TaskType taskType) 
             : base(identity, name, description, taskType)
         {
             this.organiseType = organiseType;

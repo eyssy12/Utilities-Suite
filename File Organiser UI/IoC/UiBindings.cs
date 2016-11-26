@@ -20,7 +20,8 @@
         protected const string KeyApplicationPath = "Path_Application",
             KeyFileExtensionJsonFile = "Name_FileExtensionJson",
             KeyConfigurationFileName = "Name_ConfigurationFile",
-            KeyHistoryStore = "Store_History";
+            KeyHistoryStore = "Store_History",
+            KeySettingsStore = "Store_Settings";
 
         protected override void LoadBindings()
         {
@@ -40,6 +41,7 @@
         protected virtual void BindProviders()
         {
             this.Bind<ICommandProvider, CommandProvider>();
+
             this.Bind<IFileExtensionProvider>((container) =>
             {
                 string fileExtensionJson = ConfigurationManager.AppSettings[UiBindings.KeyFileExtensionJsonFile];
@@ -51,12 +53,21 @@
 
                 return new FileExtensionProvider(result);
             }, lifestyle: Lifestyle.Singleton);
+
             this.Bind<ITaskHistoryProvider>(container =>
             {
                 return new TaskHistoryProvider(
+                    ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore],
                     container.GetInstance<IFileManager>(),
-                    container.GetInstance<IDirectoryManager>(),
-                    ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore]);
+                    container.GetInstance<IDirectoryManager>());
+            }, lifestyle: Lifestyle.Singleton);
+
+            this.Bind<IOrganiserSettingsProvider>(container =>
+            {
+                return new OrganiserSettingsProvider(
+                    ConfigurationManager.AppSettings[UiBindings.KeySettingsStore],
+                    container.GetInstance<IFileManager>(),
+                    container.GetInstance<IDirectoryManager>());
             }, lifestyle: Lifestyle.Singleton);
         }
 

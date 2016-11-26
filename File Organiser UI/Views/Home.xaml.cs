@@ -45,21 +45,27 @@
             IFileManager fileManager = this.Factory.Create<IFileManager>();
             IDirectoryManager directoryManager = this.Factory.Create<IDirectoryManager>();
             IFileExtensionProvider provider = this.Factory.Create<IFileExtensionProvider>();
+            IOrganiserSettingsProvider settingsProvider = this.Factory.Create<IOrganiserSettingsProvider>();
+
+            // TODO: Save/load feature
+            FileOrganiserTask fileTask = new FileOrganiserTask("File Organiser", "Sorts the files in the Downloads folder", settingsProvider, provider, fileManager, directoryManager);
+            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask("Directory Organiser", "Sorts the individual directories in the Downloads folder", settingsProvider, directoryManager);
 
             // TODO: dont allow to create tasks of the same type for the same root path, i.e. Two seperate tasks for directory organiser with the same root path
             FileOrganiserSettings fileSettings = new FileOrganiserSettings
             {
+                Reference = fileTask.Identity,
                 RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
             };
 
             DirectoryOrganiserSettings directorySettings = new DirectoryOrganiserSettings
             {
+                Reference = directoryTask.Identity,
                 RootPath = KnownFolders.GetPath(KnownFolder.Downloads)
             };
 
-            // TODO: Save/load feature
-            FileOrganiserTask fileTask = new FileOrganiserTask("File Organiser", "Sorts the files in the Downloads folder", fileSettings, provider, fileManager, directoryManager);
-            DirectoryOrganiserTask directoryTask = new DirectoryOrganiserTask("Directory Organiser", "Sorts the individual directories in the Downloads folder", directorySettings, directoryManager);
+            settingsProvider.Save(fileSettings);
+            settingsProvider.Save(directorySettings);
 
             this.Manager.Add(fileTask);
             this.Manager.Add(directoryTask);

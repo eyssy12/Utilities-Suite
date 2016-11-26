@@ -1,16 +1,15 @@
 ﻿namespace EyssyApps.Organiser.Library.Models.Settings
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using ProtoBuf;
 
-    [Serializable]
+    [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
     public class FileOrganiserSettings : OrganiserSettingsBase
     {
         public FileOrganiserSettings()
         {
-            this.ExtensionExemptions = Enumerable.Empty<string>();
-            this.FileExemptions = Enumerable.Empty<string>();
+            this.ExtensionExemptions = new List<string>();
+            this.FileExemptions = new List<string>();
         }
 
         public IEnumerable<string> ExtensionExemptions { get; set; }
