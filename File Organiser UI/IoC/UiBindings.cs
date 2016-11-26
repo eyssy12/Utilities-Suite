@@ -6,6 +6,7 @@
     using Controls;
     using EyssyApps.Configuration.Library;
     using EyssyApps.Core.Library.Managers;
+    using EyssyApps.Organiser.Library.Factories;
     using EyssyApps.Organiser.Library.Managers;
     using EyssyApps.Organiser.Library.Models.Organiser;
     using EyssyApps.Organiser.Library.Providers;
@@ -21,7 +22,8 @@
             KeyFileExtensionJsonFile = "Name_FileExtensionJson",
             KeyConfigurationFileName = "Name_ConfigurationFile",
             KeyHistoryStore = "Store_History",
-            KeySettingsStore = "Store_Settings";
+            KeySettingsStore = "Store_Settings",
+            KeyTasksStore = "Store_Tasks";
 
         protected override void LoadBindings()
         {
@@ -69,6 +71,15 @@
                     container.GetInstance<IFileManager>(),
                     container.GetInstance<IDirectoryManager>());
             }, lifestyle: Lifestyle.Singleton);
+
+            this.Bind<ITaskProvider>(container =>
+            {
+                return new TaskProvider(
+                    ConfigurationManager.AppSettings[UiBindings.KeyTasksStore],
+                    container.GetInstance<IOrganiserFactory>(),
+                    container.GetInstance<IFileManager>(),
+                    container.GetInstance<IDirectoryManager>());
+            }, lifestyle: Lifestyle.Singleton);
         }
 
         protected override void BindServices()
@@ -93,7 +104,14 @@
         {
             base.BindManagers();
 
-            this.Bind<ITaskManager, SimpleTaskManager>(lifestyle: Lifestyle.Singleton);
+            this.Bind<ITaskManager>(container =>
+            {
+                return new SimpleTaskManager(
+                    container.GetInstance<IOrganiserFactory>(),
+                    container.GetInstance<ITaskProvider>(),
+                    container.GetInstance<ITaskHistoryProvider>());
+            }, lifestyle: Lifestyle.Singleton);
+
             this.Bind<IApplicationConfigurationManager>(container =>
             {
                 string configName = ConfigurationManager.AppSettings[UiBindings.KeyConfigurationFileName];

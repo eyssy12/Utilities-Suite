@@ -28,7 +28,7 @@
             IFileManager fileManager,
             IDirectoryManager directoryManager,
             Guid? identity = null)
-            : base(identity, name, description,  OrganiseType.File, TaskType.Organiser)
+            : base(identity, name, description, OrganiseType.File, TaskType.Organiser)
         {
             // TODO: guard conditions
 

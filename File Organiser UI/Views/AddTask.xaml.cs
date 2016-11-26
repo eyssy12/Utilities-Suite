@@ -95,10 +95,6 @@
 
             if (param == "Command_FileExtensions_Saved")
             {
-                // TODO: What to do with the selected exemptions:
-                // Create chips beside the button ?
-                // or just list them
-
                 IList<FileExtensionViewModel> temp = new List<FileExtensionViewModel>();
 
                 foreach (var item in this.ListBox_FileExtensions.SelectedItems)
@@ -188,6 +184,7 @@
         {
             this.SettingsProvider.Save(new FileOrganiserSettings
             {
+                Reference = identity,
                 FileExemptions = model.RootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
                 RootPath = model.RootPath,
                 ExtensionExemptions = model.ExemptedFileExtensions.Select(e => e.Value).ToArray()
@@ -207,6 +204,7 @@
         {
             this.SettingsProvider.Save(new DirectoryOrganiserSettings
             {
+                Reference = identity,
                 RootPath = model.RootPath
             });
 

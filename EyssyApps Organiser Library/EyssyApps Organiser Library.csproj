@@ -64,6 +64,7 @@
     <Compile Include="Providers\ITaskHistoryProvider.cs" />
     <Compile Include="Managers\ITaskManager.cs" />
     <Compile Include="Managers\SimpleTaskManager.cs" />
+    <Compile Include="Providers\ITaskProvider.cs" />
     <Compile Include="Providers\LocalStoreProviderBase.cs" />
     <Compile Include="Providers\OrganiserSettingsProvider.cs" />
     <Compile Include="Providers\TaskHistoryProvider.cs" />
@@ -73,10 +74,10 @@
     <Compile Include="Models\Settings\DirectoryOrganiserSettings.cs" />
     <Compile Include="Models\Settings\FileOrganiserSettings.cs" />
     <Compile Include="Models\Settings\OrganiserSettingsBase.cs" />
-    <Compile Include="Models\TaskMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\FileExtensionProvider.cs" />
     <Compile Include="Providers\IFileExtensionProvider.cs" />
+    <Compile Include="Providers\TaskProvider.cs" />
     <Compile Include="Tasks\FileOrganiserTask.cs" />
     <Compile Include="Tasks\IOrganiserTask.cs" />
     <Compile Include="Tasks\ITask.cs" />

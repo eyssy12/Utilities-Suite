@@ -1,17 +1,13 @@
 ﻿namespace File.Organiser.UI
 {
     using System;
-    using System.Collections.Generic;
     using System.Windows;
     using Controls;
-    using EyssyApps.Organiser.Library.Models.Settings;
     using File.Organiser.UI.IoC;
     using MaterialDesignThemes.Wpf;
-    using ProtoBuf;
     using Services;
     using SimpleInjector;
     using ApplicationMainWindow = File.Organiser.UI.MainWindow;
-    using FileIO = System.IO.File;
 
     public partial class App : Application
     {

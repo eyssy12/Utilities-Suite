@@ -5,6 +5,7 @@
     using System.Linq;
     using Core.Library.Events;
     using Core.Library.Extensions;
+    using Core.Library.Managers;
     using Exceptions;
     using Factories;
     using Providers;
@@ -13,25 +14,32 @@
     public class SimpleTaskManager : ITaskManager
     {
         protected readonly IOrganiserFactory Factory;
-        protected readonly ITaskHistoryProvider Provider;
+        protected readonly ITaskProvider TaskProvider;
+        protected readonly ITaskHistoryProvider HistoryProvider;
         protected readonly IList<TaskMetadata> Tasks;
 
-        public SimpleTaskManager(IOrganiserFactory factory, ITaskHistoryProvider provider)
+        public SimpleTaskManager(IOrganiserFactory factory, ITaskProvider taskProvider, ITaskHistoryProvider historyProvider)
         {
             if (factory == null)
             {
                 throw new ArgumentNullException(nameof(factory), "factory missing");
             }
 
-            if (provider == null)
+            if (taskProvider == null)
             {
-                throw new ArgumentNullException(nameof(provider), "task logger missing");
+                throw new ArgumentNullException(nameof(historyProvider), "task provider is missing.");
+            }
+
+            if (historyProvider == null)
+            {
+                throw new ArgumentNullException(nameof(historyProvider), "task logger missing");
             }
 
             this.Factory = factory;
-            this.Provider = provider;
+            this.TaskProvider = taskProvider;
+            this.HistoryProvider = historyProvider;
 
-            this.Tasks = new List<TaskMetadata>();
+            this.Tasks = taskProvider.GetAll().Select(this.CreateMetadata).ToList();
         }
 
         public void Execute()
@@ -43,19 +51,16 @@
         {
             // TODO: how to do this if possible...
         }
-
+        
         public bool Add(ITask task)
         {
             if (this.DoesNotContain(task))
             {
-                TaskMetadata metadata = new TaskMetadata(
-                    task,
-                    new EventHandler<EventArgs<TaskState>>((sender, e) => this.HandleStateChanged(sender, e, task)),
-                    new EventHandler<EventArgs<Exception>>((sender, e) => this.HandleFailureRaised(sender, e, task)));
+                this.Tasks.Add(this.CreateMetadata(task));
 
-                this.Tasks.Add(metadata);
+                this.TaskProvider.Save(task);
 
-                this.Provider.Log(task, LogTaskType.Created, "Task created.");
+                this.HistoryProvider.Log(task, LogTaskType.Created, "Task created.");
 
                 return true;
             }
@@ -76,7 +81,7 @@
 
             metadata.Dispose();
 
-            this.Provider.Log(task, LogTaskType.Deleted, "Task was removed.");
+            this.HistoryProvider.Log(task, LogTaskType.Deleted, "Task was removed.");
 
             return true;
         }
@@ -99,6 +104,14 @@
         public void RunTaskById(Guid id)
         {
             this.RunTask(this.FindById(id));
+        }
+
+        protected TaskMetadata CreateMetadata(ITask task)
+        {
+            return new TaskMetadata(
+                task,
+                new EventHandler<EventArgs<TaskState>>((sender, e) => this.HandleStateChanged(sender, e, task)),
+                new EventHandler<EventArgs<Exception>>((sender, e) => this.HandleFailureRaised(sender, e, task)));
         }
 
         protected TaskMetadata GetAssociatedMetadata(ITask task)
@@ -125,7 +138,7 @@
         {
             if (task == null)
             {
-                throw new UnknownTaskException("Provided task '" +nameof(task) + "' is missing.");
+                throw new UnknownTaskException("Provided task '" + nameof(task) + "' is missing.");
             }
 
             task.Execute();
@@ -133,12 +146,12 @@
 
         private void HandleStateChanged(object sender, EventArgs<TaskState> e, ITask task)
         {
-            this.Provider.Log(task, LogTaskType.StateChanged, string.Empty);
+            this.HistoryProvider.Log(task, LogTaskType.StateChanged, string.Empty);
         }
 
         private void HandleFailureRaised(object sender, EventArgs<Exception> e, ITask task)
         {
-            this.Provider.Log(task, LogTaskType.FailureRaised, e.First.Message);
+            this.HistoryProvider.Log(task, LogTaskType.FailureRaised, e.First.Message);
         }
 
         protected class TaskMetadata : IDisposable
