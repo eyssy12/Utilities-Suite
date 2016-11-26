@@ -58,6 +58,11 @@
             this.BringIntoView();
         }
 
+        public virtual void CloseWindow()
+        {
+            this.Close();
+        }
+
         protected void OnPropertyChanged(string name)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

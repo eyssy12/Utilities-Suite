@@ -18,7 +18,7 @@
                 throw new ArgumentNullException(nameof(views), "No views provided."); // TODO: resources
             }
 
-            int defaultViewCount = views.Count(v => v.GetType().GetCustomAttribute<DefaultViewControlAttribute>() != null);
+            int defaultViewCount = views.Count(v => v.GetType().GetCustomAttribute<DefaultViewAttribute>() != null);
 
             if (defaultViewCount == 0)
             {

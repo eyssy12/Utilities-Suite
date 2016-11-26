@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
@@ -18,7 +19,7 @@
     using Services;
     using ViewModels;
 
-    [DefaultViewControl]
+    [DefaultView]
     public partial class Home : ViewControlBase
     {
         public const string ViewName = nameof(Home);
@@ -119,7 +120,7 @@
 
             this.ConfigManager.Save();
 
-            this.RegistryManager.SetRunOnStartup(toggle.IsChecked.Value);
+            this.RegistryManager.SetRunOnStartup(toggle.IsChecked.Value, Assembly.GetExecutingAssembly().Location);
         }
 
         private void ViewTask_Click(object sender, RoutedEventArgs e)

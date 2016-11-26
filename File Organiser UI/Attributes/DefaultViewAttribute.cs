@@ -3,7 +3,7 @@
     using System;
     
     [AttributeUsage(AttributeTargets.Class)]
-    public class DefaultViewControlAttribute : Attribute
+    public class DefaultViewAttribute : Attribute
     {
     }
 }

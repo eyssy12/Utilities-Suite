@@ -9,5 +9,7 @@
         object TryRetrieveResource(string name);
 
         void ShowWindow();
+
+        void CloseWindow();
     }
 }

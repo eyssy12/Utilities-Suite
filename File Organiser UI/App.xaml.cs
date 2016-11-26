@@ -3,6 +3,7 @@
     using System;
     using System.Windows;
     using Controls;
+    using EyssyApps.Organiser.Library.Factories;
     using File.Organiser.UI.IoC;
     using MaterialDesignThemes.Wpf;
     using Services;
@@ -33,7 +34,20 @@
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            ServiceLocator.GetFactory().Create<IMainWindow>().ShowWindow();
+            IOrganiserFactory factory = ServiceLocator.GetFactory();
+
+            IMainWindow window = factory.Create<IMainWindow>();
+
+            IApplicationConfigurationManager config = factory.Create<IApplicationConfigurationManager>();
+
+            if (config.ReadBoolean(ApplicationConfigurationManager.SectionSettings, ApplicationConfigurationManager.KeyRunOnStartup, false))
+            {
+                window.CloseWindow();
+            }
+            else
+            {
+                window.ShowWindow();
+            }
         }
     }
 }

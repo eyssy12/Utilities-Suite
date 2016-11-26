@@ -10,7 +10,7 @@
 
         void RemoveValue(string name, object value);
 
-        void SetRunOnStartup(bool value);
+        void SetRunOnStartup(bool value, string applicationPath);
 
         RegistryKey OpenKey(string name, bool writable);
     }

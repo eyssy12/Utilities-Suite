@@ -1,7 +1,6 @@
 ﻿namespace EyssyApps.Core.Library.Windows.Registry
 {
     using System;
-    using System.Reflection;
     using Microsoft.Win32;
 
     public class ApplicationRegistryManager : IApplicationRegistryManager
@@ -46,13 +45,13 @@
             return Registry.CurrentUser.OpenSubKey(name, writable);
         }
 
-        public void SetRunOnStartup(bool value)
+        public void SetRunOnStartup(bool value, string applicationPath)
         {
             RegistryKey key = this.OpenKey(ApplicationRegistryManager.StartupKey, true);
 
             if (value)
             {
-                key.SetValue(this.ApplicationName, Assembly.GetExecutingAssembly().Location);
+                key.SetValue(this.ApplicationName, applicationPath);
             }
             else
             {
