@@ -1,8 +1,10 @@
 ﻿namespace File.Organiser.UI
 {
     using System;
+    using System.Threading;
     using System.Windows;
     using Controls;
+    using EyssyApps.Core.Library.Native;
     using EyssyApps.Organiser.Library.Factories;
     using File.Organiser.UI.IoC;
     using MaterialDesignThemes.Wpf;
@@ -16,6 +18,8 @@
             ControlTrayContextMenu = "TrayContextMenu",
             MenuItemOpenApplication = "OpenApplicationMenuItem",
             MenuItemCloseApplication = "CloseApplicationMenuItem";
+
+        private static Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
 
         public App()
         {
@@ -34,19 +38,29 @@
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            IOrganiserFactory factory = ServiceLocator.GetFactory();
-
-            IMainWindow window = factory.Create<IMainWindow>();
-
-            IApplicationConfigurationManager config = factory.Create<IApplicationConfigurationManager>();
-
-            if (config.ReadBoolean(ApplicationConfigurationManager.SectionSettings, ApplicationConfigurationManager.KeyRunOnStartup, false))
+            if (mutex.WaitOne(TimeSpan.Zero, true))
             {
-                window.CloseWindow();
+                IOrganiserFactory factory = ServiceLocator.GetFactory();
+
+                IMainWindow mainWindow = factory.Create<IMainWindow>();
+
+                IApplicationConfigurationManager config = factory.Create<IApplicationConfigurationManager>();
+
+                if (config.ReadBoolean(ApplicationConfigurationManager.SectionSettings, ApplicationConfigurationManager.KeyRunOnStartup, false))
+                {
+                    mainWindow.CloseWindow();
+                }
+                else
+                {
+                    mainWindow.ShowWindow();
+                }
+
+                mutex.ReleaseMutex();
             }
             else
             {
-                window.ShowWindow();
+                MessageBox.Show("An instance of the application is already running!", "Application Running");
+                Environment.Exit(0);
             }
         }
     }

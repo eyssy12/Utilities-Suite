@@ -285,7 +285,7 @@
                                         <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">File Exemptions (Optional)</TextBlock>
 
                                         <DataGrid Name="Grid_RootPathFiles"
-                                                  ItemsSource="{Binding Path=TaskViewModel.RootPathFiles}"
+                                                  ItemsSource="{Binding Path=TaskViewModel.FileRootPathFiles}"
                                                   CanUserAddRows="false"
                                                   AutoGenerateColumns="False">
                                             <DataGrid.Columns>
@@ -460,11 +460,25 @@
                                         Grid.Column="0"
                                         Margin="0 16 0 0"
                                         Visibility="Collapsed" >
-                                        
-                                        <TextBlock Margin="0 8 0 0" DockPanel.Dock="Top">Directory Exemptions</TextBlock>
-                                        
-                                        <Border MinHeight="100" DockPanel.Dock="Bottom" BorderBrush="Red">
-                                        </Border>
+
+                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Directory Exemptions (Optional)</TextBlock>
+
+                                        <DataGrid Name="Grid_DirectoryRootPathFiles"
+                                                  ItemsSource="{Binding Path=TaskViewModel.DirectoryRootPathFiles}"
+                                                  CanUserAddRows="false"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+
+                                                <DataGridCheckBoxColumn 
+                                                    Binding="{Binding Path=Exempt}"
+                                                    Header="Exempt" />
+
+                                                <DataGridTextColumn
+                                                        Header="File Name"
+                                                        Binding="{Binding Path=File, Mode=OneWay}"
+                                                        IsReadOnly="True" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
                                     </DockPanel>
                                 </Grid>
                             </Grid>

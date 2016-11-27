@@ -54,7 +54,24 @@
                         .Create<IDirectoryManager>()
                         .GetFiles(this.Model.RootPath, searchOption: SearchOption.TopDirectoryOnly);
 
-                    this.Model.RootPathFiles = new List<RootPathFileViewModel>(files
+                    this.Model.FileRootPathFiles = new List<RootPathFileViewModel>(files
+                        .Select(file => new RootPathFileViewModel
+                        {
+                            File = file,
+                            Exempt = false
+                        })
+                        .ToArray());
+                }
+            });
+            this.Model.LoadDirectoryRootPathFilesCommand = this.CommandProvider.CreateRelayCommand(() =>
+            {
+                if (!string.IsNullOrWhiteSpace(this.Model.RootPath))
+                {
+                    IEnumerable<string> files = this.Factory
+                        .Create<IDirectoryManager>()
+                        .GetDirectores(this.Model.RootPath, searchOption: SearchOption.TopDirectoryOnly);
+
+                    this.Model.DirectoryRootPathFiles = new List<RootPathFileViewModel>(files
                         .Select(file => new RootPathFileViewModel
                         {
                             File = file,
@@ -185,7 +202,7 @@
             this.SettingsProvider.Save(new FileOrganiserSettings
             {
                 Reference = identity,
-                FileExemptions = model.RootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
+                FileExemptions = model.FileRootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
                 RootPath = model.RootPath,
                 ExtensionExemptions = model.ExemptedFileExtensions.Select(e => e.Value).ToArray()
             });

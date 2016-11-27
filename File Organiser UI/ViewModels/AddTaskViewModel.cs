@@ -2,11 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Input;
     using Controls;
     using EyssyApps.Core.Library.Extensions;
-    using EyssyApps.Organiser.Library.Models.Organiser;
     using EyssyApps.Organiser.Library.Tasks;
     using OrganiseTypeEnum = EyssyApps.Organiser.Library.OrganiseType;
     using TaskTypeEnum = EyssyApps.Organiser.Library.TaskType;
@@ -20,13 +19,14 @@
         private OrganiseTypeEnum organiseType;
         private TaskTypeEnum taskType;
 
-        private IList<RootPathFileViewModel> rootPathFiles;
+        private IList<RootPathFileViewModel> fileRootPathFiles, directoryRootPathFiles;
         private IList<FileExtensionViewModel> fileExtensions;
         private IList<FileExtensionViewModel> exmptedFileExtensions;
         private IList<CategoriesViewModel> categories;
 
         private ICommand selectRootPathCommand;
         private ICommand loadRootPathFilesCommand;
+        private ICommand loadDirectoryRootPathFilesCommand;
 
         private bool initialized = false;
 
@@ -45,6 +45,12 @@
         {
             get { return this.loadRootPathFilesCommand; }
             set { this.loadRootPathFilesCommand = value; }
+        }
+
+        public ICommand LoadDirectoryRootPathFilesCommand
+        {
+            get { return this.loadDirectoryRootPathFilesCommand; }
+            set { this.loadDirectoryRootPathFilesCommand = value; }
         }
 
         public IEnumerable<OrganiseTypeEnum> OrganiserTypes
@@ -84,7 +90,19 @@
 
                 if (this.initialized)
                 {
-                    this.LoadRootPathFilesCommand.Execute(null);
+                    if (this.OrganiseType == OrganiseTypeEnum.File)
+                    {
+                        Task.Run(() => this.LoadRootPathFilesCommand.Execute(null));
+                    }
+                    else if (this.OrganiseType == OrganiseTypeEnum.Directory)
+                    {
+                        Task.Run(() => this.LoadDirectoryRootPathFilesCommand.Execute(null));
+                    }
+                    else if (this.OrganiseType == OrganiseTypeEnum.All)
+                    {
+                        Task.Run(() => this.LoadRootPathFilesCommand.Execute(null));
+                        Task.Run(() => this.LoadDirectoryRootPathFilesCommand.Execute(null));
+                    }
                 }
             }
         }
@@ -119,10 +137,16 @@
             set { this.SetFieldIfChanged(ref interval, value, nameof(this.Interval)); }
         }
 
-        public IList<RootPathFileViewModel> RootPathFiles
+        public IList<RootPathFileViewModel> FileRootPathFiles
         {
-            get { return this.rootPathFiles; }
-            set { this.SetFieldIfChanged(ref rootPathFiles, value, nameof(this.RootPathFiles)); }
+            get { return this.fileRootPathFiles; }
+            set { this.SetFieldIfChanged(ref fileRootPathFiles, value, nameof(this.FileRootPathFiles)); }
+        }
+
+        public IList<RootPathFileViewModel> DirectoryRootPathFiles
+        {
+            get { return this.directoryRootPathFiles; }
+            set { this.SetFieldIfChanged(ref directoryRootPathFiles, value, nameof(this.DirectoryRootPathFiles)); }
         }
 
         public IList<FileExtensionViewModel> FileExtensions
@@ -151,7 +175,8 @@
             this.RootPath = string.Empty;
             this.OrganiseType = OrganiseTypeEnum.File;
             this.TaskType = TaskTypeEnum.Organiser;
-            this.RootPathFiles = new List<RootPathFileViewModel>();
+            this.FileRootPathFiles = new List<RootPathFileViewModel>();
+            this.DirectoryRootPathFiles = new List<RootPathFileViewModel>();
             this.ExemptedFileExtensions = new List<FileExtensionViewModel>();
             this.InitialWaitTime = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumInitialWaitTime)).TotalSeconds;
             this.Interval = new TimeSpan(0, 0, 0, 0, (ScheduledTask.MinimumTimerPeriod)).TotalSeconds;
