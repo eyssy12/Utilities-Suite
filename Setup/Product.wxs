@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define File Organiser UI_TargetDir=$(var.File Organiser UI.TargetDir)?>
+  <Product Id="*" Name="Setup" Language="1033" Version="1.0.0.0" Manufacturer="Zagorapps" UpgradeCode="b8e72f21-88b5-4b3a-92ff-74040179dbad">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <!--<UIRef Id="WixUI_Minimal" />-->
+      
+    <Feature Id="ProductFeature" Title="Setup" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <!--<ComponentRef Id="ApplicationDesktopShortcut" />-->
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="File Organiser" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+      <Component Id="Castle.Core.dll" Guid="a8796a92-4df4-435c-935e-5205a5e84b61">
+        <File Id="Castle.Core.dll" Name="Castle.Core.dll" Source="$(var.File Organiser UI_TargetDir)Castle.Core.dll" />
+      </Component>
+      <Component Id="Hardcodet.Wpf.TaskbarNotification.dll" Guid="943e5b1b-ce2f-419d-87ca-c89c784f668f">
+        <File Id="Hardcodet.Wpf.TaskbarNotification.dll" Name="Hardcodet.Wpf.TaskbarNotification.dll" Source="$(var.File Organiser UI_TargetDir)Hardcodet.Wpf.TaskbarNotification.dll" />
+      </Component>
+      <Component Id="INIFileParser.dll" Guid="89fad59b-c931-4a28-9926-301dd28b29ea">
+        <File Id="INIFileParser.dll" Name="INIFileParser.dll" Source="$(var.File Organiser UI_TargetDir)INIFileParser.dll" />
+      </Component>
+      <Component Id="log4net.dll" Guid="ecd7ea11-5e87-4c94-9b33-00a9c6e519f3">
+        <File Id="log4net.dll" Name="log4net.dll" Source="$(var.File Organiser UI_TargetDir)log4net.dll" />
+      </Component>
+      <Component Id="MaterialDesignColors.dll" Guid="4cb30c3d-2209-4964-be7c-1aa8c47c6b41">
+        <File Id="MaterialDesignColors.dll" Name="MaterialDesignColors.dll" Source="$(var.File Organiser UI_TargetDir)MaterialDesignColors.dll" />
+      </Component>
+      <Component Id="MaterialDesignThemes.Wpf.dll" Guid="285e4ed0-5a68-406d-9cbd-9ae9b19555ea">
+        <File Id="MaterialDesignThemes.Wpf.dll" Name="MaterialDesignThemes.Wpf.dll" Source="$(var.File Organiser UI_TargetDir)MaterialDesignThemes.Wpf.dll" />
+      </Component>
+      <Component Id="Newtonsoft.Json.dll" Guid="f5771f6b-c9f9-4334-aab0-41babea9c172">
+        <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.File Organiser UI_TargetDir)Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="protobuf_net.dll" Guid="436dc5a9-01d2-43fd-8834-d6539f08cea8">
+        <File Id="protobuf_net.dll" Name="protobuf-net.dll" Source="$(var.File Organiser UI_TargetDir)protobuf-net.dll" />
+      </Component>
+      <Component Id="SimpleInjector.dll" Guid="05b00129-bddb-479d-bde6-c5281772d6b2">
+        <File Id="SimpleInjector.dll" Name="SimpleInjector.dll" Source="$(var.File Organiser UI_TargetDir)SimpleInjector.dll" />
+      </Component>
+      <Component Id="EyssyApps.Configuration.Library.dll" Guid="82a68246-1e08-4eee-be47-43ed2dfea679">
+        <File Id="EyssyApps.Configuration.Library.dll" Name="EyssyApps.Configuration.Library.dll" Source="$(var.File Organiser UI_TargetDir)EyssyApps.Configuration.Library.dll" />
+      </Component>
+      <Component Id="EyssyApps.Core.Library.dll" Guid="8dd6d38b-a38d-4ce2-9b3d-7ed2980126eb">
+        <File Id="EyssyApps.Core.Library.dll" Name="EyssyApps.Core.Library.dll" Source="$(var.File Organiser UI_TargetDir)EyssyApps.Core.Library.dll" />
+      </Component>
+      <Component Id="EyssyApps.Organiser.Library.dll" Guid="6bbe87b6-5484-4ea5-9dea-33bf059aca6d">
+        <File Id="EyssyApps.Organiser.Library.dll" Name="EyssyApps.Organiser.Library.dll" Source="$(var.File Organiser UI_TargetDir)EyssyApps.Organiser.Library.dll" />
+      </Component>
+      <Component Id="File.Organiser.UI.exe" Guid="0ade4e8d-72b9-4d70-b207-77af6d8b8f72">
+        <File Id="File.Organiser.UI.exe" Name="File.Organiser.UI.exe" Source="$(var.File Organiser UI_TargetDir)File.Organiser.UI.exe" />
+      </Component>
+      <Component Id="File.Organiser.UI.exe.config" Guid="8d951e22-5b65-45a3-b123-5a24cbbcae06">
+        <File Id="File.Organiser.UI.exe.config" Name="File.Organiser.UI.exe.config" Source="$(var.File Organiser UI_TargetDir)File.Organiser.UI.exe.config" />
+      </Component>
+      <Component Id="configuration.ini" Guid="8d951e22-5b65-45a3-b123-5a24cbbcae07">
+        <File Id="configuration.ini" Name="configuration.ini" Source="$(var.File Organiser UI_TargetDir)configuration.ini" />
+      </Component>
+    <Component Id="file_extension_db.json" Guid="8d951e22-5b65-45a3-b123-5a24cbbcae08">
+        <File Id="file_extension_db.json" Name="file_extension_db.json" Source="$(var.File Organiser UI_TargetDir)file_extension_db.json" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
