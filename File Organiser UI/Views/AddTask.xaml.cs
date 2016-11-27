@@ -275,11 +275,19 @@
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            ScrollViewer scv = (ScrollViewer)sender;
+            this.AdjustScrollviewer((ScrollViewer)sender, e);
+        }
 
-            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+        private void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            this.AdjustScrollviewer((ScrollViewer)sender, e);
+        }
 
-            e.Handled = true;
+        private void AdjustScrollviewer(ScrollViewer scroller, MouseWheelEventArgs args)
+        {
+            scroller.ScrollToVerticalOffset(scroller.VerticalOffset - args.Delta);
+
+            args.Handled = true;
         }
     }
 }

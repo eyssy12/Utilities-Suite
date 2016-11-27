@@ -136,7 +136,6 @@
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="ViewModels\FileExtensionViewModel.cs" />
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />
-    <Compile Include="ViewModels\SelectableViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="Views\AddTask.xaml.cs">
       <DependentUpon>AddTask.xaml</DependentUpon>

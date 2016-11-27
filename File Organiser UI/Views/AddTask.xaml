@@ -53,7 +53,10 @@
             </StackPanel>
         </materialDesign:ColorZone>
 
-        <DockPanel MaxHeight="1200" Grid.Row="1">
+        <ScrollViewer Name="ScrollViewer_Main" 
+                      Grid.Row="1" MaxHeight="1000" 
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                      PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -149,7 +152,7 @@
                                             Value="{Binding TaskViewModel.InitialWaitTime}"
                                             Style="{StaticResource MaterialDesignDiscreteSlider}" 
                                             ToolTip="Intial wait time for the task to start for the first time."/>
-                                    
+
                                 </StackPanel>
                                 <CheckBox x:Name="CheckBox_RepeatedTask" Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
                                     Repeated Task
@@ -169,7 +172,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        
+
                         <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="8" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
 
                         <DockPanel Grid.Row="1" Grid.Column="2" Margin="8">
@@ -265,11 +268,11 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                    
+
                                     <Grid.RowDefinitions>
-                                        <RowDefinition MaxHeight="200" Height="Auto" />
-                                        <RowDefinition MaxHeight="300" Height="Auto" />
-                                        <RowDefinition MaxHeight="200" Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -279,8 +282,8 @@
                                         Grid.Row="0" 
                                         Grid.Column="0" 
                                         Margin="0 16 0 0"
-                                        MaxHeight="200" >
-                                        
+                                        MaxHeight="460" >
+
                                         <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">File Exemptions (Optional)</TextBlock>
 
                                         <DataGrid Name="Grid_RootPathFiles"
@@ -288,11 +291,11 @@
                                                   CanUserAddRows="false"
                                                   AutoGenerateColumns="False">
                                             <DataGrid.Columns>
-                                                
+
                                                 <DataGridCheckBoxColumn 
                                                     Binding="{Binding Path=Exempt}"
                                                     Header="Exempt" />
-                                                
+
                                                 <DataGridTextColumn
                                                         Header="File Name"
                                                         Binding="{Binding Path=File, Mode=OneWay}"
@@ -302,11 +305,38 @@
 
                                     </DockPanel>
 
+                                    <DockPanel Name="Panel_DirectoryExemptions" 
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="0 16 0 0"
+                                        MaxHeight="460"
+                                        Visibility="Collapsed" >
+
+                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Directory Exemptions (Optional)</TextBlock>
+
+                                        <DataGrid Name="Grid_DirectoryRootPathFiles"
+                                                  ItemsSource="{Binding Path=TaskViewModel.DirectoryRootPathFiles}"
+                                                  CanUserAddRows="false"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+
+                                                <DataGridCheckBoxColumn 
+                                                    Binding="{Binding Path=Exempt}"
+                                                    Header="Exempt" />
+
+                                                <DataGridTextColumn
+                                                        Header="File Name"
+                                                        Binding="{Binding Path=File, Mode=OneWay}"
+                                                        IsReadOnly="True" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </DockPanel>
+
                                     <DockPanel Name="Panel_ExtensionExemptions" 
                                         Grid.Row="2"
                                         Grid.Column="0"
                                         Margin="0 16 0 0">
-                                        
+
                                         <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Extension Exemptions (Optional)</TextBlock>
 
                                         <StackPanel VerticalAlignment="Center">
@@ -357,11 +387,13 @@
                                                                  Name="ListBox_FileExtensions"
                                                                  ItemsSource="{Binding TaskViewModel.Categories}">
 
-                                                                --><!--<ListBox.ItemsPanel>
+                                                                -->
+                                                        <!--<ListBox.ItemsPanel>
                                                                 <ItemsPanelTemplate>
                                                                     <WrapPanel />
                                                                 </ItemsPanelTemplate>
-                                                            </ListBox.ItemsPanel>--><!--
+                                                            </ListBox.ItemsPanel>-->
+                                                        <!--
 
                                                                 <ListBox.ItemTemplate>
                                                                     <DataTemplate>
@@ -437,7 +469,7 @@
                                                 Configure
                                             </Button>
                                         </StackPanel>
-                                        
+
                                         <ListBox Name="ListBox_ExemptedFileExtensions" ItemsSource="{Binding TaskViewModel.ExemptedFileExtensions}">
 
                                             <ListBox.ItemsPanel>
@@ -453,41 +485,13 @@
                                             </ListBox.ItemTemplate>
                                         </ListBox>
                                     </DockPanel>
-
-                                    <DockPanel Name="Panel_DirectoryExemptions" 
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Margin="0 16 0 0"
-                                        MaxHeight="200"
-                                        Visibility="Collapsed" >
-
-                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Directory Exemptions (Optional)</TextBlock>
-
-                                        <DataGrid Name="Grid_DirectoryRootPathFiles"
-                                                  ItemsSource="{Binding Path=TaskViewModel.DirectoryRootPathFiles}"
-                                                  CanUserAddRows="false"
-                                                  AutoGenerateColumns="False">
-                                            <DataGrid.Columns>
-
-                                                <DataGridCheckBoxColumn 
-                                                    Binding="{Binding Path=Exempt}"
-                                                    Header="Exempt" />
-
-                                                <DataGridTextColumn
-                                                        Header="File Name"
-                                                        Binding="{Binding Path=File, Mode=OneWay}"
-                                                        IsReadOnly="True" />
-                                            </DataGrid.Columns>
-                                        </DataGrid>
-                                    </DockPanel>
                                 </Grid>
                             </Grid>
                         </DockPanel>
                     </Grid>
                 </materialDesign:Card>
             </Grid>
-
-        </DockPanel>
+        </ScrollViewer>
 
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
             <materialDesign:Card Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth3">
