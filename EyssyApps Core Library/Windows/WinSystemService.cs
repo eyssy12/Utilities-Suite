@@ -1,5 +1,6 @@
 ﻿namespace EyssyApps.Core.Library.Windows
 {
+    using System;
     using System.Diagnostics;
 
     public class WinSystemService : IWinSystemService
@@ -27,6 +28,11 @@
         public void Shutdown()
         {
             this.StartShutDown("-f -s -t 5");
+        }
+
+        public void CancelShutdown()
+        {
+            this.StartShutDown("-a");
         }
 
         private void StartShutDown(string param)

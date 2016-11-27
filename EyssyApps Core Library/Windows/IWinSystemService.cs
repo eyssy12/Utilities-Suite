@@ -11,5 +11,7 @@
         void LockMachine();
 
         void Shutdown();
+
+        void CancelShutdown();
     }
 }
