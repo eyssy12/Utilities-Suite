@@ -53,11 +53,10 @@
             </StackPanel>
         </materialDesign:ColorZone>
 
-        <DockPanel Grid.Row="1">
+        <DockPanel MaxHeight="1200" Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -280,7 +279,7 @@
                                         Grid.Row="0" 
                                         Grid.Column="0" 
                                         Margin="0 16 0 0"
-                                        MaxHeight="184" >
+                                        MaxHeight="200" >
                                         
                                         <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">File Exemptions (Optional)</TextBlock>
 
@@ -304,7 +303,7 @@
                                     </DockPanel>
 
                                     <DockPanel Name="Panel_ExtensionExemptions" 
-                                        Grid.Row="1"
+                                        Grid.Row="2"
                                         Grid.Column="0"
                                         Margin="0 16 0 0">
                                         
@@ -456,9 +455,10 @@
                                     </DockPanel>
 
                                     <DockPanel Name="Panel_DirectoryExemptions" 
-                                        Grid.Row="2"
+                                        Grid.Row="1"
                                         Grid.Column="0"
                                         Margin="0 16 0 0"
+                                        MaxHeight="200"
                                         Visibility="Collapsed" >
 
                                         <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Directory Exemptions (Optional)</TextBlock>

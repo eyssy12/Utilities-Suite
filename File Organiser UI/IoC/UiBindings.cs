@@ -135,7 +135,7 @@
 
         private string GetApplicationPath()
         {
-            return PathIO.GetFullPath(ConfigurationManager.AppSettings[UiBindings.KeyApplicationPath]);
+            return ConfigurationManager.AppSettings[UiBindings.KeyApplicationPath];
         }
     }
 }
