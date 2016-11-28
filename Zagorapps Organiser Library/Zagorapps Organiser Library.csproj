@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B9AD6C67-B9C3-45DC-A666-08820523B347}</ProjectGuid>
+    <ProjectGuid>{E9E63EDB-A33C-47B7-960F-F26225922A86}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zagorapps.Configuration.Library</RootNamespace>
-    <AssemblyName>Zagorapps.Configuration.Library</AssemblyName>
+    <RootNamespace>Zagorapps.Organiser.Library</RootNamespace>
+    <AssemblyName>Zagorapps.Organiser.Library</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,28 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="INIFileParser, Version=2.3.0.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
-      <HintPath>..\packages\ini-parser.2.3.0\lib\net20\INIFileParser.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.2.0.725, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.2.2.0.725\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.1.3.2\lib\net35-Client\NodaTime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SimpleInjector, Version=3.2.7.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.3.2.7\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.1.0\lib\net451\protobuf-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -64,21 +56,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\AutomaticFactoryExtensions.cs" />
+    <Compile Include="Exceptions\DuplicateFileException.cs" />
+    <Compile Include="Enumerations.cs" />
+    <Compile Include="Exceptions\UnknownTaskException.cs" />
+    <Compile Include="Factories\IOrganiserFactory.cs" />
+    <Compile Include="Providers\IOrganiserSettingsProvider.cs" />
+    <Compile Include="Providers\ITaskHistoryProvider.cs" />
+    <Compile Include="Managers\ITaskManager.cs" />
+    <Compile Include="Managers\SimpleTaskManager.cs" />
+    <Compile Include="Providers\ITaskProvider.cs" />
+    <Compile Include="Providers\LocalStoreProviderBase.cs" />
+    <Compile Include="Providers\OrganiserSettingsProvider.cs" />
+    <Compile Include="Providers\TaskHistoryProvider.cs" />
+    <Compile Include="Models\Organiser\FileExtensionCategory.cs" />
+    <Compile Include="Models\Organiser\FileExtensionDatabaseModel.cs" />
+    <Compile Include="Models\Organiser\FileExtensionMetadata.cs" />
+    <Compile Include="Models\Settings\DirectoryOrganiserSettings.cs" />
+    <Compile Include="Models\Settings\FileOrganiserSettings.cs" />
+    <Compile Include="Models\Settings\OrganiserSettingsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommonBindings.cs" />
+    <Compile Include="Providers\FileExtensionProvider.cs" />
+    <Compile Include="Providers\IFileExtensionProvider.cs" />
+    <Compile Include="Providers\TaskProvider.cs" />
+    <Compile Include="Tasks\FileOrganiserTask.cs" />
+    <Compile Include="Tasks\IOrganiserTask.cs" />
+    <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Tasks\OrganiserTaskBase.cs" />
+    <Compile Include="Tasks\ScheduledTask.cs" />
+    <Compile Include="Tasks\DirectoryOrganiserTask.cs" />
+    <Compile Include="Tasks\TaskBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="file_extension_db.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EyssyApps Core Library\Zagorapps Core Library.csproj">
+    <Folder Include="Messaging\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zagorapps Core Library\Zagorapps Core Library.csproj">
       <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
       <Name>Zagorapps Core Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EyssyApps Organiser Library\Zagorapps Organiser Library.csproj">
-      <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
-      <Name>Zagorapps Organiser Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

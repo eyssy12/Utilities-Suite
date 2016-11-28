@@ -214,20 +214,6 @@
     <None Include="Resources\TrayIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EyssyApps Configuration Library\Zagorapps Configuration Library.csproj">
-      <Project>{b9ad6c67-b9c3-45dc-a666-08820523b347}</Project>
-      <Name>Zagorapps Configuration Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EyssyApps Core Library\Zagorapps Core Library.csproj">
-      <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
-      <Name>Zagorapps Core Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EyssyApps Organiser Library\Zagorapps Organiser Library.csproj">
-      <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
-      <Name>Zagorapps Organiser Library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\CloseApp.ico" />
     <Resource Include="Images\OpenApp.ico" />
   </ItemGroup>
@@ -240,7 +226,20 @@
   <ItemGroup>
     <Resource Include="Resources\app.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Zagorapps Configuration Library\Zagorapps Configuration Library.csproj">
+      <Project>{b9ad6c67-b9c3-45dc-a666-08820523b347}</Project>
+      <Name>Zagorapps Configuration Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zagorapps Core Library\Zagorapps Core Library.csproj">
+      <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
+      <Name>Zagorapps Core Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zagorapps Organiser Library\Zagorapps Organiser Library.csproj">
+      <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
+      <Name>Zagorapps Organiser Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

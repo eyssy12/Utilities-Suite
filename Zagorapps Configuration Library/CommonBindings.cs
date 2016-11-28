@@ -43,6 +43,8 @@
                     }
                 }
             });
+
+            this.Bindings.Clear();
         }
 
         protected virtual void LoadBindings()
