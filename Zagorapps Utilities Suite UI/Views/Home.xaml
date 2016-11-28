@@ -19,33 +19,6 @@
     </controls:ViewControlBase.Resources>
 
     <StackPanel>
-        <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
-            <DockPanel>
-                <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" ToolTip="Options" StaysOpen="True">
-                    <StackPanel>
-                        <DockPanel Margin="8">
-                            <TextBlock>Run on Startup</TextBlock>
-                            <ToggleButton Click="StartupToggleButton_Click" IsChecked="{Binding RunOnStartup}" Margin="8 0 0 0" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" ToolTip="Run Application on Window Startup"/>
-                        </DockPanel>
-                        <Separator/>
-                        <Button 
-                            x:Name="TerminateButton" 
-                            Click="TerminateApplication"
-                            HorizontalAlignment="Stretch">
-
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Close" />
-                                <TextBlock ToolTip="Terminate" Margin="8 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Right">Terminate</TextBlock>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </materialDesign:PopupBox>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">
-                    Home
-                </TextBlock>
-            </DockPanel>
-        </materialDesign:ColorZone>
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="476" />

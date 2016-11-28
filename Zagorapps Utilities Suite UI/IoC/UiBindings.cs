@@ -4,15 +4,15 @@
     using System.Windows.Controls;
     using Commands;
     using Controls;
+    using Newtonsoft.Json;
+    using Services;
+    using SimpleInjector;
     using Zagorapps.Configuration.Library;
     using Zagorapps.Core.Library.Managers;
     using Zagorapps.Organiser.Library.Factories;
     using Zagorapps.Organiser.Library.Managers;
     using Zagorapps.Organiser.Library.Models.Organiser;
     using Zagorapps.Organiser.Library.Providers;
-    using Newtonsoft.Json;
-    using Services;
-    using SimpleInjector;
     using FileIO = System.IO.File;
     using PathIO = System.IO.Path;
 
@@ -86,7 +86,6 @@
         {
             base.BindServices();
 
-            this.Bind<IViewNavigator, ViewNavigator>();
             this.Bind<IFormsService, FormsService>(lifestyle: Lifestyle.Singleton);
         }
 

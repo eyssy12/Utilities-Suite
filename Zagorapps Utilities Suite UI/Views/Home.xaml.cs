@@ -3,49 +3,36 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using Commands;
     using Controls;
-    using IoC;
     using Organiser.Library;
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Core.Library.Windows;
     using Zagorapps.Organiser.Library.Factories;
     using Zagorapps.Organiser.Library.Managers;
     using Zagorapps.Organiser.Library.Tasks;
 
-    [DefaultView]
+    [DefaultEntity]
     public partial class Home : ViewControlBase
     {
         public const string ViewName = nameof(Home);
 
         protected readonly ITaskManager Manager;
         protected readonly ISnackbarNotificationService Notifier;
-        protected readonly IApplicationRegistryManager RegistryManager;
-        protected readonly IApplicationConfigurationManager ConfigManager;
 
         public Home(IOrganiserFactory factory, ICommandProvider commandProvider) 
             : base(Home.ViewName, factory, commandProvider)
         {
             this.InitializeComponent();
-
-            this.ConfigManager = this.Factory.Create<IApplicationConfigurationManager>();
+            
             this.Manager = this.Factory.Create<ITaskManager>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
-            this.RegistryManager = this.Factory.Create<IApplicationRegistryManager>();
 
             this.DataContext = this;
-        }
-
-        public bool RunOnStartup
-        {
-            get { return this.ConfigManager.ReadBoolean(ApplicationConfigurationManager.SectionSettings, ApplicationConfigurationManager.KeyRunOnStartup, false); }
-            set { this.ConfigManager.SetValue(ApplicationConfigurationManager.SectionSettings, ApplicationConfigurationManager.KeyRunOnStartup, value); }
         }
 
         public IEnumerable<TaskViewModel> Tasks
@@ -107,20 +94,6 @@
         private void Button_AddTask_Click(object sender, RoutedEventArgs e)
         {
             this.OnViewChange(AddTask.ViewName);
-        }
-
-        private void TerminateApplication(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
-        private void StartupToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = (ToggleButton)sender;
-
-            this.ConfigManager.Save();
-
-            this.RegistryManager.SetRunOnStartup(toggle.IsChecked.Value, Assembly.GetExecutingAssembly().Location);
         }
 
         private void ViewTask_Click(object sender, RoutedEventArgs e)

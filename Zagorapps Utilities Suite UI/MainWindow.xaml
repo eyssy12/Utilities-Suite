@@ -10,7 +10,7 @@
         xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="File Organiser" Width="1280" Height="800"
+        Title="Zagorapps Utilities Suite" Width="1280" Height="800"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -35,26 +35,81 @@
     </Window.Resources>
 
     <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel MinWidth="242">
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                    DockPanel.Dock="Top"
+                                    HorizontalAlignment="Right" Margin="16"
+                                    IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                    
+                    <ListBox x:Name="DemoItemsListBox" Margin="0 16 0 16" SelectedIndex="0"                         
+                             PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
+                             PreviewMouseDown="DemoItemsListBox_PreviewMouseDown"
+                             ItemsSource="{Binding SuiteItems}">
+                        
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding .}" Margin="32 0 32 0" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <DockPanel Grid.Row="0" Grid.Column="0">
-                <ContentControl Content="{Binding Path=ActiveView, Mode=OneWay}">
-                    <controls:ContentControlBehaviour.ContentChangedAnimation>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.1"/>
-                        </Storyboard>
-                    </controls:ContentControlBehaviour.ContentChangedAnimation>
-                </ContentControl>
-            </DockPanel>
-            <materialDesign:Snackbar HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0" MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
-        </Grid>
+                
+                <DockPanel Grid.Row="0" Grid.Column="0">
+                    <materialDesign:ColorZone Padding="16"
+                                              materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                              Mode="PrimaryMid"
+                                              DockPanel.Dock="Top">
+                        <DockPanel>
+                            <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                          IsChecked="False"
+                                        x:Name="MenuToggleButton"/>
+                            <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" ToolTip="Options" StaysOpen="True">
+                                <StackPanel>
+                                    <DockPanel Margin="8">
+                                        <TextBlock>Run on Startup</TextBlock>
+                                        <ToggleButton Click="StartupToggleButton_Click" IsChecked="{Binding RunOnStartup}" Margin="8 0 0 0" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" ToolTip="Run Application on Window Startup"/>
+                                    </DockPanel>
+                                    <Separator/>
+                                    <Button 
+                                        x:Name="TerminateButton" 
+                                        Click="TerminateApplication"
+                                        HorizontalAlignment="Stretch">
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Close" />
+                                            <TextBlock ToolTip="Terminate" Margin="8 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Right">Terminate</TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="{Binding MainColorzoneText}" />
+                        </DockPanel>
+                    </materialDesign:ColorZone>
+                    <ContentControl Content="{Binding Path=ActiveView, Mode=OneWay}">
+                        <controls:ContentControlBehaviour.ContentChangedAnimation>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.1"/>
+                            </Storyboard>
+                        </controls:ContentControlBehaviour.ContentChangedAnimation>
+                    </ContentControl>
+                </DockPanel>
+                <materialDesign:Snackbar HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0" MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" />
+            </Grid>
+        </materialDesign:DrawerHost>
+        
     </materialDesign:DialogHost>
 </controls:MainWindowBase>

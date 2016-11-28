@@ -95,22 +95,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Attributes\DefaultViewAttribute.cs" />
+    <Compile Include="Attributes\DefaultEntityAttribute.cs" />
+    <Compile Include="Attributes\SuiteAttribute.cs" />
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
+    <Compile Include="Controls\DefaultEntityBase.cs" />
+    <Compile Include="Controls\IDefaultEntity.cs" />
+    <Compile Include="Controls\IEntityNavigator.cs" />
     <Compile Include="Controls\IMainWindow.cs" />
+    <Compile Include="Controls\ISuite.cs" />
+    <Compile Include="Controls\ISuiteNavigator.cs" />
     <Compile Include="Controls\ISystemTrayControl.cs" />
     <Compile Include="Controls\IViewControl.cs" />
     <Compile Include="Controls\IViewModel.cs" />
-    <Compile Include="Controls\IViewNavigator.cs" />
     <Compile Include="Controls\IWindow.cs" />
+    <Compile Include="Controls\SuiteNavigator.cs" />
     <Compile Include="Controls\SystemTrayControl.cs" />
     <Compile Include="Controls\ViewControlBase.cs" />
     <Compile Include="Controls\MainWindowBase.cs" />
     <Compile Include="Controls\ViewModelBase.cs" />
-    <Compile Include="Controls\ViewNavigator.cs" />
     <Compile Include="Converters\HasValueToBooleanConverter.cs" />
     <Compile Include="Converters\SliderValueToLabelConverter.cs" />
     <Compile Include="Converters\TaskTypeToVisibilityConverter.cs" />
@@ -124,6 +129,9 @@
     <Compile Include="Services\IFormsService.cs" />
     <Compile Include="Services\ISnackbarNotificationService.cs" />
     <Compile Include="Services\SnackbarNotificationService.cs" />
+    <Compile Include="Suites\FileOrganiserSuite.cs" />
+    <Compile Include="Suites\SuiteBase.cs" />
+    <Compile Include="Suites\TempSuite.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -145,6 +153,9 @@
     </Compile>
     <Compile Include="Views\IndividualTask.xaml.cs">
       <DependentUpon>IndividualTask.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TempControl.xaml.cs">
+      <DependentUpon>TempControl.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -171,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IndividualTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TempControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

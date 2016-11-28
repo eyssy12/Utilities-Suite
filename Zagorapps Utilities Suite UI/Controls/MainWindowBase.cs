@@ -5,15 +5,16 @@
     using System.ComponentModel;
     using System.Windows;
     using Commands;
+    using Services;
+    using Suites;
+    using Views;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library.Factories;
-    using Services;
-    using Views;
 
     public abstract class MainWindowBase : Window, IMainWindow
     {
         protected readonly IOrganiserFactory Factory;
-        protected readonly IViewNavigator Navigator;
+        protected readonly ISuiteNavigator SuiteNavigator;
         protected readonly ISnackbarNotificationService Notifier;
 
         protected MainWindowBase(IOrganiserFactory factory)
@@ -34,13 +35,34 @@
                 new IndividualTask(this.Factory, provider)
             };
 
-            this.Navigator = new ViewNavigator(controls);
-            this.Navigator.OnViewChanged += Navigator_OnViewChanged;
+            IEnumerable<IViewControl> tempControls = new List<IViewControl>
+            {
+                new TempControl(this.Factory, provider)
+            };
+
+            this.SuiteNavigator = new SuiteNavigator(new List<ISuite>
+            {
+                new FileOrganiserSuite(controls),
+                new TempSuite(tempControls)
+            });
+
+            this.SuiteNavigator.OnEntityChanged += SuiteNavigator_OnEntityChanged;
+            this.SuiteNavigator.OnViewChanged += SuiteNavigator_OnViewChanged;
+        }
+
+        private void SuiteNavigator_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
+        {
+            this.OnPropertyChanged(nameof(this.ActiveView));
+        }
+
+        private void SuiteNavigator_OnEntityChanged(object sender, EventArgs<ISuite, object> e)
+        {
+            this.OnPropertyChanged(nameof(this.ActiveView));
         }
 
         public IViewControl ActiveView
         {
-            get { return this.Navigator.ActiveView; }
+            get { return this.SuiteNavigator.ActiveSuiteView; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -71,13 +93,6 @@
         protected void TerminateApplication(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
-        }
-
-        private void Navigator_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
-        {
-            e.First.InitialiseView(e.Second);
-
-            this.OnPropertyChanged(nameof(this.ActiveView));
         }
     }
 }
