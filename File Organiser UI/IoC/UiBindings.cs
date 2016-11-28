@@ -1,15 +1,15 @@
-﻿namespace File.Organiser.UI.IoC
+﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
     using System.Configuration;
     using System.Windows.Controls;
     using Commands;
     using Controls;
-    using EyssyApps.Configuration.Library;
-    using EyssyApps.Core.Library.Managers;
-    using EyssyApps.Organiser.Library.Factories;
-    using EyssyApps.Organiser.Library.Managers;
-    using EyssyApps.Organiser.Library.Models.Organiser;
-    using EyssyApps.Organiser.Library.Providers;
+    using Zagorapps.Configuration.Library;
+    using Zagorapps.Core.Library.Managers;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Organiser.Library.Managers;
+    using Zagorapps.Organiser.Library.Models.Organiser;
+    using Zagorapps.Organiser.Library.Providers;
     using Newtonsoft.Json;
     using Services;
     using SimpleInjector;

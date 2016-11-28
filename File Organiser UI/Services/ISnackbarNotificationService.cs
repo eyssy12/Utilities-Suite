@@ -1,6 +1,6 @@
-﻿namespace File.Organiser.UI.Services
+﻿namespace Zagorapps.Utilities.Suite.UI.Services
 {
-    using EyssyApps.Core.Library.Messaging;
+    using Zagorapps.Core.Library.Messaging;
 
     public interface ISnackbarNotificationService : INotificationService<string>
     {

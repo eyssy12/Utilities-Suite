@@ -1,8 +1,8 @@
-﻿namespace File.Organiser.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
     using System.ComponentModel;
-    using EyssyApps.Core.Library.Events;
+    using Zagorapps.Core.Library.Events;
 
     public interface IViewControl : INotifyPropertyChanged
     {

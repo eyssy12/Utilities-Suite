@@ -1,12 +1,12 @@
-﻿namespace File.Organiser.UI.Views
+﻿namespace Zagorapps.Utilities.Suite.UI.Views
 {
     using System.Windows;
     using System.Windows.Input;
     using Commands;
     using Controls;
-    using EyssyApps.Core.Library.Windows;
-    using EyssyApps.Organiser.Library.Factories;
-    using EyssyApps.Organiser.Library.Providers;
+    using Zagorapps.Core.Library.Windows;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Organiser.Library.Providers;
     using Services;
     using ViewModels;
 

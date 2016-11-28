@@ -1,8 +1,8 @@
-﻿namespace File.Organiser.UI.IoC
+﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
     using System;
-    using EyssyApps.Organiser.Library.Factories;
-    using File.Organiser.UI.Controls;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Suite.UI.Controls;
     using SimpleInjector;
     using Views;
 

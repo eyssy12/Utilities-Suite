@@ -1,14 +1,14 @@
-﻿namespace File.Organiser.UI.ViewModels
+﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Controls;
-    using EyssyApps.Core.Library.Extensions;
-    using EyssyApps.Organiser.Library.Tasks;
-    using OrganiseTypeEnum = EyssyApps.Organiser.Library.OrganiseType;
-    using TaskTypeEnum = EyssyApps.Organiser.Library.TaskType;
+    using Zagorapps.Core.Library.Extensions;
+    using Zagorapps.Organiser.Library.Tasks;
+    using OrganiseTypeEnum = Zagorapps.Organiser.Library.OrganiseType;
+    using TaskTypeEnum = Zagorapps.Organiser.Library.TaskType;
 
     public class AddTaskViewModel : ViewModelBase
     {

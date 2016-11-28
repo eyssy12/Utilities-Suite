@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Messaging
+﻿namespace Zagorapps.Core.Library.Messaging
 {
     public interface INotificationService<TContent>
     {

@@ -1,9 +1,9 @@
-﻿namespace File.Organiser.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
     using System.Windows;
     using System.Windows.Controls;
-    using EyssyApps.Core.Library.Events;
+    using Zagorapps.Core.Library.Events;
     using Hardcodet.Wpf.TaskbarNotification;
     using static Enumerations;
     using DrawingIcon = System.Drawing.Icon;

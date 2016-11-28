@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Windows
+﻿namespace Zagorapps.Core.Library.Windows
 {
     public interface IWinSystemService
     {

@@ -1,7 +1,7 @@
-﻿namespace File.Organiser.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
-    using EyssyApps.Core.Library.Events;
+    using Zagorapps.Core.Library.Events;
 
     public interface IViewNavigator
     {

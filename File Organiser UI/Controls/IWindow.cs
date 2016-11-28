@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System.ComponentModel;
 

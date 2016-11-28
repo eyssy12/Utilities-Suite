@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Extensions
+﻿namespace Zagorapps.Core.Library.Extensions
 {
     using System.IO;
 

@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library.Exceptions
+﻿namespace Zagorapps.Organiser.Library.Exceptions
 {
     using System;
     using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Events
+﻿namespace Zagorapps.Core.Library.Events
 {
     public class EventArgs<TFirst, TSecond> : EventArgs<TFirst>
     {

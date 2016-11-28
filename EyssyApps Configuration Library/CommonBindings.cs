@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Configuration.Library
+﻿namespace Zagorapps.Configuration.Library
 {
     using System;
     using System.Collections.Generic;

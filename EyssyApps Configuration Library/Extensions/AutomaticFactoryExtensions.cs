@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Configuration.Library.Extensions
+﻿namespace Zagorapps.Configuration.Library.Extensions
 {
     using System;
     using System.Linq.Expressions;

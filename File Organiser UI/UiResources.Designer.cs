@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace File.Organiser.UI {
+namespace Zagorapps.Utilities.Suite.UI {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace File.Organiser.UI {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("File.Organiser.UI.UiResources", typeof(UiResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Zagorapps.Utilities.Suite.UI.UiResources", typeof(UiResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

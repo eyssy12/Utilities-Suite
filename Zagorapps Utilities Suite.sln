@@ -11,19 +11,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Organiser", "Organiser", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File Organiser UI", "File Organiser UI\File Organiser UI.csproj", "{58EE5D9D-E7C1-430E-A343-5254BB1871E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Suite UI", "File Organiser UI\Zagorapps Utilities Suite UI.csproj", "{58EE5D9D-E7C1-430E-A343-5254BB1871E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DAF08323-551C-490C-8318-3DE05985BEB3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4568B123-6263-473B-957F-D077F96205FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Configuration Library", "EyssyApps Configuration Library\EyssyApps Configuration Library.csproj", "{B9AD6C67-B9C3-45DC-A666-08820523B347}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Configuration Library", "EyssyApps Configuration Library\Zagorapps Configuration Library.csproj", "{B9AD6C67-B9C3-45DC-A666-08820523B347}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{588EC185-3011-42B3-B610-213BFAEADF1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Organiser Library", "EyssyApps Organiser Library\EyssyApps Organiser Library.csproj", "{E9E63EDB-A33C-47B7-960F-F26225922A86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Organiser Library", "EyssyApps Organiser Library\Zagorapps Organiser Library.csproj", "{E9E63EDB-A33C-47B7-960F-F26225922A86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyssyApps Core Library", "EyssyApps Core Library\EyssyApps Core Library.csproj", "{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Core Library", "EyssyApps Core Library\Zagorapps Core Library.csproj", "{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{F9B13CA3-BD2A-4BD1-B946-EFD4CBE9488B}"
 EndProject

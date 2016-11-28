@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Timing
+﻿namespace Zagorapps.Core.Library.Timing
 {
     using System;
     using System.Threading;

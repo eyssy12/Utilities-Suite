@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Validation
+﻿namespace Zagorapps.Utilities.Suite.UI.Validation
 {
     using System.Globalization;
     using System.Windows.Controls;

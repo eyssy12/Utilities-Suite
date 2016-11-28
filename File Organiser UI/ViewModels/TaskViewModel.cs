@@ -1,10 +1,10 @@
-﻿namespace File.Organiser.UI.ViewModels
+﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
     using System;
-    using EyssyApps.Core.Library.Events;
-    using EyssyApps.Organiser.Library;
-    using EyssyApps.Organiser.Library.Tasks;
-    using File.Organiser.UI.Controls;
+    using Zagorapps.Core.Library.Events;
+    using Zagorapps.Organiser.Library;
+    using Zagorapps.Organiser.Library.Tasks;
+    using Zagorapps.Utilities.Suite.UI.Controls;
 
     public class TaskViewModel : ViewModelBase
     {

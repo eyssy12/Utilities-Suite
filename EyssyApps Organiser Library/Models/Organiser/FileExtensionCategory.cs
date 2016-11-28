@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library.Models.Organiser
+﻿namespace Zagorapps.Organiser.Library.Models.Organiser
 {
     using System.Collections.Generic;
 

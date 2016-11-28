@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.ViewModels
+﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
     using System.Collections.Generic;
 

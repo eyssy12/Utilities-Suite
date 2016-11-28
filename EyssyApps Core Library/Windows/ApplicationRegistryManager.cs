@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Windows.Registry
+﻿namespace Zagorapps.Core.Library.Windows.Registry
 {
     using System;
     using Microsoft.Win32;

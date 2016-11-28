@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Views
+﻿namespace Zagorapps.Utilities.Suite.UI.Views
 {
     using System;
     using System.Collections.Generic;
@@ -7,17 +7,17 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
-    using Attributes;
     using Commands;
     using Controls;
-    using EyssyApps.Core.Library.Events;
-    using EyssyApps.Core.Library.Windows;
-    using EyssyApps.Organiser.Library.Factories;
-    using EyssyApps.Organiser.Library.Managers;
-    using EyssyApps.Organiser.Library.Tasks;
     using IoC;
+    using Organiser.Library;
     using Services;
     using ViewModels;
+    using Zagorapps.Core.Library.Events;
+    using Zagorapps.Core.Library.Windows;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Organiser.Library.Managers;
+    using Zagorapps.Organiser.Library.Tasks;
 
     [DefaultView]
     public partial class Home : ViewControlBase

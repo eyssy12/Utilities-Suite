@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library.Factories
+﻿namespace Zagorapps.Organiser.Library.Factories
 {
     using Core.Library.Factories;
 

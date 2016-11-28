@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Factories
+﻿namespace Zagorapps.Core.Library.Factories
 {
     public interface IFactory
     {

@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Execution
+﻿namespace Zagorapps.Core.Library.Execution
 {
     using System;
     using Events;

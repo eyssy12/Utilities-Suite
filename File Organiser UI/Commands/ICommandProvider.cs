@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Commands
+﻿namespace Zagorapps.Utilities.Suite.UI.Commands
 {
     using System;
     using System.Windows.Input;

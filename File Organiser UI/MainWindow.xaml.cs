@@ -1,12 +1,12 @@
-﻿namespace File.Organiser.UI
+﻿namespace Zagorapps.Utilities.Suite.UI
 {
     using System;
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media;
-    using EyssyApps.Core.Library.Events;
-    using EyssyApps.Organiser.Library.Factories;
-    using File.Organiser.UI.Controls;
+    using Zagorapps.Core.Library.Events;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Suite.UI.Controls;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
     using Views;

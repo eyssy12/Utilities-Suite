@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Views
+﻿namespace Zagorapps.Utilities.Suite.UI.Views
 {
     using System;
     using System.Collections.Generic;
@@ -9,15 +9,15 @@
     using System.Windows.Input;
     using Commands;
     using Controls;
-    using EyssyApps.Core.Library.Events;
-    using EyssyApps.Core.Library.Managers;
-    using EyssyApps.Core.Library.Timing;
-    using EyssyApps.Organiser.Library;
-    using EyssyApps.Organiser.Library.Factories;
-    using EyssyApps.Organiser.Library.Managers;
-    using EyssyApps.Organiser.Library.Models.Settings;
-    using EyssyApps.Organiser.Library.Providers;
-    using EyssyApps.Organiser.Library.Tasks;
+    using Zagorapps.Core.Library.Events;
+    using Zagorapps.Core.Library.Managers;
+    using Zagorapps.Core.Library.Timing;
+    using Zagorapps.Organiser.Library;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Organiser.Library.Managers;
+    using Zagorapps.Organiser.Library.Models.Settings;
+    using Zagorapps.Organiser.Library.Providers;
+    using Zagorapps.Organiser.Library.Tasks;
     using MaterialDesignThemes.Wpf;
     using Services;
     using ViewModels;

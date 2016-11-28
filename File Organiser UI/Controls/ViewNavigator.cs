@@ -1,11 +1,11 @@
-﻿namespace File.Organiser.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Attributes;
-    using EyssyApps.Core.Library.Events;
-    using EyssyApps.Core.Library.Extensions;
+    using Organiser.Library;
+    using Zagorapps.Core.Library.Events;
+    using Zagorapps.Core.Library.Extensions;
 
     public class ViewNavigator : IViewNavigator
     {

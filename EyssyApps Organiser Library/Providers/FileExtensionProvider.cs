@@ -1,9 +1,9 @@
-﻿namespace EyssyApps.Organiser.Library.Providers
+﻿namespace Zagorapps.Organiser.Library.Providers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using EyssyApps.Organiser.Library.Models.Organiser;
+    using Zagorapps.Organiser.Library.Models.Organiser;
 
     public class FileExtensionProvider : IFileExtensionProvider
     {

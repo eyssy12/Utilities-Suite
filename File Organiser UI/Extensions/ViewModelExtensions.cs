@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Extensions
+﻿namespace Zagorapps.Utilities.Suite.UI.Extensions
 {
     using System;
     using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library
+﻿namespace Zagorapps.Organiser.Library
 {
     using System;
 

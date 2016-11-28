@@ -1,12 +1,12 @@
-﻿namespace File.Organiser.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows;
     using Commands;
-    using EyssyApps.Core.Library.Events;
-    using EyssyApps.Organiser.Library.Factories;
+    using Zagorapps.Core.Library.Events;
+    using Zagorapps.Organiser.Library.Factories;
     using Services;
     using Views;
 

@@ -1,11 +1,11 @@
-﻿namespace File.Organiser.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
     using System.ComponentModel;
     using System.Windows.Controls;
     using Commands;
-    using EyssyApps.Core.Library.Events;
-    using EyssyApps.Organiser.Library.Factories;
+    using Zagorapps.Core.Library.Events;
+    using Zagorapps.Organiser.Library.Factories;
 
     public abstract class ViewControlBase : UserControl, IViewControl
     {

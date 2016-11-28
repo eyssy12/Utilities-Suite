@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Execution
+﻿namespace Zagorapps.Core.Library.Execution
 {
     public interface ITerminate
     {

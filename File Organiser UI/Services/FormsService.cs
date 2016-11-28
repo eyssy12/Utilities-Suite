@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Services
+﻿namespace Zagorapps.Utilities.Suite.UI.Services
 {
     using WinForms = System.Windows.Forms;
 

@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Converters
+﻿namespace Zagorapps.Utilities.Suite.UI.Converters
 {
     using System;
     using System.Globalization;

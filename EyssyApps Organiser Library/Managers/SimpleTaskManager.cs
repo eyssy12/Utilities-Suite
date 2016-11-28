@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library.Managers
+﻿namespace Zagorapps.Organiser.Library.Managers
 {
     using System;
     using System.Collections.Generic;

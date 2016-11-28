@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library.Tasks
+﻿namespace Zagorapps.Organiser.Library.Tasks
 {
     public interface IOrganiserTask : ITask
     {

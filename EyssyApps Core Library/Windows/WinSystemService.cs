@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Core.Library.Windows
+﻿namespace Zagorapps.Core.Library.Windows
 {
     using System;
     using System.Diagnostics;

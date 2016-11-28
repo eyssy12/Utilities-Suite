@@ -1,4 +1,4 @@
-﻿namespace File.Organiser.UI.Attributes
+﻿namespace Zagorapps.Organiser.Library
 {
     using System;
     

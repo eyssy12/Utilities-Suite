@@ -1,4 +1,4 @@
-﻿namespace EyssyApps.Organiser.Library.Models.Settings
+﻿namespace Zagorapps.Organiser.Library.Models.Settings
 {
     using System.Collections.Generic;
     using ProtoBuf;

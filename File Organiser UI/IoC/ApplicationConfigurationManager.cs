@@ -1,7 +1,7 @@
-﻿namespace File.Organiser.UI.IoC
+﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
     using System;
-    using EyssyApps.Core.Library.Managers;
+    using Zagorapps.Core.Library.Managers;
     using IniParser.Model;
 
     public class ApplicationConfigurationManager : IniFileManager, IApplicationConfigurationManager
