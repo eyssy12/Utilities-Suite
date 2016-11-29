@@ -11,6 +11,7 @@
     using System.Windows.Input;
     using System.Windows.Media;
     using Attributes;
+    using Controls;
     using Core.Library.Windows;
     using IoC;
     using MaterialDesignColors;
@@ -19,7 +20,6 @@
     using ViewModels;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Utilities.Suite.UI.Controls;
     using static Enumerations;
 
     public partial class MainWindow : MainWindowBase
@@ -51,7 +51,7 @@
 
         public string MainColorzoneText
         {
-            get { return Environment.UserName + "'s Utility Suite"; }
+            get { return Environment.UserName + "'s Utilities Suite"; }
         }
 
         public IEnumerable<SuiteViewModel> SuiteItems
@@ -85,7 +85,7 @@
             this.Tray.SetVisibility(Visibility.Hidden);
         }
 
-        private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        protected void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //until we had a StaysOpen glag to Drawer, this will help with scroll bars
             var dependencyObject = Mouse.Captured as DependencyObject;
@@ -114,7 +114,7 @@
             base.OnClosing(e);
         }
 
-        private void Tray_StateChanged(object sender, EventArgs<TrayState> e)
+        protected void Tray_StateChanged(object sender, EventArgs<TrayState> e)
         {
             if (e.First == TrayState.ShowApplication)
             {
@@ -122,7 +122,7 @@
             }
         }
 
-        private void StartupToggleButton_Click(object sender, RoutedEventArgs e)
+        protected void StartupToggleButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleButton toggle = (ToggleButton)sender;
 
@@ -131,7 +131,7 @@
             this.RegistryManager.SetRunOnStartup(toggle.IsChecked.Value, Assembly.GetExecutingAssembly().Location);
         }
 
-        private void DemoItemsListBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        protected void DemoItemsListBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ListBoxItem item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
             if (item != null)
@@ -144,7 +144,7 @@
             }
         }
 
-        private void InitializeMaterialDesign()
+        protected void InitializeMaterialDesign()
         {
             // Create dummy objects to force the MaterialDesign assemblies to be loaded
             // from this assembly, which causes the MaterialDesign assemblies to be searched

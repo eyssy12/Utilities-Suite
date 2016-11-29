@@ -1,6 +1,7 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System.ComponentModel;
+    using Navigation;
 
     public interface IWindow : INotifyPropertyChanged
     {

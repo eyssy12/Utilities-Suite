@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Suite.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Navigation
 {
     using System;
     using Zagorapps.Core.Library.Events;
@@ -13,6 +13,6 @@
 
         IViewControl ActiveSuiteView { get; }
 
-        void Navigate(string entityName, object args);
+        void Navigate(string suiteName, object args);
     }
 }

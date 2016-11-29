@@ -4,7 +4,7 @@
     using SimpleInjector;
     using Views;
     using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Utilities.Suite.UI.Controls;
+    using Zagorapps.Utilities.Suite.UI.Navigation;
 
     public static class ServiceLocator
     {

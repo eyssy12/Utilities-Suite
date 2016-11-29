@@ -101,17 +101,18 @@
     <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
-    <Compile Include="Controls\DefaultEntityBase.cs" />
-    <Compile Include="Controls\IDefaultEntity.cs" />
-    <Compile Include="Controls\IEntityNavigator.cs" />
+    <Compile Include="Navigation\DefaulNavigatableBase.cs" />
+    <Compile Include="Navigation\IDefaultNavigatable.cs" />
+    <Compile Include="Navigation\INavigatable.cs" />
+    <Compile Include="Navigation\INavigatableNavigator.cs" />
     <Compile Include="Controls\IMainWindow.cs" />
-    <Compile Include="Controls\ISuite.cs" />
-    <Compile Include="Controls\ISuiteManager.cs" />
+    <Compile Include="Navigation\ISuite.cs" />
+    <Compile Include="Navigation\ISuiteManager.cs" />
     <Compile Include="Controls\ISystemTrayControl.cs" />
     <Compile Include="Controls\IViewControl.cs" />
     <Compile Include="Controls\IViewModel.cs" />
     <Compile Include="Controls\IWindow.cs" />
-    <Compile Include="Controls\SuiteManager.cs" />
+    <Compile Include="Navigation\SuiteManager.cs" />
     <Compile Include="Controls\SystemTrayControl.cs" />
     <Compile Include="Controls\ViewControlBase.cs" />
     <Compile Include="Controls\MainWindowBase.cs" />
@@ -158,6 +159,9 @@
     <Compile Include="Views\TempControl.xaml.cs">
       <DependentUpon>TempControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TempControl2.xaml.cs">
+      <DependentUpon>TempControl2.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -187,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TempControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TempControl2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,6 +264,7 @@
       <Name>Zagorapps Organiser Library</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

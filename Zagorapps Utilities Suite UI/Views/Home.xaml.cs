@@ -72,7 +72,7 @@
             this.OnPropertyChanged(nameof(this.Tasks));
         }
 
-        private void RunTask(object sender, RoutedEventArgs e)
+        protected void RunTask(object sender, RoutedEventArgs e)
         {
             if (sender is Button)
             {
@@ -86,24 +86,24 @@
             }
         }
 
-        private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
+        protected void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
         {
             this.Notifier.Notify(((ButtonBase)sender).Content.ToString());
         }
 
-        private void Button_AddTask_Click(object sender, RoutedEventArgs e)
+        protected void Button_AddTask_Click(object sender, RoutedEventArgs e)
         {
             this.OnViewChange(AddTask.ViewName);
         }
 
-        private void ViewTask_Click(object sender, RoutedEventArgs e)
+        protected void ViewTask_Click(object sender, RoutedEventArgs e)
         {
             TaskViewModel task = ((sender as Button).DataContext as TaskViewModel);
 
             this.OnViewChange(IndividualTask.ViewName, task);
         }
 
-        private void Button_DeleteTask_Click(object sender, RoutedEventArgs e)
+        protected void Button_DeleteTask_Click(object sender, RoutedEventArgs e)
         {
             Button runTask = sender as Button;
 

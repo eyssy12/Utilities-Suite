@@ -106,7 +106,7 @@
             this.Model.Reset();
         }
 
-        private void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
+        protected void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
         {
             string param = eventArgs.Parameter.ToString();
 
@@ -124,7 +124,7 @@
             }
         }
 
-        private void ViewControlBase_Error(object sender, ValidationErrorEventArgs e)
+        protected void ViewControlBase_Error(object sender, ValidationErrorEventArgs e)
         {
             if (e.Action == ValidationErrorEventAction.Added)
             {
@@ -136,7 +136,7 @@
             }
         }
 
-        private void ToolbarButton_Click(object sender, RoutedEventArgs e)
+        protected void ToolbarButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button)
             {
@@ -167,12 +167,12 @@
             }
         }
 
-        private void ReturnButton_Click(object sender, RoutedEventArgs e)
+        protected void ReturnButton_Click(object sender, RoutedEventArgs e)
         {
             this.OnViewChange(Home.ViewName);
         }
 
-        private ITask CreateTask()
+        protected ITask CreateTask()
         {
             TaskType taskType = this.Model.TaskType;
             OrganiseType organiseType = this.Model.OrganiseType;
@@ -187,7 +187,7 @@
             return this.CreateScheduledTask("scheduled", task, 5000, 7000);
         }
 
-        private IOrganiserTask CreateTask(Guid identity, OrganiseType type)
+        protected IOrganiserTask CreateTask(Guid identity, OrganiseType type)
         {
             if (type == OrganiseType.File)
             {
@@ -197,7 +197,7 @@
             return this.CreateDirectoryOrganiserTask(identity, this.Model);
         }
 
-        private IOrganiserTask CreateFileOrganiserTask(Guid identity, AddTaskViewModel model)
+        protected IOrganiserTask CreateFileOrganiserTask(Guid identity, AddTaskViewModel model)
         {
             this.SettingsProvider.Save(new FileOrganiserSettings
             {
@@ -217,7 +217,7 @@
                 identity: identity);
         }
 
-        private IOrganiserTask CreateDirectoryOrganiserTask(Guid identity, AddTaskViewModel model)
+        protected IOrganiserTask CreateDirectoryOrganiserTask(Guid identity, AddTaskViewModel model)
         {
             this.SettingsProvider.Save(new DirectoryOrganiserSettings
             {
@@ -233,7 +233,7 @@
                 identity: identity);
         }
 
-        private ITask CreateScheduledTask(string name, ITask executable, int initialWaitTime, int timerPeriod)
+        protected ITask CreateScheduledTask(string name, ITask executable, int initialWaitTime, int timerPeriod)
         {
             return new ScheduledTask(
                 name,
@@ -244,7 +244,7 @@
                 timerPeriod: timerPeriod);
         }
 
-        private void ComboBox_OrganiseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        protected void ComboBox_OrganiseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox element = sender as ComboBox;
 
@@ -273,17 +273,17 @@
             }
         }
 
-        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        protected void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             this.AdjustScrollviewer((ScrollViewer)sender, e);
         }
 
-        private void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        protected void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             this.AdjustScrollviewer((ScrollViewer)sender, e);
         }
 
-        private void AdjustScrollviewer(ScrollViewer scroller, MouseWheelEventArgs args)
+        protected void AdjustScrollviewer(ScrollViewer scroller, MouseWheelEventArgs args)
         {
             scroller.ScrollToVerticalOffset(scroller.VerticalOffset - args.Delta);
 

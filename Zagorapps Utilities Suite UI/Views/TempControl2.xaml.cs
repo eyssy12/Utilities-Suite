@@ -1,18 +1,16 @@
 ﻿using System;
-using Zagorapps.Organiser.Library;
 using Zagorapps.Organiser.Library.Factories;
 using Zagorapps.Utilities.Suite.UI.Commands;
 using Zagorapps.Utilities.Suite.UI.Controls;
 
 namespace Zagorapps.Utilities.Suite.UI.Views
 {
-    [DefaultEntity]
-    public partial class TempControl : ViewControlBase
+    public partial class TempControl2 : ViewControlBase
     {
-        public const string ViewName = nameof(TempControl);
+        public const string ViewName = nameof(TempControl2);
 
-        public TempControl(IOrganiserFactory factory, ICommandProvider commandProvider)
-            : base(TempControl.ViewName, factory, commandProvider)
+        public TempControl2(IOrganiserFactory factory, ICommandProvider commandProvider)
+            : base(TempControl2.ViewName, factory, commandProvider)
         {
             InitializeComponent();
         }
@@ -24,7 +22,7 @@ namespace Zagorapps.Utilities.Suite.UI.Views
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.OnViewChange(TempControl2.ViewName);
+            this.OnViewChange(TempControl.ViewName);
         }
     }
 }

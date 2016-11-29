@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Attributes;
-    using Controls;
+    using Navigation;
 
     [Suite(TempSuite.Name, "Test Suite")]
     public class TempSuite : SuiteBase

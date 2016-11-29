@@ -1,4 +1,4 @@
-﻿<controls:ViewControlBase x:Class="Zagorapps.Utilities.Suite.UI.Views.TempControl"
+﻿<controls:ViewControlBase x:Class="Zagorapps.Utilities.Suite.UI.Views.TempControl2"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,6 +11,6 @@
     <StackPanel>
 
         <TextBlock>Toooooo</TextBlock>
-        <Button Click="Button_Click">Move to Temp Control 2</Button>
+        <Button Click="Button_Click">Move to Temp Control 1</Button>
     </StackPanel>
 </controls:ViewControlBase>

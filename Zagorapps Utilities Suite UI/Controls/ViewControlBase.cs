@@ -4,6 +4,7 @@
     using System.ComponentModel;
     using System.Windows.Controls;
     using Commands;
+    using Navigation;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library.Factories;
 
@@ -41,7 +42,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string ViewControlName
+        public string Identifier
         {
             get { return this.viewName; }
         }

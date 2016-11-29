@@ -1,16 +1,12 @@
-﻿namespace Zagorapps.Utilities.Suite.UI.Controls
+﻿namespace Zagorapps.Utilities.Suite.UI.Navigation
 {
     using System;
     using System.ComponentModel;
     using Zagorapps.Core.Library.Events;
 
-    public interface IViewControl : INotifyPropertyChanged
+    public interface IViewControl : INavigatable, INotifyPropertyChanged
     {
         event EventHandler<EventArgs<string, object>> OnChangeView;
-
-        string ViewControlName { get; }
-
-        bool IsActive { get; set; }
 
         void InitialiseView(object arg);
     }

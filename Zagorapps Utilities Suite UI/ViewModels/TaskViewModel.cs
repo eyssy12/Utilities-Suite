@@ -1,10 +1,10 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
     using System;
+    using Controls;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library;
     using Zagorapps.Organiser.Library.Tasks;
-    using Zagorapps.Utilities.Suite.UI.Controls;
 
     public class TaskViewModel : ViewModelBase
     {

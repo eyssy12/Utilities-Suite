@@ -5,6 +5,7 @@
     using System.ComponentModel;
     using System.Windows;
     using Commands;
+    using Navigation;
     using Services;
     using Suites;
     using Views;
@@ -37,7 +38,8 @@
 
             IEnumerable<IViewControl> tempControls = new List<IViewControl>
             {
-                new TempControl(this.Factory, provider)
+                new TempControl(this.Factory, provider),
+                new TempControl2(this.Factory, provider)
             };
 
             this.SuiteManager = new SuiteManager(new List<ISuite>
@@ -58,6 +60,8 @@
         private void SuiteManager_OnSuiteChanged(object sender, EventArgs<ISuite, object> e)
         {
             this.OnPropertyChanged(nameof(this.ActiveView));
+
+            this.Notifier.Notify("'" + e.First.Identifier + "' suite loaded.");
         }
 
         public IViewControl ActiveView

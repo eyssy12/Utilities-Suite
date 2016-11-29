@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Attributes;
-    using Controls;
+    using Navigation;
     using Organiser.Library;
 
     [DefaultEntity]
