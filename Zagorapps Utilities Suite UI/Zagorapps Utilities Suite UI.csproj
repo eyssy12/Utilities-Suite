@@ -106,12 +106,12 @@
     <Compile Include="Controls\IEntityNavigator.cs" />
     <Compile Include="Controls\IMainWindow.cs" />
     <Compile Include="Controls\ISuite.cs" />
-    <Compile Include="Controls\ISuiteNavigator.cs" />
+    <Compile Include="Controls\ISuiteManager.cs" />
     <Compile Include="Controls\ISystemTrayControl.cs" />
     <Compile Include="Controls\IViewControl.cs" />
     <Compile Include="Controls\IViewModel.cs" />
     <Compile Include="Controls\IWindow.cs" />
-    <Compile Include="Controls\SuiteNavigator.cs" />
+    <Compile Include="Controls\SuiteManager.cs" />
     <Compile Include="Controls\SystemTrayControl.cs" />
     <Compile Include="Controls\ViewControlBase.cs" />
     <Compile Include="Controls\MainWindowBase.cs" />
@@ -144,6 +144,7 @@
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="ViewModels\FileExtensionViewModel.cs" />
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />
+    <Compile Include="ViewModels\SuiteViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="Views\AddTask.xaml.cs">
       <DependentUpon>AddTask.xaml</DependentUpon>

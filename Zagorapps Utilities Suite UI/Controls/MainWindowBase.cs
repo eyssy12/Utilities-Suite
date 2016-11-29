@@ -14,7 +14,7 @@
     public abstract class MainWindowBase : Window, IMainWindow
     {
         protected readonly IOrganiserFactory Factory;
-        protected readonly ISuiteNavigator SuiteNavigator;
+        protected readonly ISuiteManager SuiteManager;
         protected readonly ISnackbarNotificationService Notifier;
 
         protected MainWindowBase(IOrganiserFactory factory)
@@ -40,14 +40,14 @@
                 new TempControl(this.Factory, provider)
             };
 
-            this.SuiteNavigator = new SuiteNavigator(new List<ISuite>
+            this.SuiteManager = new SuiteManager(new List<ISuite>
             {
                 new FileOrganiserSuite(controls),
                 new TempSuite(tempControls)
             });
 
-            this.SuiteNavigator.OnEntityChanged += SuiteNavigator_OnEntityChanged;
-            this.SuiteNavigator.OnViewChanged += SuiteNavigator_OnViewChanged;
+            this.SuiteManager.OnEntityChanged += SuiteNavigator_OnEntityChanged;
+            this.SuiteManager.OnSuiteViewChanged += SuiteNavigator_OnViewChanged;
         }
 
         private void SuiteNavigator_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
@@ -62,7 +62,7 @@
 
         public IViewControl ActiveView
         {
-            get { return this.SuiteNavigator.ActiveSuiteView; }
+            get { return this.SuiteManager.ActiveSuiteView; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

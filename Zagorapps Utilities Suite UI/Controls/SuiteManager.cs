@@ -6,17 +6,12 @@
     using Core.Library.Events;
     using Core.Library.Extensions;
 
-    public class SuiteNavigator : DefaultEntityBase<ISuite>, ISuiteNavigator
+    public class SuiteManager : DefaultEntityBase<ISuite>, ISuiteManager
     {
-        public SuiteNavigator(IEnumerable<ISuite> suites)
+        public SuiteManager(IEnumerable<ISuite> suites)
             : base(suites)
         {
             this.Entities.ForEach(e => e.OnViewChanged += E_OnViewChanged);
-        }
-
-        private void E_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
-        {
-            Invoker.Raise(ref this.OnViewChanged, this, e);
         }
 
         public ISuite ActiveSuite
@@ -30,7 +25,8 @@
         }
 
         public event EventHandler<EventArgs<ISuite, object>> OnEntityChanged;
-        public event EventHandler<EventArgs<IViewControl, object>> OnViewChanged;
+
+        public event EventHandler<EventArgs<IViewControl, object>> OnSuiteViewChanged;
 
         public void Navigate(string entityName, object args)
         {
@@ -46,6 +42,11 @@
             {
                 // TODO: Raise a log event
             }
+        }
+
+        private void E_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
+        {
+            Invoker.Raise(ref this.OnSuiteViewChanged, this, e);
         }
 
         private ISuite FindSuite(string entityName)

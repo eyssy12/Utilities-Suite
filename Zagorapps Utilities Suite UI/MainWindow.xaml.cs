@@ -3,17 +3,20 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Media;
+    using Attributes;
     using Core.Library.Windows;
     using IoC;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
     using Suites;
+    using ViewModels;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Controls;
@@ -41,7 +44,7 @@
 
             this.DataContext = this;
 
-            this.SuiteNavigator.Navigate(FileOrganiserSuite.Name, null);
+            this.SuiteManager.Navigate(FileOrganiserSuite.Name, null);
 
             this.Notifier.Notify("Hello, " + Environment.UserName + "!");
         }
@@ -51,9 +54,22 @@
             get { return Environment.UserName + "'s Utility Suite"; }
         }
 
-        public IEnumerable<string> SuiteItems
+        public IEnumerable<SuiteViewModel> SuiteItems
         {
-            get { return new[] { FileOrganiserSuite.Name, TempSuite.Name }; } // TODO: make dynamic using relfection
+            get
+            {
+                return Assembly
+                    .GetExecutingAssembly()
+                    .GetTypes()
+                    .Where(t => t.IsDefined(typeof(SuiteAttribute), false))
+                    .Select(t => t.GetCustomAttribute<SuiteAttribute>())
+                    .Select(a => new SuiteViewModel
+                    { 
+                        Identifier = a.Name,
+                        FriendlyName = a.FriendlyName
+                    })
+                    .ToArray();
+            }
         }
 
         public bool RunOnStartup
@@ -118,7 +134,9 @@
             {
                 // ListBox item clicked - do some cool things here
 
-                this.SuiteNavigator.Navigate(item.Content.ToString(), null);
+                SuiteViewModel suite = item.DataContext as SuiteViewModel;
+
+                this.SuiteManager.Navigate(suite.Identifier, null);
             }
         }
 

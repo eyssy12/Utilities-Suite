@@ -4,7 +4,7 @@
     using Attributes;
     using Controls;
 
-    [Suite(TempSuite.Name)]
+    [Suite(TempSuite.Name, "Test Suite")]
     public class TempSuite : SuiteBase
     {
         public const string Name = nameof(TempSuite);

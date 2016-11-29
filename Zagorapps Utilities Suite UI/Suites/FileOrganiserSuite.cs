@@ -6,7 +6,7 @@
     using Organiser.Library;
 
     [DefaultEntity]
-    [Suite(FileOrganiserSuite.Name)]
+    [Suite(FileOrganiserSuite.Name, "File Organiser")]
     public class FileOrganiserSuite : SuiteBase
     {
         public const string Name = nameof(FileOrganiserSuite);

@@ -50,7 +50,7 @@
                         
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding .}" Margin="32 0 32 0" />
+                                <TextBlock Text="{Binding FriendlyName}" Margin="32 0 32 0" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         

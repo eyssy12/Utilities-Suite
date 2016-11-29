@@ -3,9 +3,9 @@
     using System;
     using Zagorapps.Core.Library.Events;
 
-    public interface ISuiteNavigator : IEntityNavigator<ISuite>
+    public interface ISuiteManager : IEntityNavigator<ISuite>
     {
-        event EventHandler<EventArgs<IViewControl, object>> OnViewChanged;
+        event EventHandler<EventArgs<IViewControl, object>> OnSuiteViewChanged;
 
         ISuite ActiveSuite { get; }
 
