@@ -23,8 +23,8 @@
         {
             get { return this.ActiveSuite.ActiveView; }
         }
-
-        public event EventHandler<EventArgs<ISuite, object>> OnEntityChanged;
+        
+        public event EventHandler<EventArgs<ISuite, object>> OnSuiteChanged;
 
         public event EventHandler<EventArgs<IViewControl, object>> OnSuiteViewChanged;
 
@@ -36,7 +36,7 @@
             {
                 this.SetActiveSuite(suite);
 
-                Invoker.Raise(ref this.OnEntityChanged, this, suite, args);
+                Invoker.Raise(ref this.OnSuiteChanged, this, suite, args);
             }
             else
             {

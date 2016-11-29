@@ -46,16 +46,16 @@
                 new TempSuite(tempControls)
             });
 
-            this.SuiteManager.OnEntityChanged += SuiteNavigator_OnEntityChanged;
-            this.SuiteManager.OnSuiteViewChanged += SuiteNavigator_OnViewChanged;
+            this.SuiteManager.OnSuiteChanged += SuiteManager_OnSuiteChanged;
+            this.SuiteManager.OnSuiteViewChanged += SuiteManager_OnSuiteViewChanged;
         }
 
-        private void SuiteNavigator_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
+        private void SuiteManager_OnSuiteViewChanged(object sender, EventArgs<IViewControl, object> e)
         {
             this.OnPropertyChanged(nameof(this.ActiveView));
         }
 
-        private void SuiteNavigator_OnEntityChanged(object sender, EventArgs<ISuite, object> e)
+        private void SuiteManager_OnSuiteChanged(object sender, EventArgs<ISuite, object> e)
         {
             this.OnPropertyChanged(nameof(this.ActiveView));
         }
