@@ -1,0 +1,147 @@
+﻿<controls:ViewControlBase x:Class="Zagorapps.Utilities.Suite.UI.Views.Home"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zagorapps.Utilities.Suite.UI.Views"
+             xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <controls:ViewControlBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:ViewControlBase.Resources>
+
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="476" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <materialDesign:Card Grid.Row="0" Height="476" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <DataGrid
+                    MaxHeight="468"
+                    Name="TasksGrid"
+                    Margin="0 8 0 0"
+                    ItemsSource="{Binding Path=Tasks}" 
+                    CanUserSortColumns="True"
+                    CanUserAddRows="False" 
+                    AutoGenerateColumns="False"
+                    materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                    materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTemplateColumn CanUserSort="False" CanUserResize="False" CanUserReorder="False" Header="Action">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button VerticalAlignment="Top" HorizontalAlignment="Left" Click="RunTask">Run</Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            MinWidth="140"
+                            Header="Name"
+                            IsReadOnly="True" />
+
+                        <materialDesign:MaterialDataGridTextColumn
+                            Binding="{Binding State}"
+                            MinWidth="100"
+                            Header="State"
+                            IsReadOnly="True" />
+
+                        <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
+                        <materialDesign:MaterialDataGridTextColumn
+                            Binding="{Binding TaskType}"
+                            MinWidth="100"
+                            Header="Type"
+                            IsReadOnly="True" />
+
+                        <!-- set a max length to get an indicator in the editor -->
+                        <materialDesign:MaterialDataGridTextColumn
+                            Binding="{Binding Description}"
+                            Header="Description"
+                            MinWidth="100"
+                            MaxLength="200"
+                            IsReadOnly="True" />
+
+                        <DataGridTemplateColumn 
+                            Width="*"
+                            CanUserSort="False" 
+                            CanUserResize="False"
+                            CanUserReorder="False">
+
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <Button Grid.Row="0"
+                                                Grid.Column="0"
+                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Left"
+                                                Click="ViewTask_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Magnify" Opacity=".56"/>
+                                                <TextBlock Margin="8 0 0 0">Inspect</TextBlock>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Border Grid.Row="0" Grid.Column="1" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+                                        
+                                        <Button Grid.Row="0"
+                                                Grid.Column="2"
+                                                Name="Button_DeleteTask"
+                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Right"
+                                                ToolTip="Delete Task"
+                                                Click="Button_DeleteTask_Click">
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Delete" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </materialDesign:Card>
+
+            <Button
+                    Panel.ZIndex="2000"
+                    Grid.Row="1"
+                    Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                    Margin="32"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    ToolTip="Create New Task"
+                    Click="Button_AddTask_Click">
+
+                <materialDesign:PackIcon Kind="Plus" Height="24" Width="24" />
+
+            </Button>
+        </Grid>
+    </StackPanel>
+</controls:ViewControlBase>

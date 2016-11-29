@@ -1,0 +1,528 @@
+﻿<controls:ViewControlBase x:Class="Zagorapps.Utilities.Suite.UI.Views.AddTask"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zagorapps.Utilities.Suite.UI.Views"
+             xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
+             xmlns:converters="clr-namespace:Zagorapps.Utilities.Suite.UI.Converters"
+             xmlns:validation="clr-namespace:Zagorapps.Utilities.Suite.UI.Validation"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:Zagorapps.Utilities.Suite.UI.ViewModels"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             mc:Ignorable="d" 
+             d:DesignHeight="1280" d:DesignWidth="800"
+             Validation.Error="ViewControlBase_Error">
+
+    <controls:ViewControlBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- note you only need bring in these extra resource dictionaries when using non-default styles, so only bring them into your controls where the default style is not what you want -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/OrganiserStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisiblity" />
+            <converters:TaskTypeToVisibilityConverter x:Key="TaskTypeToVisibility" />
+            <converters:SliderValueToLabelConverter x:Key="SliderValueToLabel" />
+            <converters:HasValueToBooleanConverter x:Key="HasValueToBoolean" /> 
+        </ResourceDictionary>
+    </controls:ViewControlBase.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:ColorZone Grid.Row="0" Padding="16" Mode="PrimaryMid" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource OrganiserMaterialDesignFlatButton}" 
+                        HorizontalAlignment="Stretch"
+                        Click="ReturnButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="KeyboardBackspace" Opacity="1" Foreground="White" />
+                        <TextBlock TextAlignment="Center" VerticalAlignment="Center" Margin="8 0 0 0" Foreground="White" FontSize="16">
+                            Return
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </materialDesign:ColorZone>
+
+        <ScrollViewer Name="ScrollViewer_Main" 
+                      Grid.Row="1" MaxHeight="1000" 
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                      PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:Card Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="16" HorizontalAlignment="Center" FontSize="22">
+                            New Task Configuration
+                        </TextBlock>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="8" >
+                            <TextBox x:Name="CommentTextBox"
+                                 Margin="0 16 0 0"
+                                 IsReadOnly="True"
+                                 Text="{Binding TaskViewModel.Identity, Mode=OneWay}"
+				                 Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+
+                                <materialDesign:HintAssist.Hint>
+                                    <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
+                                        <materialDesign:PackIcon Kind="Barcode" />
+                                        <TextBlock>Identity</TextBlock>
+                                    </StackPanel>
+                                </materialDesign:HintAssist.Hint>
+                            </TextBox>
+
+                            <TextBox Name="TextBox_Name" 
+                                 Margin="0 16 0 0"
+                                 MaxLength="60"
+                                 MaxLines="1"
+                                 VerticalAlignment="Stretch"
+                                 AcceptsReturn="False"                 
+                                 VerticalScrollBarVisibility="Disabled"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+
+                                <TextBox.Text>
+                                    <Binding Path="TaskViewModel.Name" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                            <validation:MinimumCharactersValidationRule MinimumCharactersRequired="6" ValidatesOnTargetUpdated="True" />
+                                            <validation:MaximumCharactersValidationRule MaximumCharactersAllowed="60" ValidatesOnTargetUpdated="True" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <materialDesign:HintAssist.Hint>
+                                    <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
+                                        <materialDesign:PackIcon Kind="TagTextOutline" />
+                                        <TextBlock>Name (6-60 characters)</TextBlock>
+                                    </StackPanel>
+                                </materialDesign:HintAssist.Hint>
+                            </TextBox>
+
+                            <ComboBox 
+                                    Name="ComboBox_OrganiseType"
+                                    Margin="0 18 0 0"
+                                    ItemsSource="{Binding TaskViewModel.OrganiserTypes}"
+                                    SelectedValue="{Binding TaskViewModel.OrganiseType}"
+                                    SelectionChanged="ComboBox_OrganiseType_SelectionChanged"
+                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                    materialDesign:HintAssist.Hint="Organiser Type" />
+
+                            <ComboBox 
+                                    Name="ComboBox_TaskType"
+                                    Margin="0 18 0 0"
+                                    ItemsSource="{Binding TaskViewModel.TaskTypes}"
+                                    SelectedValue="{Binding TaskViewModel.TaskType}"
+                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                    materialDesign:HintAssist.Hint="Task Type" />
+
+                            <StackPanel Margin="0 16 0 0" Visibility="{Binding ElementName=ComboBox_TaskType, Path=SelectedValue, Converter={StaticResource TaskTypeToVisibility}}">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding ElementName=Slider_InitialWaitTime, Path=Value, Converter={StaticResource SliderValueToLabel}, ConverterParameter=InitialWaitTime}" />
+                                    </StackPanel>
+                                    <Slider Name="Slider_InitialWaitTime"
+                                            Minimum="10"
+                                            Maximum="100" 
+                                            TickPlacement="TopLeft"
+                                            TickFrequency="2"
+                                            Value="{Binding TaskViewModel.InitialWaitTime}"
+                                            Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                                            ToolTip="Intial wait time for the task to start for the first time."/>
+
+                                </StackPanel>
+                                <CheckBox x:Name="CheckBox_RepeatedTask" Style="{StaticResource MaterialDesignCheckBox}" Margin="0 8 0 0" VerticalAlignment="Center">
+                                    Repeated Task
+                                </CheckBox>
+                                <StackPanel Orientation="Vertical" Visibility="{Binding ElementName=CheckBox_RepeatedTask, Path=IsChecked, Converter={StaticResource BooleanToVisiblity}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding ElementName=Slider_Interval, Path=Value, Converter={StaticResource SliderValueToLabel}, ConverterParameter=Interval}" />
+                                    </StackPanel>
+                                    <Slider Name="Slider_Interval"
+                                            Minimum="10"
+                                            Maximum="100"
+                                            TickPlacement="TopLeft"
+                                            TickFrequency="2"
+                                            Value="{Binding TaskViewModel.Interval}"
+                                            Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                                            ToolTip="Interval for how often the task repeats in seconds."/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="8" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+
+                        <DockPanel Grid.Row="1" Grid.Column="2" Margin="8">
+
+                            <Grid Name="Grid_AdvancedSettings">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox Grid.Row="0"
+                                             Grid.Column="0"
+                                             IsReadOnly="True"
+                                             Margin="0 16 0 0"
+                                             x:Name="TextBox_RootPath"
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                             VerticalScrollBarVisibility="Disabled"
+                                             VerticalAlignment="Stretch"
+                                             TextWrapping="Wrap">
+
+                                        <TextBox.Text>
+                                            <Binding Path="TaskViewModel.RootPath" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <materialDesign:HintAssist.Hint>
+                                            <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
+                                                <materialDesign:PackIcon Kind="TagTextOutline" />
+                                                <TextBlock>Organiser Task Root Path</TextBlock>
+                                            </StackPanel>
+                                        </materialDesign:HintAssist.Hint>
+                                    </TextBox>
+
+                                    <Button Grid.Row="0"
+                                            Grid.Column="1"
+                                            Command="{Binding TaskViewModel.SelectRootPathCommand}">
+                                        Select
+                                    </Button>
+                                </Grid>
+
+                                <TextBox Grid.Row="1" Grid.Column="0" Name="TextBox_Description" 
+                                     Margin="0 16 0 0"
+                                     TextWrapping="Wrap"
+                                     VerticalAlignment="Stretch"
+                                     MaxLines="6"
+                                     MaxLength="200"
+                                     AcceptsReturn="True"                 
+                                     VerticalScrollBarVisibility="Auto"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+
+                                    <TextBox.Text>
+                                        <Binding Path="TaskViewModel.Description" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                            <Binding.ValidationRules>
+                                                <validation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                                <validation:MinimumCharactersValidationRule MinimumCharactersRequired="10" ValidatesOnTargetUpdated="True" />
+                                                <validation:MaximumCharactersValidationRule MaximumCharactersAllowed="200" ValidatesOnTargetUpdated="True" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                    <materialDesign:HintAssist.Hint>
+                                        <StackPanel Orientation="Horizontal" Margin="-2 0 0 0">
+                                            <materialDesign:PackIcon Kind="TagTextOutline" />
+                                            <TextBlock>Description (10 - 200 characters)</TextBlock>
+                                        </StackPanel>
+                                    </materialDesign:HintAssist.Hint>
+                                </TextBox>
+
+                                <Grid Grid.Row="2"
+                                      Grid.Column="0"
+                                      Name="Grid_Exemptions">
+
+                                    <Grid.Style>
+                                        <Style>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=TextBox_RootPath, Path=Text.Length, Mode=OneWay}" Value="0">
+                                                    <Setter Property="Grid.IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <DockPanel Name="Panel_FileExemptions" 
+                                        Grid.Row="0" 
+                                        Grid.Column="0" 
+                                        Margin="0 16 0 0"
+                                        MaxHeight="460" >
+
+                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">File Exemptions (Optional)</TextBlock>
+
+                                        <DataGrid Name="Grid_RootPathFiles"
+                                                  ItemsSource="{Binding Path=TaskViewModel.FileRootPathFiles}"
+                                                  CanUserAddRows="false"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+
+                                                <DataGridCheckBoxColumn 
+                                                    Binding="{Binding Path=Exempt}"
+                                                    Header="Exempt" />
+
+                                                <DataGridTextColumn
+                                                        Header="File Name"
+                                                        Binding="{Binding Path=File, Mode=OneWay}"
+                                                        IsReadOnly="True" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
+                                    </DockPanel>
+
+                                    <DockPanel Name="Panel_DirectoryExemptions" 
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="0 16 0 0"
+                                        MaxHeight="460"
+                                        Visibility="Collapsed" >
+
+                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Directory Exemptions (Optional)</TextBlock>
+
+                                        <DataGrid Name="Grid_DirectoryRootPathFiles"
+                                                  ItemsSource="{Binding Path=TaskViewModel.DirectoryRootPathFiles}"
+                                                  CanUserAddRows="false"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+
+                                                <DataGridCheckBoxColumn 
+                                                    Binding="{Binding Path=Exempt}"
+                                                    Header="Exempt" />
+
+                                                <DataGridTextColumn
+                                                        Header="File Name"
+                                                        Binding="{Binding Path=File, Mode=OneWay}"
+                                                        IsReadOnly="True" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </DockPanel>
+
+                                    <DockPanel Name="Panel_ExtensionExemptions" 
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="0 16 0 0">
+
+                                        <TextBlock Margin="0 16 0 16" DockPanel.Dock="Top">Extension Exemptions (Optional)</TextBlock>
+
+                                        <StackPanel VerticalAlignment="Center">
+                                            <!--the request to open the dialog will bubble up to the top-most DialogHost, but we can used the attached property based event to handle the response -->
+                                            <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                    VerticalAlignment="Top"
+                                                    materialDesign:DialogHost.DialogClosingAttached="Sample2_DialogHost_OnDialogClosing">
+                                                <Button.CommandParameter>
+
+                                                    <StackPanel Margin="16" Width="400">
+
+                                                        <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                                 SelectionMode="Multiple"
+                                                                 Name="ListBox_FileExtensions"
+                                                                 ItemsSource="{Binding TaskViewModel.FileExtensions}">
+
+                                                            <ListBox.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel />
+                                                                </ItemsPanelTemplate>
+                                                            </ListBox.ItemsPanel>
+
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Grid>
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="*" />
+                                                                        </Grid.RowDefinitions>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="*" />
+                                                                        </Grid.ColumnDefinitions>
+
+                                                                        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                                                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Value}"/>
+                                                                        </StackPanel>
+
+                                                                    </Grid>
+
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+
+                                                        </ListBox>
+
+                                                        <!-- TODO: Get this to work, then delete the listbox above -->
+                                                        <!--<ScrollViewer MaxHeight="300"
+                                                                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                                                            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                                 Name="ListBox_FileExtensions"
+                                                                 ItemsSource="{Binding TaskViewModel.Categories}">
+
+                                                                -->
+                                                        <!--<ListBox.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel />
+                                                                </ItemsPanelTemplate>
+                                                            </ListBox.ItemsPanel>-->
+                                                        <!--
+
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Grid>
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition Height="Auto" />
+                                                                                <RowDefinition Height="*" />
+                                                                            </Grid.RowDefinitions>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*" />
+                                                                            </Grid.ColumnDefinitions>
+
+                                                                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Category}" FontWeight="Bold"/>
+                                                                            </StackPanel>
+
+                                                                            <ListBox Grid.Row="1" 
+                                                                                 Grid.Column="0"
+                                                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                                                 SelectionMode="Multiple"
+                                                                                 Name="ListBox_FFileExtensions"
+                                                                                 ItemsSource="{Binding Extensions}">
+
+                                                                                <ListBox.ItemsPanel>
+                                                                                    <ItemsPanelTemplate>
+                                                                                        <WrapPanel />
+                                                                                    </ItemsPanelTemplate>
+                                                                                </ListBox.ItemsPanel>
+
+                                                                                <ListBox.ItemTemplate>
+                                                                                    <DataTemplate>
+                                                                                        <StackPanel Orientation="Horizontal">
+                                                                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Value}"/>
+                                                                                        </StackPanel>
+                                                                                    </DataTemplate>
+                                                                                </ListBox.ItemTemplate>
+                                                                            </ListBox>
+                                                                        </Grid>
+
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+
+                                                            </ListBox>
+                                                        </ScrollViewer>-->
+
+                                                        <Border Margin="16" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+
+                                                        <DockPanel>
+                                                            <Button DockPanel.Dock="Left" 
+                                                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                                                    IsCancel="True" 
+                                                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                                    CommandParameter="Command_FileExtensions_Saved"
+                                                                    HorizontalAlignment="Left">
+
+                                                                APPLY
+                                                            </Button>
+
+                                                            <Button DockPanel.Dock="Right" 
+                                                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                                                    IsCancel="True" 
+                                                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                                    CommandParameter="Command_FileExtensions_Canceled"
+                                                                    HorizontalAlignment="Right">
+
+                                                                CANCEL
+                                                            </Button>
+                                                        </DockPanel>
+
+                                                    </StackPanel>
+                                                </Button.CommandParameter>
+
+                                                Configure
+                                            </Button>
+                                        </StackPanel>
+
+                                        <ListBox Name="ListBox_ExemptedFileExtensions" ItemsSource="{Binding TaskViewModel.ExemptedFileExtensions}">
+
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <materialDesign:Chip Content="{Binding Value}" />
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </DockPanel>
+                                </Grid>
+                            </Grid>
+                        </DockPanel>
+                    </Grid>
+                </materialDesign:Card>
+            </Grid>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+            <materialDesign:Card Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <Grid x:Name="AddTask_Toolbar">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Name="Name_ButtonSave" 
+                            Grid.Row="0" Grid.Column="0" 
+                            HorizontalAlignment="Left" 
+                            Click="ToolbarButton_Click">
+                        
+                        Save
+                    </Button>
+                    <Button Name="Name_ButtonDiscard" 
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right" 
+                            BorderBrush="Red" 
+                            Background="OrangeRed"
+                            Click="ToolbarButton_Click">
+                        
+                        Discard
+                    </Button>
+                </Grid>
+            </materialDesign:Card>
+        </StackPanel>
+    </Grid>
+</controls:ViewControlBase>
