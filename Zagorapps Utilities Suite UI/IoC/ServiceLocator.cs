@@ -1,27 +1,32 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
     using System;
-    using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Utilities.Suite.UI.Controls;
     using SimpleInjector;
     using Views;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Suite.UI.Controls;
 
     public static class ServiceLocator
     {
-        private static readonly Container container;
+        private static readonly Container Container;
         private static bool locked;
 
         static ServiceLocator()
         {
-            ServiceLocator.container = new Container();
+            ServiceLocator.Container = new Container();
 
             UiBindings bindings = new UiBindings();
-            bindings.RegisterBindingsToContainer(ServiceLocator.container);
+            bindings.RegisterBindingsToContainer(ServiceLocator.Container);
 
             // TODO: add to bindings
-            ServiceLocator.container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
+            ServiceLocator.Container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
 
             ServiceLocator.locked = false;
+        }
+
+        public static bool IsLocked
+        {
+            get { return ServiceLocator.locked; }
         }
 
         public static IOrganiserFactory GetFactory()
@@ -33,7 +38,7 @@
         {
             if (!ServiceLocator.IsLocked)
             {
-                ServiceLocator.container.Register(service, instanceCreator, lifestyle);
+                ServiceLocator.Container.Register(service, instanceCreator, lifestyle);
             }
             else
             {
@@ -49,11 +54,6 @@
             }
         }
 
-        public static bool IsLocked
-        {
-            get { return ServiceLocator.locked; }
-        }
-
         private static TService Get<TService>()
             where TService : class
         {
@@ -62,7 +62,7 @@
                 ServiceLocator.locked = true;
             }
 
-            return ServiceLocator.container.GetInstance<TService>();
+            return ServiceLocator.Container.GetInstance<TService>();
         }
     }
 }

@@ -91,7 +91,11 @@
             var dependencyObject = Mouse.Captured as DependencyObject;
             while (dependencyObject != null)
             {
-                if (dependencyObject is ScrollBar) return;
+                if (dependencyObject is ScrollBar)
+                {
+                    return;
+                }
+                    
                 dependencyObject = VisualTreeHelper.GetParent(dependencyObject);
             }
 

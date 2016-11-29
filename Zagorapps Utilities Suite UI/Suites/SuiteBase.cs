@@ -18,8 +18,12 @@
             this.suiteName = suiteName;
 
             this.DefaultView.IsActive = true;
-            this.Entities.ForEach(e => e.OnChangeView += ChangeView);
+            this.Entities.ForEach(e => e.OnChangeView += this.ChangeView);
         }
+
+        public event EventHandler<EventArgs<IViewControl, object>> OnViewChanged;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public IViewControl ActiveView
         {
@@ -41,23 +45,19 @@
             get { return this.suiteName; }
         }
 
-        public event EventHandler<EventArgs<IViewControl, object>> OnViewChanged;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public void Navigate(string viewName, object args)
         {
             IViewControl view = this.FindView(viewName);
 
-            if (view != null)
+            if (view == null)
+            {
+                // TODO: Raise a log event
+            }
+            else
             {
                 this.SetActiveView(view);
 
                 Invoker.Raise(ref this.OnViewChanged, this, view, args);
-            }
-            else
-            {
-                // TODO: Raise a log event
             }
         }
 

@@ -9,6 +9,9 @@
     using System.Windows.Input;
     using Commands;
     using Controls;
+    using MaterialDesignThemes.Wpf;
+    using Services;
+    using ViewModels;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Core.Library.Managers;
     using Zagorapps.Core.Library.Timing;
@@ -18,9 +21,6 @@
     using Zagorapps.Organiser.Library.Models.Settings;
     using Zagorapps.Organiser.Library.Providers;
     using Zagorapps.Organiser.Library.Tasks;
-    using MaterialDesignThemes.Wpf;
-    using Services;
-    using ViewModels;
 
     public partial class AddTask : ViewControlBase
     {

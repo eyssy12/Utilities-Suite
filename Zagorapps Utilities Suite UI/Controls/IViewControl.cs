@@ -6,11 +6,11 @@
 
     public interface IViewControl : INotifyPropertyChanged
     {
+        event EventHandler<EventArgs<string, object>> OnChangeView;
+
         string ViewControlName { get; }
 
         bool IsActive { get; set; }
-
-        event EventHandler<EventArgs<string, object>> OnChangeView;
 
         void InitialiseView(object arg);
     }

@@ -11,8 +11,12 @@
         public SuiteManager(IEnumerable<ISuite> suites)
             : base(suites)
         {
-            this.Entities.ForEach(e => e.OnViewChanged += E_OnViewChanged);
+            this.Entities.ForEach(e => e.OnViewChanged += this.E_OnViewChanged);
         }
+
+        public event EventHandler<EventArgs<ISuite, object>> OnSuiteChanged;
+
+        public event EventHandler<EventArgs<IViewControl, object>> OnSuiteViewChanged;
 
         public ISuite ActiveSuite
         {
@@ -23,10 +27,6 @@
         {
             get { return this.ActiveSuite.ActiveView; }
         }
-        
-        public event EventHandler<EventArgs<ISuite, object>> OnSuiteChanged;
-
-        public event EventHandler<EventArgs<IViewControl, object>> OnSuiteViewChanged;
 
         public void Navigate(string entityName, object args)
         {

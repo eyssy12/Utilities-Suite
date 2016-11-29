@@ -37,6 +37,10 @@
             this.viewName = viewName;
         }
 
+        public event EventHandler<EventArgs<string, object>> OnChangeView;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string ViewControlName
         {
             get { return this.viewName; }
@@ -45,11 +49,7 @@
         public bool IsActive { get; set; }
 
         public abstract void InitialiseView(object arg);
-
-        public event EventHandler<EventArgs<string, object>> OnChangeView;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        
         protected void OnViewChange(string viewName, object args = null)
         {
             Invoker.Raise(ref this.OnChangeView, this, viewName, args);

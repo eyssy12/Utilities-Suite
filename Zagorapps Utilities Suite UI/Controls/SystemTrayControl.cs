@@ -3,8 +3,8 @@
     using System;
     using System.Windows;
     using System.Windows.Controls;
-    using Zagorapps.Core.Library.Events;
     using Hardcodet.Wpf.TaskbarNotification;
+    using Zagorapps.Core.Library.Events;
     using static Enumerations;
     using DrawingIcon = System.Drawing.Icon;
 
@@ -31,7 +31,6 @@
             this.TrayIcon.ToolTipText = toolTipText;
             this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
             this.TrayIcon.ContextMenu = menu;
-
 
             MenuItem open = this.FindMenuItem(menu, App.MenuItemOpenApplication);
             open.Header = "Open File Organiser";

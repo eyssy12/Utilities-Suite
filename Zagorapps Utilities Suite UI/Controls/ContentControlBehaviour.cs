@@ -27,11 +27,14 @@
         private static void ContentChangedAnimationPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var contentControl = dependencyObject as ContentControl;
-            if (contentControl == null)
-                throw new Exception("Can only be applied to a ContentControl");
 
-            var propertyDescriptor = DependencyPropertyDescriptor.FromProperty(ContentControl.ContentProperty,
-                typeof(ContentControl));
+            if (contentControl == null)
+            {
+                throw new Exception("Can only be applied to a ContentControl");
+            }
+                
+
+            var propertyDescriptor = DependencyPropertyDescriptor.FromProperty(ContentControl.ContentProperty, typeof(ContentControl));
 
             propertyDescriptor.RemoveValueChanged(contentControl, ContentChangedHandler);
             propertyDescriptor.AddValueChanged(contentControl, ContentChangedHandler);
