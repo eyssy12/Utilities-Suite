@@ -4,14 +4,12 @@
     using System.Threading;
     using System.Windows;
     using Controls;
-    using Zagorapps.Core.Library.Native;
-    using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Utilities.Suite.UI.IoC;
     using MaterialDesignThemes.Wpf;
     using Services;
     using SimpleInjector;
+    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Suite.UI.IoC;
     using ApplicationMainWindow = Zagorapps.Utilities.Suite.UI.MainWindow;
-
     public partial class App : Application
     {
         public const string Name = "File Organiser",

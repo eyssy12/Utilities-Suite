@@ -101,6 +101,7 @@
     <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
+    <Compile Include="Extensions\NavigatableExtensions.cs" />
     <Compile Include="Navigation\DefaulNavigatableBase.cs" />
     <Compile Include="Navigation\IDefaultNavigatable.cs" />
     <Compile Include="Navigation\INavigatable.cs" />
@@ -130,6 +131,8 @@
     <Compile Include="Services\IFormsService.cs" />
     <Compile Include="Services\ISnackbarNotificationService.cs" />
     <Compile Include="Services\SnackbarNotificationService.cs" />
+    <Compile Include="Suites\ConnectivitySuite.cs" />
+    <Compile Include="Suites\DashboardSuite.cs" />
     <Compile Include="Suites\FileOrganiserSuite.cs" />
     <Compile Include="Suites\SuiteBase.cs" />
     <Compile Include="UiResources.Designer.cs">
@@ -142,10 +145,17 @@
     <Compile Include="Validation\NotEmptyValidationRule.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
+    <Compile Include="ViewModels\DashboardItemViewModel.cs" />
     <Compile Include="ViewModels\FileExtensionViewModel.cs" />
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />
     <Compile Include="ViewModels\SuiteViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
+    <Compile Include="Views\Connectivity\NoBluetoothAvailable.xaml.cs">
+      <DependentUpon>NoBluetoothAvailable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboard\Dashboard.xaml.cs">
+      <DependentUpon>Dashboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Organiser\AddTask.xaml.cs">
       <DependentUpon>AddTask.xaml</DependentUpon>
     </Compile>
@@ -168,6 +178,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Styles\OrganiserStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Connectivity\NoBluetoothAvailable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboard\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

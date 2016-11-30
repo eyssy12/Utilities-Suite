@@ -16,7 +16,6 @@
     using IoC;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
-    using Suites;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library.Factories;
@@ -46,7 +45,7 @@
 
             this.Notifier.Notify("Hello, " + Environment.UserName + "!");
 
-            this.SuiteManager.Navigate(FileOrganiserSuite.Name, null);
+            this.SuiteManager.NavigateToDefault();
         }
 
         public string MainColorzoneText

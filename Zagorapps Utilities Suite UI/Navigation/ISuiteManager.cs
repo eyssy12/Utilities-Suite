@@ -13,6 +13,8 @@
 
         IViewControl ActiveSuiteView { get; }
 
+        void NavigateToDefault();
+
         void Navigate(string suiteName, object args);
     }
 }

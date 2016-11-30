@@ -8,7 +8,8 @@
     using Navigation;
     using Services;
     using Suites;
-    using Views;
+    using Views.Connectivity;
+    using Views.Dashboard;
     using Views.Organiser;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library.Factories;
@@ -37,9 +38,21 @@
                 new IndividualTask(this.Factory, provider)
             };
 
+            IEnumerable<IViewControl> controls2 = new List<IViewControl>
+            {
+                new NoBluetoothAvailable(this.Factory, provider)
+            };
+
+            IEnumerable<IViewControl> controls3 = new List<IViewControl>
+            {
+                new Dashboard(this.Factory, provider)
+            };
+
             this.SuiteManager = new SuiteManager(new List<ISuite>
             {
+                new DashboardSuite(controls3),
                 new FileOrganiserSuite(controls),
+                new ConnectivitySuite(controls2)
             });
 
             this.SuiteManager.OnSuiteChanged += SuiteManager_OnSuiteChanged;
@@ -48,14 +61,14 @@
 
         private void SuiteManager_OnSuiteViewChanged(object sender, EventArgs<IViewControl, object> e)
         {
+            e.First.InitialiseView(e.Second);
+
             this.OnPropertyChanged(nameof(this.ActiveView));
         }
 
         private void SuiteManager_OnSuiteChanged(object sender, EventArgs<ISuite, object> e)
         {
             this.OnPropertyChanged(nameof(this.ActiveView));
-
-            this.Notifier.Notify("'" + e.First.Identifier + "' suite loaded.");
         }
 
         public IViewControl ActiveView

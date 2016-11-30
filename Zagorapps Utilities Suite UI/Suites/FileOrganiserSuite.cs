@@ -3,9 +3,7 @@
     using System.Collections.Generic;
     using Attributes;
     using Navigation;
-    using Organiser.Library;
 
-    [DefaultNavigatable]
     [Suite(FileOrganiserSuite.Name, "File Organiser")]
     public class FileOrganiserSuite : SuiteBase
     {

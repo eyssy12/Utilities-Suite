@@ -29,6 +29,11 @@
             get { return this.ActiveSuite.ActiveView; }
         }
 
+        public void NavigateToDefault()
+        {
+            this.Navigate(this.DefaultNavigatable.Identifier, null);
+        }
+
         public void Navigate(string suiteName, object args)
         {
             ISuite suite = this.FindNavigatable(suiteName);

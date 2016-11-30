@@ -2,7 +2,7 @@
 {
     using System;
     using SimpleInjector;
-    using Views;
+    using Views.Organiser;
     using Zagorapps.Organiser.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Navigation;
 
@@ -19,7 +19,7 @@
             bindings.RegisterBindingsToContainer(ServiceLocator.Container);
 
             // TODO: add to bindings
-            //ServiceLocator.Container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
+            ServiceLocator.Container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
 
             ServiceLocator.locked = false;
         }
