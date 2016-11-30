@@ -19,7 +19,7 @@
                 throw new ArgumentNullException(nameof(navigatables), "no entities provided");
             }
 
-            IEnumerable<TNavigatable> temp = navigatables.Where(v => v.GetType().GetCustomAttribute<DefaultEntityAttribute>() != null).ToArray();
+            IEnumerable<TNavigatable> temp = navigatables.Where(v => v.GetType().GetCustomAttribute<DefaultNavigatableAttribute>() != null).ToArray();
 
             if (temp.Count() == 0)
             {

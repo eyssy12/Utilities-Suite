@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Suite.UI.Views
+﻿namespace Zagorapps.Utilities.Suite.UI.Views.Organiser
 {
     using System;
     using System.Collections.Generic;
@@ -8,15 +8,15 @@
     using System.Windows.Controls.Primitives;
     using Commands;
     using Controls;
-    using Organiser.Library;
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
+    using Zagorapps.Organiser.Library;
     using Zagorapps.Organiser.Library.Factories;
     using Zagorapps.Organiser.Library.Managers;
     using Zagorapps.Organiser.Library.Tasks;
 
-    [DefaultEntity]
+    [DefaultNavigatable]
     public partial class Home : ViewControlBase
     {
         public const string ViewName = nameof(Home);

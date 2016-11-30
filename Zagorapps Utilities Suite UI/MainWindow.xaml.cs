@@ -44,9 +44,9 @@
 
             this.DataContext = this;
 
-            this.SuiteManager.Navigate(FileOrganiserSuite.Name, null);
-
             this.Notifier.Notify("Hello, " + Environment.UserName + "!");
+
+            this.SuiteManager.Navigate(FileOrganiserSuite.Name, null);
         }
 
         public string MainColorzoneText

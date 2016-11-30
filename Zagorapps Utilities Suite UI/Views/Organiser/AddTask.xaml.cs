@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Suite.UI.Views
+﻿namespace Zagorapps.Utilities.Suite.UI.Views.Organiser
 {
     using System;
     using System.Collections.Generic;

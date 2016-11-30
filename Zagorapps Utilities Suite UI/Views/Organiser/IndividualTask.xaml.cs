@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Suite.UI.Views
+﻿namespace Zagorapps.Utilities.Suite.UI.Views.Organiser
 {
     using System.Windows;
     using System.Windows.Input;

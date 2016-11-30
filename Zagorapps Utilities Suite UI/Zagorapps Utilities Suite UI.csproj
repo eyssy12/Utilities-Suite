@@ -95,7 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Attributes\DefaultEntityAttribute.cs" />
+    <Compile Include="Attributes\DefaultNavigatableAttribute.cs" />
     <Compile Include="Attributes\SuiteAttribute.cs" />
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="Commands\ICommandProvider.cs" />
@@ -132,7 +132,6 @@
     <Compile Include="Services\SnackbarNotificationService.cs" />
     <Compile Include="Suites\FileOrganiserSuite.cs" />
     <Compile Include="Suites\SuiteBase.cs" />
-    <Compile Include="Suites\TempSuite.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -147,20 +146,14 @@
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />
     <Compile Include="ViewModels\SuiteViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
-    <Compile Include="Views\AddTask.xaml.cs">
+    <Compile Include="Views\Organiser\AddTask.xaml.cs">
       <DependentUpon>AddTask.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Home.xaml.cs">
+    <Compile Include="Views\Organiser\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IndividualTask.xaml.cs">
+    <Compile Include="Views\Organiser\IndividualTask.xaml.cs">
       <DependentUpon>IndividualTask.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TempControl.xaml.cs">
-      <DependentUpon>TempControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TempControl2.xaml.cs">
-      <DependentUpon>TempControl2.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -178,23 +171,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddTask.xaml">
+    <Page Include="Views\Organiser\AddTask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Home.xaml">
+    <Page Include="Views\Organiser\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\IndividualTask.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TempControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TempControl2.xaml">
+    <Page Include="Views\Organiser\IndividualTask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

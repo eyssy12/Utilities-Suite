@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Zagorapps.Utilities.Suite.UI"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:tb="http://www.hardcodet.net/taskbar"
-        xmlns:views="clr-namespace:Zagorapps.Utilities.Suite.UI.Views"
+        xmlns:views="clr-namespace:Zagorapps.Utilities.Suite.UI.Views.Organiser"
         xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
@@ -34,7 +34,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+    <materialDesign:DialogHost x:Name="DialogHost_Main" Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <DockPanel MinWidth="242">

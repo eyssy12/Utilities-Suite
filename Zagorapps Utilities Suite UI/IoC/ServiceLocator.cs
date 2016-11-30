@@ -19,7 +19,7 @@
             bindings.RegisterBindingsToContainer(ServiceLocator.Container);
 
             // TODO: add to bindings
-            ServiceLocator.Container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
+            //ServiceLocator.Container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
 
             ServiceLocator.locked = false;
         }

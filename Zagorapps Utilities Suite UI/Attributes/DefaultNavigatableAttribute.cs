@@ -3,7 +3,7 @@
     using System;
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class DefaultEntityAttribute : Attribute
+    public class DefaultNavigatableAttribute : Attribute
     {
     }
 }

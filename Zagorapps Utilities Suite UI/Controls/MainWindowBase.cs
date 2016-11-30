@@ -9,6 +9,7 @@
     using Services;
     using Suites;
     using Views;
+    using Views.Organiser;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Organiser.Library.Factories;
 
@@ -36,16 +37,9 @@
                 new IndividualTask(this.Factory, provider)
             };
 
-            IEnumerable<IViewControl> tempControls = new List<IViewControl>
-            {
-                new TempControl(this.Factory, provider),
-                new TempControl2(this.Factory, provider)
-            };
-
             this.SuiteManager = new SuiteManager(new List<ISuite>
             {
                 new FileOrganiserSuite(controls),
-                new TempSuite(tempControls)
             });
 
             this.SuiteManager.OnSuiteChanged += SuiteManager_OnSuiteChanged;

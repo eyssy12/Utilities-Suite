@@ -5,7 +5,7 @@
     using Navigation;
     using Organiser.Library;
 
-    [DefaultEntity]
+    [DefaultNavigatable]
     [Suite(FileOrganiserSuite.Name, "File Organiser")]
     public class FileOrganiserSuite : SuiteBase
     {
