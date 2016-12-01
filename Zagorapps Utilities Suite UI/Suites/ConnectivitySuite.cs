@@ -4,13 +4,13 @@
     using Navigation;
     using Zagorapps.Utilities.Suite.UI.Attributes;
 
-    [Suite(ConnectivitySuite.ViewName, "Connectivity")]
+    [Suite(ConnectivitySuite.Name, "Connectivity")]
     public class ConnectivitySuite : SuiteBase
     {
-        public const string ViewName = nameof(ConnectivitySuite);
+        public const string Name = nameof(ConnectivitySuite);
 
         public ConnectivitySuite(IEnumerable<IViewControl> views) 
-            : base(ConnectivitySuite.ViewName, views)
+            : base(ConnectivitySuite.Name, views)
         {
         }
     }

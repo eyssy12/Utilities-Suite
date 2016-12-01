@@ -87,6 +87,7 @@
             base.BindServices();
 
             this.Bind<IFormsService, FormsService>(lifestyle: Lifestyle.Singleton);
+            this.Bind<ISuiteService, SuiteService>(lifestyle: Lifestyle.Singleton);
         }
 
         protected virtual void BindWindows()

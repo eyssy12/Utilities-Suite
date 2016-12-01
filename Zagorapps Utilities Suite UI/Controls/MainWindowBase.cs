@@ -17,6 +17,7 @@
     public abstract class MainWindowBase : Window, IMainWindow
     {
         protected readonly IOrganiserFactory Factory;
+        protected readonly ISuiteService SuiteService;
         protected readonly ISuiteManager SuiteManager;
         protected readonly ISnackbarNotificationService Notifier;
 
@@ -25,6 +26,7 @@
             this.Factory = factory;
 
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
+            this.SuiteService = this.Factory.Create<ISuiteService>();
 
             ICommandProvider provider = this.Factory.Create<ICommandProvider>();
 
@@ -57,6 +59,12 @@
 
             this.SuiteManager.OnSuiteChanged += SuiteManager_OnSuiteChanged;
             this.SuiteManager.OnSuiteViewChanged += SuiteManager_OnSuiteViewChanged;
+            this.SuiteService.OnSuiteChangeRequested += SuiteService_OnSuiteChangeRequested;
+        }
+
+        private void SuiteService_OnSuiteChangeRequested(object sender, EventArgs<string> e)
+        {
+            this.SuiteManager.Navigate(e.First, null);
         }
 
         private void SuiteManager_OnSuiteViewChanged(object sender, EventArgs<IViewControl, object> e)

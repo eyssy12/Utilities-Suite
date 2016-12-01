@@ -130,7 +130,9 @@
     <Compile Include="Services\FormsService.cs" />
     <Compile Include="Services\IFormsService.cs" />
     <Compile Include="Services\ISnackbarNotificationService.cs" />
+    <Compile Include="Services\ISuiteService.cs" />
     <Compile Include="Services\SnackbarNotificationService.cs" />
+    <Compile Include="Services\SuiteService.cs" />
     <Compile Include="Suites\ConnectivitySuite.cs" />
     <Compile Include="Suites\DashboardSuite.cs" />
     <Compile Include="Suites\FileOrganiserSuite.cs" />

@@ -1,6 +1,10 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.Dashboard
 {
     using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Controls;
+    using Services;
+    using Suites;
     using ViewModels;
     using Zagorapps.Organiser.Library;
     using Zagorapps.Organiser.Library.Factories;
@@ -12,6 +16,8 @@
     {
         public const string ViewName = nameof(Dashboard);
 
+        protected readonly ISuiteService SuiteService;
+
         private readonly IEnumerable<DashboardItemViewModel> items;
 
         public Dashboard(IOrganiserFactory factory, ICommandProvider commandProvider) 
@@ -19,12 +25,14 @@
         {
             this.InitializeComponent();
 
+            this.SuiteService = this.Factory.Create<ISuiteService>();
+
             this.DataContext = this;
 
             this.items = new List<DashboardItemViewModel>
             {
-                new DashboardItemViewModel { Identifier = "test" },
-                new DashboardItemViewModel { Identifier = "test2" }
+                new DashboardItemViewModel { Identifier = FileOrganiserSuite.Name },
+                new DashboardItemViewModel { Identifier = ConnectivitySuite.Name }
             };
         }
 
@@ -35,6 +43,13 @@
 
         public override void InitialiseView(object arg)
         {
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DashboardItemViewModel item = (sender as Button).DataContext as DashboardItemViewModel;
+
+            this.SuiteService.ChangeSuite(item.Identifier);
         }
     }
 }
