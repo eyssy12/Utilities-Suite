@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
+    using Core.Library.Events;
     using Services;
     using Suites;
     using ViewModels;
@@ -27,13 +29,13 @@
 
             this.SuiteService = this.Factory.Create<ISuiteService>();
 
-            this.DataContext = this;
-
             this.items = new List<DashboardItemViewModel>
             {
-                new DashboardItemViewModel { Identifier = FileOrganiserSuite.Name },
-                new DashboardItemViewModel { Identifier = ConnectivitySuite.Name }
+                new DashboardItemViewModel { Identifier = FileOrganiserSuite.Name, ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param)) },
+                new DashboardItemViewModel { Identifier = ConnectivitySuite.Name, ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param)) }
             };
+
+            this.DataContext = this;
         }
 
         public IEnumerable<DashboardItemViewModel> Items
@@ -45,11 +47,9 @@
         {
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ChangeSuite(string identifier)
         {
-            DashboardItemViewModel item = (sender as Button).DataContext as DashboardItemViewModel;
-
-            this.SuiteService.ChangeSuite(item.Identifier);
+            this.SuiteService.ChangeSuite(identifier);
         }
     }
 }

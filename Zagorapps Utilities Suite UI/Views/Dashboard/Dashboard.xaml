@@ -47,14 +47,21 @@
                                 </Grid.ColumnDefinitions>
 
                             
-                                <TextBlock Margin="16" Grid.Row="0"
+                                <TextBlock Name="TextBlock_SuiteIdentifier"
+                                           Margin="16" Grid.Row="0"
                                            Grid.Column="0" 
                                            Grid.ColumnSpan="2"
                                            FontSize="22" 
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
                                            Text="{Binding Identifier}" />
-                                <Button Grid.Row="1" Grid.Column="0" Click="Button_Click">Navigate</Button>
+                                <Button Name="Button_OpenSuite" 
+                                        Grid.Row="1" 
+                                        Grid.Column="0" 
+                                        Command="{Binding ChangeSuiteCommand}"
+                                        CommandParameter="{Binding ElementName=TextBlock_SuiteIdentifier, Path=Text}">
+                                    Open
+                                </Button>
                                 
                             </Grid>
 
