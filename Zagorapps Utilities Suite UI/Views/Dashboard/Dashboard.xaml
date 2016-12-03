@@ -35,7 +35,6 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card Margin="8" Grid.Row="0" Grid.Column="0" materialDesign:ShadowAssist.ShadowDepth="Depth2">
-
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
@@ -46,7 +45,6 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                            
                                 <TextBlock Name="TextBlock_SuiteIdentifier"
                                            Margin="16" Grid.Row="0"
                                            Grid.Column="0" 
@@ -55,16 +53,18 @@
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
                                            Text="{Binding Identifier}" />
+                                
                                 <Button Name="Button_OpenSuite" 
+                                        Margin="8"
                                         Grid.Row="1" 
                                         Grid.Column="0" 
+                                        Grid.ColumnSpan="2"
                                         Command="{Binding ChangeSuiteCommand}"
                                         CommandParameter="{Binding ElementName=TextBlock_SuiteIdentifier, Path=Text}">
-                                    Open
-                                </Button>
-                                
-                            </Grid>
+                                        Open
+                                    </Button>
 
+                            </Grid>
                         </materialDesign:Card>
 
                     </DataTemplate>

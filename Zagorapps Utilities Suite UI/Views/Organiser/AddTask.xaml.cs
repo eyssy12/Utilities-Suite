@@ -103,7 +103,17 @@
 
         public override void InitialiseView(object arg)
         {
+            
+        }
+
+        public override void FinaliseView()
+        {
             this.Model.Reset();
+        }
+
+        public override void SupplyData(object data)
+        {
+            
         }
 
         protected void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)

@@ -49,10 +49,16 @@
 
         public bool IsActive { get; set; }
 
-        public abstract void InitialiseView(object arg);
-        
+        public abstract void InitialiseView(object arg); // gets called when user explicitly navigates to the view
+
+        public abstract void FinaliseView(); // gets called when user switches to a different view (close procedure effectively)
+
+        public abstract void SupplyData(object data); // gets called by an external entity, such as a wcf listener when some new data has been received and is intended for this view
+
         protected void OnViewChange(string viewName, object args = null)
         {
+            this.FinaliseView();
+
             Invoker.Raise(ref this.OnChangeView, this, viewName, args);
         }
 

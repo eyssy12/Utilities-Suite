@@ -19,20 +19,20 @@
                 throw new ArgumentNullException(nameof(navigatables), "no entities provided");
             }
 
-            IEnumerable<TNavigatable> temp = navigatables.Where(v => v.GetType().GetCustomAttribute<DefaultNavigatableAttribute>() != null).ToArray();
+            IEnumerable<TNavigatable> defaultNavigatable = navigatables.Where(v => v.GetType().GetCustomAttribute<DefaultNavigatableAttribute>() != null).ToArray();
 
-            if (temp.Count() == 0)
+            if (defaultNavigatable.Count() == 0)
             {
                 throw new ArgumentException("No default entity provided.");
             }
 
-            if (temp.Count() > 1)
+            if (defaultNavigatable.Count() > 1)
             {
                 throw new ArgumentException("More than one default entity provided.");
             }
 
             this.Navigatables = navigatables;
-            this.DefaultNavigatable = temp.Single();
+            this.DefaultNavigatable = defaultNavigatable.Single();
         }
 
         public TNavigatable DefaultNavigatable { get; private set; }

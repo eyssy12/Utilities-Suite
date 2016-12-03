@@ -4,11 +4,11 @@
     using System.Windows.Input;
     using Commands;
     using Controls;
+    using Services;
+    using ViewModels;
     using Zagorapps.Core.Library.Windows;
     using Zagorapps.Organiser.Library.Factories;
     using Zagorapps.Organiser.Library.Providers;
-    using Services;
-    using ViewModels;
 
     public partial class IndividualTask : ViewControlBase
     {
@@ -43,6 +43,15 @@
             this.Notifer.Notify("Viewing task " + model.Identity.ToString());
 
             this.openHistoryFolderCommand = this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Provider.GetStorePath(model.Reference)));
+        }
+
+        public override void FinaliseView()
+        {
+            
+        }
+
+        public override void SupplyData(object data)
+        {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

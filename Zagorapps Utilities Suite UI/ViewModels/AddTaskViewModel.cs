@@ -66,19 +66,19 @@
         public string Identity
         {
             get { return this.identity; }
-            set { this.SetFieldIfChanged(ref this.identity, value, nameof(this.Identity)); }
+            set { this.SetField(ref this.identity, value, nameof(this.Identity)); }
         }
 
         public string Name
         {
             get { return this.name; }
-            set { this.SetFieldIfChanged(ref this.name, value, nameof(this.Name)); }
+            set { this.SetField(ref this.name, value, nameof(this.Name)); }
         }
 
         public string Description
         {
             get { return this.description; }
-            set { this.SetFieldIfChanged(ref this.description, value, nameof(this.Description)); }
+            set { this.SetField(ref this.description, value, nameof(this.Description)); }
         }
 
         public string RootPath
@@ -89,7 +89,7 @@
             }
             set
             {
-                this.SetFieldIfChanged(ref rootPath, value, nameof(this.RootPath));
+                this.SetField(ref rootPath, value, nameof(this.RootPath));
 
                 if (this.initialized)
                 {
@@ -113,61 +113,61 @@
         public OrganiseTypeEnum OrganiseType
         {
             get { return this.organiseType; }
-            set { this.SetFieldIfChanged(ref this.organiseType, value, nameof(this.OrganiseType)); }
+            set { this.SetField(ref this.organiseType, value, nameof(this.OrganiseType)); }
         }
 
         public TaskTypeEnum TaskType
         {
             get { return this.taskType; }
-            set { this.SetFieldIfChanged(ref this.taskType, value, nameof(this.TaskType)); }
+            set { this.SetField(ref this.taskType, value, nameof(this.TaskType)); }
         }
 
         public string ScheduledTaskIdentity
         {
             get { return this.scheduledTaskIdentity; }
-            set { this.SetFieldIfChanged(ref this.scheduledTaskIdentity, value, nameof(this.ScheduledTaskIdentity)); }
+            set { this.SetField(ref this.scheduledTaskIdentity, value, nameof(this.ScheduledTaskIdentity)); }
         }
 
         public double InitialWaitTime
         {
             get { return this.initialWaitTime; }
-            set { this.SetFieldIfChanged(ref this.initialWaitTime, value, nameof(this.InitialWaitTime)); }
+            set { this.SetField(ref this.initialWaitTime, value, nameof(this.InitialWaitTime)); }
         }
 
         public double Interval
         {
             get { return this.interval; }
-            set { this.SetFieldIfChanged(ref this.interval, value, nameof(this.Interval)); }
+            set { this.SetField(ref this.interval, value, nameof(this.Interval)); }
         }
 
         public IList<RootPathFileViewModel> FileRootPathFiles
         {
             get { return this.fileRootPathFiles; }
-            set { this.SetFieldIfChanged(ref this.fileRootPathFiles, value, nameof(this.FileRootPathFiles)); }
+            set { this.SetField(ref this.fileRootPathFiles, value, nameof(this.FileRootPathFiles)); }
         }
 
         public IList<RootPathFileViewModel> DirectoryRootPathFiles
         {
             get { return this.directoryRootPathFiles; }
-            set { this.SetFieldIfChanged(ref this.directoryRootPathFiles, value, nameof(this.DirectoryRootPathFiles)); }
+            set { this.SetField(ref this.directoryRootPathFiles, value, nameof(this.DirectoryRootPathFiles)); }
         }
 
         public IList<FileExtensionViewModel> FileExtensions
         {
             get { return this.fileExtensions; }
-            set { this.SetFieldIfChanged(ref this.fileExtensions, value, nameof(this.FileExtensions)); }
+            set { this.SetField(ref this.fileExtensions, value, nameof(this.FileExtensions)); }
         }
 
         public IList<FileExtensionViewModel> ExemptedFileExtensions
         {
             get { return this.exmptedFileExtensions; }
-            set { this.SetFieldIfChanged(ref this.exmptedFileExtensions, value, nameof(this.ExemptedFileExtensions)); }
+            set { this.SetField(ref this.exmptedFileExtensions, value, nameof(this.ExemptedFileExtensions)); }
         }
 
         public IList<CategoriesViewModel> Categories
         {
             get { return this.categories; }
-            set { this.SetFieldIfChanged(ref this.categories, value, nameof(this.Categories)); }
+            set { this.SetField(ref this.categories, value, nameof(this.Categories)); }
         }
 
         public void Reset()

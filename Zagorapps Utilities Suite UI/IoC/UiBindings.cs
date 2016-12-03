@@ -62,7 +62,7 @@
                     ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore],
                     container.GetInstance<IFileManager>(),
                     container.GetInstance<IDirectoryManager>());
-            }, lifestyle: Lifestyle.Singleton);
+            }, lifestyle: Lifestyle.Transient);
 
             this.Bind<IOrganiserSettingsProvider>(container =>
             {
@@ -70,7 +70,7 @@
                     ConfigurationManager.AppSettings[UiBindings.KeySettingsStore],
                     container.GetInstance<IFileManager>(),
                     container.GetInstance<IDirectoryManager>());
-            }, lifestyle: Lifestyle.Singleton);
+            }, lifestyle: Lifestyle.Transient);
 
             this.Bind<ITaskProvider>(container =>
             {
@@ -79,7 +79,7 @@
                     container.GetInstance<IOrganiserFactory>(),
                     container.GetInstance<IFileManager>(),
                     container.GetInstance<IDirectoryManager>());
-            }, lifestyle: Lifestyle.Singleton);
+            }, lifestyle: Lifestyle.Transient);
         }
 
         protected override void BindServices()

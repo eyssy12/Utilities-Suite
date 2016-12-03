@@ -1,10 +1,7 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.Dashboard
 {
+    using System;
     using System.Collections.Generic;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
-    using Core.Library.Events;
     using Services;
     using Suites;
     using ViewModels;
@@ -44,6 +41,15 @@
         }
 
         public override void InitialiseView(object arg)
+        {
+        }
+
+        public override void FinaliseView()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SupplyData(object data)
         {
         }
 

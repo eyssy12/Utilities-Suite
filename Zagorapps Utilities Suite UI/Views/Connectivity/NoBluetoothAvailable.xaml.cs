@@ -19,7 +19,17 @@
 
         public override void InitialiseView(object arg)
         {
-            Console.WriteLine(arg);
+            Console.WriteLine(ViewName + " - initialised");
+        }
+
+        public override void FinaliseView()
+        {
+            Console.WriteLine(ViewName + " - finalised");
+        }
+
+        public override void SupplyData(object data)
+        {
+            Console.WriteLine(ViewName + " - data supplied");
         }
     }
 }

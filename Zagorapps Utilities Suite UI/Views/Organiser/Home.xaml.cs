@@ -72,6 +72,16 @@
             this.OnPropertyChanged(nameof(this.Tasks));
         }
 
+        public override void FinaliseView()
+        {
+            Console.WriteLine("Home - finalised");
+        }
+
+        public override void SupplyData(object data)
+        {
+            Console.WriteLine("Home - data supplied");
+        }
+
         protected void RunTask(object sender, RoutedEventArgs e)
         {
             if (sender is Button)
