@@ -49,6 +49,7 @@
         protected virtual void LoadBindings()
         {
             this.BindFactories();
+            this.BindTime();
             this.BindTimers();
             this.BindManagers();
             this.BindServices();
@@ -74,6 +75,11 @@
         {
             this.Bind<IFactory>(container => container.GetInstance<IOrganiserFactory>(), Lifestyle.Singleton);
             this.BindFactory<IOrganiserFactory>();
+        }
+
+        protected virtual void BindTime()
+        {
+            //this.Bind<IClock>
         }
 
         protected virtual void BindTimers()
