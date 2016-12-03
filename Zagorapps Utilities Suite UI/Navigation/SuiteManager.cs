@@ -55,6 +55,8 @@
 
         protected void E_OnViewChanged(object sender, EventArgs<IViewControl, object> e)
         {
+            e.First.InitialiseView(e.Second);
+
             Invoker.Raise(ref this.OnSuiteViewChanged, this, e);
         }
     }

@@ -69,8 +69,6 @@
 
         private void SuiteManager_OnSuiteViewChanged(object sender, EventArgs<IViewControl, object> e)
         {
-            e.First.InitialiseView(e.Second);
-
             this.OnPropertyChanged(nameof(this.ActiveView));
         }
 
