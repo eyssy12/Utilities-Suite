@@ -136,6 +136,7 @@
     <Compile Include="Suites\ConnectivitySuite.cs" />
     <Compile Include="Suites\DashboardSuite.cs" />
     <Compile Include="Suites\FileOrganiserSuite.cs" />
+    <Compile Include="Suites\ReceiveDataSuiteBase.cs" />
     <Compile Include="Suites\SuiteBase.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -264,9 +265,9 @@
       <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
       <Name>Zagorapps Core Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zagorapps Organiser Library\Zagorapps Organiser Library.csproj">
+    <ProjectReference Include="..\Zagorapps Organiser Library\Zagorapps Utilities Library.csproj">
       <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
-      <Name>Zagorapps Organiser Library</Name>
+      <Name>Zagorapps Utilities Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

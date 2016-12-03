@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Organiser.Library
+﻿namespace Zagorapps.Utilities.Library
 {
     using System;
 

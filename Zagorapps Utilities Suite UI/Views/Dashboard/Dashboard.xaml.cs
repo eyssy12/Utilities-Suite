@@ -5,8 +5,8 @@
     using Services;
     using Suites;
     using ViewModels;
-    using Zagorapps.Organiser.Library;
-    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Library;
+    using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Commands;
     using Zagorapps.Utilities.Suite.UI.Controls;
 

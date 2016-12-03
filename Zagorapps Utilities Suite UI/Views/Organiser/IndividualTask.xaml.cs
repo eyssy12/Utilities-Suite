@@ -7,8 +7,8 @@
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Windows;
-    using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Organiser.Library.Providers;
+    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Library.Providers;
 
     public partial class IndividualTask : ViewControlBase
     {
@@ -38,11 +38,14 @@
 
         public override void InitialiseView(object arg)
         {
-            TaskViewModel model = arg as TaskViewModel;
+            if (arg is TaskViewModel)
+            {
+                TaskViewModel model = arg as TaskViewModel;
 
-            this.Notifer.Notify("Viewing task " + model.Identity.ToString());
+                this.Notifer.Notify("Viewing task " + model.Identity.ToString());
 
-            this.openHistoryFolderCommand = this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Provider.GetStorePath(model.Reference)));
+                this.openHistoryFolderCommand = this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Provider.GetStorePath(model.Reference)));
+            }
         }
 
         public override void FinaliseView()

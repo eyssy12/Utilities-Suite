@@ -6,7 +6,7 @@
     using Commands;
     using Navigation;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Library.Factories;
 
     public abstract class ViewControlBase : UserControl, IViewControl
     {

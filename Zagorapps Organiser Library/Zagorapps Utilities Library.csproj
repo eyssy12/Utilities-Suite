@@ -7,8 +7,8 @@
     <ProjectGuid>{E9E63EDB-A33C-47B7-960F-F26225922A86}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zagorapps.Organiser.Library</RootNamespace>
-    <AssemblyName>Zagorapps.Organiser.Library</AssemblyName>
+    <RootNamespace>Zagorapps.Utilities.Library</RootNamespace>
+    <AssemblyName>Zagorapps.Utilities.Library</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communications\IReceiveData.cs" />
     <Compile Include="Exceptions\DuplicateFileException.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="Exceptions\UnknownTaskException.cs" />
@@ -94,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Messaging\" />
+    <Folder Include="Models\Communications\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zagorapps Core Library\Zagorapps Core Library.csproj">

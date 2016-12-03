@@ -6,9 +6,9 @@
     using System.Windows.Input;
     using Controls;
     using Zagorapps.Core.Library.Extensions;
-    using Zagorapps.Organiser.Library.Tasks;
-    using OrganiseTypeEnum = Zagorapps.Organiser.Library.OrganiseType;
-    using TaskTypeEnum = Zagorapps.Organiser.Library.TaskType;
+    using Zagorapps.Utilities.Library.Tasks;
+    using OrganiseTypeEnum = Zagorapps.Utilities.Library.OrganiseType;
+    using TaskTypeEnum = Zagorapps.Utilities.Library.TaskType;
 
     public class AddTaskViewModel : ViewModelBase
     {

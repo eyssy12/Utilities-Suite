@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Organiser.Library.Models.Organiser
+﻿namespace Zagorapps.Utilities.Library.Models.Organiser
 {
     public class FileExtensionMetadata
     {

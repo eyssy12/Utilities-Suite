@@ -18,7 +18,7 @@
     using MaterialDesignThemes.Wpf;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Library.Factories;
     using static Enumerations;
 
     public partial class MainWindow : MainWindowBase

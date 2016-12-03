@@ -84,8 +84,8 @@
       <Component Id="Zagorapps.Core.Library.dll" Guid="8dd6d38b-a38d-4ce2-9b3d-7ed2980126eb">
         <File Id="Zagorapps.Core.Library.dll" Name="Zagorapps.Core.Library.dll" Source="$(var.File Organiser UI_TargetDir)Zagorapps.Core.Library.dll" />
       </Component>
-      <Component Id="Zagorapps.Organiser.Library.dll" Guid="6bbe87b6-5484-4ea5-9dea-33bf059aca6d">
-        <File Id="Zagorapps.Organiser.Library.dll" Name="Zagorapps.Organiser.Library.dll" Source="$(var.File Organiser UI_TargetDir)Zagorapps.Organiser.Library.dll" />
+      <Component Id="Zagorapps.Utilities.Library.dll" Guid="6bbe87b6-5484-4ea5-9dea-33bf059aca6d">
+        <File Id="Zagorapps.Utilities.Library.dll" Name="Zagorapps.Utilities.Library.dll" Source="$(var.File Organiser UI_TargetDir)Zagorapps.Utilities.Library.dll" />
       </Component>
       <Component Id="Zagorapps.Utilities.Suite.UI.exe" Guid="0ade4e8d-72b9-4d70-b207-77af6d8b8f72">
         <File Id="Zagorapps.Utilities.Suite.UI.exe" Name="Zagorapps.Utilities.Suite.UI.exe" Source="$(var.File Organiser UI_TargetDir)Zagorapps.Utilities.Suite.UI.exe" />

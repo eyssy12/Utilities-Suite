@@ -11,10 +11,10 @@
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Organiser.Library;
-    using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Organiser.Library.Managers;
-    using Zagorapps.Organiser.Library.Tasks;
+    using Zagorapps.Utilities.Library;
+    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Library.Managers;
+    using Zagorapps.Utilities.Library.Tasks;
 
     [DefaultNavigatable]
     public partial class Home : ViewControlBase

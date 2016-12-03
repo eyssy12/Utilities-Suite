@@ -12,7 +12,7 @@
     using Views.Dashboard;
     using Views.Organiser;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Organiser.Library.Factories;
+    using Zagorapps.Utilities.Library.Factories;
 
     public abstract class MainWindowBase : Window, IMainWindow
     {

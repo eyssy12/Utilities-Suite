@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{38AB0549-E6A2-49BD-B077-FC45564485F3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Organiser", "Organiser", "{88DFD294-F75F-4D04-BAC1-28488AB08F4B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{88DFD294-F75F-4D04-BAC1-28488AB08F4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}"
 EndProject
@@ -23,7 +23,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixpro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Suite UI", "Zagorapps Utilities Suite UI\Zagorapps Utilities Suite UI.csproj", "{58EE5D9D-E7C1-430E-A343-5254BB1871E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Organiser Library", "Zagorapps Organiser Library\Zagorapps Organiser Library.csproj", "{E9E63EDB-A33C-47B7-960F-F26225922A86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Library", "Zagorapps Organiser Library\Zagorapps Utilities Library.csproj", "{E9E63EDB-A33C-47B7-960F-F26225922A86}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Core Library", "Zagorapps Core Library\Zagorapps Core Library.csproj", "{DA5E6E4E-D994-4476-A53C-4A575FDA86A3}"
 EndProject
@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{27B033A6
 	ProjectSection(SolutionItems) = preProject
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities WCF Library", "Zagorapps Organiser WCF Library\Zagorapps Utilities WCF Library.csproj", "{5FFA6839-5342-4E81-A6D0-889BFB373EAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +82,14 @@ Global
 		{B9AD6C67-B9C3-45DC-A666-08820523B347}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9AD6C67-B9C3-45DC-A666-08820523B347}.Release|x86.ActiveCfg = Release|Any CPU
 		{B9AD6C67-B9C3-45DC-A666-08820523B347}.Release|x86.Build.0 = Release|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Debug|x86.Build.0 = Debug|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Release|x86.ActiveCfg = Release|Any CPU
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +104,6 @@ Global
 		{E9E63EDB-A33C-47B7-960F-F26225922A86} = {88DFD294-F75F-4D04-BAC1-28488AB08F4B}
 		{DA5E6E4E-D994-4476-A53C-4A575FDA86A3} = {38AB0549-E6A2-49BD-B077-FC45564485F3}
 		{B9AD6C67-B9C3-45DC-A666-08820523B347} = {38AB0549-E6A2-49BD-B077-FC45564485F3}
+		{5FFA6839-5342-4E81-A6D0-889BFB373EAA} = {88DFD294-F75F-4D04-BAC1-28488AB08F4B}
 	EndGlobalSection
 EndGlobal

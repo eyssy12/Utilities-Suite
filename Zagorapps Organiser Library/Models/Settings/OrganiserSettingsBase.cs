@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Organiser.Library.Models.Settings
+﻿namespace Zagorapps.Utilities.Library.Models.Settings
 {
     using System;
     using ProtoBuf;

@@ -1,7 +1,7 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Suites
 {
     using System.Collections.Generic;
-    using Organiser.Library;
+    using Library;
     using Zagorapps.Utilities.Suite.UI.Attributes;
     using Zagorapps.Utilities.Suite.UI.Navigation;
 

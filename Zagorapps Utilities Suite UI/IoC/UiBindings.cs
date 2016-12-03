@@ -9,10 +9,10 @@
     using SimpleInjector;
     using Zagorapps.Configuration.Library;
     using Zagorapps.Core.Library.Managers;
-    using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Organiser.Library.Managers;
-    using Zagorapps.Organiser.Library.Models.Organiser;
-    using Zagorapps.Organiser.Library.Providers;
+    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Library.Managers;
+    using Zagorapps.Utilities.Library.Models.Organiser;
+    using Zagorapps.Utilities.Library.Providers;
     using FileIO = System.IO.File;
     using PathIO = System.IO.Path;
 

@@ -9,9 +9,8 @@
     using Core.Library.Windows;
     using Core.Library.Windows.Registry;
     using Extensions;
-    using Organiser.Library.Factories;
     using SimpleInjector;
-
+    using Utilities.Library.Factories;
     public class CommonBindings
     {
         protected readonly IList<BindingMetadata> Bindings;

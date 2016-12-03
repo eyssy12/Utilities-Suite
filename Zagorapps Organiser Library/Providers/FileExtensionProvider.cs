@@ -1,9 +1,9 @@
-﻿namespace Zagorapps.Organiser.Library.Providers
+﻿namespace Zagorapps.Utilities.Library.Providers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Zagorapps.Organiser.Library.Models.Organiser;
+    using Zagorapps.Utilities.Library.Models.Organiser;
 
     public class FileExtensionProvider : IFileExtensionProvider
     {

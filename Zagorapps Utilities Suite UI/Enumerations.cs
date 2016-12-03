@@ -13,5 +13,12 @@
             MenuItemClicked,
             ShowApplication
         }
+
+        public enum Suite : int
+        {
+            Organiser = 1,
+            Dashboard,
+            Connectivity
+        }
     }
 }

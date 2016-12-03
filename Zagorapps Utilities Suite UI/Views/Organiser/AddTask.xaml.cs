@@ -15,12 +15,12 @@
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Core.Library.Managers;
     using Zagorapps.Core.Library.Timing;
-    using Zagorapps.Organiser.Library;
-    using Zagorapps.Organiser.Library.Factories;
-    using Zagorapps.Organiser.Library.Managers;
-    using Zagorapps.Organiser.Library.Models.Settings;
-    using Zagorapps.Organiser.Library.Providers;
-    using Zagorapps.Organiser.Library.Tasks;
+    using Zagorapps.Utilities.Library;
+    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Library.Managers;
+    using Zagorapps.Utilities.Library.Models.Settings;
+    using Zagorapps.Utilities.Library.Providers;
+    using Zagorapps.Utilities.Library.Tasks;
 
     public partial class AddTask : ViewControlBase
     {

@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Organiser.Library.Managers
+﻿namespace Zagorapps.Utilities.Library.Managers
 {
     using System;
     using System.Collections.Generic;

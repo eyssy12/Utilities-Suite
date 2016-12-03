@@ -5,7 +5,7 @@
     using System.Linq;
     using Core.Library.Events;
     using Core.Library.Extensions;
-    using Organiser.Library;
+    using Library;
 
     public abstract class DefaultNavigatableBase<TNavigatable> : IDefaultNavigatable<TNavigatable>
         where TNavigatable : INavigatable
