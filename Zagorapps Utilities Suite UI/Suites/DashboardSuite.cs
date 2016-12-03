@@ -1,8 +1,8 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Suites
 {
     using System.Collections.Generic;
-    using Library;
-    using Zagorapps.Utilities.Suite.UI.Attributes;
+    using Library.Attributes;
+    using Library.Facilitators;
     using Zagorapps.Utilities.Suite.UI.Navigation;
 
     [DefaultNavigatable]

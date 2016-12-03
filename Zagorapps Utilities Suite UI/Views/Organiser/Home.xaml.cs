@@ -8,6 +8,7 @@
     using System.Windows.Controls.Primitives;
     using Commands;
     using Controls;
+    using Library.Attributes;
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;

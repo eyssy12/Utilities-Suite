@@ -10,10 +10,10 @@
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Media;
-    using Attributes;
     using Controls;
     using Core.Library.Windows;
     using IoC;
+    using Library.Attributes;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
     using ViewModels;

@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Communications\IReceiveData.cs" />
+    <Compile Include="Communications\ISendData.cs" />
     <Compile Include="Exceptions\DuplicateFileException.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="Exceptions\UnknownTaskException.cs" />

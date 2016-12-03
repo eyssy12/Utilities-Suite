@@ -1,8 +1,8 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Suites
 {
     using System.Collections.Generic;
+    using Library.Attributes;
     using Navigation;
-    using Zagorapps.Utilities.Suite.UI.Attributes;
 
     [Suite(ConnectivitySuite.Name, "Connectivity")]
     public class ConnectivitySuite : SuiteBase

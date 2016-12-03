@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Library.Attributes;
     using Services;
     using Suites;
     using ViewModels;

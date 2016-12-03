@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library
+﻿namespace Zagorapps.Utilities.Suite.Library.Attributes
 {
     using System;
 

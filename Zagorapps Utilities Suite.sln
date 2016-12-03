@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Library
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities WCF Library", "Zagorapps Utilities WCF Library\Zagorapps Utilities WCF Library.csproj", "{5FFA6839-5342-4E81-A6D0-889BFB373EAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Suite Library", "Zagorapps Utilities Suite Library\Zagorapps Utilities Suite Library.csproj", "{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,14 @@ Global
 		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Release|x86.ActiveCfg = Release|Any CPU
 		{5FFA6839-5342-4E81-A6D0-889BFB373EAA}.Release|x86.Build.0 = Release|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Debug|x86.Build.0 = Debug|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Release|x86.ActiveCfg = Release|Any CPU
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,5 +115,6 @@ Global
 		{B9AD6C67-B9C3-45DC-A666-08820523B347} = {38AB0549-E6A2-49BD-B077-FC45564485F3}
 		{E9E63EDB-A33C-47B7-960F-F26225922A86} = {88DFD294-F75F-4D04-BAC1-28488AB08F4B}
 		{5FFA6839-5342-4E81-A6D0-889BFB373EAA} = {88DFD294-F75F-4D04-BAC1-28488AB08F4B}
+		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53} = {E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}
 	EndGlobalSection
 EndGlobal
