@@ -1,5 +1,6 @@
 ﻿namespace Zagorapps.Utilities.Suite.WCF.Library.Senders
 {
+    using System;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using Core.Library.Communications;
@@ -23,6 +24,8 @@
             string endpointAddress)
         {
             this.Provider = provider;
+            this.ConfigurationName = configurationName;
+            this.EndpointAddress = endpointAddress;
             this.route = route;
         }
 
@@ -44,6 +47,10 @@
                     IUtilitiesSuiteService sender = client.CreateChannel(new EndpointAddress(this.EndpointAddress));
 
                     sender.Handle(message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
                 finally
                 {

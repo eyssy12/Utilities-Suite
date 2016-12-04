@@ -12,7 +12,7 @@
         public const string Name = nameof(SystemSuite);
 
         public SystemSuite(IEnumerable<IViewControl> views, IEnumerable<IReceiveSuiteData> receivers, IEnumerable<ISendSuiteData> senders) 
-            : base(SystemSuite.Name, SuiteRoute.System, views, receivers, senders)
+            : base(SystemSuite.Name, SuiteRoute.SystemControl, views, receivers, senders)
         {
         }
     }

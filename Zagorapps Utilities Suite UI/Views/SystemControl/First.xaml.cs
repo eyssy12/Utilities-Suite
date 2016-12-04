@@ -34,7 +34,7 @@
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.OnDataSendRequest(this, SuiteRoute.System, "Second", "data");
+            this.OnDataSendRequest(this, SuiteRoute.Dashboard, "Dashboard", "dashboard data");
         }
     }
 }

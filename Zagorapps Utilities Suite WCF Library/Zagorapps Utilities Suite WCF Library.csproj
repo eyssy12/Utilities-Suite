@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Channels" />
@@ -45,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CommunicationsProvider.cs" />
     <Compile Include="Providers\ICommunicationsProvider.cs" />
+    <Compile Include="Providers\KnownTypeProvider.cs" />
     <Compile Include="Senders\WcfSendSuiteData.cs" />
     <Compile Include="Services\IUtilitiesSuiteService.cs" />
     <Compile Include="Services\UtilitiesSuiteService.cs" />

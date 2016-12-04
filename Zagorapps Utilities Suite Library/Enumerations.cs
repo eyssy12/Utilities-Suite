@@ -5,6 +5,6 @@
         Organiser = 1,
         Dashboard,
         Connectivity,
-        System
+        SystemControl
     }
 }

@@ -98,9 +98,19 @@
                     new WcfSendSuiteData(commsProvider, SuiteRoute.Dashboard, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyDashboardPipe))
                 };
 
+                IEnumerable<IReceiveSuiteData> dashboardReceivers = new List<IReceiveSuiteData>
+                {
+                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyDashboardPipe))
+                };
+
+                IEnumerable<ISendSuiteData> dashboardSenders = new List<ISendSuiteData>
+                {
+                    new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlPipe))
+                };
+
                 IEnumerable<ISuite> suites = new List<ISuite>
                 {
-                    new DashboardSuite(dashboardControls),
+                    new DashboardSuite(dashboardControls, dashboardReceivers, dashboardSenders),
                     new FileOrganiserSuite(organiserControls),
                     new ConnectivitySuite(connectivityControls),
                     new SystemSuite(systemControls, systemReceivers, systemSenders)

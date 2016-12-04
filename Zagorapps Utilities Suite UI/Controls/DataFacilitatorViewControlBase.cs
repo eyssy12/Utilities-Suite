@@ -12,7 +12,6 @@
         protected DataFacilitatorViewControlBase(string viewName, IOrganiserFactory factory, ICommandProvider commandProvider)
             : base(viewName, factory, commandProvider)
         {
-
         }
 
         public event EventHandler<EventArgs<SuiteRoute, string, object>> DataSendRequest;

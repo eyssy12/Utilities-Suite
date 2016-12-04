@@ -2,16 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Windows;
     using Library.Attributes;
+    using Library.Communications;
     using Services;
     using Suites;
     using ViewModels;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Commands;
     using Zagorapps.Utilities.Suite.UI.Controls;
-
     [DefaultNavigatable]
-    public partial class Dashboard : ViewControlBase
+    public partial class Dashboard : DataFacilitatorViewControlBase
     {
         public const string ViewName = nameof(Dashboard);
 
@@ -52,6 +53,11 @@
         private void ChangeSuite(string identifier)
         {
             this.SuiteService.ChangeSuite(identifier);
+        }
+
+        public override void ProcessMessage(IUtilitiesDataMessage data)
+        {
+            MessageBox.Show("Dashboard received external data: " + data.Data.ToString());
         }
     }
 }

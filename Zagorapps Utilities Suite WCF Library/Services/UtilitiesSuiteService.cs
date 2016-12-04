@@ -5,7 +5,7 @@
     using Core.Library.Events;
     using Suite.Library.Communications;
 
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class UtilitiesSuiteService : IUtilitiesSuiteService
     {
         public event EventHandler<EventArgs<IUtilitiesDataMessage>> MessageReceived;
