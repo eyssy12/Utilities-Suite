@@ -8,7 +8,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="1280" d:DesignWidth="800">
 
     <controls:ViewControlBase.Resources>
         <ResourceDictionary>
@@ -106,20 +106,72 @@
                                         </Button>
 
                                         <Border Grid.Row="0" Grid.Column="1" BorderThickness="1 0 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
-                                        
+
+                                        <!-- Delete Task Button -->
                                         <Button Grid.Row="0"
                                                 Grid.Column="2"
-                                                Name="Button_DeleteTask"
                                                 Style="{StaticResource MaterialDesignFlatButton}"
+                                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                                                 VerticalAlignment="Top"
                                                 HorizontalAlignment="Right"
                                                 ToolTip="Delete Task"
-                                                Click="Button_DeleteTask_Click">
+                                                materialDesign:DialogHost.DialogClosingAttached="Dialog_DeleteTask_OnClosing"
+                                                Width="128">
 
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="Delete" />
                                             </StackPanel>
+
+                                            <Button.CommandParameter>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Grid.Row="0"
+                                                               Grid.Column="0"
+                                                               Grid.ColumnSpan="2"
+                                                               FontSize="22"
+                                                               Margin="16">
+                                                        Are you sure you want to delete this item?
+                                                    </TextBlock>
+
+                                                    <DockPanel
+                                                            Grid.Row="1"
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="2"
+                                                            Margin="16">
+
+                                                        <Button 
+                                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                                            IsCancel="True" 
+                                                            DockPanel.Dock="Left"
+                                                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                            CommandParameter="Cancel">
+                                                            
+                                                            CANCEL
+                                                        </Button>
+
+                                                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                                            Foreground="OrangeRed"
+                                                            IsCancel="False" 
+                                                            HorizontalAlignment="Right"
+                                                            DockPanel.Dock="Right"
+                                                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                            CommandParameter="Confirm">
+
+                                                            CONFIRM
+                                                        </Button>
+                                                    </DockPanel>
+                                                </Grid>
+                                            </Button.CommandParameter>
                                         </Button>
+                                        <!-- End Delete Task Button -->
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

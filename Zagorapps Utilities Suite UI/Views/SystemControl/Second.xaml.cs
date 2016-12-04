@@ -23,7 +23,6 @@
 
         public override void FinaliseView()
         {
-
         }
 
         public override void ReceiveData(IUtilitiesDataMessage data)

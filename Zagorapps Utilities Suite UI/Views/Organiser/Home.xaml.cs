@@ -9,6 +9,7 @@
     using Commands;
     using Controls;
     using Library.Attributes;
+    using MaterialDesignThemes.Wpf;
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
@@ -108,17 +109,18 @@
             this.OnViewChange(IndividualTask.ViewName, task);
         }
 
-        protected void Button_DeleteTask_Click(object sender, RoutedEventArgs e)
+        protected void Dialog_DeleteTask_OnClosing(object sender, DialogClosingEventArgs eventArgs)
         {
-            Button runTask = sender as Button;
+            if (eventArgs.Parameter.ToString() == "Confirm")
+            {
+                string id = ((eventArgs.Session.Content as Grid).DataContext as TaskViewModel).Identity;
 
-            string id = (runTask.DataContext as TaskViewModel).Identity;
+                this.Manager.DeleteById(Guid.Parse(id));
 
-            this.Manager.DeleteById(Guid.Parse(id));
+                this.Notifier.Notify(string.Format(UiResources.Message_TaskDeleted, id));
 
-            this.Notifier.Notify(string.Format(UiResources.Message_TaskDeleted, id));
-
-            this.OnPropertyChanged(nameof(this.Tasks));
+                this.OnPropertyChanged(nameof(this.Tasks));
+            }
         }
     }
 }

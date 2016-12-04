@@ -21,5 +21,7 @@
         string ReadAllText(string filePath);
 
         void Write(string filePath, string contents, bool append = false);
+
+        void Delete(string filePath);
     }
 }

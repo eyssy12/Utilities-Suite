@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using ProtoBuf;
 
     public class LocalFileManager : IFileManager
     {
@@ -59,6 +58,11 @@
             {
                 return deserializer(stream);
             }
+        }
+
+        public void Delete(string filePath)
+        {
+            File.Delete(filePath);
         }
     }
 }

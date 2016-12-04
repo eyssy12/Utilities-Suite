@@ -20,12 +20,11 @@
 
         public override void InitialiseView(object arg)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void FinaliseView()
         {
-            
         }
 
         public override void ReceiveData(IUtilitiesDataMessage data)

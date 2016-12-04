@@ -11,5 +11,7 @@
         ITask Get(Guid identity);
 
         void Save(ITask task);
+
+        void Delete(ITask task);
     }
 }

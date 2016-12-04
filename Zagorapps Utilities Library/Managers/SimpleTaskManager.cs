@@ -78,6 +78,7 @@
             }
 
             this.Tasks.Remove(metadata);
+            this.TaskProvider.Delete(task);
 
             metadata.Dispose();
 

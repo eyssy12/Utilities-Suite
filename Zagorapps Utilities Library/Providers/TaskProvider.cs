@@ -48,6 +48,11 @@
             });
         }
 
+        public void Delete(ITask task)
+        {
+            this.FileManager.Delete(this.GenerateFilePath(task));
+        }
+
         protected TaskMetadata ReadMetadata(Guid identity)
         {
             return this.ReadMetadata(this.GenerateFilePath(identity));
