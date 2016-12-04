@@ -27,7 +27,7 @@
         {
         }
 
-        public override void ReceiveData(IUtilitiesDataMessage data)
+        public override void ProcessMessage(IUtilitiesDataMessage data)
         {
             Console.WriteLine("First - Data Received: " + data.Data);
         }

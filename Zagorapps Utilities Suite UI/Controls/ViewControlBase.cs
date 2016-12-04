@@ -4,7 +4,6 @@
     using System.ComponentModel;
     using System.Windows.Controls;
     using Commands;
-    using Library.Communications;
     using Navigation;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Utilities.Library.Factories;

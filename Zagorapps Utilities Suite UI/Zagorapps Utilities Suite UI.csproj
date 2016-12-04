@@ -98,10 +98,13 @@
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Controls\ConfirmDialog.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
     <Compile Include="Controls\DataFacilitatorViewControlBase.cs" />
     <Compile Include="Controls\IDataFacilitatorViewControl.cs" />
     <Compile Include="Extensions\NavigatableExtensions.cs" />
+    <Compile Include="Managers\DataFacilitatorSuiteManager.cs" />
+    <Compile Include="Managers\IDataFacilitatorSuiteManager.cs" />
     <Compile Include="Managers\ISuiteManager.cs" />
     <Compile Include="Managers\SuiteManager.cs" />
     <Compile Include="Navigation\DefaultNavigatableBase.cs" />
@@ -289,9 +292,9 @@
       <Project>{8469bf2c-8ed2-4ec1-b3bd-d8e5ddaa8f53}</Project>
       <Name>Zagorapps Utilities Suite Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zagorapps Utilities WCF Library\Zagorapps Utilities WCF Library.csproj">
-      <Project>{5ffa6839-5342-4e81-a6d0-889bfb373eaa}</Project>
-      <Name>Zagorapps Utilities WCF Library</Name>
+    <ProjectReference Include="..\Zagorapps Utilities Suite WCF Library\Zagorapps Utilities Suite WCF Library.csproj">
+      <Project>{223bc2fb-2039-46ae-8620-948045b76b0d}</Project>
+      <Name>Zagorapps Utilities Suite WCF Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

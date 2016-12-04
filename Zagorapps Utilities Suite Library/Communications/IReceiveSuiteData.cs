@@ -2,8 +2,9 @@
 {
     using System;
     using Core.Library.Events;
+    using Core.Library.Execution;
 
-    public interface IReceiveSuiteData
+    public interface IReceiveSuiteData : IProcess
     {
         event EventHandler<EventArgs<IUtilitiesDataMessage>> MessageReceived;
     }

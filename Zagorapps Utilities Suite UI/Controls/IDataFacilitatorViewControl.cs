@@ -10,6 +10,6 @@
     {
         event EventHandler<EventArgs<SuiteRoute, string, object>> DataSendRequest;
 
-        void ReceiveData(IUtilitiesDataMessage data);
+        void ProcessMessage(IUtilitiesDataMessage data);
     }
 }

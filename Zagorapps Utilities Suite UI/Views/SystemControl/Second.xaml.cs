@@ -25,7 +25,7 @@
         {
         }
 
-        public override void ReceiveData(IUtilitiesDataMessage data)
+        public override void ProcessMessage(IUtilitiesDataMessage data)
         {
             MessageBox.Show("data received in second view of Test Suite: " + data.Data);
         }

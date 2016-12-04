@@ -1,13 +1,26 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
-    using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Windows.Controls;
     using Commands;
     using Controls;
+    using Library;
+    using Library.Communications;
+    using Managers;
+    using Navigation;
     using Newtonsoft.Json;
     using Services;
     using SimpleInjector;
+    using Suites;
+    using Views.Connectivity;
+    using Views.Dashboard;
+    using Views.Organiser;
+    using Views.SystemControl;
+    using WCF.Library.Providers;
+    using WCF.Library.Receivers;
+    using WCF.Library.Senders;
+    using WCF.Library.Services;
     using Zagorapps.Configuration.Library;
     using Zagorapps.Core.Library.Managers;
     using Zagorapps.Utilities.Library.Factories;
@@ -24,7 +37,12 @@
             KeyConfigurationFileName = "Name_ConfigurationFile",
             KeyHistoryStore = "Store_History",
             KeySettingsStore = "Store_Settings",
-            KeyTasksStore = "Store_Tasks";
+            KeyTasksStore = "Store_Tasks",
+            KeyOrganiserPipe = "Pipe_Organiser",
+            KeyDashboardPipe = "Pipe_Dashboard",
+            KeyConnectivityPipe = "Pipe_Connectivity",
+            KeySystemControlPipe = "Pipe_SystemControl",
+            KeyUtilitiesEndpoint = "Endpoint_Utilities";
 
         protected override void LoadBindings()
         {
@@ -36,25 +54,61 @@
             this.BindControls();
             this.BindProviders();
             this.BindLoggers();
+            this.BindDataFacilitatorManager();
         }
 
-        //protected virtual void BindFacilitators()
-        //{
-        //    this.Bind<IFacilitateConnectivityDataProcessing>(container =>
-        //    {
-        //        return new DataProcesingFacilitator();
-        //    }, lifestyle: Lifestyle.Transient);
+        private void BindDataFacilitatorManager()
+        {
+            this.Bind<IDataFacilitatorSuiteManager>(container =>
+            {
+                IOrganiserFactory factory = container.GetInstance<IOrganiserFactory>();
+                ICommunicationsProvider commsProvider = container.GetInstance<ICommunicationsProvider>();
+                ICommandProvider commandProvider = container.GetInstance<ICommandProvider>();
 
-        //    this.Bind<IFacilitateOrganiserDataProcessing>(container =>
-        //    {
-        //        return new DataProcesingFacilitator();
-        //    }, lifestyle: Lifestyle.Transient);
+                IEnumerable<IViewControl> organiserControls = new List<IViewControl>
+                {
+                    new Home(factory, commandProvider),
+                    new AddTask(factory, commandProvider),
+                    new IndividualTask(factory, commandProvider)
+                };
 
-        //    this.Bind<IFacilitateDashboardDataProcessing>(container =>
-        //    {
-        //        return new DataProcesingFacilitator();
-        //    }, lifestyle: Lifestyle.Transient);
-        //}
+                IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
+                {
+                    new NoBluetoothAvailable(factory, commandProvider)
+                };
+
+                IEnumerable<IViewControl> dashboardControls = new List<IViewControl>
+                {
+                    new Dashboard(factory, commandProvider)
+                };
+
+                IEnumerable<IViewControl> systemControls = new List<IViewControl>
+                {
+                    new First(factory, commandProvider),
+                    new Second(factory, commandProvider)
+                };
+
+                IEnumerable<IReceiveSuiteData> systemReceivers = new List<IReceiveSuiteData>
+                {
+                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeySystemControlPipe))
+                };
+
+                IEnumerable<ISendSuiteData> systemSenders = new List<ISendSuiteData>
+                {
+                    new WcfSendSuiteData(commsProvider, SuiteRoute.Dashboard, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyDashboardPipe))
+                };
+
+                IEnumerable<ISuite> suites = new List<ISuite>
+                {
+                    new DashboardSuite(dashboardControls),
+                    new FileOrganiserSuite(organiserControls),
+                    new ConnectivitySuite(connectivityControls),
+                    new SystemSuite(systemControls, systemReceivers, systemSenders)
+                };
+
+                return new DataFacilitatorSuiteManager(suites);
+            }, lifestyle: Lifestyle.Transient);
+        }
 
         protected virtual void BindCommunications()
         {
@@ -104,12 +158,15 @@
                     container.GetInstance<IFileManager>(),
                     container.GetInstance<IDirectoryManager>());
             }, lifestyle: Lifestyle.Transient);
+
+            this.Bind<ICommunicationsProvider, CommunicationsProvider>(lifestyle: Lifestyle.Transient);
         }
 
         protected override void BindServices()
         {
             base.BindServices();
 
+            this.Bind<IUtilitiesSuiteService, UtilitiesSuiteService>(lifestyle: Lifestyle.Transient);
             this.Bind<IFormsService, FormsService>(lifestyle: Lifestyle.Singleton);
             this.Bind<ISuiteService, SuiteService>(lifestyle: Lifestyle.Singleton);
         }
@@ -160,6 +217,11 @@
         private string GetApplicationPath()
         {
             return ConfigurationManager.AppSettings[UiBindings.KeyApplicationPath];
+        }
+
+        private string GetValue(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
         }
     }
 }

@@ -27,13 +27,6 @@
             this.dataViews = this.Navigatables.OfType<IDataFacilitatorViewControl>();
             this.receivers = receivers ?? Enumerable.Empty<IReceiveSuiteData>();
             this.senders = senders ?? Enumerable.Empty<ISendSuiteData>();
-
-            this.receivers.ForEach(e =>
-            {
-                e.MessageReceived += this.Receiver_MessageReceived;
-            });
-
-            this.dataViews.ForEach(dataView => dataView.DataSendRequest += this.DataView_DataSendRequest);
         }
 
         public SuiteRoute Route
@@ -42,6 +35,32 @@
         }
 
         public event EventHandler<EventArgs<IUtilitiesDataMessage>> MessageReceived;
+
+        public bool Start()
+        {
+            this.receivers.ForEach(e =>
+            {
+                e.MessageReceived += this.Receiver_MessageReceived;
+                e.Start();
+            });
+
+            this.dataViews.ForEach(dataView => dataView.DataSendRequest += this.DataView_DataSendRequest);
+
+            return true;
+        }
+
+        public bool Stop()
+        {
+            this.receivers.ForEach(e =>
+            {
+                e.Stop();
+                e.MessageReceived -= this.Receiver_MessageReceived;
+            });
+
+            this.dataViews.ForEach(dataView => dataView.DataSendRequest -= this.DataView_DataSendRequest);
+
+            return true;
+        }
 
         public void Send(IDataMessage data)
         {
@@ -66,7 +85,7 @@
 
             if (view != null)
             {
-                view.ReceiveData(message);
+                view.ProcessMessage(message);
             }
         }
 

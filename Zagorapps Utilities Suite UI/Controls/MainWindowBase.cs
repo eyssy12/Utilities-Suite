@@ -1,18 +1,12 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows;
-    using Commands;
     using Managers;
     using Navigation;
     using Services;
     using Suites;
-    using Views.Connectivity;
-    using Views.Dashboard;
-    using Views.Organiser;
-    using Views.SystemControl;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Utilities.Library.Factories;
 
@@ -20,7 +14,7 @@
     {
         protected readonly IOrganiserFactory Factory;
         protected readonly ISuiteService SuiteService;
-        protected readonly ISuiteManager SuiteManager;
+        protected readonly IDataFacilitatorSuiteManager SuiteManager;
         protected readonly ISnackbarNotificationService Notifier;
 
         protected MainWindowBase(IOrganiserFactory factory)
@@ -29,46 +23,13 @@
 
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.SuiteService = this.Factory.Create<ISuiteService>();
-
-            ICommandProvider provider = this.Factory.Create<ICommandProvider>();
-
-            //this.Navigator = this.Factory.Create<IViewNavigator>();
-
-            //// TODO: these should be bindings - figure out how to register a collection in simple injector the way i need it to
-            IEnumerable<IViewControl> controls = new List<IViewControl>
-            {
-                new Home(this.Factory, provider),
-                new AddTask(this.Factory, provider),
-                new IndividualTask(this.Factory, provider)
-            };
-
-            IEnumerable<IViewControl> controls2 = new List<IViewControl>
-            {
-                new NoBluetoothAvailable(this.Factory, provider)
-            };
-
-            IEnumerable<IViewControl> controls3 = new List<IViewControl>
-            {
-                new Dashboard(this.Factory, provider)
-            };
-
-            IEnumerable<IViewControl> controls4 = new List<IViewControl>
-            {
-                new First(this.Factory, provider),
-                new Second(this.Factory, provider)
-            };
-
-            this.SuiteManager = new SuiteManager(new List<ISuite>
-            {
-                new DashboardSuite(controls3),
-                new FileOrganiserSuite(controls),
-                new ConnectivitySuite(controls2),
-                new SystemSuite(controls4, null, null)
-            });
+            this.SuiteManager = this.Factory.Create<IDataFacilitatorSuiteManager>();
 
             this.SuiteManager.OnSuiteChanged += SuiteManager_OnSuiteChanged;
             this.SuiteManager.OnSuiteViewChanged += SuiteManager_OnSuiteViewChanged;
             this.SuiteService.OnSuiteChangeRequested += SuiteService_OnSuiteChangeRequested;
+
+            this.SuiteManager.Start();
         }
 
         private void SuiteService_OnSuiteChangeRequested(object sender, EventArgs<string> e)

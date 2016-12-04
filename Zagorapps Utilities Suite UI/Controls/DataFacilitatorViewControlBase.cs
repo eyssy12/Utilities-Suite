@@ -17,7 +17,7 @@
 
         public event EventHandler<EventArgs<SuiteRoute, string, object>> DataSendRequest;
 
-        public abstract void ReceiveData(IUtilitiesDataMessage data);
+        public abstract void ProcessMessage(IUtilitiesDataMessage data);
 
         protected void OnDataSendRequest(object sender, SuiteRoute suiteDestination, string viewDestination, object data)
         {
