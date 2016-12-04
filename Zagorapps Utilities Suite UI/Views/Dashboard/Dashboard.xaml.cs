@@ -6,7 +6,6 @@
     using Services;
     using Suites;
     using ViewModels;
-    using Zagorapps.Utilities.Library;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Commands;
     using Zagorapps.Utilities.Suite.UI.Controls;
@@ -47,11 +46,7 @@
 
         public override void FinaliseView()
         {
-            throw new NotImplementedException();
-        }
-
-        public override void SupplyData(object data)
-        {
+            Console.WriteLine("View finalised");
         }
 
         private void ChangeSuite(string identifier)

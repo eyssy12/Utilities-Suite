@@ -5,12 +5,14 @@
     using System.ComponentModel;
     using System.Windows;
     using Commands;
+    using Managers;
     using Navigation;
     using Services;
     using Suites;
     using Views.Connectivity;
     using Views.Dashboard;
     using Views.Organiser;
+    using Views.SystemControl;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Utilities.Library.Factories;
 
@@ -50,11 +52,18 @@
                 new Dashboard(this.Factory, provider)
             };
 
+            IEnumerable<IViewControl> controls4 = new List<IViewControl>
+            {
+                new First(this.Factory, provider),
+                new Second(this.Factory, provider)
+            };
+
             this.SuiteManager = new SuiteManager(new List<ISuite>
             {
                 new DashboardSuite(controls3),
                 new FileOrganiserSuite(controls),
-                new ConnectivitySuite(controls2)
+                new ConnectivitySuite(controls2),
+                new SystemSuite(controls4, null, null)
             });
 
             this.SuiteManager.OnSuiteChanged += SuiteManager_OnSuiteChanged;

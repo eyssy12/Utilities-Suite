@@ -12,7 +12,6 @@
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Utilities.Library;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Library.Managers;
     using Zagorapps.Utilities.Library.Tasks;
@@ -76,11 +75,6 @@
         public override void FinaliseView()
         {
             Console.WriteLine("Home - finalised");
-        }
-
-        public override void SupplyData(object data)
-        {
-            Console.WriteLine("Home - data supplied");
         }
 
         protected void RunTask(object sender, RoutedEventArgs e)

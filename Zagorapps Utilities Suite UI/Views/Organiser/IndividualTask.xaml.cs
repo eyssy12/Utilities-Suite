@@ -53,10 +53,6 @@
             
         }
 
-        public override void SupplyData(object data)
-        {
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.OnViewChange(Home.ViewName, null);

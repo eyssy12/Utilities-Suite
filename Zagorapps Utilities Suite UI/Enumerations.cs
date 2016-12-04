@@ -1,11 +1,8 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI
 {
-    public static class Enumerations
+    public enum TrayState
     {
-        public enum TrayState
-        {
-            MenuItemClicked,
-            ShowApplication
-        }
+        MenuItemClicked,
+        ShowApplication
     }
 }

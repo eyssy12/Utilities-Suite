@@ -3,6 +3,7 @@
     using System;
     using Commands;
     using Library.Attributes;
+    using Library.Communications;
     using Zagorapps.Utilities.Library;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Controls;
@@ -26,11 +27,6 @@
         public override void FinaliseView()
         {
             Console.WriteLine(ViewName + " - finalised");
-        }
-
-        public override void SupplyData(object data)
-        {
-            Console.WriteLine(ViewName + " - data supplied");
         }
     }
 }

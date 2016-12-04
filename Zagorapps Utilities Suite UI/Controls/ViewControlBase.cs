@@ -4,6 +4,7 @@
     using System.ComponentModel;
     using System.Windows.Controls;
     using Commands;
+    using Library.Communications;
     using Navigation;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Utilities.Library.Factories;
@@ -52,8 +53,6 @@
         public abstract void InitialiseView(object arg); // gets called when user explicitly navigates to the view
 
         public abstract void FinaliseView(); // gets called when user switches to a different view (close procedure effectively)
-
-        public abstract void SupplyData(object data); // gets called by an external entity, such as a wcf listener when some new data has been received and is intended for this view
 
         protected void OnViewChange(string viewName, object args = null)
         {

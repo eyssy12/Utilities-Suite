@@ -42,13 +42,11 @@
   <ItemGroup>
     <Compile Include="Attributes\DefaultNavigatableAttribute.cs" />
     <Compile Include="Attributes\SuiteAttribute.cs" />
-    <Compile Include="Communications\IUtiltiesDataMessage.cs" />
+    <Compile Include="Communications\IReceiveSuiteData.cs" />
+    <Compile Include="Communications\ISendSuiteData.cs" />
+    <Compile Include="Communications\IUtilitiesDataMessage.cs" />
+    <Compile Include="Communications\UtilitiesDataMessage.cs" />
     <Compile Include="Enumerations.cs" />
-    <Compile Include="Facilitators\DataProcesingFacilitator.cs" />
-    <Compile Include="Facilitators\IFacilitateConnectivityDataProcessing.cs" />
-    <Compile Include="Facilitators\IFacilitateDataProcessing.cs" />
-    <Compile Include="Facilitators\IFacilitateOrganiserDataProcessing.cs" />
-    <Compile Include="Facilitators\IFacilitateDashboardDataProcessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

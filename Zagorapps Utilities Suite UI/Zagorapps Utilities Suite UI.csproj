@@ -99,19 +99,20 @@
     <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
+    <Compile Include="Controls\DataFacilitatorViewControlBase.cs" />
+    <Compile Include="Controls\IDataFacilitatorViewControl.cs" />
     <Compile Include="Extensions\NavigatableExtensions.cs" />
+    <Compile Include="Managers\ISuiteManager.cs" />
+    <Compile Include="Managers\SuiteManager.cs" />
     <Compile Include="Navigation\DefaultNavigatableBase.cs" />
     <Compile Include="Navigation\IDefaultNavigatable.cs" />
     <Compile Include="Navigation\INavigatable.cs" />
     <Compile Include="Navigation\INavigatableNavigator.cs" />
     <Compile Include="Controls\IMainWindow.cs" />
-    <Compile Include="Navigation\ISuite.cs" />
-    <Compile Include="Navigation\ISuiteManager.cs" />
     <Compile Include="Controls\ISystemTrayControl.cs" />
     <Compile Include="Controls\IViewControl.cs" />
     <Compile Include="Controls\IViewModel.cs" />
     <Compile Include="Controls\IWindow.cs" />
-    <Compile Include="Navigation\SuiteManager.cs" />
     <Compile Include="Controls\SystemTrayControl.cs" />
     <Compile Include="Controls\ViewControlBase.cs" />
     <Compile Include="Controls\MainWindowBase.cs" />
@@ -134,8 +135,11 @@
     <Compile Include="Suites\ConnectivitySuite.cs" />
     <Compile Include="Suites\DashboardSuite.cs" />
     <Compile Include="Suites\FileOrganiserSuite.cs" />
-    <Compile Include="Suites\FacilitatorSuiteBase.cs" />
+    <Compile Include="Suites\DataFacilitatorSuiteBase.cs" />
+    <Compile Include="Suites\IDataFacilitatorSuite.cs" />
+    <Compile Include="Suites\ISuite.cs" />
     <Compile Include="Suites\SuiteBase.cs" />
+    <Compile Include="Suites\SystemSuite.cs" />
     <Compile Include="UiResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -165,6 +169,12 @@
     </Compile>
     <Compile Include="Views\Organiser\IndividualTask.xaml.cs">
       <DependentUpon>IndividualTask.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemControl\First.xaml.cs">
+      <DependentUpon>First.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemControl\Second.xaml.cs">
+      <DependentUpon>Second.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +209,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Organiser\IndividualTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SystemControl\First.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SystemControl\Second.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

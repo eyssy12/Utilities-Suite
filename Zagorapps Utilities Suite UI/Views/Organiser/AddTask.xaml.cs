@@ -111,11 +111,6 @@
             this.Model.Reset();
         }
 
-        public override void SupplyData(object data)
-        {
-            
-        }
-
         protected void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
         {
             string param = eventArgs.Parameter.ToString();

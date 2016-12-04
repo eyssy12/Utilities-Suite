@@ -3,7 +3,6 @@
     using System;
     using System.Windows;
     using Zagorapps.Core.Library.Events;
-    using static Enumerations;
 
     public interface ISystemTrayControl : IDisposable
     {

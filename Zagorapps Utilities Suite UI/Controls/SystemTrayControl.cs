@@ -5,7 +5,6 @@
     using System.Windows.Controls;
     using Hardcodet.Wpf.TaskbarNotification;
     using Zagorapps.Core.Library.Events;
-    using static Enumerations;
     using DrawingIcon = System.Drawing.Icon;
 
     public class SystemTrayControl : ISystemTrayControl

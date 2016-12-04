@@ -4,10 +4,8 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using Core.Library.Communications;
     using Core.Library.Events;
     using Core.Library.Extensions;
-    using Library.Facilitators;
     using Navigation;
 
     public abstract class SuiteBase : DefaultNavigatableBase<IViewControl>, ISuite

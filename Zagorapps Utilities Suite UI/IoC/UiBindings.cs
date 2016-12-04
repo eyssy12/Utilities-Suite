@@ -5,7 +5,6 @@
     using System.Windows.Controls;
     using Commands;
     using Controls;
-    using Library.Facilitators;
     using Newtonsoft.Json;
     using Services;
     using SimpleInjector;
@@ -33,34 +32,32 @@
 
             this.BindWindows();
             this.BindViews();
-            this.BindFacilitators();
             this.BindCommunications();
             this.BindControls();
             this.BindProviders();
             this.BindLoggers();
         }
 
-        protected virtual void BindFacilitators()
-        {
-            this.Bind<IFacilitateConnectivityDataProcessing>(container =>
-            {
-                return new DataProcesingFacilitator();
-            }, lifestyle: Lifestyle.Transient);
+        //protected virtual void BindFacilitators()
+        //{
+        //    this.Bind<IFacilitateConnectivityDataProcessing>(container =>
+        //    {
+        //        return new DataProcesingFacilitator();
+        //    }, lifestyle: Lifestyle.Transient);
 
-            this.Bind<IFacilitateOrganiserDataProcessing>(container =>
-            {
-                return new DataProcesingFacilitator();
-            }, lifestyle: Lifestyle.Transient);
+        //    this.Bind<IFacilitateOrganiserDataProcessing>(container =>
+        //    {
+        //        return new DataProcesingFacilitator();
+        //    }, lifestyle: Lifestyle.Transient);
 
-            this.Bind<IFacilitateDashboardDataProcessing>(container =>
-            {
-                return new DataProcesingFacilitator();
-            }, lifestyle: Lifestyle.Transient);
-        }
+        //    this.Bind<IFacilitateDashboardDataProcessing>(container =>
+        //    {
+        //        return new DataProcesingFacilitator();
+        //    }, lifestyle: Lifestyle.Transient);
+        //}
 
         protected virtual void BindCommunications()
         {
-            throw new NotImplementedException();
         }
 
         protected virtual void BindLoggers()

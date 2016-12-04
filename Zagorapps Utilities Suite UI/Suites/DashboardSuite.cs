@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Library.Attributes;
-    using Library.Facilitators;
     using Zagorapps.Utilities.Suite.UI.Navigation;
 
     [DefaultNavigatable]

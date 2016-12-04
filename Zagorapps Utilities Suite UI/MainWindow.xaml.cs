@@ -19,7 +19,6 @@
     using ViewModels;
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Utilities.Library.Factories;
-    using static Enumerations;
 
     public partial class MainWindow : MainWindowBase
     {

@@ -11,7 +11,5 @@
         void InitialiseView(object arg);
 
         void FinaliseView();
-
-        void SupplyData(object data);
     }
 }
