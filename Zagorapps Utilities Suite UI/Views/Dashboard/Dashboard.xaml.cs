@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
     using System.Windows;
     using Library.Attributes;
     using Library.Communications;
@@ -17,6 +18,8 @@
         public const string ViewName = nameof(Dashboard);
 
         protected readonly ISuiteService SuiteService;
+
+        private readonly StringBuilder builder = new StringBuilder();
 
         private readonly IEnumerable<DashboardItemViewModel> items;
 
@@ -34,6 +37,11 @@
             };
 
             this.DataContext = this;
+        }
+
+        public string Text
+        {
+            get { return this.builder.ToString(); }
         }
 
         public IEnumerable<DashboardItemViewModel> Items
@@ -57,7 +65,9 @@
 
         public override void ProcessMessage(IUtilitiesDataMessage data)
         {
-            MessageBox.Show("Dashboard received external data: " + data.Data.ToString());
+            builder.Append(data.Data + " ");
+
+            this.OnPropertyChanged(nameof(this.Text));
         }
     }
 }

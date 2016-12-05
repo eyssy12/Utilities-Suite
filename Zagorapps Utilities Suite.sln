@@ -38,6 +38,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Suite L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Suite WCF Library", "Zagorapps Utilities Suite WCF Library\Zagorapps Utilities Suite WCF Library.csproj", "{223BC2FB-2039-46AE-8620-948045B76B0D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bluetooth", "Bluetooth", "{4C7EFA14-7302-432E-931A-A8656AF8D037}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Bluetooth Library", "Zagorapps Bluetooth Library\Zagorapps Bluetooth Library.csproj", "{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Bluetooth Configuration Library", "Zagorapps Bluetooth Configuration Library\Zagorapps Bluetooth Configuration Library.csproj", "{4EA2548B-16CC-4506-A3BE-779B063961DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +106,22 @@ Global
 		{223BC2FB-2039-46AE-8620-948045B76B0D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{223BC2FB-2039-46AE-8620-948045B76B0D}.Release|x86.ActiveCfg = Release|Any CPU
 		{223BC2FB-2039-46AE-8620-948045B76B0D}.Release|x86.Build.0 = Release|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Debug|x86.Build.0 = Debug|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Release|x86.ActiveCfg = Release|Any CPU
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22}.Release|x86.Build.0 = Release|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{4EA2548B-16CC-4506-A3BE-779B063961DE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,5 +138,8 @@ Global
 		{E9E63EDB-A33C-47B7-960F-F26225922A86} = {88DFD294-F75F-4D04-BAC1-28488AB08F4B}
 		{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53} = {E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}
 		{223BC2FB-2039-46AE-8620-948045B76B0D} = {E82ACC85-9C1F-40BA-A31B-EC3658A4B3D4}
+		{4C7EFA14-7302-432E-931A-A8656AF8D037} = {9C1E7460-005B-4A4E-BD70-F2604F09FCAD}
+		{43E2B14F-EBBC-4299-9ABC-5A4AC78A0F22} = {4C7EFA14-7302-432E-931A-A8656AF8D037}
+		{4EA2548B-16CC-4506-A3BE-779B063961DE} = {4C7EFA14-7302-432E-931A-A8656AF8D037}
 	EndGlobalSection
 EndGlobal

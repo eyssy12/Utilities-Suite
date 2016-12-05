@@ -15,13 +15,16 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <DockPanel Grid.Row="0" Grid.Column="0" Margin="16">
+        <TextBlock Text="{Binding Text}" />
+
+        <DockPanel Grid.Row="1" Grid.Column="0" Margin="16">
             <ItemsControl ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                     Name="ListBox_DashboardItems"
                     ItemsSource="{Binding Items}">
