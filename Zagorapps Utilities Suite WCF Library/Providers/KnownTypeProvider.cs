@@ -7,6 +7,7 @@
     using System.Runtime.Serialization;
     using Core.Library.Communications;
     using Suite.Library;
+
     public static class KnownTypeProvider<TCentralisedType>
     {
         public static IEnumerable<Type> GetTypes(ICustomAttributeProvider provider)

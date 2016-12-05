@@ -38,10 +38,10 @@
             KeyHistoryStore = "Store_History",
             KeySettingsStore = "Store_Settings",
             KeyTasksStore = "Store_Tasks",
-            KeyOrganiserPipe = "Pipe_Organiser",
-            KeyDashboardPipe = "Pipe_Dashboard",
-            KeyConnectivityPipe = "Pipe_Connectivity",
-            KeySystemControlPipe = "Pipe_SystemControl",
+            KeyOrganiserTcp = "Tcp_Organiser",
+            KeyDashboardTcp = "Tcp_Dashboard",
+            KeyConnectivityTcp = "Tcp_Connectivity",
+            KeySystemControlTcp = "Tcp_SystemControl",
             KeyUtilitiesEndpoint = "Endpoint_Utilities";
 
         protected override void LoadBindings()
@@ -90,22 +90,22 @@
 
                 IEnumerable<IReceiveSuiteData> systemReceivers = new List<IReceiveSuiteData>
                 {
-                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeySystemControlPipe))
+                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeySystemControlTcp))
                 };
 
                 IEnumerable<ISendSuiteData> systemSenders = new List<ISendSuiteData>
                 {
-                    new WcfSendSuiteData(commsProvider, SuiteRoute.Dashboard, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyDashboardPipe))
+                    new WcfSendSuiteData(commsProvider, SuiteRoute.Dashboard, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyDashboardTcp))
                 };
 
                 IEnumerable<IReceiveSuiteData> dashboardReceivers = new List<IReceiveSuiteData>
                 {
-                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyDashboardPipe))
+                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyDashboardTcp))
                 };
 
                 IEnumerable<ISendSuiteData> dashboardSenders = new List<ISendSuiteData>
                 {
-                    new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlPipe))
+                    new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlTcp))
                 };
 
                 IEnumerable<ISuite> suites = new List<ISuite>

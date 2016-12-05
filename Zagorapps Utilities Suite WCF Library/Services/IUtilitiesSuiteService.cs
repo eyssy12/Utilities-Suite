@@ -12,7 +12,7 @@
     {
         event EventHandler<EventArgs<IUtilitiesDataMessage>> MessageReceived;
 
-        [OperationContract(IsOneWay = true)]
+        [OperationContract(IsOneWay = true)] // TODO: try using async pattern 
         void Handle(IUtilitiesDataMessage message);
     }
 }
