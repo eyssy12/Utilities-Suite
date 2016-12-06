@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Configuration;
     using System.Windows.Controls;
-    using Bluetooth.Library.Providers;
     using Commands;
     using Controls;
     using Library;
@@ -32,7 +31,7 @@
     using FileIO = System.IO.File;
     using PathIO = System.IO.Path;
 
-    public class UiBindings : CommonBindings
+    public class UiBindings : BindingsBase
     {
         protected const string KeyApplicationPath = "Path_Application",
             KeyFileExtensionJsonFile = "Name_FileExtensionJson",
@@ -46,34 +45,31 @@
             KeySystemControlTcp = "Tcp_SystemControl",
             KeyUtilitiesEndpoint = "Endpoint_Utilities";
 
-        protected override void LoadBindings()
+        protected override void RegisterBindings()
         {
-            base.LoadBindings();
-
-            this.BindWindows();
-            this.BindViews();
-            this.BindCommunications();
-            this.BindControls();
-            this.BindProviders();
-            this.BindLoggers();
-            this.BindDataFacilitatorManager();
-            this.BindMisc();
+            this.RegisterWindows();
+            this.RegisterViews();
+            this.RegisterCommunications();
+            this.RegisterControls();
+            this.RegisterProviders();
+            this.RegisterLoggers();
+            this.RegisterDataFacilitatorManager();
+            this.RegisterMisc();
+            this.RegisterServices();
+            this.RegisterManagers();
         }
 
-        private void BindMisc()
+        protected virtual void RegisterMisc()
         {
-            this.Bind<IInputSimulator>(container =>
+            this.Register<IInputSimulator>(container =>
             {
                 return new InputSimulator();
             }, lifestyle: Lifestyle.Transient);
-
-            // TODO: add bluetooth oriented compoenents to the contextual space in the solution (Bluetooth Configuration Library)
-            this.Bind<IBluetoothServicesProvider, BluetoothServicesProvider>(lifestyle: Lifestyle.Transient);
         }
 
-        private void BindDataFacilitatorManager()
+        protected virtual void RegisterDataFacilitatorManager()
         {
-            this.Bind<IDataFacilitatorSuiteManager>(container =>
+            this.Register<IDataFacilitatorSuiteManager>(container =>
             {
                 IOrganiserFactory factory = container.GetInstance<IOrganiserFactory>();
                 ICommunicationsProvider commsProvider = container.GetInstance<ICommunicationsProvider>();
@@ -123,11 +119,21 @@
                     new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlTcp))
                 };
 
+                IEnumerable<IReceiveSuiteData> connectivityReceivers = new List<IReceiveSuiteData>
+                {
+                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyConnectivityTcp))
+                };
+
+                IEnumerable<ISendSuiteData> connectivitySenders = new List<ISendSuiteData>
+                {
+                    new WcfSendSuiteData(commsProvider, SuiteRoute.Dashboard, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyDashboardTcp))
+                };
+
                 IEnumerable<ISuite> suites = new List<ISuite>
                 {
                     new DashboardSuite(dashboardControls, dashboardReceivers, dashboardSenders),
                     new FileOrganiserSuite(organiserControls),
-                    new ConnectivitySuite(connectivityControls),
+                    new ConnectivitySuite(connectivityControls, connectivityReceivers, connectivitySenders),
                     new SystemSuite(systemControls, systemReceivers, systemSenders)
                 };
 
@@ -135,19 +141,19 @@
             }, lifestyle: Lifestyle.Transient);
         }
 
-        protected virtual void BindCommunications()
+        protected virtual void RegisterCommunications()
         {
         }
 
-        protected virtual void BindLoggers()
+        protected virtual void RegisterLoggers()
         {
         }
 
-        protected virtual void BindProviders()
+        protected virtual void RegisterProviders()
         {
-            this.Bind<ICommandProvider, CommandProvider>();
+            this.Register<ICommandProvider, CommandProvider>();
 
-            this.Bind<IFileExtensionProvider>((container) =>
+            this.Register<IFileExtensionProvider>((container) =>
             {
                 string fileExtensionJson = ConfigurationManager.AppSettings[UiBindings.KeyFileExtensionJsonFile];
                 string filePath = PathIO.Combine(this.GetApplicationPath(), fileExtensionJson);
@@ -159,7 +165,7 @@
                 return new FileExtensionProvider(result);
             }, lifestyle: Lifestyle.Singleton);
 
-            this.Bind<ITaskHistoryProvider>(container =>
+            this.Register<ITaskHistoryProvider>(container =>
             {
                 return new TaskHistoryProvider(
                     ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore],
@@ -167,7 +173,7 @@
                     container.GetInstance<IDirectoryManager>());
             }, lifestyle: Lifestyle.Transient);
 
-            this.Bind<IOrganiserSettingsProvider>(container =>
+            this.Register<IOrganiserSettingsProvider>(container =>
             {
                 return new OrganiserSettingsProvider(
                     ConfigurationManager.AppSettings[UiBindings.KeySettingsStore],
@@ -175,7 +181,7 @@
                     container.GetInstance<IDirectoryManager>());
             }, lifestyle: Lifestyle.Transient);
 
-            this.Bind<ITaskProvider>(container =>
+            this.Register<ITaskProvider>(container =>
             {
                 return new TaskProvider(
                     ConfigurationManager.AppSettings[UiBindings.KeyTasksStore],
@@ -184,33 +190,29 @@
                     container.GetInstance<IDirectoryManager>());
             }, lifestyle: Lifestyle.Transient);
 
-            this.Bind<ICommunicationsProvider, CommunicationsProvider>(lifestyle: Lifestyle.Transient);
+            this.Register<ICommunicationsProvider, CommunicationsProvider>(lifestyle: Lifestyle.Transient);
         }
 
-        protected override void BindServices()
+        protected virtual void RegisterServices()
         {
-            base.BindServices();
-
-            this.Bind<IUtilitiesSuiteService, UtilitiesSuiteService>(lifestyle: Lifestyle.Transient);
-            this.Bind<IFormsService, FormsService>(lifestyle: Lifestyle.Singleton);
-            this.Bind<ISuiteService, SuiteService>(lifestyle: Lifestyle.Singleton);
+            this.Register<IUtilitiesSuiteService, UtilitiesSuiteService>(lifestyle: Lifestyle.Transient);
+            this.Register<IFormsService, FormsService>(lifestyle: Lifestyle.Singleton);
+            this.Register<ISuiteService, SuiteService>(lifestyle: Lifestyle.Singleton);
         }
 
-        protected virtual void BindWindows()
+        protected virtual void RegisterWindows()
         {
-            this.Bind<IMainWindow, MainWindow>();
+            this.Register<IMainWindow, MainWindow>();
         }
 
-        protected virtual void BindViews()
+        protected virtual void RegisterViews()
         {
             // TODO: bind views
         }
 
-        protected override void BindManagers()
+        protected virtual void RegisterManagers()
         {
-            base.BindManagers();
-
-            this.Bind<ITaskManager>(container =>
+            this.Register<ITaskManager>(container =>
             {
                 return new SimpleTaskManager(
                     container.GetInstance<IOrganiserFactory>(),
@@ -218,7 +220,7 @@
                     container.GetInstance<ITaskHistoryProvider>());
             }, lifestyle: Lifestyle.Singleton);
 
-            this.Bind<IApplicationConfigurationManager>(container =>
+            this.Register<IApplicationConfigurationManager>(container =>
             {
                 string configName = ConfigurationManager.AppSettings[UiBindings.KeyConfigurationFileName];
 
@@ -226,9 +228,9 @@
             }, lifestyle: Lifestyle.Singleton);
         }
 
-        protected virtual void BindControls()
+        protected virtual void RegisterControls()
         {
-            this.Bind<ISystemTrayControl>(container =>
+            this.Register<ISystemTrayControl>(container =>
             {
                 ContextMenu menu = App.Current.TryFindResource(App.ControlTrayContextMenu) as ContextMenu;
 

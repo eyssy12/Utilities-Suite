@@ -1,178 +1,54 @@
 ﻿namespace Zagorapps.Configuration.Library
 {
-    using System;
-    using System.Collections.Generic;
-    using Core.Library.Extensions;
     using Core.Library.Factories;
     using Core.Library.Managers;
     using Core.Library.Timing;
     using Core.Library.Windows;
     using Core.Library.Windows.Registry;
-    using Extensions;
     using SimpleInjector;
     using Utilities.Library.Factories;
 
-    public class CommonBindings
+    public class CommonBindings : BindingsBase
     {
-        protected readonly IList<BindingMetadata> Bindings;
-
-        public CommonBindings()
+        protected override void RegisterBindings()
         {
-            this.Bindings = new List<BindingMetadata>();
-
-            this.LoadBindings();
+            this.RegisterFactories();
+            this.RegisterTime();
+            this.RegisterTimers();
+            this.RegisterManagers();
+            this.RegisterServices();
         }
 
-        public void RegisterBindingsToContainer(Container container)
+        protected virtual void RegisterServices()
         {
-            this.Bindings.ForEach(binding =>
-            {
-                if (binding.IsFactoy)
-                {
-                    container.BindFactory(binding.Service);
-                }
-                else
-                {
-                    if (binding.InstanceCreator == null)
-                    {
-                        container.Register(binding.Service, binding.Implementation, binding.Lifestyle);
-                    }
-                    else
-                    {
-                        container.Register(binding.Service, () => binding.InstanceCreator(container), binding.Lifestyle);
-                    }
-                }
-            });
-
-            this.Bindings.Clear();
+            this.Register<IIniFileManager, IniFileManager>();
+            this.Register<IWinSystemService, WinSystemService>();
         }
 
-        protected virtual void LoadBindings()
+        protected virtual void RegisterManagers()
         {
-            this.BindFactories();
-            this.BindTime();
-            this.BindTimers();
-            this.BindManagers();
-            this.BindServices();
-        }
-
-        protected virtual void BindServices()
-        {
-            this.Bind<IIniFileManager, IniFileManager>();
-            this.Bind<IWinSystemService, WinSystemService>();
-        }
-
-        protected virtual void BindManagers()
-        {
-            this.Bind<IFileManager, LocalFileManager>();
-            this.Bind<IDirectoryManager, LocalDirectoryManager>();
-            this.Bind<IApplicationRegistryManager>(container =>
+            this.Register<IFileManager, LocalFileManager>();
+            this.Register<IDirectoryManager, LocalDirectoryManager>();
+            this.Register<IApplicationRegistryManager>(container =>
             {
                 return new ApplicationRegistryManager("File-Organiser");
             }, Lifestyle.Singleton);
         }
 
-        protected virtual void BindFactories()
+        protected virtual void RegisterFactories()
         {
-            this.Bind<IFactory>(container => container.GetInstance<IOrganiserFactory>(), Lifestyle.Singleton);
+            this.Register<IFactory>(container => container.GetInstance<IOrganiserFactory>(), Lifestyle.Singleton);
             this.BindFactory<IOrganiserFactory>();
         }
 
-        protected virtual void BindTime()
+        protected virtual void RegisterTime()
         {
             //this.Bind<IClock>
         }
 
-        protected virtual void BindTimers()
+        protected virtual void RegisterTimers()
         {
-            this.Bind<ITimer, ThreadedTimer>();
-        }
-
-        protected void BindFactory<TFactory>()
-        {
-            this.Bind(typeof(TFactory), null, true, Lifestyle.Singleton);
-        }
-
-        protected void Bind<TService, TImplementation>(bool isFactory = false, Lifestyle lifestyle = null)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            Type service = typeof(TService);
-            Type implementation = typeof(TImplementation);
-
-            this.Bind(service, implementation, isFactory, lifestyle);
-        }
-
-        protected void Bind<TService>(Func<Container, object> instanceCreator, Lifestyle lifestyle = null)
-        {
-            this.Bind(typeof(TService), instanceCreator, lifestyle);
-        }
-
-        protected void Bind(Type service, Func<Container, object> instanceCreator, Lifestyle lifestyle = null)
-        {
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service), "Service type has not been provided - The container would not be able to register the implementation to the service."); // TODO: resources
-            }
-
-            if (instanceCreator == null)
-            {
-                throw new ArgumentNullException(nameof(instanceCreator), "Implementation type has not been provided - The container would not be able to register the service to the requested implementation");
-            }
-
-            BindingMetadata metadata = this.CreateMetadata(service, null, instanceCreator, false, lifestyle ?? Lifestyle.Transient);
-
-            this.Bindings.Add(metadata);
-        }
-
-        protected void Bind(Type service, Type implementation, bool isFactory = false, Lifestyle lifesyle = null)
-        {
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service), "Service type has not been provided - The container would not be able to register the implementation to the service.");
-            }
-
-            BindingMetadata metadata;
-            if (isFactory)
-            {
-                metadata = this.CreateMetadata(service, null, null, true, lifesyle ?? Lifestyle.Transient);
-            }
-            else
-            {
-                if (implementation == null)
-                {
-                    throw new ArgumentNullException(nameof(implementation), "Implementation type has not been provided - The container would not be able to register the service to the requested implementation");
-                }
-
-                metadata = this.CreateMetadata(service, implementation, null, false, lifesyle ?? Lifestyle.Transient);
-            }
-
-            this.Bindings.Add(metadata);
-        }
-
-        protected sealed class BindingMetadata
-        {
-            public bool IsFactoy { get; set; }
-
-            public Func<Container, object> InstanceCreator { get; set; }
-
-            public Type Service { get; set; }
-
-            public Type Implementation { get; set; }
-
-            public Lifestyle Lifestyle { get; set; }
-        }
-
-        protected BindingMetadata CreateMetadata(Type service, Type implementation, Func<Container, object> instanceCreator, bool isFactory, Lifestyle lifesyle)
-        {
-            return new BindingMetadata
-            {
-                Service = service,
-                Implementation = implementation,
-                InstanceCreator = instanceCreator,
-                IsFactoy = isFactory,
-                Lifestyle = lifesyle
-            };
+            this.Register<ITimer, ThreadedTimer>();
         }
     }
 }

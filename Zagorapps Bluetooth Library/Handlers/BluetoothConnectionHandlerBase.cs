@@ -15,7 +15,7 @@
         protected readonly IBinaryWriter Writer;
         protected readonly IBinaryReader Reader;
 
-        public event EventHandler<EventArgs<BluetoothConnectionEventArgs>> DataReceived;
+        public event EventHandler<BluetoothConnectionEventArgs> DataReceived;
 
         public event EventHandler<EventArgs<Exception>> FailureRaised;
 

@@ -51,6 +51,7 @@
 
         public override void InitialiseView(object arg)
         {
+            Console.WriteLine(ViewName + " - initialised");
         }
 
         public override void FinaliseView()

@@ -1,10 +1,11 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
     using System;
+    using Bluetooth.Configuration.Library;
+    using Configuration.Library;
+    using Configuration.Library.Extensions;
     using SimpleInjector;
-    using Views.Organiser;
     using Zagorapps.Utilities.Library.Factories;
-    using Zagorapps.Utilities.Suite.UI.Navigation;
 
     public static class ServiceLocator
     {
@@ -15,11 +16,11 @@
         {
             ServiceLocator.Container = new Container();
 
-            UiBindings bindings = new UiBindings();
-            bindings.RegisterBindingsToContainer(ServiceLocator.Container);
+            UiBindings ui = new UiBindings();
+            BluetoothBindings bluetooth = new BluetoothBindings();
+            CommonBindings common = new CommonBindings();
 
-            // TODO: add to bindings
-            ServiceLocator.Container.RegisterCollection<IViewControl>(new[] { typeof(Home), typeof(AddTask), typeof(IndividualTask) });
+            ServiceLocator.Container.RegisterBindings(ui, bluetooth, common);
 
             ServiceLocator.locked = false;
         }
@@ -50,6 +51,7 @@
         {
             if (!ServiceLocator.IsLocked)
             {
+                ServiceLocator.Container.Verify();
                 ServiceLocator.locked = true;
             }
         }

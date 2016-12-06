@@ -76,8 +76,6 @@
         public void NavigateToDefaultView()
         {
             this.Navigate(this.DefaultView, null);
-
-            this.ActiveView.InitialiseView(null);
         }
     }
 }

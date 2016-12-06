@@ -1,9 +1,9 @@
 ﻿namespace Zagorapps.Bluetooth.Library.Commands
 {
     using System;
+    using Core.Library.Events;
     using Messaging;
     using Networking;
-    using Core.Library.Events;
 
     public class BasicCommandOperation : IBasicCommandOperation
     {
@@ -11,7 +11,11 @@
 
         public BasicCommandOperation(INetworkWriter writer)
         {
-            // TODO: guard conditions
+            if (writer == null)
+            {
+                // TODO: resources
+                throw new ArgumentNullException(nameof(writer), "No network writer proviuded");
+            }
 
             this.Writer = writer;
         }
@@ -22,6 +26,8 @@
         {
             try
             {
+                Invoker.Raise(ref this.OperationStarted, this, DateTime.UtcNow);
+
                 this.Writer.Write(argument.Prepare());
                 this.Writer.Flush();
 

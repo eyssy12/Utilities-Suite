@@ -5,18 +5,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Zagorapps.Utilities.Suite.UI.Views.Connectivity"
              xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="16">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"   
+                     Name="ProgressBar_ServiceIndicator"
+                     Visibility="{Binding ViewModel.ProgressBarVisibility}"
+                     Value="0"
+                     IsIndeterminate="True"
+                     Grid.Row="0" Grid.Column="0"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     Margin="16" />
+
+        <Button Visibility="{Binding ViewModel.StartServiceButtonVisibility}" 
+                Command="{Binding ViewModel.ServiceStartCommand}"
+                Grid.Row="0" 
+                Grid.Column="0"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
             Start Bluetooth Service
         </Button>
+
     </Grid>
 </controls:DataFacilitatorViewControlBase>
