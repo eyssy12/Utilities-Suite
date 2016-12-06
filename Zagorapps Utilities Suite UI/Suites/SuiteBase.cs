@@ -6,6 +6,7 @@
     using System.Linq;
     using Core.Library.Events;
     using Core.Library.Extensions;
+    using Library.Exceptions;
     using Navigation;
 
     public abstract class SuiteBase : DefaultNavigatableBase<IViewControl>, ISuite
@@ -25,6 +26,8 @@
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event EventHandler<EventArgs<IViewControl, object>> OnViewChanged;
+
+        public event EventHandler<EventArgs<Exception>> FailureRaised;
 
         public IViewControl ActiveView
         {
@@ -52,7 +55,7 @@
 
             if (view == null)
             {
-                // TODO: Raise a log event
+                Invoker.Raise(ref this.FailureRaised, this, new ViewNotFoundException(viewName, "View not found"));
             }
             else
             {
@@ -68,6 +71,13 @@
         private void ChangeView(object sender, EventArgs<string, object> e)
         {
             this.Navigate(e.First, e.Second);
+        }
+
+        public void NavigateToDefaultView()
+        {
+            this.Navigate(this.DefaultView, null);
+
+            this.ActiveView.InitialiseView(null);
         }
     }
 }

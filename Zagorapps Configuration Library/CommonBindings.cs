@@ -11,6 +11,7 @@
     using Extensions;
     using SimpleInjector;
     using Utilities.Library.Factories;
+
     public class CommonBindings
     {
         protected readonly IList<BindingMetadata> Bindings;
@@ -24,21 +25,21 @@
 
         public void RegisterBindingsToContainer(Container container)
         {
-            this.Bindings.ForEach(b =>
+            this.Bindings.ForEach(binding =>
             {
-                if (b.IsFactoy)
+                if (binding.IsFactoy)
                 {
-                    container.BindFactory(b.Service);
+                    container.BindFactory(binding.Service);
                 }
                 else
                 {
-                    if (b.InstanceCreator == null)
+                    if (binding.InstanceCreator == null)
                     {
-                        container.Register(b.Service, b.Implementation, b.Lifestyle);
+                        container.Register(binding.Service, binding.Implementation, binding.Lifestyle);
                     }
                     else
                     {
-                        container.Register(b.Service, () => b.InstanceCreator(container), b.Lifestyle);
+                        container.Register(binding.Service, () => binding.InstanceCreator(container), binding.Lifestyle);
                     }
                 }
             });

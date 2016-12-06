@@ -3,6 +3,7 @@
     using System;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
+    using System.Threading.Tasks;
     using Core.Library.Communications;
     using Providers;
     using Services;
@@ -34,7 +35,7 @@
             get { return this.route; }
         }
 
-        public void Send(IDataMessage data)
+        public async void Send(IDataMessage data)
         {
             IUtilitiesDataMessage message = data as IUtilitiesDataMessage;
 
@@ -46,7 +47,7 @@
                 {
                     IUtilitiesSuiteService sender = client.CreateChannel(new EndpointAddress(this.EndpointAddress));
 
-                    sender.Handle(message);
+                    await Task.Run(() => sender.Handle(message));
                 }
                 catch (Exception ex)
                 {

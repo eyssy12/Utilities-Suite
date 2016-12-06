@@ -89,6 +89,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -158,6 +162,9 @@
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />
     <Compile Include="ViewModels\SuiteViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
+    <Compile Include="Views\Connectivity\BluetoothInteraction.xaml.cs">
+      <DependentUpon>BluetoothInteraction.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Connectivity\NoBluetoothAvailable.xaml.cs">
       <DependentUpon>NoBluetoothAvailable.xaml</DependentUpon>
     </Compile>
@@ -192,6 +199,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Styles\OrganiserStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Connectivity\BluetoothInteraction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -276,6 +287,14 @@
     <Resource Include="Resources\app.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Zagorapps Bluetooth Configuration Library\Zagorapps Bluetooth Configuration Library.csproj">
+      <Project>{4ea2548b-16cc-4506-a3be-779b063961de}</Project>
+      <Name>Zagorapps Bluetooth Configuration Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zagorapps Bluetooth Library\Zagorapps Bluetooth Library.csproj">
+      <Project>{43e2b14f-ebbc-4299-9abc-5a4ac78a0f22}</Project>
+      <Name>Zagorapps Bluetooth Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zagorapps Configuration Library\Zagorapps Configuration Library.csproj">
       <Project>{b9ad6c67-b9c3-45dc-a666-08820523b347}</Project>
       <Name>Zagorapps Configuration Library</Name>

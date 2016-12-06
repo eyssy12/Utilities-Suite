@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Configuration;
     using System.Windows.Controls;
+    using Bluetooth.Library.Providers;
     using Commands;
     using Controls;
     using Library;
@@ -21,6 +22,7 @@
     using WCF.Library.Receivers;
     using WCF.Library.Senders;
     using WCF.Library.Services;
+    using WindowsInput;
     using Zagorapps.Configuration.Library;
     using Zagorapps.Core.Library.Managers;
     using Zagorapps.Utilities.Library.Factories;
@@ -55,6 +57,18 @@
             this.BindProviders();
             this.BindLoggers();
             this.BindDataFacilitatorManager();
+            this.BindMisc();
+        }
+
+        private void BindMisc()
+        {
+            this.Bind<IInputSimulator>(container =>
+            {
+                return new InputSimulator();
+            }, lifestyle: Lifestyle.Transient);
+
+            // TODO: add bluetooth oriented compoenents to the contextual space in the solution (Bluetooth Configuration Library)
+            this.Bind<IBluetoothServicesProvider, BluetoothServicesProvider>(lifestyle: Lifestyle.Transient);
         }
 
         private void BindDataFacilitatorManager()
@@ -74,7 +88,8 @@
 
                 IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
                 {
-                    new NoBluetoothAvailable(factory, commandProvider)
+                    new NoBluetoothAvailable(factory, commandProvider),
+                    new BluetoothInteraction(factory, commandProvider)
                 };
 
                 IEnumerable<IViewControl> dashboardControls = new List<IViewControl>

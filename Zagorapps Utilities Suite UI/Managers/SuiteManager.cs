@@ -52,6 +52,8 @@
 
         protected void SuiteManager_OnNavigatableChanged(object sender, EventArgs<ISuite, object> e)
         {
+            e.First.NavigateToDefaultView();
+
             Invoker.Raise(ref this.OnSuiteChanged, this, e);
         }
 

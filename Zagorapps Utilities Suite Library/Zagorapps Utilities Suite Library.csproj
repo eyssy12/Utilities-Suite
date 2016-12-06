@@ -48,6 +48,7 @@
     <Compile Include="Communications\IUtilitiesDataMessage.cs" />
     <Compile Include="Communications\UtilitiesDataMessage.cs" />
     <Compile Include="Enumerations.cs" />
+    <Compile Include="Exceptions\ViewNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
