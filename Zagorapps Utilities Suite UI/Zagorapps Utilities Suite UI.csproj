@@ -110,6 +110,7 @@
     <Compile Include="Controls\ContentControlBehaviour.cs" />
     <Compile Include="Controls\DataFacilitatorViewControlBase.cs" />
     <Compile Include="Controls\IDataFacilitatorViewControl.cs" />
+    <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Extensions\NavigatableExtensions.cs" />
     <Compile Include="Managers\DataFacilitatorSuiteManager.cs" />
     <Compile Include="Managers\IDataFacilitatorSuiteManager.cs" />

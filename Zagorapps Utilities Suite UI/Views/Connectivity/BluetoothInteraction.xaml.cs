@@ -1,7 +1,6 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.Connectivity
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -10,6 +9,7 @@
     using Bluetooth.Library.Client;
     using Bluetooth.Library.Client.Models;
     using Bluetooth.Library.Events;
+    using Bluetooth.Library.Extensions;
     using Bluetooth.Library.Handlers;
     using Bluetooth.Library.Messaging;
     using Bluetooth.Library.Networking;
@@ -31,9 +31,9 @@
     {
         public const string ViewName = nameof(BluetoothInteraction);
 
-        private const string ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9";
+        private const string ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
+            Pin = "1234";
 
-        protected readonly ConcurrentDictionary<string, IBluetoothConnectionHandler> ActiveClients;
         protected readonly IBluetoothServicesProvider Provider;
         protected readonly IInputSimulator InputSimulator;
 
@@ -49,9 +49,8 @@
             this.Provider = this.Factory.Create<IBluetoothServicesProvider>();
             this.InputSimulator = this.Factory.Create<IInputSimulator>();
 
-            this.ActiveClients = new ConcurrentDictionary<string, IBluetoothConnectionHandler>();
-
             this.Model = new BluetoothInteractionViewModel();
+            this.Model.Pin = BluetoothInteraction.Pin;
             this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() =>
             {
                 Task.Run(() =>
@@ -59,21 +58,28 @@
                     this.Model.ProgressBarVisibility = VisibilityEnum.Visible;
                     this.Model.StartServiceButtonVisibility = VisibilityEnum.Hidden;
 
-                    Thread.Sleep(2000);
+                    this.Model.ContentEnabled = false;
+                    this.Model.ServiceButtonEnabled = false;
 
-                    ConnectionSettings settings = this.PrepareConnectionSettings(Guid.Parse(BluetoothInteraction.ServiceID), "1234");
-
-                    //ConnectionSettings settings2 = this.PrepareConnectionSettings(Encoding.UTF8.GetBytes("field_value").CreateJavaUUIDBasedGuid());
-
-                    this.receiver = this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>());
-
-                    if (this.receiver.TryInitialise())
+                    if (this.Model.ServiceEnabled)
                     {
-                        this.receiver.ClientReceived += this.Receiver_ClientReceived;
-                        this.receiver.Listen();
+                        this.StopService();
+                        this.Model.ServiceStartText = "Start Service";
+                        this.Model.ContentVisibility = VisibilityEnum.Hidden;
 
-                        this.Model.ServiceEnabled = true;
+                        this.Model.ServiceEnabled = false;
                     }
+                    else
+                    {
+                        this.Model.ServiceEnabled = true;
+
+                        this.StartService();
+                        this.Model.ServiceStartText = "End Service";
+                        this.Model.ContentVisibility = VisibilityEnum.Visible;
+                    }
+
+                    this.Model.ContentEnabled = true;
+                    this.Model.ServiceButtonEnabled = true;
 
                     this.Model.ProgressBarVisibility = VisibilityEnum.Hidden;
                     this.Model.StartServiceButtonVisibility = VisibilityEnum.Visible;
@@ -112,7 +118,7 @@
         {
             string clientName = e.First.RemoteMachineName;
 
-            if (this.ActiveClients.Any(h => h.Key == clientName))
+            if (this.Model.Handlers.Any(h => h.Key == clientName))
             {
                 Console.WriteLine("Device with an existing machine name '" + clientName + "' attempting to connect -> refusing.");
 
@@ -132,7 +138,7 @@
 
                     try
                     {
-                        if (this.ActiveClients.TryAdd(clientName, handler))
+                        if (this.Model.InvokeHandlerNotifyableAction(m => m.TryAdd(clientName, handler)))
                         {
                             handler.DataReceived += Handler_DataReceived;
                             handler.Begin();
@@ -163,7 +169,7 @@
                 if (command == ClientCommand.EndSession)
                 {
                     IBluetoothConnectionHandler handler;
-                    if (this.ActiveClients.TryRemove(e.Raiser, out handler))
+                    if (this.Model.TryRemoveHandler(e.Raiser, out handler))
                     {
                         handler.Finish();
 
@@ -209,18 +215,44 @@
             }
         }
 
+        private void StartService()
+        {
+            Thread.Sleep(1500);
+
+            ConnectionSettings settings = this.PrepareConnectionSettings(Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), "12345");
+
+            this.receiver = this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>());
+
+            if (this.receiver.TryInitialise())
+            {
+                this.receiver.ClientReceived += this.Receiver_ClientReceived;
+                this.receiver.Listen();
+            }
+        }
+
+        private void StopService()
+        {
+            Thread.Sleep(1000);
+
+            this.CloseClients();
+
+            this.receiver.ClientReceived -= this.Receiver_ClientReceived;
+            this.receiver.Stop();
+            this.receiver = null;
+        }
+
         private void CloseClients()
         {
-            this.ActiveClients.ForEach(a =>
+            this.Model.Handlers.ForEach(a =>
             {
                 a.Value.Finish();
             });
 
             Console.WriteLine();
-            Console.WriteLine(" --> All devices (" + this.ActiveClients.Count + ") disconnected from server.");
+            Console.WriteLine(" --> All devices (" + this.Model.Handlers.Count + ") disconnected from server.");
             Console.WriteLine();
 
-            this.ActiveClients.Clear();
+            this.Model.InvokeHandlerNotifyableAction(m => m.Clear());
         }
 
         private IBluetoothConnectionHandler PrepareConnectionHandler(IBluetoothClient client)

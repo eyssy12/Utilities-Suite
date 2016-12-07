@@ -22,7 +22,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding Text}" />
+        <TextBlock TextWrapping="Wrap" Text="{Binding Text}" />
 
         <DockPanel Grid.Row="1" Grid.Column="0" Margin="16">
             <ItemsControl ScrollViewer.HorizontalScrollBarVisibility="Disabled" 

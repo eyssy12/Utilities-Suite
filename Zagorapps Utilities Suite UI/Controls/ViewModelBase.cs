@@ -1,5 +1,6 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
+    using System;
     using System.ComponentModel;
     using Extensions;
 
@@ -20,6 +21,22 @@
         public virtual string Validate(string propertyName)
         {
             return string.Empty;
+        }
+
+        public TResult NotifyableAction<T, TResult>(T item, Func<T, TResult> action, string propertyName)
+        {
+            TResult result = action(item);
+
+            this.OnPropertyChanged(propertyName);
+
+            return result;
+        }
+
+        public void NotifyableAction<T>(T item, Action<T> action, string propertyName)
+        {
+            action(item);
+
+            this.OnPropertyChanged(propertyName);
         }
 
         protected void SetField<T>(ref T field, T value, string propertyName)

@@ -4,13 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Zagorapps.Utilities.Suite.UI.Views.Connectivity"
+             xmlns:converters="clr-namespace:Zagorapps.Utilities.Suite.UI.Converters"
              xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="16">
+             d:DesignHeight="800" d:DesignWidth="1280">
+
+    <controls:DataFacilitatorViewControlBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+                <Setter Property="Margin" Value="0 8 0 8" />
+            </Style>
+            <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
+                <Setter Property="Margin" Value="0 8 0 8" />
+            </Style>
+            <converters:InvertBoolConverter x:Key="InvertBool" />
+        </ResourceDictionary>
+
+    </controls:DataFacilitatorViewControlBase.Resources>
+
+    <Grid>
         
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
@@ -18,24 +37,155 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <materialDesign:Card Grid.Row="0" Grid.Column="0">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button Margin="16"
+                        MinWidth="160"
+                        IsEnabled="{Binding ViewModel.ServiceButtonEnabled}"
+                        Command="{Binding ViewModel.ServiceStartCommand}"
+                        Grid.Row="0" 
+                        Grid.Column="0"
+                        HorizontalAlignment="Left" 
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{Binding ViewModel.ServiceStartText}" />
+
+                <DockPanel Grid.Row="0" 
+                           Grid.Column="1"
+                           MinWidth="400"
+                           IsEnabled="{Binding ViewModel.ServiceEnabled, Converter={StaticResource InvertBool}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        
+                        <materialDesign:PackIcon Grid.Row="0"
+                                                 Margin="8 0 8 0"
+                                         Grid.Column="0" 
+                                         Kind="Key" 
+                                         VerticalAlignment="Center"
+                                         Foreground="{Binding ElementName=TextBox_Pin, Path=BorderBrush}" />
+                        
+                        <TextBox Grid.Row="0"
+                                 Grid.Column="1" 		
+				                 x:Name="TextBox_Pin"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding ViewModel.Pin}"
+				                 materialDesign:HintAssist.Hint="PIN" />
+                    </Grid>
+                </DockPanel>
+
+            </Grid>
+        </materialDesign:Card>
+
+        <DockPanel Grid.Row="1"
+                   Grid.Column="0"
+                   Visibility="{Binding ViewModel.ContentVisibility}"
+                   IsEnabled="{Binding ViewModel.ContentEnabled}">
+            <DataGrid
+                    Margin="0 16 0 0"
+                    Name="ListBox_ConnectedClients"
+                    ItemsSource="{Binding ViewModel.ConnectedClients}"
+                    CanUserSortColumns="True"
+                    CanUserAddRows="False" 
+                    AutoGenerateColumns="False"
+                    materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                    materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn
+                            Binding="{Binding .}"
+                            MinWidth="140"
+                            Header="Client"
+                            IsReadOnly="True" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <!--<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 Grid.Row="1"
+                     Grid.Column="0"
+                 Visibility="{Binding ViewModel.ConnectedClientsVisibility}"
+                    Name="ListBox_ConnectedClients"
+                    ItemsSource="{Binding ViewModel.ConnectedClients}">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+
+                    <TextBlock Margin="8"
+                               Text="{Binding .}" />
+
+                    --><!--<materialDesign:Card Margin="8" Grid.Row="0" Grid.Column="0" materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Name="TextBlock_SuiteIdentifier"
+                                           Margin="16" Grid.Row="0"
+                                           Grid.Column="0" 
+                                           Grid.ColumnSpan="2"
+                                           FontSize="22" 
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Text="{Binding Identifier}" />
+
+                            <Button Name="Button_OpenSuite" 
+                                        Margin="8"
+                                        Grid.Row="1" 
+                                        Grid.Column="0" 
+                                        Grid.ColumnSpan="2"
+                                        Command="{Binding ChangeSuiteCommand}"
+                                        CommandParameter="{Binding ElementName=TextBlock_SuiteIdentifier, Path=Text}">
+                                Open
+                            </Button>
+
+                        </Grid>
+                    </materialDesign:Card>--><!--
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+        </ListBox>-->
+
         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"   
                      Name="ProgressBar_ServiceIndicator"
                      Visibility="{Binding ViewModel.ProgressBarVisibility}"
                      Value="0"
                      IsIndeterminate="True"
-                     Grid.Row="0" Grid.Column="0"
+                     Grid.Row="1"
+                     Grid.Column="0"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Center"
                      Margin="16" />
-
-        <Button Visibility="{Binding ViewModel.StartServiceButtonVisibility}" 
-                Command="{Binding ViewModel.ServiceStartCommand}"
-                Grid.Row="0" 
-                Grid.Column="0"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center">
-            Start Bluetooth Service
-        </Button>
 
     </Grid>
 </controls:DataFacilitatorViewControlBase>

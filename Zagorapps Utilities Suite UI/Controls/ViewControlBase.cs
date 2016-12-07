@@ -60,6 +60,13 @@
             Invoker.Raise(ref this.OnChangeView, this, viewName, args);
         }
 
+        protected void NotifyableAction<T>(T item, Action<T> action, string propertyName)
+        {
+            action(item);
+
+            this.OnPropertyChanged(propertyName);
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;

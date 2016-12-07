@@ -1,21 +1,104 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Input;
+    using Bluetooth.Library.Handlers;
     using Controls;
 
     public class BluetoothInteractionViewModel : ViewModelBase
     {
+        private readonly ConcurrentDictionary<string, IBluetoothConnectionHandler> handlers;
+
         private Visibility progressBarVisibility = Visibility.Hidden,
-            startServiceButtonVisibility = Visibility.Visible;
+            startServiceButtonVisibility = Visibility.Visible,
+            contentVisibility = Visibility.Hidden;
+
+        private string serviceStartText;
+        private string pin;
 
         private ICommand serviceStartCommand;
-        private bool serviceEnabled;
+        private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
+
+        public BluetoothInteractionViewModel()
+        {
+            this.handlers = new ConcurrentDictionary<string, IBluetoothConnectionHandler>();
+
+            this.ServiceStartText = "Start Service";
+            this.ContentEnabled = false;
+            this.ServiceEnabled = false;
+            this.ServiceButtonEnabled = true;
+        }
+
+        public TResult InvokeHandlerNotifyableAction<TResult>(Func<ConcurrentDictionary<string, IBluetoothConnectionHandler>, TResult> action)
+        {
+            return this.NotifyableAction(this.handlers, action, nameof(this.ConnectedClients));
+        }
+
+        public bool TryRemoveHandler(string client, out IBluetoothConnectionHandler handler)
+        {
+            if (this.handlers.TryRemove(client, out handler))
+            {
+                this.OnPropertyChanged(nameof(this.ConnectedClients));
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void InvokeHandlerNotifyableAction(Action<ConcurrentDictionary<string, IBluetoothConnectionHandler>> action)
+        {
+            this.NotifyableAction(this.handlers, action, nameof(this.ConnectedClients));
+        }
+
+        public ConcurrentDictionary<string, IBluetoothConnectionHandler> Handlers
+        {
+            get { return this.handlers; }
+        }
+
+        public IEnumerable<string> ConnectedClients
+        {
+            get { return this.Handlers.Select(h => h.Key).ToArray(); }
+        }
+
+        public string Pin
+        {
+            get { return this.pin; }
+            set { this.SetField(ref pin, value, nameof(this.Pin)); }
+        }
 
         public bool ServiceEnabled
         {
             get { return this.serviceEnabled; }
             set { this.SetField(ref serviceEnabled, value, nameof(this.ServiceEnabled)); }
+        }
+
+        public bool ContentEnabled
+        {
+            get { return this.contentEnabled; }
+            set { this.SetField(ref contentEnabled, value, nameof(this.ContentEnabled)); }
+        }
+
+        public bool ServiceButtonEnabled
+        {
+            get { return this.serviceStartButtonEnabled; }
+            set { this.SetField(ref serviceStartButtonEnabled, value, nameof(this.ServiceButtonEnabled)); }
+        }
+
+        public string ServiceStartText
+        {
+            get { return this.serviceStartText; }
+            set { this.SetField(ref serviceStartText, value, nameof(this.ServiceStartText)); }
+        }
+
+        public Visibility ContentVisibility
+        {
+            get { return this.contentVisibility; }
+            set { this.SetField(ref contentVisibility, value, nameof(this.ContentVisibility)); }
         }
 
         public Visibility ProgressBarVisibility

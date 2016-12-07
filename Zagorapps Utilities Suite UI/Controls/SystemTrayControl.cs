@@ -32,7 +32,7 @@
             this.TrayIcon.ContextMenu = menu;
 
             MenuItem open = this.FindMenuItem(menu, App.MenuItemOpenApplication);
-            open.Header = "Open File Organiser";
+            open.Header = "Open " + App.Name;
             open.Click += Open_Click;
 
             MenuItem close = this.FindMenuItem(menu, App.MenuItemCloseApplication);

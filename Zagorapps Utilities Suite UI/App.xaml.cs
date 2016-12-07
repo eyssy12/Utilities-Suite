@@ -13,7 +13,7 @@
 
     public partial class App : Application
     {
-        public const string Name = "File Organiser",
+        public const string Name = "Zagorapps Utilities Suite",
             ControlTrayContextMenu = "TrayContextMenu",
             MenuItemOpenApplication = "OpenApplicationMenuItem",
             MenuItemCloseApplication = "CloseApplicationMenuItem";
