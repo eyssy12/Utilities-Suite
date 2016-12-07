@@ -1,12 +1,9 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
     using System.Windows.Input;
-    using Controls;
 
-    public class DashboardItemViewModel : ViewModelBase
+    public class DashboardItemViewModel : SuiteViewModel
     {
-        public string Identifier { get; set; }
-
         public ICommand ChangeSuiteCommand { get; set; }
     }
 }

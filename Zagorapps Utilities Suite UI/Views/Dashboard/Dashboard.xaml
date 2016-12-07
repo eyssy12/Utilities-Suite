@@ -12,7 +12,7 @@
              xmlns:viewModels="clr-namespace:Zagorapps.Utilities.Suite.UI.ViewModels"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="800" d:DesignWidth="1280">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -37,7 +37,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <materialDesign:Card Margin="8" Grid.Row="0" Grid.Column="0" materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                        <materialDesign:Card MinWidth="290" Margin="8" Grid.Row="0" Grid.Column="0" materialDesign:ShadowAssist.ShadowDepth="Depth2">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
@@ -55,7 +55,7 @@
                                            FontSize="22" 
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Top"
-                                           Text="{Binding Identifier}" />
+                                           Text="{Binding FriendlyName}" />
                                 
                                 <Button Name="Button_OpenSuite" 
                                         Margin="8"
@@ -63,7 +63,7 @@
                                         Grid.Column="0" 
                                         Grid.ColumnSpan="2"
                                         Command="{Binding ChangeSuiteCommand}"
-                                        CommandParameter="{Binding ElementName=TextBlock_SuiteIdentifier, Path=Text}">
+                                        CommandParameter="{Binding Identifier}">
                                         Open
                                     </Button>
 

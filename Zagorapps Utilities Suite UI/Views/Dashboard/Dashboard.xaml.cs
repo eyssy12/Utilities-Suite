@@ -2,16 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Text;
-    using System.Windows;
     using Library.Attributes;
     using Library.Communications;
     using Services;
-    using Suites;
     using ViewModels;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Commands;
     using Zagorapps.Utilities.Suite.UI.Controls;
+
     [DefaultNavigatable]
     public partial class Dashboard : DataFacilitatorViewControlBase
     {
@@ -30,11 +31,18 @@
 
             this.SuiteService = this.Factory.Create<ISuiteService>();
 
-            this.items = new List<DashboardItemViewModel>
-            {
-                new DashboardItemViewModel { Identifier = FileOrganiserSuite.Name, ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param)) },
-                new DashboardItemViewModel { Identifier = ConnectivitySuite.Name, ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param)) }
-            };
+            this.items = Assembly
+                    .GetExecutingAssembly()
+                    .GetTypes()
+                    .Where(t => t.IsDefined(typeof(SuiteAttribute), false))
+                    .Select(t => t.GetCustomAttribute<SuiteAttribute>())
+                    .Select(a => new DashboardItemViewModel
+                    {
+                        Identifier = a.Name,
+                        FriendlyName = a.FriendlyName,
+                        ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param))
+                    })
+                    .ToArray();
 
             this.DataContext = this;
         }

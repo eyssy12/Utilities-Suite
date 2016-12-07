@@ -1,6 +1,8 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
-    public class SuiteViewModel
+    using Zagorapps.Utilities.Suite.UI.Controls;
+
+    public class SuiteViewModel : ViewModelBase
     {
         public string FriendlyName { get; set; }
 
