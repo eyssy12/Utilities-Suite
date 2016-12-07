@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using Commands;
     using Core.Library.Extensions;
+    using Core.Library.Timing;
     using Events;
     using Extensions;
     using Messaging;
@@ -26,8 +27,9 @@
             IStreamProvider streamProvider,
             IMessageHandler<IMessage> messageHandler,
             ICommandOperationsProvider operationProvider,
-            IMessageProvider messageProvider)
-            : base(client, streamProvider)
+            IMessageProvider messageProvider,
+            ITimer timer)
+            : base(client, streamProvider, timer)
         {
             this.MessageHandler = messageHandler;
             this.OperationProvider = operationProvider;

@@ -110,10 +110,16 @@
                 <DataGrid.Columns>
 
                     <DataGridTextColumn
-                            Binding="{Binding .}"
+                            Binding="{Binding Name}"
                             MinWidth="140"
                             Header="Client"
                             IsReadOnly="True" />
+
+                    <DataGridTextColumn 
+                        Binding="{Binding HeartbeatCurrentTime}"
+                        IsReadOnly="True"
+                        Header="Heartbet Countdown"
+                        />
 
                 </DataGrid.Columns>
             </DataGrid>

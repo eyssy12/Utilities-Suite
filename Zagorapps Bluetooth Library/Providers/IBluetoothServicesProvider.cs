@@ -3,6 +3,7 @@
     using System;
     using Client;
     using Client.Models;
+    using Core.Library.Timing;
     using Handlers;
     using InTheHand.Net.Sockets;
     using Messaging;
@@ -25,6 +26,7 @@
             IStreamProvider streamProvider,
             IMessageHandler<IMessage> messageHandler,
             ICommandOperationsProvider operationProvider,
-            IMessageProvider messageProvider);
+            IMessageProvider messageProvider,
+            ITimer timer);
     }
 }

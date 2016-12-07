@@ -163,6 +163,7 @@
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BluetoothInteractionViewModel.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
+    <Compile Include="ViewModels\ConnectedClientViewModel.cs" />
     <Compile Include="ViewModels\DashboardItemViewModel.cs" />
     <Compile Include="ViewModels\FileExtensionViewModel.cs" />
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />

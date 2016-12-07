@@ -11,7 +11,7 @@
 
     public class BluetoothInteractionViewModel : ViewModelBase
     {
-        private readonly ConcurrentDictionary<string, IBluetoothConnectionHandler> handlers;
+        private readonly ConcurrentDictionary<string, ConnectedClientViewModel> handlers;
 
         private Visibility progressBarVisibility = Visibility.Hidden,
             startServiceButtonVisibility = Visibility.Visible,
@@ -21,11 +21,12 @@
         private string pin;
 
         private ICommand serviceStartCommand;
+        private int heartbeatCurrentTime;
         private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
 
         public BluetoothInteractionViewModel()
         {
-            this.handlers = new ConcurrentDictionary<string, IBluetoothConnectionHandler>();
+            this.handlers = new ConcurrentDictionary<string, ConnectedClientViewModel>();
 
             this.ServiceStartText = "Start Service";
             this.ContentEnabled = false;
@@ -33,36 +34,45 @@
             this.ServiceButtonEnabled = true;
         }
 
-        public TResult InvokeHandlerNotifyableAction<TResult>(Func<ConcurrentDictionary<string, IBluetoothConnectionHandler>, TResult> action)
+        public void UpdateConnectionClientHeartbeat(string name, int time)
+        {
+            this.handlers[name].HeartbeatCurrentTime = time;
+        }
+
+        public TResult InvokeHandlerNotifyableAction<TResult>(Func<ConcurrentDictionary<string, ConnectedClientViewModel>, TResult> action)
         {
             return this.NotifyableAction(this.handlers, action, nameof(this.ConnectedClients));
         }
 
         public bool TryRemoveHandler(string client, out IBluetoothConnectionHandler handler)
         {
-            if (this.handlers.TryRemove(client, out handler))
+            ConnectedClientViewModel model;
+            if (this.handlers.TryRemove(client, out model))
             {
+                handler = model.Handler;
                 this.OnPropertyChanged(nameof(this.ConnectedClients));
 
                 return true;
             }
 
+            handler = null;
+
             return false;
         }
 
-        public void InvokeHandlerNotifyableAction(Action<ConcurrentDictionary<string, IBluetoothConnectionHandler>> action)
+        public void InvokeHandlerNotifyableAction(Action<ConcurrentDictionary<string, ConnectedClientViewModel>> action)
         {
             this.NotifyableAction(this.handlers, action, nameof(this.ConnectedClients));
         }
 
-        public ConcurrentDictionary<string, IBluetoothConnectionHandler> Handlers
+        public ConcurrentDictionary<string, ConnectedClientViewModel> Handlers
         {
             get { return this.handlers; }
         }
 
-        public IEnumerable<string> ConnectedClients
+        public IEnumerable<ConnectedClientViewModel> ConnectedClients
         {
-            get { return this.Handlers.Select(h => h.Key).ToArray(); }
+            get { return this.Handlers.Select(h => h.Value).ToArray(); }
         }
 
         public string Pin

@@ -18,6 +18,7 @@
     using Controls;
     using Core.Library.Events;
     using Core.Library.Extensions;
+    using Core.Library.Timing;
     using Library.Communications;
     using Utilities.Library.Factories;
     using ViewModels;
@@ -32,7 +33,7 @@
         public const string ViewName = nameof(BluetoothInteraction);
 
         private const string ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
-            Pin = "1234";
+            Pin = "12345";
 
         protected readonly IBluetoothServicesProvider Provider;
         protected readonly IInputSimulator InputSimulator;
@@ -138,9 +139,10 @@
 
                     try
                     {
-                        if (this.Model.InvokeHandlerNotifyableAction(m => m.TryAdd(clientName, handler)))
+                        if (this.Model.InvokeHandlerNotifyableAction(m => m.TryAdd(clientName, new ConnectedClientViewModel(clientName, handler))))
                         {
                             handler.DataReceived += Handler_DataReceived;
+                            handler.TimerTickSecond += Handler_TimerTickSecond;
                             handler.Begin();
                         }
                         else
@@ -157,6 +159,11 @@
             }
         }
 
+        private void Handler_TimerTickSecond(object sender, EventArgs<string, int> e)
+        {
+            this.Model.UpdateConnectionClientHeartbeat(e.First, e.Second);
+        }
+
         private void Handler_DataReceived(object sender, BluetoothConnectionEventArgs e)
         {
             // TODO: implement the below code into some sort of a decision tree
@@ -171,6 +178,8 @@
                     IBluetoothConnectionHandler handler;
                     if (this.Model.TryRemoveHandler(e.Raiser, out handler))
                     {
+                        handler.DataReceived -= Handler_DataReceived;
+                        handler.TimerTickSecond -= Handler_TimerTickSecond;
                         handler.Finish();
 
                         Console.WriteLine();
@@ -245,7 +254,7 @@
         {
             this.Model.Handlers.ForEach(a =>
             {
-                a.Value.Finish();
+                a.Value.Handler.Finish();
             });
 
             Console.WriteLine();
@@ -261,7 +270,8 @@
             IMessageProvider messageProvider = this.Factory.Create<IMessageProvider>();
             IStreamProvider streamProvider = this.Factory.Create<IStreamProvider>();
             ICommandOperationsProvider operationProvider = this.Factory.Create<ICommandOperationsProvider>();
-            IBluetoothConnectionHandler handler = this.Provider.CreateConnectionHandler(client, streamProvider, messageHandler, operationProvider, messageProvider);
+            ITimer timer = this.Factory.Create<ITimer>();
+            IBluetoothConnectionHandler handler = this.Provider.CreateConnectionHandler(client, streamProvider, messageHandler, operationProvider, messageProvider, timer);
 
             return handler;
         }
