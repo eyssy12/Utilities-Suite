@@ -21,7 +21,6 @@
         private string pin;
 
         private ICommand serviceStartCommand;
-        private int heartbeatCurrentTime;
         private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
 
         public BluetoothInteractionViewModel()
