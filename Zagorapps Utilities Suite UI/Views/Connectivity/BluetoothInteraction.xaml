@@ -93,12 +93,26 @@
             </Grid>
         </materialDesign:Card>
 
-        <DockPanel Grid.Row="1"
-                   Grid.Column="0"
-                   Visibility="{Binding ViewModel.ContentVisibility}"
-                   IsEnabled="{Binding ViewModel.ContentEnabled}">
+        <Grid Grid.Row="1"
+            Grid.Column="0"
+              
+            Visibility="{Binding ViewModel.ContentVisibility}"
+            IsEnabled="{Binding ViewModel.ContentEnabled}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
             <DataGrid
-                    Margin="0 16 0 0"
+                Margin="0 16 0 0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
                     Name="ListBox_ConnectedClients"
                     ItemsSource="{Binding ViewModel.ConnectedClients}"
                     CanUserSortColumns="True"
@@ -123,7 +137,60 @@
 
                 </DataGrid.Columns>
             </DataGrid>
-        </DockPanel>
+
+            <DockPanel Grid.Row="0"
+                    Grid.Column="1">
+                
+                <TextBlock Margin="16 16 16 8" DockPanel.Dock="Top" >
+                    Client Log
+                </TextBlock>
+
+                <Border Background="DarkBlue" 
+                    Margin="16 8 16 16"
+                    BorderBrush="DarkGray" 
+                    BorderThickness="1"
+                    ClipToBounds="True">
+
+                    <Border Background="Transparent" 
+                        BorderBrush="Black" 
+                        BorderThickness="1"
+                        Margin="-2">
+
+                        <DockPanel Margin="8">
+                            <TextBlock TextWrapping="Wrap" Foreground="Yellow" Text="{Binding ViewModel.ServiceServerLogConsole}" />
+                        </DockPanel>
+
+                    </Border>
+                </Border>
+            </DockPanel>
+
+            <DockPanel Grid.Row="1"
+                    Grid.Column="1">
+                
+                <TextBlock Margin="16 8 16 8" DockPanel.Dock="Top" >
+                Server Log
+                </TextBlock>
+
+                <Border Background="DarkBlue" 
+                    Margin="16 8 16 16"
+                    BorderBrush="DarkGray" 
+                    BorderThickness="1"
+                    ClipToBounds="True">
+
+                    <Border Background="Transparent" 
+                        BorderBrush="Black" 
+                        BorderThickness="1"
+                        Margin="-2">
+
+                        <DockPanel Margin="8">
+                            <TextBlock TextWrapping="Wrap" Foreground="Yellow" Text="{Binding ViewModel.ServiceServerLogConsole}" />
+                        </DockPanel>
+
+                    </Border>
+                </Border>
+            </DockPanel>
+
+        </Grid>
 
         <!--<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                  Grid.Row="1"

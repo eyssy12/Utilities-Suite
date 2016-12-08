@@ -4,6 +4,7 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Windows;
     using System.Windows.Input;
     using Bluetooth.Library.Handlers;
@@ -16,6 +17,9 @@
         private Visibility progressBarVisibility = Visibility.Hidden,
             startServiceButtonVisibility = Visibility.Visible,
             contentVisibility = Visibility.Hidden;
+
+        private StringBuilder serviceClientLogBuilder = new StringBuilder(),
+            serviceServerLogBuilder = new StringBuilder();
 
         private string serviceStartText;
         private string pin;
@@ -72,6 +76,28 @@
         public IEnumerable<ConnectedClientViewModel> ConnectedClients
         {
             get { return this.Handlers.Select(h => h.Value).ToArray(); }
+        }
+
+        public string ServiceClientLogConsole
+        {
+            get { return this.serviceClientLogBuilder.ToString(); }
+            set
+            {
+                this.serviceClientLogBuilder.AppendLine(value);
+
+                this.OnPropertyChanged(nameof(ServiceClientLogConsole));
+            }
+        }
+
+        public string ServiceServerLogConsole
+        {
+            get { return this.serviceServerLogBuilder.ToString(); }
+            set
+            {
+                this.serviceServerLogBuilder.AppendLine(value);
+
+                this.OnPropertyChanged(nameof(ServiceServerLogConsole));
+            }
         }
 
         public string Pin

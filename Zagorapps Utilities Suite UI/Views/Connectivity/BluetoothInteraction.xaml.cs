@@ -126,7 +126,7 @@
 
         public override void ProcessMessage(IUtilitiesDataMessage data)
         {
-            Console.WriteLine("Message received");
+            
         }
 
         private void Receiver_ClientReceived(object sender, EventArgs<IBluetoothClient> e)
@@ -175,6 +175,11 @@
 
         private void Handler_TimerTickSecond(object sender, EventArgs<string, int> e)
         {
+            if (e.Second == 30)
+            {
+                this.Model.ServiceServerLogConsole = DateTime.UtcNow + " - Heartbeat initiated";
+            }
+
             this.Model.UpdateConnectionClientHeartbeat(e.First, e.Second);
         }
 
@@ -236,11 +241,13 @@
 
                 this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
             }
+
+            this.Model.ServiceClientLogConsole = e.Raiser + ": " + data;
         }
 
         private void StartService()
         {
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
 
             ConnectionSettings settings = this.PrepareConnectionSettings(Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), "12345");
 
