@@ -12,8 +12,8 @@
     using System.Windows.Media;
     using Controls;
     using Core.Library.Windows;
+    using Extensions;
     using IoC;
-    using Library.Attributes;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
     using ViewModels;
@@ -28,6 +28,9 @@
         protected readonly IApplicationRegistryManager RegistryManager;
         protected readonly IApplicationConfigurationManager ConfigManager;
         protected readonly ISystemTrayControl Tray;
+
+        private int suiteIndex = 0,
+            previousIndex = 0;
 
         public MainWindow(IOrganiserFactory factory)
             : base(factory)
@@ -58,13 +61,11 @@
             {
                 return Assembly
                     .GetExecutingAssembly()
-                    .GetTypes()
-                    .Where(t => t.IsDefined(typeof(SuiteAttribute), false))
-                    .Select(t => t.GetCustomAttribute<SuiteAttribute>())
-                    .Select(a => new SuiteViewModel
+                    .GetAllSuitesOrderByDefaultNavigatable()
+                    .Select((a, index) => new SuiteViewModel
                     { 
-                        Identifier = a.Name,
-                        FriendlyName = a.FriendlyName
+                        Identifier = a.Item1.Name,
+                        FriendlyName = (index + 1) + " - " + a.Item1.FriendlyName
                     })
                     .ToArray();
             }
@@ -105,6 +106,7 @@
         {
             e.Cancel = true;
 
+            
             this.Hide();
             
             this.Tray.SetVisibility(Visibility.Visible);
@@ -139,6 +141,31 @@
                 SuiteViewModel suite = item.DataContext as SuiteViewModel;
 
                 this.SuiteManager.Navigate(suite.Identifier, null);
+            }
+        }
+
+        private void MainWindowBase_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key != Key.LeftCtrl) // Is Alt key pressed
+            {
+                int min = 0;
+                int max = this.SuiteItems.Count() - 1;
+
+                previousIndex = suiteIndex;
+
+                if (e.Key == Key.Up && suiteIndex < max)
+                {
+                    suiteIndex++;
+                }
+                else if (e.Key == Key.Down && suiteIndex > min)
+                {
+                    suiteIndex--;
+                }
+
+                if (suiteIndex != previousIndex)
+                {
+                    this.SuiteManager.Navigate(this.SuiteItems.ElementAt(suiteIndex).Identifier, null);
+                }
             }
         }
 

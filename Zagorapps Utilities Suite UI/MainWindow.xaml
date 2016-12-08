@@ -20,6 +20,7 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         Icon="pack://application:,,,/Images/app.ico"
         ResizeMode="CanMinimize"
+        Keyboard.KeyDown="MainWindowBase_KeyDown"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>

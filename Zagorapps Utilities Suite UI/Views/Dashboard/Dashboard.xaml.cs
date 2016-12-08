@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Text;
+    using Extensions;
     using Library.Attributes;
     using Library.Communications;
     using Services;
@@ -20,8 +21,6 @@
 
         protected readonly ISuiteService SuiteService;
 
-        private readonly StringBuilder builder = new StringBuilder();
-
         private readonly IEnumerable<DashboardItemViewModel> items;
 
         public Dashboard(IOrganiserFactory factory, ICommandProvider commandProvider) 
@@ -32,24 +31,17 @@
             this.SuiteService = this.Factory.Create<ISuiteService>();
 
             this.items = Assembly
-                    .GetExecutingAssembly()
-                    .GetTypes()
-                    .Where(t => t.IsDefined(typeof(SuiteAttribute), false))
-                    .Select(t => t.GetCustomAttribute<SuiteAttribute>())
-                    .Select(a => new DashboardItemViewModel
-                    {
-                        Identifier = a.Name,
-                        FriendlyName = a.FriendlyName,
-                        ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param))
-                    })
-                    .ToArray();
+                .GetExecutingAssembly()
+                .GetAllSuitesOrderByDefaultNavigatable()
+                .Select((a, index) => new DashboardItemViewModel
+                {
+                    Identifier = a.Item1.Name,
+                    FriendlyName = (index + 1) + " - " + a.Item1.FriendlyName,
+                    ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param))
+                })
+                .ToArray();
 
             this.DataContext = this;
-        }
-
-        public string Text
-        {
-            get { return this.builder.ToString(); }
         }
 
         public IEnumerable<DashboardItemViewModel> Items
@@ -64,7 +56,7 @@
 
         public override void FinaliseView()
         {
-            Console.WriteLine("View finalised");
+            Console.WriteLine(ViewName + " - View finalised");
         }
 
         private void ChangeSuite(string identifier)
@@ -74,9 +66,6 @@
 
         public override void ProcessMessage(IUtilitiesDataMessage data)
         {
-            builder.Append(data.Data + " ");
-
-            this.OnPropertyChanged(nameof(this.Text));
         }
     }
 }

@@ -20,6 +20,7 @@
     using Core.Library.Extensions;
     using Core.Library.Timing;
     using Library.Communications;
+    using Services;
     using Utilities.Library.Factories;
     using ViewModels;
     using WindowsInput;
@@ -36,6 +37,7 @@
             Pin = "12345";
 
         protected readonly IBluetoothServicesProvider Provider;
+        protected readonly ISnackbarNotificationService Notifier;
         protected readonly IInputSimulator InputSimulator;
 
         protected readonly BluetoothInteractionViewModel Model;
@@ -48,46 +50,58 @@
             this.InitializeComponent();
 
             this.Provider = this.Factory.Create<IBluetoothServicesProvider>();
+            this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.InputSimulator = this.Factory.Create<IInputSimulator>();
 
             this.Model = new BluetoothInteractionViewModel();
             this.Model.Pin = BluetoothInteraction.Pin;
-            this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() =>
-            {
-                Task.Run(() =>
-                {
-                    this.Model.ProgressBarVisibility = VisibilityEnum.Visible;
-                    this.Model.StartServiceButtonVisibility = VisibilityEnum.Hidden;
-
-                    this.Model.ContentEnabled = false;
-                    this.Model.ServiceButtonEnabled = false;
-
-                    if (this.Model.ServiceEnabled)
-                    {
-                        this.StopService();
-                        this.Model.ServiceStartText = "Start Service";
-                        this.Model.ContentVisibility = VisibilityEnum.Hidden;
-
-                        this.Model.ServiceEnabled = false;
-                    }
-                    else
-                    {
-                        this.Model.ServiceEnabled = true;
-
-                        this.StartService();
-                        this.Model.ServiceStartText = "End Service";
-                        this.Model.ContentVisibility = VisibilityEnum.Visible;
-                    }
-
-                    this.Model.ContentEnabled = true;
-                    this.Model.ServiceButtonEnabled = true;
-
-                    this.Model.ProgressBarVisibility = VisibilityEnum.Hidden;
-                    this.Model.StartServiceButtonVisibility = VisibilityEnum.Visible;
-                });
-            });
+            this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeService());
 
             this.DataContext = this;
+        }
+
+        private async void InvokeService()
+        {
+            await Task.Run(() =>
+            {
+                this.Model.ProgressBarVisibility = VisibilityEnum.Visible;
+                this.Model.StartServiceButtonVisibility = VisibilityEnum.Hidden;
+
+                this.Model.ContentEnabled = false;
+                this.Model.ServiceButtonEnabled = false;
+
+                if (this.Model.ServiceEnabled)
+                {
+                    this.StopService();
+                    this.Model.ServiceStartText = "Start Service";
+                    this.Model.ContentVisibility = VisibilityEnum.Hidden;
+
+                    this.Model.ServiceEnabled = false;
+                }
+                else
+                {
+                    this.Model.ServiceEnabled = true;
+
+                    this.StartService();
+                    this.Model.ServiceStartText = "End Service";
+                    this.Model.ContentVisibility = VisibilityEnum.Visible;
+                }
+
+                this.Model.ContentEnabled = true;
+                this.Model.ServiceButtonEnabled = true;
+
+                this.Model.ProgressBarVisibility = VisibilityEnum.Hidden;
+                this.Model.StartServiceButtonVisibility = VisibilityEnum.Visible;
+            });
+
+            if (this.Model.ServiceEnabled)
+            {
+                this.Notifier.Notify("Bluetooth Service Started");
+            }
+            else
+            {
+                this.Notifier.Notify("Bluetooth Service Stopped");
+            }
         }
 
         public BluetoothInteractionViewModel ViewModel
