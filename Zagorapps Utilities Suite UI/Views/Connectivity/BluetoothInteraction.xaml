@@ -145,7 +145,7 @@
                     Client Log
                 </TextBlock>
 
-                <Border Background="DarkBlue" 
+                <Border Background="{DynamicResource PrimaryHueDarkBrush}" 
                     Margin="16 8 16 16"
                     BorderBrush="DarkGray" 
                     BorderThickness="1"
@@ -171,7 +171,7 @@
                 Server Log
                 </TextBlock>
 
-                <Border Background="DarkBlue" 
+                <Border Background="{DynamicResource PrimaryHueDarkBrush}" 
                     Margin="16 8 16 16"
                     BorderBrush="DarkGray" 
                     BorderThickness="1"
