@@ -140,7 +140,7 @@
 
             <DockPanel Grid.Row="0"
                     Grid.Column="1">
-                
+
                 <TextBlock Margin="16 16 16 8" DockPanel.Dock="Top" >
                     Client Log
                 </TextBlock>
@@ -166,7 +166,7 @@
 
             <DockPanel Grid.Row="1"
                     Grid.Column="1">
-                
+
                 <TextBlock Margin="16 8 16 8" DockPanel.Dock="Top" >
                 Server Log
                 </TextBlock>
@@ -189,66 +189,7 @@
                     </Border>
                 </Border>
             </DockPanel>
-
         </Grid>
-
-        <!--<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                 Grid.Row="1"
-                     Grid.Column="0"
-                 Visibility="{Binding ViewModel.ConnectedClientsVisibility}"
-                    Name="ListBox_ConnectedClients"
-                    ItemsSource="{Binding ViewModel.ConnectedClients}">
-
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-
-                    <TextBlock Margin="8"
-                               Text="{Binding .}" />
-
-                    --><!--<materialDesign:Card Margin="8" Grid.Row="0" Grid.Column="0" materialDesign:ShadowAssist.ShadowDepth="Depth2">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Name="TextBlock_SuiteIdentifier"
-                                           Margin="16" Grid.Row="0"
-                                           Grid.Column="0" 
-                                           Grid.ColumnSpan="2"
-                                           FontSize="22" 
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Text="{Binding Identifier}" />
-
-                            <Button Name="Button_OpenSuite" 
-                                        Margin="8"
-                                        Grid.Row="1" 
-                                        Grid.Column="0" 
-                                        Grid.ColumnSpan="2"
-                                        Command="{Binding ChangeSuiteCommand}"
-                                        CommandParameter="{Binding ElementName=TextBlock_SuiteIdentifier, Path=Text}">
-                                Open
-                            </Button>
-
-                        </Grid>
-                    </materialDesign:Card>--><!--
-
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-
-        </ListBox>-->
-
         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"   
                      Name="ProgressBar_ServiceIndicator"
                      Visibility="{Binding ViewModel.ProgressBarVisibility}"
