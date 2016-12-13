@@ -11,14 +11,10 @@
 
         private string mainColorzoneText;
 
-        public MainWindowViewModel()
-        {
-
-        }
-
         public int SuiteIndex
         {
             get { return this.suiteIndex; }
+            set { this.suiteIndex = value; }
         }
 
         public string MainColorzoneText
@@ -36,24 +32,30 @@
         {
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key != Key.LeftCtrl)
             {
-                if (e.Key == Key.Up || e.Key == Key.Down)
+                if (e.Key == Key.Home)
+                {
+                    this.previousIndex = this.suiteIndex = 0;
+
+                    return true;
+                }
+                else if (e.Key == Key.Up || e.Key == Key.Down)
                 {
                     int min = 0;
                     int max = maxiumItems;
 
-                    previousIndex = suiteIndex;
+                    this.previousIndex = this.suiteIndex;
 
-                    if (e.Key == Key.Up && suiteIndex < max)
+                    if (e.Key == Key.Up && this.suiteIndex < max)
                     {
-                        suiteIndex++;
+                        this.suiteIndex++;
                     }
-                    else if (e.Key == Key.Down && suiteIndex > min)
+                    else if (e.Key == Key.Down && this.suiteIndex > min)
                     {
-                        suiteIndex--;
+                        this.suiteIndex--;
                     }
 
                     // we want to trigger navigation only when the e.Key value is Up or Down
-                    if (suiteIndex != previousIndex)
+                    if (this.suiteIndex != this.previousIndex)
                     {
                         return true;
                     }

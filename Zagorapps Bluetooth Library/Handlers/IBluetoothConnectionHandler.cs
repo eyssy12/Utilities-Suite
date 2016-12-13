@@ -10,7 +10,7 @@
     {
         event EventHandler<BluetoothConnectionEventArgs> DataReceived;
 
-        event EventHandler<EventArgs<string, int>> TimerTickSecond;
+        event EventHandler<EventArgs<string, DateTime>> HeartbeatInitiated;
 
         string ClientName { get; }
 

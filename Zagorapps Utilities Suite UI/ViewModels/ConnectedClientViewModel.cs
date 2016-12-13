@@ -1,5 +1,6 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
+    using System;
     using Bluetooth.Library.Handlers;
     using Controls;
 
@@ -8,7 +9,7 @@
         private readonly IBluetoothConnectionHandler handler;
 
         private string name;
-        private int heartbeatCountdown;
+        private DateTime nextHeartbeatTimestamp;
 
         public ConnectedClientViewModel(string clientName, IBluetoothConnectionHandler handler)
         {
@@ -21,10 +22,10 @@
             get { return this.handler; }
         }
 
-        public int HeartbeatCurrentTime
+        public DateTime NextHeartbeatTimestamp
         {
-            get { return this.heartbeatCountdown; }
-            set { this.SetField(ref heartbeatCountdown, value, nameof(this.HeartbeatCurrentTime)); }
+            get { return this.nextHeartbeatTimestamp; }
+            set { this.SetField(ref nextHeartbeatTimestamp, value, nameof(this.NextHeartbeatTimestamp)); }
         }
 
         public string Name

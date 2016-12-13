@@ -157,8 +157,10 @@
                         if (this.Model.InvokeHandlerNotifyableAction(m => m.TryAdd(clientName, new ConnectedClientViewModel(clientName, handler))))
                         {
                             handler.DataReceived += Handler_DataReceived;
-                            handler.TimerTickSecond += Handler_TimerTickSecond;
+                            handler.HeartbeatInitiated += Handler_HeartbeatInitiated;
                             handler.Begin();
+
+                            this.Model.UpdateConnectionClientHeartbeat(clientName, DateTime.UtcNow);
                         }
                         else
                         {
@@ -174,18 +176,11 @@
             }
         }
 
-        private void Handler_TimerTickSecond(object sender, EventArgs<string, int> e)
+        private void Handler_HeartbeatInitiated(object sender, EventArgs<string, DateTime> e)
         {
-            if (e.Second == 30)
-            {
-                this.Model.ServiceServerLogConsole = DateTime.UtcNow + " - Heartbeat initiated";
+            this.Model.UpdateConnectionClientHeartbeat(e.First, e.Second.AddMilliseconds(BluetoothConnectionHandlerBase.DefaultHeartbeatInterval));
 
-                IMessage message = new XmlMessage(XDocument.Parse(@"<to>blah</to>"));
-
-                this.Model.Handlers[e.First].Handler.SendMessage(new BasicStringMessage(DateTime.UtcNow + " - HB"));
-            }
-
-            this.Model.UpdateConnectionClientHeartbeat(e.First, e.Second);
+            this.Model.Handlers[e.First].Handler.SendMessage(new BasicStringMessage(e.Second.ToString()));
         }
 
         private void Handler_DataReceived(object sender, BluetoothConnectionEventArgs e)
@@ -203,7 +198,7 @@
                     if (this.Model.TryRemoveHandler(e.Raiser, out handler))
                     {
                         handler.DataReceived -= Handler_DataReceived;
-                        handler.TimerTickSecond -= Handler_TimerTickSecond;
+                        handler.HeartbeatInitiated -= Handler_HeartbeatInitiated;
                         handler.Finish();
 
                         Console.WriteLine();

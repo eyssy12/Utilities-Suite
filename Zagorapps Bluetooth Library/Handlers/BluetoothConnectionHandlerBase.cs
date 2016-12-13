@@ -11,7 +11,7 @@
 
     public abstract class BluetoothConnectionHandlerBase : IBluetoothConnectionHandler
     {
-        protected const int DefaultHeartbeatInterval = 30, // 30 seconds
+        public const int DefaultHeartbeatInterval = 30000, // 30 seconds
             OneSecond = 1000; // 1 second
 
         protected readonly IBluetoothClient ConnectionClient;
@@ -37,7 +37,7 @@
 
         public event EventHandler<EventArgs<Exception>> FailureRaised;
 
-        public event EventHandler<EventArgs<string, int>> TimerTickSecond;
+        public event EventHandler<EventArgs<string, DateTime>> HeartbeatInitiated;
 
         public string ClientName
         {
@@ -52,23 +52,14 @@
         public void Begin()
         {
             this.Timer.TimeElapsed += Timer_TimeElapsed;
-            this.Timer.Start(BluetoothConnectionHandlerBase.OneSecond, BluetoothConnectionHandlerBase.OneSecond);
+            this.Timer.Start(BluetoothConnectionHandlerBase.DefaultHeartbeatInterval, BluetoothConnectionHandlerBase.DefaultHeartbeatInterval);
 
             this.HandleIncoming();
         }
 
         private void Timer_TimeElapsed(object sender, EventArgs<int> e)
         {
-            // TODO: doesn't feel like it should be the responsibility of this class here to send "second" updates to whoever subscribes to it
-            // just a whole heartbeat interval event instead seems more appropriate
-            this.currentTime--;
-
-            if (this.currentTime == 0)
-            {
-                this.currentTime = BluetoothConnectionHandlerBase.DefaultHeartbeatInterval;
-            }
-
-            Invoker.Raise(ref this.TimerTickSecond, this, this.ClientName, this.currentTime);
+            Invoker.Raise(ref this.HeartbeatInitiated, this, this.ClientName, DateTime.UtcNow);
         }
 
         public void Finish()

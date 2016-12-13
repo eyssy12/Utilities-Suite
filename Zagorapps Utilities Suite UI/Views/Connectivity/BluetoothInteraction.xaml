@@ -130,9 +130,9 @@
                             IsReadOnly="True" />
 
                     <DataGridTextColumn 
-                        Binding="{Binding HeartbeatCurrentTime}"
+                        Binding="{Binding NextHeartbeatTimestamp}"
                         IsReadOnly="True"
-                        Header="Heartbet Countdown"
+                        Header="Next Heartbeat"
                         />
 
                 </DataGrid.Columns>

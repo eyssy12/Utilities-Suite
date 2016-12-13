@@ -136,18 +136,20 @@
 
         protected void DemoItemsListBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ListBoxItem item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
+            ListBox listbox = sender as ListBox;
+            ListBoxItem item = ItemsControl.ContainerFromElement(listbox, e.OriginalSource as DependencyObject) as ListBoxItem;
             if (item != null)
             {
                 // ListBox item clicked - do some cool things here
 
                 SuiteViewModel suite = item.DataContext as SuiteViewModel;
+                this.Model.SuiteIndex = listbox.SelectedIndex;
 
                 this.SuiteManager.Navigate(suite.Identifier, null);
             }
         }
 
-        private void MainWindowBase_KeyDown(object sender, KeyEventArgs e)
+        protected void MainWindowBase_KeyDown(object sender, KeyEventArgs e)
         {
             if (this.Model.IsSuiteChangeWithKeyboardShortcutApplied(e, this.SuiteItems.Count() - 1))
             {

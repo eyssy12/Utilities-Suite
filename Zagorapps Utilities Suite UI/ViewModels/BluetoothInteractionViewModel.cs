@@ -37,9 +37,9 @@
             this.ServiceButtonEnabled = true;
         }
 
-        public void UpdateConnectionClientHeartbeat(string name, int time)
+        public void UpdateConnectionClientHeartbeat(string name, DateTime time)
         {
-            this.handlers[name].HeartbeatCurrentTime = time;
+            this.handlers[name].NextHeartbeatTimestamp = time;
         }
 
         public TResult InvokeHandlerNotifyableAction<TResult>(Func<ConcurrentDictionary<string, ConnectedClientViewModel>, TResult> action)
