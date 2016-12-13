@@ -29,8 +29,7 @@
         protected readonly IApplicationConfigurationManager ConfigManager;
         protected readonly ISystemTrayControl Tray;
 
-        private int suiteIndex = 0,
-            previousIndex = 0;
+        protected readonly MainWindowViewModel Model;
 
         public MainWindow(IOrganiserFactory factory)
             : base(factory)
@@ -43,16 +42,20 @@
             this.Tray = this.Factory.Create<ISystemTrayControl>();
             this.Tray.StateChanged += Tray_StateChanged;
 
+            this.Model = new MainWindowViewModel();
+
             this.DataContext = this;
 
             this.Notifier.Notify("Hello, " + Environment.UserName + "!");
 
             this.SuiteManager.NavigateToDefault();
+
+            this.Model.FormatAndSetMainColorzoneText(this.SuiteManager.ActiveSuite.Identifier);
         }
 
-        public string MainColorzoneText
+        public MainWindowViewModel ViewModel
         {
-            get { return Environment.UserName + "'s Utilities Suite"; }
+            get { return this.Model; }
         }
 
         public IEnumerable<SuiteViewModel> SuiteItems
@@ -146,26 +149,10 @@
 
         private void MainWindowBase_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key != Key.LeftCtrl) // Is Alt key pressed
+            if (this.Model.IsSuiteChangeWithKeyboardShortcutApplied(e, this.SuiteItems.Count() - 1))
             {
-                int min = 0;
-                int max = this.SuiteItems.Count() - 1;
-
-                previousIndex = suiteIndex;
-
-                if (e.Key == Key.Up && suiteIndex < max)
-                {
-                    suiteIndex++;
-                }
-                else if (e.Key == Key.Down && suiteIndex > min)
-                {
-                    suiteIndex--;
-                }
-
-                if (suiteIndex != previousIndex)
-                {
-                    this.SuiteManager.Navigate(this.SuiteItems.ElementAt(suiteIndex).Identifier, null);
-                }
+                this.SuiteManager.Navigate(this.SuiteItems.ElementAt(this.Model.SuiteIndex).Identifier, null);
+                this.Model.FormatAndSetMainColorzoneText(this.SuiteManager.ActiveSuite.Identifier);
             }
         }
 

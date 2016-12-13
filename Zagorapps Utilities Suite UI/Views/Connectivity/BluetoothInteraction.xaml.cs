@@ -5,6 +5,7 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Xml.Linq;
     using Bluetooth.Library;
     using Bluetooth.Library.Client;
     using Bluetooth.Library.Client.Models;
@@ -178,6 +179,10 @@
             if (e.Second == 30)
             {
                 this.Model.ServiceServerLogConsole = DateTime.UtcNow + " - Heartbeat initiated";
+
+                IMessage message = new XmlMessage(XDocument.Parse(@"<to>blah</to>"));
+
+                this.Model.Handlers[e.First].Handler.SendMessage(new BasicStringMessage(DateTime.UtcNow + " - HB"));
             }
 
             this.Model.UpdateConnectionClientHeartbeat(e.First, e.Second);

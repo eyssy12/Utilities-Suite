@@ -166,6 +166,7 @@
     <Compile Include="ViewModels\ConnectedClientViewModel.cs" />
     <Compile Include="ViewModels\DashboardItemViewModel.cs" />
     <Compile Include="ViewModels\FileExtensionViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />
     <Compile Include="ViewModels\SuiteViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />

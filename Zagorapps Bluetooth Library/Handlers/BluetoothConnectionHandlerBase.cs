@@ -1,6 +1,7 @@
 ﻿namespace Zagorapps.Bluetooth.Library.Handlers
 {
     using System;
+    using System.Threading.Tasks;
     using Core.Library.Events;
     using Core.Library.Timing;
     using Events;
@@ -87,7 +88,10 @@
                 return false;
             }
 
-            this.HandleMessageSending(message);
+            Task.Run(() =>
+            {
+                this.HandleMessageSending(message);
+            });
 
             return true;
         }

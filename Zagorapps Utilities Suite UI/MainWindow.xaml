@@ -97,7 +97,7 @@
                                     </Button>
                                 </StackPanel>
                             </materialDesign:PopupBox>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="{Binding MainColorzoneText}" />
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="{Binding ViewModel.MainColorzoneText}" />
                         </DockPanel>
                     </materialDesign:ColorZone>
                     <ContentControl Content="{Binding Path=ActiveView, Mode=OneWay}">
