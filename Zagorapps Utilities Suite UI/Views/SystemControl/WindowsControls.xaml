@@ -1,0 +1,108 @@
+﻿<controls:DataFacilitatorViewControlBase x:Class="Zagorapps.Utilities.Suite.UI.Views.SystemControl.WindowsControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zagorapps.Utilities.Suite.UI.Views.SystemControl"
+             xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
+             xmlns:partials="clr-namespace:Zagorapps.Utilities.Suite.UI.Partials"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignWidth="1280"
+             d:DesignHeight="800">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="8" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" 
+                    Margin="8" 
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                Lock
+
+                <Button.CommandParameter>
+                    <partials:ConfirmDialog 
+                        ConfirmationText="Are you sure you want to invoke this operation?"
+                        ConfirmParameter="Lock"
+                        OnConfirm="ConfirmDialog_OnConfirm"/>
+                </Button.CommandParameter>
+            </Button>
+
+            <Button Grid.Column="1"
+                    Margin="8"
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                Log Off
+
+                <Button.CommandParameter>
+                    <partials:ConfirmDialog 
+                        ConfirmationText="Are you sure you want to invoke this operation?"
+                        ConfirmParameter="LogOff"
+                        OnConfirm="ConfirmDialog_OnConfirm"/>
+                </Button.CommandParameter>
+            </Button>
+
+            <Button Grid.Column="2"
+                    Margin="8"
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                Restart
+
+                <Button.CommandParameter>
+                    <partials:ConfirmDialog 
+                        ConfirmationText="Are you sure you want to invoke this operation?"
+                        ConfirmParameter="Restart"
+                        OnConfirm="ConfirmDialog_OnConfirm"/>
+                </Button.CommandParameter>
+            </Button>
+
+            <Button Grid.Column="3" 
+                    Margin="8" 
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                    Background="OrangeRed"
+                    BorderBrush="Red">
+                
+                Shutdown
+
+                <Button.CommandParameter>
+                    <partials:ConfirmDialog 
+                        ConfirmationText="Are you sure you want to invoke this operation?"
+                        ConfirmParameter="Restart"
+                        OnConfirm="ConfirmDialog_OnConfirm"/>
+                </Button.CommandParameter>
+            </Button>
+
+            <Button Grid.Column="4"
+                    Margin="8" 
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                    IsEnabled="False">
+                Cancel Restart/Shutdown
+
+                <Button.CommandParameter>
+                    <partials:ConfirmDialog 
+                        ConfirmationText="Are you sure you want to invoke this operation?"
+                        ConfirmParameter="Restart"
+                        OnConfirm="ConfirmDialog_OnConfirm"/>
+                </Button.CommandParameter>
+            </Button>
+        </Grid>
+    </Grid>
+</controls:DataFacilitatorViewControlBase>

@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Zagorapps.Utilities.Suite.UI.Partials.ConfirmDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zagorapps.Utilities.Suite.UI.Partials"
+             xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1280">
+    
+    <Grid>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    FontSize="22"
+                    Margin="16"
+                   Text="{Binding ConfirmationText}" />
+
+        <DockPanel Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="16">
+
+            <Button Name="Button_Cancel"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Foreground="Green"
+                    IsCancel="True" 
+                    DockPanel.Dock="Left"
+                    Click="Button_Confirm_Click"
+                    
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+
+                CONFIRM
+            </Button>
+
+            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                    Name="Button_Confirm"
+                    Foreground="OrangeRed"
+                    IsCancel="False" 
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    Click="Button_Cancel_Click"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+    
+                CANCEL
+            </Button>
+        </DockPanel>
+    </Grid>
+</UserControl>
