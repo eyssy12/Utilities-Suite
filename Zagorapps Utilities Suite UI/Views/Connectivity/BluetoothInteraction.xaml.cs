@@ -5,7 +5,6 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Xml.Linq;
     using Bluetooth.Library;
     using Bluetooth.Library.Client;
     using Bluetooth.Library.Client.Models;
@@ -187,7 +186,7 @@
         {
             // TODO: implement the below code into some sort of a decision tree
 
-            string data = Encoding.UTF8.GetString(e.Arg);
+            string data = BluetoothConnectionHandlerBase.DefaultEncoding.GetString(e.Arg);
 
             ClientCommand command;
             if (Enum.TryParse(data, out command))

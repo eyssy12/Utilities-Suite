@@ -106,11 +106,11 @@
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Controls\ConfirmDialog.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
     <Compile Include="Controls\DataFacilitatorViewControlBase.cs" />
     <Compile Include="Controls\IDataFacilitatorViewControl.cs" />
     <Compile Include="Converters\InvertBoolConverter.cs" />
+    <Compile Include="Events\ConfirmDialogEventArgs.cs" />
     <Compile Include="Extensions\NavigatableExtensions.cs" />
     <Compile Include="Managers\DataFacilitatorSuiteManager.cs" />
     <Compile Include="Managers\IDataFacilitatorSuiteManager.cs" />
@@ -138,6 +138,9 @@
     <Compile Include="IoC\IApplicationConfigurationManager.cs" />
     <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="IoC\UiBindings.cs" />
+    <Compile Include="Partials\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\FormsService.cs" />
     <Compile Include="Services\IFormsService.cs" />
     <Compile Include="Services\ISnackbarNotificationService.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="ViewModels\RootPathFileViewModel.cs" />
     <Compile Include="ViewModels\SuiteViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
+    <Compile Include="ViewModels\WindowsControlsViewModel.cs" />
     <Compile Include="Views\Connectivity\BluetoothInteraction.xaml.cs">
       <DependentUpon>BluetoothInteraction.xaml</DependentUpon>
     </Compile>
@@ -188,11 +192,8 @@
     <Compile Include="Views\Organiser\IndividualTask.xaml.cs">
       <DependentUpon>IndividualTask.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SystemControl\First.xaml.cs">
-      <DependentUpon>First.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SystemControl\Second.xaml.cs">
-      <DependentUpon>Second.xaml</DependentUpon>
+    <Compile Include="Views\SystemControl\WindowsControls.xaml.cs">
+      <DependentUpon>WindowsControls.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +207,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Partials\ConfirmDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\OrganiserStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -234,11 +239,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SystemControl\First.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SystemControl\Second.xaml">
+    <Page Include="Views\SystemControl\WindowsControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,7 @@
 ﻿namespace Zagorapps.Bluetooth.Library.Handlers
 {
     using System;
+    using System.Text;
     using System.Threading.Tasks;
     using Core.Library.Events;
     using Core.Library.Timing;
@@ -13,6 +14,8 @@
     {
         public const int DefaultHeartbeatInterval = 30000, // 30 seconds
             OneSecond = 1000; // 1 second
+
+        public static readonly Encoding DefaultEncoding = Encoding.UTF8;
 
         protected readonly IBluetoothClient ConnectionClient;
         protected readonly IStreamProvider StreamProvider;

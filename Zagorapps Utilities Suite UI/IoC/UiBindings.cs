@@ -95,8 +95,7 @@
 
                 IEnumerable<IViewControl> systemControls = new List<IViewControl>
                 {
-                    new First(factory, commandProvider),
-                    new Second(factory, commandProvider)
+                    new WindowsControls(factory, commandProvider)
                 };
 
                 IEnumerable<IReceiveSuiteData> systemReceivers = new List<IReceiveSuiteData>
@@ -126,7 +125,7 @@
 
                 IEnumerable<ISendSuiteData> connectivitySenders = new List<ISendSuiteData>
                 {
-                    new WcfSendSuiteData(commsProvider, SuiteRoute.Dashboard, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyDashboardTcp))
+                    new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlTcp))
                 };
 
                 IEnumerable<ISuite> suites = new List<ISuite>
