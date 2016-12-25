@@ -1,6 +1,7 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Managers
 {
     using System;
+    using System.Collections.Generic;
     using Navigation;
     using Suites;
     using Zagorapps.Core.Library.Events;
@@ -14,6 +15,8 @@
         ISuite ActiveSuite { get; }
 
         IViewControl ActiveSuiteView { get; }
+
+        IEnumerable<string> ViewIdentifiers { get; }
 
         void NavigateToDefault();
 

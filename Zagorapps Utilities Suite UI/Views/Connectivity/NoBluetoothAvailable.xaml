@@ -21,6 +21,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <Button Click="Button_Click">UDP</Button>
         <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             No Bluetooth Available
         </TextBlock>

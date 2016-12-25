@@ -36,4 +36,11 @@
         Created,
         Deleted
     }
+
+    public enum ConnectionType
+    {
+        Bluetooth,
+        Udp,
+        Tcp
+    }
 }

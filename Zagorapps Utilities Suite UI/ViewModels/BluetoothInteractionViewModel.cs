@@ -7,8 +7,10 @@
     using System.Text;
     using System.Windows;
     using System.Windows.Input;
-    using Bluetooth.Library.Handlers;
     using Controls;
+    using Core.Library.Communications;
+    using Core.Library.Extensions;
+    using Utilities.Library;
 
     public class BluetoothInteractionViewModel : ViewModelBase
     {
@@ -26,6 +28,8 @@
 
         private ICommand serviceStartCommand;
         private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
+
+        private ConnectionType conenctionType;
 
         public BluetoothInteractionViewModel()
         {
@@ -47,7 +51,7 @@
             return this.NotifyableAction(this.handlers, action, nameof(this.ConnectedClients));
         }
 
-        public bool TryRemoveHandler(string client, out IBluetoothConnectionHandler handler)
+        public bool TryRemoveHandler(string client, out INetworkConnection handler)
         {
             ConnectedClientViewModel model;
             if (this.handlers.TryRemove(client, out model))
@@ -152,6 +156,17 @@
         {
             get { return this.serviceStartCommand; }
             set { this.SetFieldIfChanged(ref serviceStartCommand, value, nameof(this.ServiceStartCommand)); }
+        }
+
+        public ConnectionType ConnectionType
+        {
+            get { return this.conenctionType; }
+            set { this.SetFieldIfChanged(ref conenctionType, value, nameof(this.ConnectionType)); }
+        }
+
+        public IEnumerable<ConnectionType> ConnectionTypes
+        {
+            get { return this.GetValues<ConnectionType>(); }
         }
     }
 }

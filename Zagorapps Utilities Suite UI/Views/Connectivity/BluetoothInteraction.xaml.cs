@@ -8,20 +8,20 @@
     using Bluetooth.Library;
     using Bluetooth.Library.Client;
     using Bluetooth.Library.Client.Models;
-    using Bluetooth.Library.Events;
     using Bluetooth.Library.Extensions;
-    using Bluetooth.Library.Handlers;
-    using Bluetooth.Library.Messaging;
     using Bluetooth.Library.Networking;
     using Bluetooth.Library.Providers;
     using Commands;
     using Controls;
+    using Core.Library.Communications;
+    using Core.Library.Construction;
     using Core.Library.Events;
     using Core.Library.Extensions;
-    using Core.Library.Timing;
     using Library.Communications;
     using Services;
+    using Utilities.Library;
     using Utilities.Library.Factories;
+    using Utilities.Library.Providers;
     using ViewModels;
     using WindowsInput;
     using WindowsInput.Native;
@@ -39,8 +39,11 @@
         protected readonly IBluetoothServicesProvider Provider;
         protected readonly ISnackbarNotificationService Notifier;
         protected readonly IInputSimulator InputSimulator;
+        protected readonly INetworkConnectionProvider CommsProvider;
 
         protected readonly BluetoothInteractionViewModel Model;
+
+        private INetworkConnection networkConnection;
 
         private ISimpleBluetoothClientReceiver receiver;
 
@@ -52,6 +55,7 @@
             this.Provider = this.Factory.Create<IBluetoothServicesProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.InputSimulator = this.Factory.Create<IInputSimulator>();
+            this.CommsProvider = this.Factory.Create<INetworkConnectionProvider>();
 
             this.Model = new BluetoothInteractionViewModel();
             this.Model.Pin = BluetoothInteraction.Pin;
@@ -149,59 +153,51 @@
 
                 Task.Run(() =>
                 {
-                    IBluetoothConnectionHandler handler = this.PrepareConnectionHandler(e.First);
+                    ConstructionContext context = new ConstructionContext();
+                    context.AddValue("connectionClient", e.First);
+
+                    INetworkConnection connection = this.CommsProvider.CreateNetworkConnection(ConnectionType.Bluetooth, context);
 
                     try
                     {
-                        if (this.Model.InvokeHandlerNotifyableAction(m => m.TryAdd(clientName, new ConnectedClientViewModel(clientName, handler))))
+                        if (this.Model.InvokeHandlerNotifyableAction(m => m.TryAdd(clientName, new ConnectedClientViewModel(clientName, connection))))
                         {
-                            handler.DataReceived += Handler_DataReceived;
-                            handler.HeartbeatInitiated += Handler_HeartbeatInitiated;
-                            handler.Begin();
-
-                            this.Model.UpdateConnectionClientHeartbeat(clientName, DateTime.UtcNow);
+                            connection.MessageReceived += NetworkConnection_MessageReceived;
+                            connection.Start();
                         }
                         else
                         {
                             // something happened, make sure to at least clean up the exisiting connection 
-                            handler.Finish();
+                            connection.Close();
                         }
                     }
                     catch
                     {
-                        handler.Finish();
+                        connection.Close();
                     }
                 });
             }
         }
 
-        private void Handler_HeartbeatInitiated(object sender, EventArgs<string, DateTime> e)
-        {
-            this.Model.UpdateConnectionClientHeartbeat(e.First, e.Second.AddMilliseconds(BluetoothConnectionHandlerBase.DefaultHeartbeatInterval));
-
-            this.Model.Handlers[e.First].Handler.SendMessage(new BasicStringMessage(e.Second.ToString()));
-        }
-
-        private void Handler_DataReceived(object sender, BluetoothConnectionEventArgs e)
+        private void HandleInteraction(IDataMessage message)
         {
             // TODO: implement the below code into some sort of a decision tree
 
-            string data = BluetoothConnectionHandlerBase.DefaultEncoding.GetString(e.Arg);
+            string data = message.Data.ToString();
 
             ClientCommand command;
             if (Enum.TryParse(data, out command))
             {
                 if (command == ClientCommand.EndSession)
                 {
-                    IBluetoothConnectionHandler handler;
-                    if (this.Model.TryRemoveHandler(e.Raiser, out handler))
+                    INetworkConnection handler;
+                    if (this.Model.TryRemoveHandler(message.From, out handler))
                     {
-                        handler.DataReceived -= Handler_DataReceived;
-                        handler.HeartbeatInitiated -= Handler_HeartbeatInitiated;
-                        handler.Finish();
+                        handler.MessageReceived -= NetworkConnection_MessageReceived;
+                        handler.Close();
 
                         Console.WriteLine();
-                        Console.WriteLine(" -->  '" + e.Raiser + "' disconnected from server.");
+                        Console.WriteLine(" -->  '" + message.From + "' disconnected from server.");
                         Console.WriteLine();
                     }
                 }
@@ -238,43 +234,68 @@
             {
                 // KB
 
-                this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
+                // this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
             }
-
-            this.Model.ServiceClientLogConsole = e.Raiser + ": " + data;
         }
 
         private void StartService()
         {
             Thread.Sleep(1000);
 
-            ConnectionSettings settings = this.PrepareConnectionSettings(Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), "12345");
-
-            this.receiver = this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>());
-
-            if (this.receiver.TryInitialise())
+            if (this.ViewModel.ConnectionType == ConnectionType.Bluetooth)
             {
-                this.receiver.ClientReceived += this.Receiver_ClientReceived;
-                this.receiver.Listen();
+                ConnectionSettings settings = this.PrepareConnectionSettings(Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), "12345");
+
+                this.receiver = this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>());
+
+                if (this.receiver.TryInitialise())
+                {
+                    this.receiver.ClientReceived += this.Receiver_ClientReceived;
+                    this.receiver.Listen();
+                }
             }
+            else if (this.ViewModel.ConnectionType == ConnectionType.Udp)
+            {
+                ConstructionContext context = new ConstructionContext();
+                context.AddValue("endpointPort", 30301);
+
+                this.networkConnection = this.CommsProvider.CreateNetworkConnection(ConnectionType.Udp, context);
+                this.networkConnection.MessageReceived += NetworkConnection_MessageReceived;
+                this.networkConnection.Start();
+            }
+        }
+
+        private void NetworkConnection_MessageReceived(object sender, EventArgs<IDataMessage> e)
+        {
+            this.Model.ServiceClientLogConsole = e.First.From + ": " + e.First.Data;
+
+            this.HandleInteraction(e.First);
         }
 
         private void StopService()
         {
             Thread.Sleep(1000);
 
-            this.CloseClients();
+            if (this.ViewModel.ConnectionType == ConnectionType.Bluetooth)
+            {
+                this.CloseClients();
 
-            this.receiver.ClientReceived -= this.Receiver_ClientReceived;
-            this.receiver.Stop();
-            this.receiver = null;
+                this.receiver.ClientReceived -= this.Receiver_ClientReceived;
+                this.receiver.Stop();
+                this.receiver = null;
+            }
+            else
+            {
+                this.networkConnection.Close();
+                this.networkConnection = null;
+            }
         }
 
         private void CloseClients()
         {
             this.Model.Handlers.ForEach(a =>
             {
-                a.Value.Handler.Finish();
+                a.Value.Handler.Close();
             });
 
             Console.WriteLine();
@@ -282,18 +303,6 @@
             Console.WriteLine();
 
             this.Model.InvokeHandlerNotifyableAction(m => m.Clear());
-        }
-
-        private IBluetoothConnectionHandler PrepareConnectionHandler(IBluetoothClient client)
-        {
-            IMessageHandler<IMessage> messageHandler = this.Factory.Create<IMessageHandler<IMessage>>();
-            IMessageProvider messageProvider = this.Factory.Create<IMessageProvider>();
-            IStreamProvider streamProvider = this.Factory.Create<IStreamProvider>();
-            ICommandOperationsProvider operationProvider = this.Factory.Create<ICommandOperationsProvider>();
-            ITimer timer = this.Factory.Create<ITimer>();
-            IBluetoothConnectionHandler handler = this.Provider.CreateConnectionHandler(client, streamProvider, messageHandler, operationProvider, messageProvider, timer);
-
-            return handler;
         }
 
         private ConnectionSettings PrepareConnectionSettings(Guid serviceID, string pin = null)

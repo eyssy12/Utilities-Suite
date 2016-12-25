@@ -13,6 +13,7 @@
     <controls:DataFacilitatorViewControlBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
@@ -47,6 +48,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Button Margin="16"
@@ -61,8 +63,18 @@
                         VerticalAlignment="Center"
                         Content="{Binding ViewModel.ServiceStartText}" />
 
+                <ComboBox 
+                        Grid.Row="0" 
+                        Grid.Column="1"
+                        Name="ComboBox_ConnectionMode"
+                        Margin="16"
+                        ItemsSource="{Binding ViewModel.ConnectionTypes}"
+                        SelectedValue="{Binding ViewModel.ConnectionType}"
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        materialDesign:HintAssist.Hint="Connection Mode" />
+
                 <DockPanel Grid.Row="0" 
-                           Grid.Column="1"
+                           Grid.Column="2"
                            MinWidth="400"
                            IsEnabled="{Binding ViewModel.ServiceEnabled, Converter={StaticResource InvertBool}}">
                     <Grid>
@@ -128,12 +140,6 @@
                             MinWidth="140"
                             Header="Client"
                             IsReadOnly="True" />
-
-                    <DataGridTextColumn 
-                        Binding="{Binding NextHeartbeatTimestamp}"
-                        IsReadOnly="True"
-                        Header="Next Heartbeat"
-                        />
 
                 </DataGrid.Columns>
             </DataGrid>

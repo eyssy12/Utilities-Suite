@@ -180,6 +180,9 @@
     <Compile Include="Views\Connectivity\NoBluetoothAvailable.xaml.cs">
       <DependentUpon>NoBluetoothAvailable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Connectivity\UdpConnection.xaml.cs">
+      <DependentUpon>UdpConnection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dashboard\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
@@ -220,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Connectivity\NoBluetoothAvailable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Connectivity\UdpConnection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

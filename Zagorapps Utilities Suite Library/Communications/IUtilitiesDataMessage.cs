@@ -7,7 +7,5 @@
         SuiteRoute SuiteDestination { get; }
 
         string ViewDestination { get; }
-
-        object Data { get; }
     }
 }

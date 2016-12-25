@@ -5,6 +5,10 @@
 
     public interface IDataMessage : ISerializable
     {
+        string From { get; }
+
         DateTime CreatedTime { get; }
+
+        object Data { get; }
     }
 }

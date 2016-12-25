@@ -31,6 +31,11 @@
             get { return this.ActiveSuite.ActiveView; }
         }
 
+        public IEnumerable<string> ViewIdentifiers
+        {
+            get { return this.Navigatables.Select(n => n.Identifier).ToArray(); }
+        }
+
         public void NavigateToDefault()
         {
             this.Navigate(this.DefaultNavigatable.Identifier, null);

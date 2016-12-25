@@ -28,6 +28,8 @@
     using Zagorapps.Utilities.Library.Managers;
     using Zagorapps.Utilities.Library.Models.Organiser;
     using Zagorapps.Utilities.Library.Providers;
+    using IWcfCommunicationsProvider = Zagorapps.Utilities.Suite.WCF.Library.Providers.ICommunicationsProvider;
+    using WcfCommunicationsProvider = Zagorapps.Utilities.Suite.WCF.Library.Providers.CommunicationsProvider;
     using FileIO = System.IO.File;
     using PathIO = System.IO.Path;
 
@@ -72,7 +74,7 @@
             this.Register<IDataFacilitatorSuiteManager>(container =>
             {
                 IOrganiserFactory factory = container.GetInstance<IOrganiserFactory>();
-                ICommunicationsProvider commsProvider = container.GetInstance<ICommunicationsProvider>();
+                IWcfCommunicationsProvider commsProvider = container.GetInstance<IWcfCommunicationsProvider>();
                 ICommandProvider commandProvider = container.GetInstance<ICommandProvider>();
 
                 IEnumerable<IViewControl> organiserControls = new List<IViewControl>
@@ -85,7 +87,8 @@
                 IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
                 {
                     new NoBluetoothAvailable(factory, commandProvider),
-                    new BluetoothInteraction(factory, commandProvider)
+                    new BluetoothInteraction(factory, commandProvider),
+                    new UdpConnection(factory, commandProvider)
                 };
 
                 IEnumerable<IViewControl> dashboardControls = new List<IViewControl>
@@ -189,7 +192,8 @@
                     container.GetInstance<IDirectoryManager>());
             }, lifestyle: Lifestyle.Transient);
 
-            this.Register<ICommunicationsProvider, CommunicationsProvider>(lifestyle: Lifestyle.Transient);
+            this.Register<IWcfCommunicationsProvider, WcfCommunicationsProvider>(lifestyle: Lifestyle.Transient);
+            this.Register<INetworkConnectionProvider, NetworkConnectionProvider>(lifestyle: Lifestyle.Transient);
         }
 
         protected virtual void RegisterServices()

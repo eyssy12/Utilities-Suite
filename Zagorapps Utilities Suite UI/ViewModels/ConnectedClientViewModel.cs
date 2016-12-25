@@ -3,21 +3,22 @@
     using System;
     using Bluetooth.Library.Handlers;
     using Controls;
+    using Core.Library.Communications;
 
     public class ConnectedClientViewModel : ViewModelBase
     {
-        private readonly IBluetoothConnectionHandler handler;
+        private readonly INetworkConnection handler;
 
         private string name;
         private DateTime nextHeartbeatTimestamp;
 
-        public ConnectedClientViewModel(string clientName, IBluetoothConnectionHandler handler)
+        public ConnectedClientViewModel(string clientName, INetworkConnection handler)
         {
             this.name = clientName;
             this.handler = handler;
         }
 
-        public IBluetoothConnectionHandler Handler
+        public INetworkConnection Handler
         {
             get { return this.handler; }
         }

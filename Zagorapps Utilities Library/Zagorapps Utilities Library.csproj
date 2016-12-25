@@ -56,12 +56,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communications\BluetoothNetworkConnection.cs" />
+    <Compile Include="Communications\HybridNetworkConnection.cs" />
     <Compile Include="Communications\IReceiveData.cs" />
     <Compile Include="Communications\ISendData.cs" />
+    <Compile Include="Communications\TcpNetworkConnection.cs" />
+    <Compile Include="Communications\UdpNetworkConnection.cs" />
     <Compile Include="Exceptions\DuplicateFileException.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="Exceptions\UnknownTaskException.cs" />
     <Compile Include="Factories\IOrganiserFactory.cs" />
+    <Compile Include="Providers\NetworkConnectionProvider.cs" />
+    <Compile Include="Providers\INetworkConnectionProvider.cs" />
     <Compile Include="Providers\IOrganiserSettingsProvider.cs" />
     <Compile Include="Providers\ITaskHistoryProvider.cs" />
     <Compile Include="Managers\ITaskManager.cs" />
@@ -99,6 +105,10 @@
     <Folder Include="Models\Communications\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Zagorapps Bluetooth Library\Zagorapps Bluetooth Library.csproj">
+      <Project>{43e2b14f-ebbc-4299-9abc-5a4ac78a0f22}</Project>
+      <Name>Zagorapps Bluetooth Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zagorapps Core Library\Zagorapps Core Library.csproj">
       <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
       <Name>Zagorapps Core Library</Name>
