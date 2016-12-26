@@ -33,5 +33,10 @@
         {
             Invoker.Raise(ref handler, sender, new EventArgs<T1, T2, T3>(param1, param2, param3));
         }
+
+        public static void Raise<T1, T2, T3, T4>(ref EventHandler<EventArgs<T1, T2, T3, T4>> handler, object sender, T1 param1, T2 param2, T3 param3, T4 param4)
+        {
+            Invoker.Raise(ref handler, sender, new EventArgs<T1, T2, T3, T4>(param1, param2, param3, param4));
+        }
     }
 }

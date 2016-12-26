@@ -8,7 +8,7 @@
 
     public interface IDataFacilitatorViewControl : IViewControl
     {
-        event EventHandler<EventArgs<SuiteRoute, string, object>> DataSendRequest;
+        event EventHandler<EventArgs<string, SuiteRoute, string, object>> DataSendRequest;
 
         void ProcessMessage(IUtilitiesDataMessage data);
     }

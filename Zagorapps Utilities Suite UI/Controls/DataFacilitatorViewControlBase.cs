@@ -14,13 +14,13 @@
         {
         }
 
-        public event EventHandler<EventArgs<SuiteRoute, string, object>> DataSendRequest;
+        public event EventHandler<EventArgs<string, SuiteRoute, string, object>> DataSendRequest;
 
         public abstract void ProcessMessage(IUtilitiesDataMessage data);
 
-        protected void OnDataSendRequest(object sender, SuiteRoute suiteDestination, string viewDestination, object data)
+        protected void OnDataSendRequest(object sender, string from, SuiteRoute suiteDestination, string viewDestination, object data)
         {
-            Invoker.Raise(ref this.DataSendRequest, sender, suiteDestination, viewDestination, data);
+            Invoker.Raise(ref this.DataSendRequest, sender, from, suiteDestination, viewDestination, data);
         }
     }
 }

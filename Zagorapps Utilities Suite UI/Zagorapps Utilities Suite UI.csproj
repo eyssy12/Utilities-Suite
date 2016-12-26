@@ -174,8 +174,8 @@
     <Compile Include="ViewModels\SuiteViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\WindowsControlsViewModel.cs" />
-    <Compile Include="Views\Connectivity\BluetoothInteraction.xaml.cs">
-      <DependentUpon>BluetoothInteraction.xaml</DependentUpon>
+    <Compile Include="Views\Connectivity\ConnectionInteraction.xaml.cs">
+      <DependentUpon>ConnectionInteraction.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Connectivity\NoBluetoothAvailable.xaml.cs">
       <DependentUpon>NoBluetoothAvailable.xaml</DependentUpon>
@@ -218,7 +218,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Connectivity\BluetoothInteraction.xaml">
+    <Page Include="Views\Connectivity\ConnectionInteraction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

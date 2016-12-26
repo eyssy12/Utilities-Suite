@@ -17,7 +17,6 @@
     using Views.Dashboard;
     using Views.Organiser;
     using Views.SystemControl;
-    using WCF.Library.Providers;
     using WCF.Library.Receivers;
     using WCF.Library.Senders;
     using WCF.Library.Services;
@@ -28,10 +27,10 @@
     using Zagorapps.Utilities.Library.Managers;
     using Zagorapps.Utilities.Library.Models.Organiser;
     using Zagorapps.Utilities.Library.Providers;
-    using IWcfCommunicationsProvider = Zagorapps.Utilities.Suite.WCF.Library.Providers.ICommunicationsProvider;
-    using WcfCommunicationsProvider = Zagorapps.Utilities.Suite.WCF.Library.Providers.CommunicationsProvider;
     using FileIO = System.IO.File;
+    using IWcfCommunicationsProvider = Zagorapps.Utilities.Suite.WCF.Library.Providers.ICommunicationsProvider;
     using PathIO = System.IO.Path;
+    using WcfCommunicationsProvider = Zagorapps.Utilities.Suite.WCF.Library.Providers.CommunicationsProvider;
 
     public class UiBindings : BindingsBase
     {
@@ -87,7 +86,7 @@
                 IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
                 {
                     new NoBluetoothAvailable(factory, commandProvider),
-                    new BluetoothInteraction(factory, commandProvider),
+                    new ConnectionInteraction(factory, commandProvider),
                     new UdpConnection(factory, commandProvider)
                 };
 

@@ -64,6 +64,7 @@
     <Compile Include="Events\EventArgs%271.cs" />
     <Compile Include="Events\EventArgs%272.cs" />
     <Compile Include="Events\EventArgs`3.cs" />
+    <Compile Include="Events\EventArgs`4.cs" />
     <Compile Include="Events\Invoker.cs" />
     <Compile Include="Execution\IExecute.cs" />
     <Compile Include="Execution\IExecute`1.cs" />

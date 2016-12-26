@@ -1,13 +1,10 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.SystemControl
 {
-    using System;
-    using System.Windows;
     using Commands;
     using Core.Library.Windows;
     using Events;
     using Library.Attributes;
     using Library.Communications;
-    using MaterialDesignThemes.Wpf;
     using Utilities.Library.Factories;
     using ViewModels;
     using Zagorapps.Utilities.Suite.UI.Controls;
@@ -15,12 +12,14 @@
     [DefaultNavigatable]
     public partial class WindowsControls : DataFacilitatorViewControlBase
     {
+        public const string ViewName = nameof(WindowsControls);
+
         protected readonly IWinSystemService WinService;
 
         protected readonly WindowsControlsViewModel Model;
 
         public WindowsControls(IOrganiserFactory factory, ICommandProvider commandProvider)
-            : base("Second", factory, commandProvider)
+            : base(WindowsControls.ViewName, factory, commandProvider)
         {
             this.InitializeComponent();
 
@@ -47,7 +46,10 @@
 
         public override void ProcessMessage(IUtilitiesDataMessage data)
         {
-            MessageBox.Show("data received in second view of Test Suite: " + data.Data);
+            if (data.Data.ToString().Contains("lock"))
+            {
+                this.HandleOperation("Lock");
+            }
         }
 
         protected void HandleOperation(string param)

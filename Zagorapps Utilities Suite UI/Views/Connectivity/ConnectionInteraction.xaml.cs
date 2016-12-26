@@ -17,8 +17,11 @@
     using Core.Library.Construction;
     using Core.Library.Events;
     using Core.Library.Extensions;
+    using Library;
     using Library.Communications;
+    using Microsoft.Win32;
     using Services;
+    using SystemControl;
     using Utilities.Library;
     using Utilities.Library.Factories;
     using Utilities.Library.Providers;
@@ -29,9 +32,9 @@
     using VisibilityEnum = System.Windows.Visibility;
 
     [DefaultNavigatable]
-    public partial class BluetoothInteraction : DataFacilitatorViewControlBase
+    public partial class ConnectionInteraction : DataFacilitatorViewControlBase
     {
-        public const string ViewName = nameof(BluetoothInteraction);
+        public const string ViewName = nameof(ConnectionInteraction);
 
         private const string ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
             Pin = "12345";
@@ -43,12 +46,12 @@
 
         protected readonly BluetoothInteractionViewModel Model;
 
-        private INetworkConnection networkConnection;
+        private INetworkConnection localServer;
 
         private ISimpleBluetoothClientReceiver receiver;
 
-        public BluetoothInteraction(IOrganiserFactory factory, ICommandProvider commandProvider)
-            : base(BluetoothInteraction.ViewName, factory, commandProvider)
+        public ConnectionInteraction(IOrganiserFactory factory, ICommandProvider commandProvider)
+            : base(ConnectionInteraction.ViewName, factory, commandProvider)
         {
             this.InitializeComponent();
 
@@ -58,10 +61,27 @@
             this.CommsProvider = this.Factory.Create<INetworkConnectionProvider>();
 
             this.Model = new BluetoothInteractionViewModel();
-            this.Model.Pin = BluetoothInteraction.Pin;
+            this.Model.Pin = ConnectionInteraction.Pin;
             this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeService());
 
             this.DataContext = this;
+
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+        }
+
+        // If i use commands to lock my machine, etc, i may want to display an overlay to force the user to log into the machine and then remove the overlay
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionLock)
+            {
+                //I left my desk
+                this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_locked")));
+            }
+            else if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                //I returned to my desk
+                this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_unlocked")));
+            }
         }
 
         private async void InvokeService()
@@ -226,6 +246,10 @@
 
                 this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
             }
+            else if (data == "lock machine")
+            {
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, WindowsControls.ViewName, data);
+            }
             else if (data == ServerCommand.Backspace.ToString())
             {
                 this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
@@ -244,7 +268,7 @@
 
             if (this.ViewModel.ConnectionType == ConnectionType.Bluetooth)
             {
-                ConnectionSettings settings = this.PrepareConnectionSettings(Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), "12345");
+                ConnectionSettings settings = new ConnectionSettings { ServiceID = Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), Pin = this.Model.Pin };
 
                 this.receiver = this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>());
 
@@ -256,12 +280,12 @@
             }
             else if (this.ViewModel.ConnectionType == ConnectionType.Udp)
             {
-                ConstructionContext context = new ConstructionContext();
+                ConstructionContext context = new ConstructionContext(); // TODO: this approach is bullshit, i should just have a method for the corresponding connection type
                 context.AddValue("endpointPort", 30301);
 
-                this.networkConnection = this.CommsProvider.CreateNetworkConnection(ConnectionType.Udp, context);
-                this.networkConnection.MessageReceived += NetworkConnection_MessageReceived;
-                this.networkConnection.Start();
+                this.localServer = this.CommsProvider.CreateNetworkConnection(ConnectionType.Udp, context);
+                this.localServer.MessageReceived += NetworkConnection_MessageReceived;
+                this.localServer.Start();
             }
         }
 
@@ -286,8 +310,8 @@
             }
             else
             {
-                this.networkConnection.Close();
-                this.networkConnection = null;
+                this.localServer.Close();
+                this.localServer = null;
             }
         }
 
@@ -303,16 +327,6 @@
             Console.WriteLine();
 
             this.Model.InvokeHandlerNotifyableAction(m => m.Clear());
-        }
-
-        private ConnectionSettings PrepareConnectionSettings(Guid serviceID, string pin = null)
-        {
-            // TODO: add to appSettings
-            return new ConnectionSettings
-            {
-                Pin = pin ?? string.Empty,
-                ServiceID = serviceID
-            };
         }
     }
 }

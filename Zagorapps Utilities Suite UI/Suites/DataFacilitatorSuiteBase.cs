@@ -104,9 +104,9 @@
             this.HandleNeighbouringSend(e.First);
         }
 
-        private void DataView_DataSendRequest(object sender, EventArgs<SuiteRoute, string, object> e)
+        private void DataView_DataSendRequest(object sender, EventArgs<string, SuiteRoute, string, object> e)
         {
-            IUtilitiesDataMessage message = new UtilitiesDataMessage(DateTime.UtcNow, e.First, e.Second, e.Third);
+            IUtilitiesDataMessage message = new UtilitiesDataMessage(e.First, e.Second, e.Third, e.Fourth);
 
             this.Send(message);
         }
