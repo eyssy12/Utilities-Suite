@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Configuration;
     using System.Windows;
     using Managers;
     using Navigation;

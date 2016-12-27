@@ -1,7 +1,6 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.ViewModels
 {
     using System;
-    using Bluetooth.Library.Handlers;
     using Controls;
     using Core.Library.Communications;
 

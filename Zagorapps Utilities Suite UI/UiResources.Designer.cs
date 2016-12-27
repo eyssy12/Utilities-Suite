@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Zagorapps.Utilities.Suite.UI {
-    using System;
-    
-    
+namespace Zagorapps.Utilities.Suite.UI
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

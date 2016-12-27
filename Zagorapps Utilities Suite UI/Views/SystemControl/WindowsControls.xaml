@@ -11,9 +11,18 @@
              d:DesignWidth="1280"
              d:DesignHeight="800">
 
+    <controls:ViewControlBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:ViewControlBase.Resources>
+
     <Grid Margin="16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -23,7 +32,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Margin="8" Grid.Row="0">
+        <Grid Margin="8" Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -98,6 +107,70 @@
                         OnConfirm="ConfirmDialog_OnConfirm"/>
                 </Button.CommandParameter>
             </Button>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="2147483647" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel 
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="16" 
+                Orientation="Vertical">
+
+                <TextBlock Text="{Binding ViewModel.TotalProcesses}" />
+
+                <Button>
+                    Search Process
+                </Button>
+                <TextBox>
+                    dasd
+                </TextBox>
+            </StackPanel>
+
+            <DataGrid
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    MaxHeight="468"
+                    Name="TasksGrid"
+                    Margin="0 8 0 0"
+                    ItemsSource="{Binding Path=ViewModel.Processes}" 
+                    CanUserSortColumns="True"
+                    CanUserAddRows="False" 
+                    AutoGenerateColumns="False"
+                    materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                    materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+
+                <DataGrid.Columns>
+
+                    <DataGridTemplateColumn CanUserSort="False" CanUserResize="False" CanUserReorder="False" Header="Action">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="Permit Action" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn
+                            Binding="{Binding ProcessName}"
+                            MinWidth="140"
+                            Header="Name"
+                            IsReadOnly="True" />
+
+                    <DataGridTextColumn
+                            Binding="{Binding TimeRunning}"
+                            MinWidth="140"
+                            Header="Total Run Time (seconds)"
+                            IsReadOnly="True" />
+
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </Grid>
 </controls:DataFacilitatorViewControlBase>

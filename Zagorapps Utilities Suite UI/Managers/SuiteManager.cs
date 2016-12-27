@@ -15,6 +15,8 @@
         {
             this.Navigatables.ForEach(e => e.OnViewChanged += this.E_OnViewChanged);
             this.OnNavigatableChanged += this.SuiteManager_OnNavigatableChanged;
+
+            this.SetActiveNavigatable(this.DefaultNavigatable);
         }
 
         public event EventHandler<EventArgs<ISuite, object>> OnSuiteChanged;
@@ -51,6 +53,8 @@
             }
             else
             {
+                this.ActiveSuiteView.FinaliseView();
+
                 this.Navigate(suite, args);
             }
         }

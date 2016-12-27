@@ -76,6 +76,7 @@
                 IWcfCommunicationsProvider commsProvider = container.GetInstance<IWcfCommunicationsProvider>();
                 ICommandProvider commandProvider = container.GetInstance<ICommandProvider>();
 
+                // TODO: maybe use app.config based declaration and construction in here
                 IEnumerable<IViewControl> organiserControls = new List<IViewControl>
                 {
                     new Home(factory, commandProvider),

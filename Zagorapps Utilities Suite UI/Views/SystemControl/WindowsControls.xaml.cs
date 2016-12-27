@@ -1,6 +1,12 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.SystemControl
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
     using Commands;
+    using Core.Library.Events;
+    using Core.Library.Timing;
     using Core.Library.Windows;
     using Events;
     using Library.Attributes;
@@ -15,6 +21,7 @@
         private const string ViewName = nameof(WindowsControls);
 
         protected readonly IWinSystemService WinService;
+        protected readonly ITimer Timer;
 
         protected readonly WindowsControlsViewModel Model;
 
@@ -24,6 +31,7 @@
             this.InitializeComponent();
 
             this.WinService = this.Factory.Create<IWinSystemService>();
+            this.Timer = this.Factory.Create<ITimer>();
 
             this.Model = new WindowsControlsViewModel();
 
@@ -37,11 +45,14 @@
 
         public override void InitialiseView(object arg)
         {
-
+            this.Timer.TimeElapsed += Timer_TimeElapsed;
+            this.Timer.Start(1000, 1000);
         }
 
         public override void FinaliseView()
         {
+            this.Timer.Stop();
+            this.Timer.TimeElapsed -= Timer_TimeElapsed;
         }
 
         public override void ProcessMessage(IUtilitiesDataMessage data)
@@ -68,6 +79,34 @@
         protected void ConfirmDialog_OnConfirm(object sender, ConfirmDialogEventArgs e)
         {
             this.HandleOperation(e.First);
+        }
+
+        private void Timer_TimeElapsed(object sender, EventArgs<int> e)
+        {
+            var distinct = Process
+                .GetProcesses()
+                .Select(p => new ProcessViewModel
+                {
+                    ProcessName = p.ProcessName,
+                    TimeRunning = "test" //p.TotalProcessorTime.TotalSeconds.ToString()
+                })
+                .Union(this.Model.Processes)
+                .Distinct();
+
+            this.Model.Processes = distinct;
+        }
+
+        private class ProcessComparer : IEqualityComparer<ProcessViewModel>
+        {
+            public bool Equals(ProcessViewModel x, ProcessViewModel y)
+            {
+                return x.ProcessName == y.ProcessName;
+            }
+
+            public int GetHashCode(ProcessViewModel obj)
+            {
+                return 0;
+            }
         }
     }
 }

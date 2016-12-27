@@ -14,7 +14,7 @@
         protected readonly IPEndPoint Endpoint;
 
         private UdpClient server;
-        private bool connected;
+        private bool isConnected;
 
         public UdpNetworkConnection(int endpointPort, int packetSize = 1024)
         {
@@ -22,29 +22,29 @@
             this.PacketSize = packetSize;
             this.Endpoint = new IPEndPoint(IPAddress.Any, this.EndpointPort);
 
-            this.connected = false;
+            this.isConnected = false;
         }
 
         public event EventHandler<EventArgs<IDataMessage>> MessageReceived;
 
         public void Close()
         {
-            if (this.connected)
+            if (this.isConnected)
             {
                 this.server.Close();
                 this.server.Dispose();
 
-                this.connected = false;
+                this.isConnected = false;
             }
         }
 
         public void Start()
         {
-            if (!this.connected)
+            if (!this.isConnected)
             {
                 this.server = new UdpClient(this.Endpoint);
 
-                this.connected = true;
+                this.isConnected = true;
 
                 Task.Run(() =>
                 {
@@ -53,7 +53,7 @@
                         IPEndPoint client = new IPEndPoint(IPAddress.Any, 0);
                         byte[] data = new byte[this.PacketSize];
 
-                        while (this.connected)
+                        while (this.isConnected)
                         {
                             data = server.Receive(ref client);
 
@@ -70,7 +70,7 @@
 
         public void Send(IDataMessage message)
         {
-            if (this.connected)
+            if (this.isConnected)
             {
                 try
                 {

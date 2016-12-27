@@ -1,8 +1,8 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
     using System;
-    using Zagorapps.Core.Library.Managers;
     using IniParser.Model;
+    using Zagorapps.Core.Library.Managers;
 
     public class ApplicationConfigurationManager : IniFileManager, IApplicationConfigurationManager
     {

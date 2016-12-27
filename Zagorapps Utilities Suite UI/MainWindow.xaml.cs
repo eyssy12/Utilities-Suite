@@ -48,8 +48,6 @@
 
             this.Notifier.Notify("Hello, " + Environment.UserName + "!");
 
-            this.SuiteManager.NavigateToDefault();
-
             this.Model.FormatAndSetMainColorzoneText(this.SuiteManager.ActiveSuite.Identifier);
         }
 
