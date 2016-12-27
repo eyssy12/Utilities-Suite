@@ -48,7 +48,7 @@
 
         private INetworkConnection localServer;
 
-        private ISimpleBluetoothClientReceiver receiver;
+        private ISimpleBluetoothClientReceiver receiver; // TODO: don't think this should be here - i may need an interface for ILocalServer
 
         public ConnectionInteraction(IOrganiserFactory factory, ICommandProvider commandProvider)
             : base(ConnectionInteraction.ViewName, factory, commandProvider)
