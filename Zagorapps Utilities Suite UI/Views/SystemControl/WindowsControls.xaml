@@ -42,7 +42,6 @@
 
                 <Button.CommandParameter>
                     <partials:ConfirmDialog 
-                        ConfirmationText="Are you sure you want to invoke this operation?"
                         ConfirmParameter="Lock"
                         OnConfirm="ConfirmDialog_OnConfirm"/>
                 </Button.CommandParameter>
@@ -55,7 +54,6 @@
 
                 <Button.CommandParameter>
                     <partials:ConfirmDialog 
-                        ConfirmationText="Are you sure you want to invoke this operation?"
                         ConfirmParameter="LogOff"
                         OnConfirm="ConfirmDialog_OnConfirm"/>
                 </Button.CommandParameter>
@@ -68,7 +66,6 @@
 
                 <Button.CommandParameter>
                     <partials:ConfirmDialog 
-                        ConfirmationText="Are you sure you want to invoke this operation?"
                         ConfirmParameter="Restart"
                         OnConfirm="ConfirmDialog_OnConfirm"/>
                 </Button.CommandParameter>
@@ -84,8 +81,7 @@
 
                 <Button.CommandParameter>
                     <partials:ConfirmDialog 
-                        ConfirmationText="Are you sure you want to invoke this operation?"
-                        ConfirmParameter="Restart"
+                        ConfirmParameter="Shutdown"
                         OnConfirm="ConfirmDialog_OnConfirm"/>
                 </Button.CommandParameter>
             </Button>
@@ -98,8 +94,7 @@
 
                 <Button.CommandParameter>
                     <partials:ConfirmDialog 
-                        ConfirmationText="Are you sure you want to invoke this operation?"
-                        ConfirmParameter="Restart"
+                        ConfirmParameter="Cancel"
                         OnConfirm="ConfirmDialog_OnConfirm"/>
                 </Button.CommandParameter>
             </Button>

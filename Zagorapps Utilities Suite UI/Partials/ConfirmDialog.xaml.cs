@@ -1,16 +1,20 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Partials
 {
     using System;
+    using System.Windows;
     using System.Windows.Controls;
     using Core.Library.Events;
     using Events;
-    using MaterialDesignThemes.Wpf;
 
     public partial class ConfirmDialog : UserControl
     {
+        protected const string DefaultConfirmationTitle = "Are you sure you want to invoke this operation?";
+
         public ConfirmDialog()
         {
             this.InitializeComponent();
+
+            this.ConfirmationText = ConfirmDialog.DefaultConfirmationTitle;
 
             this.DataContext = this;
         }
@@ -19,13 +23,18 @@
 
         public string ConfirmParameter { get; set; }
 
+        public string CancelParameter { get; set; }
+
         public event EventHandler<ConfirmDialogEventArgs> OnConfirm;
 
-        private void Button_Cancel_Click(object sender, System.Windows.RoutedEventArgs e)
+        public event EventHandler<ConfirmDialogEventArgs> OnCancel;
+
+        private void Button_Cancel_Click(object sender, RoutedEventArgs e)
         {
+            Invoker.Raise(ref this.OnCancel, this, new ConfirmDialogEventArgs(this.CancelParameter));
         }
 
-        private void Button_Confirm_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Button_Confirm_Click(object sender, RoutedEventArgs e)
         {
             Invoker.Raise(ref this.OnConfirm, this, new ConfirmDialogEventArgs(this.ConfirmParameter));
         }
