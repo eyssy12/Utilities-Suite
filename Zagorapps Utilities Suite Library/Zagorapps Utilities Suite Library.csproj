@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DefaultNavigatableAttribute.cs" />
+    <Compile Include="Attributes\NavigatableAttribute.cs" />
     <Compile Include="Attributes\SuiteAttribute.cs" />
     <Compile Include="Communications\IReceiveSuiteData.cs" />
     <Compile Include="Communications\ISendSuiteData.cs" />

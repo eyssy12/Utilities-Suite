@@ -3,7 +3,11 @@
     using System;
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class DefaultNavigatableAttribute : Attribute
+    public class DefaultNavigatableAttribute : NavigatableAttribute
     {
+        public DefaultNavigatableAttribute(string identifier) 
+            : base(identifier)
+        {
+        }
     }
 }

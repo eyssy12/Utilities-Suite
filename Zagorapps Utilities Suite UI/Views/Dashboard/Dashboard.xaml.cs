@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using Extensions;
     using Library.Attributes;
     using Library.Communications;
@@ -14,10 +13,10 @@
     using Zagorapps.Utilities.Suite.UI.Commands;
     using Zagorapps.Utilities.Suite.UI.Controls;
 
-    [DefaultNavigatable]
+    [DefaultNavigatable(Dashboard.ViewName)]
     public partial class Dashboard : DataFacilitatorViewControlBase
     {
-        public const string ViewName = nameof(Dashboard);
+        private const string ViewName = nameof(Dashboard);
 
         protected readonly ISuiteService SuiteService;
 

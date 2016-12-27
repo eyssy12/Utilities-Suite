@@ -2,12 +2,14 @@
 {
     using System;
     using Commands;
+    using Library.Attributes;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Controls;
 
+    [Navigatable(NoBluetoothAvailable.ViewName)]
     public partial class NoBluetoothAvailable : ViewControlBase
     {
-        public const string ViewName = nameof(NoBluetoothAvailable);
+        private const string ViewName = nameof(NoBluetoothAvailable);
 
         public NoBluetoothAvailable(IOrganiserFactory factory, ICommandProvider commandProvider)
             : base(NoBluetoothAvailable.ViewName, factory, commandProvider)
@@ -27,7 +29,7 @@
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.OnViewChange(UdpConnection.ViewName);
+            this.OnViewChange(ViewBag.GetViewName<UdpConnection>());
         }
     }
 }

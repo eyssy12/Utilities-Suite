@@ -17,10 +17,10 @@
     using Zagorapps.Utilities.Library.Managers;
     using Zagorapps.Utilities.Library.Tasks;
 
-    [DefaultNavigatable]
+    [DefaultNavigatable(Home.ViewName)]
     public partial class Home : ViewControlBase
     {
-        public const string ViewName = nameof(Home);
+        private const string ViewName = nameof(Home);
 
         protected readonly ITaskManager Manager;
         protected readonly ISnackbarNotificationService Notifier;
@@ -99,14 +99,14 @@
 
         protected void Button_AddTask_Click(object sender, RoutedEventArgs e)
         {
-            this.OnViewChange(AddTask.ViewName);
+            this.OnViewChange(ViewBag.GetViewName<AddTask>());
         }
 
         protected void ViewTask_Click(object sender, RoutedEventArgs e)
         {
             TaskViewModel task = ((sender as Button).DataContext as TaskViewModel);
 
-            this.OnViewChange(IndividualTask.ViewName, task);
+            this.OnViewChange(ViewBag.GetViewName<IndividualTask>(), task);
         }
 
         protected void Dialog_DeleteTask_OnClosing(object sender, DialogClosingEventArgs eventArgs)

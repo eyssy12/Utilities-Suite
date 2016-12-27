@@ -7,11 +7,13 @@
     using System.Windows;
     using Commands;
     using Controls;
+    using Library.Attributes;
     using Utilities.Library.Factories;
 
+    [Navigatable(UdpConnection.ViewName)]
     public partial class UdpConnection : ViewControlBase
     {
-        public const string ViewName = nameof(UdpConnection);
+        private const string ViewName = nameof(UdpConnection);
 
         public UdpConnection(IOrganiserFactory factory, ICommandProvider commandProvider) 
             : base(UdpConnection.ViewName, factory, commandProvider)

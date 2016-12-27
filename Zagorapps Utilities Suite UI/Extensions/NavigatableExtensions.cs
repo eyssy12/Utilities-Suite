@@ -5,12 +5,13 @@
     using System.Linq;
     using System.Reflection;
     using Library.Attributes;
+    using Navigation;
 
     public static class NavigatableExtensions
     {
-        public static string GenerateIdentity<TType>()
+        public static string GenerateIdentity<TNavigatable>() where TNavigatable : INavigatable
         {
-            return typeof(TType).GenerateIdentity();
+            return typeof(TNavigatable).GenerateIdentity();
         }
 
         public static string GenerateIdentity(this Type type)

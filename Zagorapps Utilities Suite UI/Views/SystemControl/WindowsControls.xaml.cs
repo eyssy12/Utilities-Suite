@@ -9,10 +9,10 @@
     using ViewModels;
     using Zagorapps.Utilities.Suite.UI.Controls;
 
-    [DefaultNavigatable]
+    [DefaultNavigatable(WindowsControls.ViewName)]
     public partial class WindowsControls : DataFacilitatorViewControlBase
     {
-        public const string ViewName = nameof(WindowsControls);
+        private const string ViewName = nameof(WindowsControls);
 
         protected readonly IWinSystemService WinService;
 

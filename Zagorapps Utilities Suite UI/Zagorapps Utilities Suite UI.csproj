@@ -201,6 +201,7 @@
     <Compile Include="Views\SystemControl\WindowsControls.xaml.cs">
       <DependentUpon>WindowsControls.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewBag.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -338,9 +339,6 @@
       <Project>{223bc2fb-2039-46ae-8620-948045b76b0d}</Project>
       <Name>Zagorapps Utilities Suite WCF Library</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

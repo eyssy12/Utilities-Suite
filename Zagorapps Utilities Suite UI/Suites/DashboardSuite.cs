@@ -6,7 +6,7 @@
     using Library.Communications;
     using Zagorapps.Utilities.Suite.UI.Navigation;
 
-    [DefaultNavigatable]
+    [DefaultNavigatable(DashboardSuite.Name)] // TODO: shouldn't need to have the id passed in to two different things - try to reuse
     [Suite(DashboardSuite.Name, "Dashboard")]
     public class DashboardSuite : DataFacilitatorSuiteBase
     {

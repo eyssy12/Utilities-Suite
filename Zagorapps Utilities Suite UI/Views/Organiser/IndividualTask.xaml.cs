@@ -4,15 +4,17 @@
     using System.Windows.Input;
     using Commands;
     using Controls;
+    using Library.Attributes;
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Windows;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Library.Providers;
 
+    [Navigatable(IndividualTask.ViewName)]
     public partial class IndividualTask : ViewControlBase
     {
-        public const string ViewName = nameof(IndividualTask);
+        private const string ViewName = nameof(IndividualTask);
 
         protected readonly ISnackbarNotificationService Notifer;
         protected readonly ITaskHistoryProvider Provider;
@@ -38,10 +40,10 @@
 
         public override void InitialiseView(object arg)
         {
-            if (arg is TaskViewModel)
-            {
-                TaskViewModel model = arg as TaskViewModel;
+            TaskViewModel model = arg as TaskViewModel;
 
+            if (arg != null)
+            {
                 this.Notifer.Notify("Viewing task " + model.Identity.ToString());
 
                 this.openHistoryFolderCommand = this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Provider.GetStorePath(model.Reference)));
@@ -55,7 +57,7 @@
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.OnViewChange(Home.ViewName, null);
+            this.OnViewChange(ViewBag.GetViewName<Home>(), null);
 
             this.openHistoryFolderCommand = null;
         }

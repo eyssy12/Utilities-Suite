@@ -31,12 +31,11 @@
     using Zagorapps.Utilities.Suite.Library.Attributes;
     using VisibilityEnum = System.Windows.Visibility;
 
-    [DefaultNavigatable]
+    [DefaultNavigatable(ConnectionInteraction.ViewName)]
     public partial class ConnectionInteraction : DataFacilitatorViewControlBase
     {
-        public const string ViewName = nameof(ConnectionInteraction);
-
-        private const string ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
+        private const string ViewName = nameof(ConnectionInteraction),
+            ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
             Pin = "12345";
 
         protected readonly IBluetoothServicesProvider Provider;
@@ -64,68 +63,22 @@
             this.Model.Pin = ConnectionInteraction.Pin;
             this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeService());
 
+            // If i use commands to lock my machine, etc, i may want to display an overlay to force the user to log into the machine and then remove the overlay
+            SystemEvents.SessionSwitch += (s, e) =>
+            {
+                if (e.Reason == SessionSwitchReason.SessionLock)
+                {
+                    //I left my desk
+                    this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_locked")));
+                }
+                else if (e.Reason == SessionSwitchReason.SessionUnlock)
+                {
+                    //I returned to my desk
+                    this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_unlocked")));
+                }
+            };
+
             this.DataContext = this;
-
-            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
-        }
-
-        // If i use commands to lock my machine, etc, i may want to display an overlay to force the user to log into the machine and then remove the overlay
-        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
-        {
-            if (e.Reason == SessionSwitchReason.SessionLock)
-            {
-                //I left my desk
-                this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_locked")));
-            }
-            else if (e.Reason == SessionSwitchReason.SessionUnlock)
-            {
-                //I returned to my desk
-                this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_unlocked")));
-            }
-        }
-
-        private async void InvokeService()
-        {
-            await Task.Run(() =>
-            {
-                this.Model.ProgressBarVisibility = VisibilityEnum.Visible;
-                this.Model.StartServiceButtonVisibility = VisibilityEnum.Hidden;
-
-                this.Model.ContentEnabled = false;
-                this.Model.ServiceButtonEnabled = false;
-
-                if (this.Model.ServiceEnabled)
-                {
-                    this.StopService();
-                    this.Model.ServiceStartText = "Start Service";
-                    this.Model.ContentVisibility = VisibilityEnum.Hidden;
-
-                    this.Model.ServiceEnabled = false;
-                }
-                else
-                {
-                    this.Model.ServiceEnabled = true;
-
-                    this.StartService();
-                    this.Model.ServiceStartText = "End Service";
-                    this.Model.ContentVisibility = VisibilityEnum.Visible;
-                }
-
-                this.Model.ContentEnabled = true;
-                this.Model.ServiceButtonEnabled = true;
-
-                this.Model.ProgressBarVisibility = VisibilityEnum.Hidden;
-                this.Model.StartServiceButtonVisibility = VisibilityEnum.Visible;
-            });
-
-            if (this.Model.ServiceEnabled)
-            {
-                this.Notifier.Notify("Bluetooth Service Started");
-            }
-            else
-            {
-                this.Notifier.Notify("Bluetooth Service Stopped");
-            }
         }
 
         public BluetoothInteractionViewModel ViewModel
@@ -137,7 +90,7 @@
         {
             if (!this.Provider.IsBluetoothAvailable)
             {
-                this.OnViewChange(NoBluetoothAvailable.ViewName);
+                this.OnViewChange(ViewBag.GetViewName<NoBluetoothAvailable>());
             }
 
             Console.WriteLine(ViewName + " - initialised");
@@ -248,7 +201,7 @@
             }
             else if (data == "lock machine")
             {
-                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, WindowsControls.ViewName, data);
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), data);
             }
             else if (data == ServerCommand.Backspace.ToString())
             {
@@ -294,6 +247,50 @@
             this.Model.ServiceClientLogConsole = e.First.From + ": " + e.First.Data;
 
             this.HandleInteraction(e.First);
+        }
+
+        private async void InvokeService()
+        {
+            await Task.Run(() =>
+            {
+                this.Model.ProgressBarVisibility = VisibilityEnum.Visible;
+                this.Model.StartServiceButtonVisibility = VisibilityEnum.Hidden;
+
+                this.Model.ContentEnabled = false;
+                this.Model.ServiceButtonEnabled = false;
+
+                if (this.Model.ServiceEnabled)
+                {
+                    this.StopService();
+                    this.Model.ServiceStartText = "Start Service";
+                    this.Model.ContentVisibility = VisibilityEnum.Hidden;
+
+                    this.Model.ServiceEnabled = false;
+                }
+                else
+                {
+                    this.Model.ServiceEnabled = true;
+
+                    this.StartService();
+                    this.Model.ServiceStartText = "End Service";
+                    this.Model.ContentVisibility = VisibilityEnum.Visible;
+                }
+
+                this.Model.ContentEnabled = true;
+                this.Model.ServiceButtonEnabled = true;
+
+                this.Model.ProgressBarVisibility = VisibilityEnum.Hidden;
+                this.Model.StartServiceButtonVisibility = VisibilityEnum.Visible;
+            });
+
+            if (this.Model.ServiceEnabled)
+            {
+                this.Notifier.Notify("Bluetooth Service Started");
+            }
+            else
+            {
+                this.Notifier.Notify("Bluetooth Service Stopped");
+            }
         }
 
         private void StopService()

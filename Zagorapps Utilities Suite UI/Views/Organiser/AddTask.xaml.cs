@@ -9,6 +9,7 @@
     using System.Windows.Input;
     using Commands;
     using Controls;
+    using Library.Attributes;
     using MaterialDesignThemes.Wpf;
     using Services;
     using ViewModels;
@@ -22,9 +23,10 @@
     using Zagorapps.Utilities.Library.Providers;
     using Zagorapps.Utilities.Library.Tasks;
 
+    [Navigatable(AddTask.ViewName)]
     public partial class AddTask : ViewControlBase
     {
-        public const string ViewName = nameof(AddTask);
+        private const string ViewName = nameof(AddTask);
 
         protected readonly AddTaskViewModel Model;
 
@@ -160,21 +162,21 @@
                         ITask task = this.CreateTask();
                         EventArgs<ITask, bool> args = new EventArgs<ITask, bool>(task, immediateStart);
 
-                        this.OnViewChange(Home.ViewName, args);
+                        this.OnViewChange(ViewBag.GetViewName<Home>(), args);
                     }
                 }
                 else if (button.Name == "Name_ButtonDiscard")
                 {
                     this.Notifier.Notify("Item discarded.");
 
-                    this.OnViewChange(Home.ViewName);
+                    this.OnViewChange(ViewBag.GetViewName<Home>());
                 }
             }
         }
 
         protected void ReturnButton_Click(object sender, RoutedEventArgs e)
         {
-            this.OnViewChange(Home.ViewName);
+            this.OnViewChange(ViewBag.GetViewName<Home>());
         }
 
         protected ITask CreateTask()
