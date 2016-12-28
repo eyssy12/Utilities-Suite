@@ -103,7 +103,12 @@
 
         public override void ProcessMessage(IUtilitiesDataMessage data)
         {
-            
+            if (data.Data.ToString().Contains(':')) // TODO: create a custom object instead of string split
+            {
+                string[] split = data.Data.ToString().Split(':');
+
+                this.Model.Handlers[split[0]].Handler.Send(new BasicDataMessage("server", split[1]));
+            }
         }
 
         private void Receiver_ClientReceived(object sender, EventArgs<IBluetoothClient> e)
@@ -199,9 +204,9 @@
 
                 this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
             }
-            else if (data == "lock machine")
+            else if (data.Contains("lock"))
             {
-                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), data);
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
             }
             else if (data == ServerCommand.Backspace.ToString())
             {

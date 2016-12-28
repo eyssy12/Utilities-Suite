@@ -75,6 +75,7 @@
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\PathExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Factories\IFactory.cs" />
     <Compile Include="Managers\IDirectoryManager.cs" />
     <Compile Include="Managers\IFileManager.cs" />

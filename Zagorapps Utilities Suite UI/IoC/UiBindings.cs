@@ -108,7 +108,7 @@
 
                 IEnumerable<ISendSuiteData> systemSenders = new List<ISendSuiteData>
                 {
-                    new WcfSendSuiteData(commsProvider, SuiteRoute.Dashboard, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyDashboardTcp))
+                    new WcfSendSuiteData(commsProvider, SuiteRoute.Connectivity, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyConnectivityTcp))
                 };
 
                 IEnumerable<IReceiveSuiteData> dashboardReceivers = new List<IReceiveSuiteData>

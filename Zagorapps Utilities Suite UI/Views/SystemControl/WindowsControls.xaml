@@ -23,7 +23,7 @@
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -32,7 +32,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Margin="8" Grid.Row="0" Grid.Column="0">
+        <Grid Margin="8" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding ViewModel.ControlsEnabled}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -109,8 +109,11 @@
             </Button>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="2147483647" >
+        <Border Margin="16" Grid.Row="1" Grid.Column="0" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+        
+        <Grid Grid.Row="2" Grid.Column="0" Grid.RowSpan="2147483647" >
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -124,23 +127,48 @@
                 Margin="16" 
                 Orientation="Vertical">
 
-                <TextBlock Text="{Binding ViewModel.TotalProcesses}" />
+                <TextBlock Margin="8" Text="{Binding ViewModel.TotalProcesses}" />
 
-                <Button>
-                    Search Process
-                </Button>
-                <TextBox>
-                    dasd
-                </TextBox>
+                <Button 
+                    Margin="0 8 0 8"
+                    Command="{Binding ViewModel.AddProhibitCommand}"
+                    CommandParameter="{Binding ElementName=TextBox_Filter, Path=Text}"
+                    Content="Add as prohibit" />
+
+                <TextBox Margin="0 8 0 8"
+                    Name="TextBox_Filter"
+                    materialDesign:HintAssist.Hint="Apply Process Filter" 
+                    TextChanged="TextBox_TextChanged" 
+                    Text="{Binding ViewModel.Filter}" />
             </StackPanel>
 
+            <ListBox Margin="0 8 0 8"
+                     Grid.Row="1"
+                     Grid.Column="0"
+                     Name="ListBox_PermittingChips" 
+                     ItemsSource="{Binding Path=ViewModel.Prohibits}">
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Chip 
+                            
+                            IsDeletable="True" 
+                            DeleteClick="Chip_DeleteClick" 
+                            Content="{Binding .}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
             <DataGrid
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Grid.Column="0"
-                    MaxHeight="468"
-                    Name="TasksGrid"
-                    Margin="0 8 0 0"
-                    ItemsSource="{Binding Path=ViewModel.Processes}" 
+                    ItemsSource="{Binding Path=ViewModel.FilteredProcesses}" 
                     CanUserSortColumns="True"
                     CanUserAddRows="False" 
                     AutoGenerateColumns="False"
@@ -148,14 +176,6 @@
                     materialDesign:DataGridAssist.ColumnHeaderPadding="8">
 
                 <DataGrid.Columns>
-
-                    <DataGridTemplateColumn CanUserSort="False" CanUserResize="False" CanUserReorder="False" Header="Action">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox Content="Permit Action" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
 
                     <DataGridTextColumn
                             Binding="{Binding ProcessName}"

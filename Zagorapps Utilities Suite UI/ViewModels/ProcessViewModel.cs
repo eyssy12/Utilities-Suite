@@ -7,5 +7,7 @@
         public string ProcessName { get; set; }
 
         public string TimeRunning { get; set; }
+
+        public bool IsRunning { get; set; }
     }
 }
