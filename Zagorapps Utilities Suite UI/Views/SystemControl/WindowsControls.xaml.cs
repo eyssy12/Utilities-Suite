@@ -1,6 +1,5 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.SystemControl
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -9,6 +8,7 @@
     using Commands;
     using Connectivity;
     using Core.Library.Events;
+    using Core.Library.Extensions;
     using Core.Library.Timing;
     using Core.Library.Windows;
     using Events;
@@ -82,7 +82,7 @@
             }
         }
 
-        protected bool HandleOperation(string param)
+        private bool HandleOperation(string param)
         {
             if (this.Model.ControlsEnabled)
             {
@@ -100,7 +100,7 @@
             return false;
         }
 
-        protected void ConfirmDialog_OnConfirm(object sender, ConfirmDialogEventArgs e)
+        private void ConfirmDialog_OnConfirm(object sender, ConfirmDialogEventArgs e)
         {
             this.HandleOperation(e.First);
         }
@@ -112,7 +112,7 @@
                 .Select(p => new ProcessViewModel
                 {
                     ProcessName = p.ProcessName,
-                    IsRunning = this.IsProcessRunning(p),
+                    IsRunning = p.IsProcessRunning(),
                     TimeRunning = "-1" //this.GetTotalProcessorTime(p)
                 })
                 .ToArray();
@@ -124,38 +124,6 @@
             this.Model.AddProcesses(disctint);
 
             this.Model.VerifyControlsAvailability();
-        }
-
-        // TODO: add to extensions
-        private bool IsProcessRunning(Process process)
-        {
-            try
-            {
-                Process.GetProcessById(process.Id);
-            }
-            catch (InvalidOperationException)
-            {
-                return false;
-            }
-            catch (ArgumentException)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        // TODO: add to extensions
-        private string GetTotalProcessorTime(Process process)
-        {
-            try
-            {
-                return process.TotalProcessorTime.TotalSeconds.ToString();
-            }
-            catch
-            {
-                return "Access Denied";
-            }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -172,7 +140,7 @@
             this.Model.RemoveProhibit(chip.Content.ToString());
         }
 
-        private class ProcessComparer : IEqualityComparer<ProcessViewModel>
+        private sealed class ProcessComparer : IEqualityComparer<ProcessViewModel>
         {
             public bool Equals(ProcessViewModel x, ProcessViewModel y)
             {

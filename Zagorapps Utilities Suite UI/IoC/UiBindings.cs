@@ -87,8 +87,7 @@
                 IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
                 {
                     new NoBluetoothAvailable(factory, commandProvider),
-                    new ConnectionInteraction(factory, commandProvider),
-                    new UdpConnection(factory, commandProvider)
+                    new ConnectionInteraction(factory, commandProvider)
                 };
 
                 IEnumerable<IViewControl> dashboardControls = new List<IViewControl>

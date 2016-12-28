@@ -2,36 +2,35 @@
 {
     using System;
     using Controls;
-    using Core.Library.Communications;
+    using Utilities.Library;
 
     public class ConnectedClientViewModel : ViewModelBase
     {
-        private readonly INetworkConnection handler;
+        private readonly ConnectionType connectionType;
+        private readonly string name;
 
-        private string name;
         private DateTime nextHeartbeatTimestamp;
 
-        public ConnectedClientViewModel(string clientName, INetworkConnection handler)
+        public ConnectedClientViewModel(string clientName, ConnectionType connectionType)
         {
             this.name = clientName;
-            this.handler = handler;
+            this.connectionType = connectionType;
         }
 
-        public INetworkConnection Handler
+        public ConnectionType ConnectionType
         {
-            get { return this.handler; }
+            get { return this.connectionType; }
+        }
+
+        public string Name
+        {
+            get { return this.name; }
         }
 
         public DateTime NextHeartbeatTimestamp
         {
             get { return this.nextHeartbeatTimestamp; }
             set { this.SetField(ref nextHeartbeatTimestamp, value, nameof(this.NextHeartbeatTimestamp)); }
-        }
-
-        public string Name
-        {
-            get { return this.name; }
-            set { this.SetField(ref name, value, nameof(this.Name)); }
         }
     }
 }

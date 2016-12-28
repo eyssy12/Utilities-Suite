@@ -8,13 +8,12 @@
     using System.Windows;
     using System.Windows.Input;
     using Controls;
-    using Core.Library.Communications;
     using Core.Library.Extensions;
     using Utilities.Library;
 
     public class BluetoothInteractionViewModel : ViewModelBase
     {
-        private readonly ConcurrentDictionary<string, ConnectedClientViewModel> handlers;
+        private readonly ConcurrentDictionary<string, ConnectedClientViewModel> connectedClients;
 
         private Visibility progressBarVisibility = Visibility.Hidden,
             startServiceButtonVisibility = Visibility.Visible,
@@ -33,9 +32,9 @@
 
         public BluetoothInteractionViewModel()
         {
-            this.handlers = new ConcurrentDictionary<string, ConnectedClientViewModel>();
+            this.connectedClients = new ConcurrentDictionary<string, ConnectedClientViewModel>();
 
-            this.ServiceStartText = "Start Service";
+            this.ServiceButtonText = "Start Service";
             this.ContentEnabled = false;
             this.ServiceEnabled = false;
             this.ServiceButtonEnabled = true;
@@ -43,43 +42,40 @@
 
         public void UpdateConnectionClientHeartbeat(string name, DateTime time)
         {
-            this.handlers[name].NextHeartbeatTimestamp = time;
+            this.connectedClients[name].NextHeartbeatTimestamp = time;
         }
 
-        public TResult InvokeHandlerNotifyableAction<TResult>(Func<ConcurrentDictionary<string, ConnectedClientViewModel>, TResult> action)
+        public TResult InvokeConnectedClientNotifyableAction<TResult>(Func<ConcurrentDictionary<string, ConnectedClientViewModel>, TResult> action)
         {
-            return this.NotifyableAction(this.handlers, action, nameof(this.ConnectedClients));
+            return this.NotifyableAction(this.connectedClients, action, nameof(this.ConnectedClients));
         }
 
-        public bool TryRemoveHandler(string client, out INetworkConnection handler)
+        public bool TryRemoveClient(string clientName)
         {
             ConnectedClientViewModel model;
-            if (this.handlers.TryRemove(client, out model))
+            if (this.connectedClients.TryRemove(clientName, out model))
             {
-                handler = model.Handler;
                 this.OnPropertyChanged(nameof(this.ConnectedClients));
 
                 return true;
             }
 
-            handler = null;
-
             return false;
         }
 
-        public void InvokeHandlerNotifyableAction(Action<ConcurrentDictionary<string, ConnectedClientViewModel>> action)
+        public void InvokeConnectedClientNotifyableAction(Action<ConcurrentDictionary<string, ConnectedClientViewModel>> action)
         {
-            this.NotifyableAction(this.handlers, action, nameof(this.ConnectedClients));
+            this.NotifyableAction(this.connectedClients, action, nameof(this.ConnectedClients));
         }
 
-        public ConcurrentDictionary<string, ConnectedClientViewModel> Handlers
+        public ConcurrentDictionary<string, ConnectedClientViewModel> ClientModels
         {
-            get { return this.handlers; }
+            get { return this.connectedClients; }
         }
 
         public IEnumerable<ConnectedClientViewModel> ConnectedClients
         {
-            get { return this.Handlers.Select(h => h.Value).ToArray(); }
+            get { return this.ClientModels.Select(h => h.Value).ToArray(); }
         }
 
         public string ServiceClientLogConsole
@@ -128,10 +124,10 @@
             set { this.SetField(ref serviceStartButtonEnabled, value, nameof(this.ServiceButtonEnabled)); }
         }
 
-        public string ServiceStartText
+        public string ServiceButtonText
         {
             get { return this.serviceStartText; }
-            set { this.SetField(ref serviceStartText, value, nameof(this.ServiceStartText)); }
+            set { this.SetField(ref serviceStartText, value, nameof(this.ServiceButtonText)); }
         }
 
         public Visibility ContentVisibility

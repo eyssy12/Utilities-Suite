@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL">
+      <HintPath>..\packages\32feet.NET.3.5.0.0\lib\net\InTheHand.Net.Personal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -60,6 +64,9 @@
     <Compile Include="Communications\HybridNetworkConnection.cs" />
     <Compile Include="Communications\IReceiveData.cs" />
     <Compile Include="Communications\ISendData.cs" />
+    <Compile Include="Communications\Server\ILocalNetworkServer.cs" />
+    <Compile Include="Communications\Server\LocalBluetoothServer.cs" />
+    <Compile Include="Communications\Server\LocalUdpServer.cs" />
     <Compile Include="Communications\TcpNetworkConnection.cs" />
     <Compile Include="Communications\UdpNetworkConnection.cs" />
     <Compile Include="Exceptions\DuplicateFileException.cs" />

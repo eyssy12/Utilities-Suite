@@ -61,7 +61,7 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         VerticalAlignment="Center"
-                        Content="{Binding ViewModel.ServiceStartText}" />
+                        Content="{Binding ViewModel.ServiceButtonText}" />
 
                 <ComboBox 
                         Grid.Row="0" 
@@ -70,6 +70,7 @@
                         Margin="16"
                         ItemsSource="{Binding ViewModel.ConnectionTypes}"
                         SelectedValue="{Binding ViewModel.ConnectionType}"
+                        SelectionChanged="ComboBox_ConnectionMode_SelectionChanged" 
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                         materialDesign:HintAssist.Hint="Connection Mode" />
 
@@ -163,7 +164,7 @@
                         Margin="-2">
 
                         <DockPanel Margin="8">
-                            <TextBlock TextWrapping="Wrap" Foreground="Yellow" Text="{Binding ViewModel.ServiceServerLogConsole}" />
+                            <TextBlock TextWrapping="Wrap" Foreground="Yellow" Text="{Binding ViewModel.ServiceClientLogConsole}" />
                         </DockPanel>
 
                     </Border>

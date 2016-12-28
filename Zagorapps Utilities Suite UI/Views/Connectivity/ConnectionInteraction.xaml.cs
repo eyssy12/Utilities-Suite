@@ -5,16 +5,14 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows.Controls;
     using Bluetooth.Library;
-    using Bluetooth.Library.Client;
     using Bluetooth.Library.Client.Models;
     using Bluetooth.Library.Extensions;
-    using Bluetooth.Library.Networking;
     using Bluetooth.Library.Providers;
     using Commands;
     using Controls;
     using Core.Library.Communications;
-    using Core.Library.Construction;
     using Core.Library.Events;
     using Core.Library.Extensions;
     using Library;
@@ -23,6 +21,7 @@
     using Services;
     using SystemControl;
     using Utilities.Library;
+    using Utilities.Library.Communications.Server;
     using Utilities.Library.Factories;
     using Utilities.Library.Providers;
     using ViewModels;
@@ -41,13 +40,10 @@
         protected readonly IBluetoothServicesProvider Provider;
         protected readonly ISnackbarNotificationService Notifier;
         protected readonly IInputSimulator InputSimulator;
-        protected readonly INetworkConnectionProvider CommsProvider;
 
         protected readonly BluetoothInteractionViewModel Model;
 
-        private INetworkConnection localServer;
-
-        private ISimpleBluetoothClientReceiver receiver; // TODO: don't think this should be here - i may need an interface for ILocalServer
+        private ILocalNetworkServer localServer;
 
         public ConnectionInteraction(IOrganiserFactory factory, ICommandProvider commandProvider)
             : base(ConnectionInteraction.ViewName, factory, commandProvider)
@@ -57,24 +53,21 @@
             this.Provider = this.Factory.Create<IBluetoothServicesProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.InputSimulator = this.Factory.Create<IInputSimulator>();
-            this.CommsProvider = this.Factory.Create<INetworkConnectionProvider>();
 
             this.Model = new BluetoothInteractionViewModel();
             this.Model.Pin = ConnectionInteraction.Pin;
             this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeService());
 
-            // If i use commands to lock my machine, etc, i may want to display an overlay to force the user to log into the machine and then remove the overlay
+            // TODO: add this to WindowsControls and send event change to this view.
             SystemEvents.SessionSwitch += (s, e) =>
             {
                 if (e.Reason == SessionSwitchReason.SessionLock)
                 {
-                    //I left my desk
-                    this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_locked")));
+                    this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, "machine_locked"));
                 }
                 else if (e.Reason == SessionSwitchReason.SessionUnlock)
                 {
-                    //I returned to my desk
-                    this.ViewModel.Handlers.ForEach(h => h.Value.Handler.Send(new BasicDataMessage(h.Key, "machine_unlocked")));
+                    this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, "machine_unlocked"));
                 }
             };
 
@@ -88,11 +81,6 @@
 
         public override void InitialiseView(object arg)
         {
-            if (!this.Provider.IsBluetoothAvailable)
-            {
-                this.OnViewChange(ViewBag.GetViewName<NoBluetoothAvailable>());
-            }
-
             Console.WriteLine(ViewName + " - initialised");
         }
 
@@ -107,53 +95,7 @@
             {
                 string[] split = data.Data.ToString().Split(':');
 
-                this.Model.Handlers[split[0]].Handler.Send(new BasicDataMessage("server", split[1]));
-            }
-        }
-
-        private void Receiver_ClientReceived(object sender, EventArgs<IBluetoothClient> e)
-        {
-            string clientName = e.First.RemoteMachineName;
-
-            if (this.Model.Handlers.Any(h => h.Key == clientName))
-            {
-                Console.WriteLine("Device with an existing machine name '" + clientName + "' attempting to connect -> refusing.");
-
-                e.First.Close();
-                e.First.Dispose();
-            }
-            else
-            {
-                Console.WriteLine();
-                Console.WriteLine("Client accepted: '" + clientName + "'");
-                Console.WriteLine("------------------------------------");
-                Console.WriteLine();
-
-                Task.Run(() =>
-                {
-                    ConstructionContext context = new ConstructionContext();
-                    context.AddValue("connectionClient", e.First);
-
-                    INetworkConnection connection = this.CommsProvider.CreateNetworkConnection(ConnectionType.Bluetooth, context);
-
-                    try
-                    {
-                        if (this.Model.InvokeHandlerNotifyableAction(m => m.TryAdd(clientName, new ConnectedClientViewModel(clientName, connection))))
-                        {
-                            connection.MessageReceived += NetworkConnection_MessageReceived;
-                            connection.Start();
-                        }
-                        else
-                        {
-                            // something happened, make sure to at least clean up the exisiting connection 
-                            connection.Close();
-                        }
-                    }
-                    catch
-                    {
-                        connection.Close();
-                    }
-                });
+                this.localServer.Send(new BasicDataMessage(split[0], split[1]));
             }
         }
 
@@ -166,20 +108,7 @@
             ClientCommand command;
             if (Enum.TryParse(data, out command))
             {
-                if (command == ClientCommand.EndSession)
-                {
-                    INetworkConnection handler;
-                    if (this.Model.TryRemoveHandler(message.From, out handler))
-                    {
-                        handler.MessageReceived -= NetworkConnection_MessageReceived;
-                        handler.Close();
-
-                        Console.WriteLine();
-                        Console.WriteLine(" -->  '" + message.From + "' disconnected from server.");
-                        Console.WriteLine();
-                    }
-                }
-                else if (command == ClientCommand.LeftClick)
+                if (command == ClientCommand.LeftClick)
                 {
                     this.InputSimulator.Mouse.LeftButtonClick();
                 }
@@ -215,8 +144,7 @@
             else
             {
                 // KB
-
-                // this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
+                this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
             }
         }
 
@@ -228,30 +156,64 @@
             {
                 ConnectionSettings settings = new ConnectionSettings { ServiceID = Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), Pin = this.Model.Pin };
 
-                this.receiver = this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>());
-
-                if (this.receiver.TryInitialise())
-                {
-                    this.receiver.ClientReceived += this.Receiver_ClientReceived;
-                    this.receiver.Listen();
-                }
+                this.localServer = new LocalBluetoothServer(this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>()), this.Factory.Create<INetworkConnectionProvider>());
             }
             else if (this.ViewModel.ConnectionType == ConnectionType.Udp)
             {
-                ConstructionContext context = new ConstructionContext(); // TODO: this approach is bullshit, i should just have a method for the corresponding connection type
-                context.AddValue("endpointPort", 30301);
+                this.localServer = new LocalUdpServer(30301);
 
-                this.localServer = this.CommsProvider.CreateNetworkConnection(ConnectionType.Udp, context);
-                this.localServer.MessageReceived += NetworkConnection_MessageReceived;
-                this.localServer.Start();
+                //ConstructionContext context = new ConstructionContext(); // TODO: this approach is bullshit, i should just have a method for the corresponding connection type
+                //context.AddValue("endpointPort", 30301);
             }
+
+            this.localServer.ClientConnected += this.Server_ClientConnected;
+            this.localServer.ClientDisconnected += this.Server_ClientDisconnected;
+            this.localServer.MessageReceived += this.Server_MessageReceived;
+            this.localServer.Start();
         }
 
-        private void NetworkConnection_MessageReceived(object sender, EventArgs<IDataMessage> e)
+        private void Server_ClientDisconnected(object sender, EventArgs<ConnectionType, string> e)
+        {
+            ConnectedClientViewModel temp;
+            this.Model.InvokeConnectedClientNotifyableAction(c => c.TryRemove(e.Second, out temp));
+
+            Console.WriteLine();
+            Console.WriteLine(" -->  '" + e.Second + "' disconnected from server.");
+            Console.WriteLine();
+        }
+
+        private void Server_ClientConnected(object sender, EventArgs<ConnectionType, string> e)
+        {
+            this.Model.InvokeConnectedClientNotifyableAction(c => c.TryAdd(e.Second, new ConnectedClientViewModel(e.Second, e.First)));
+        }
+
+        private void Server_MessageReceived(object sender, EventArgs<IDataMessage> e)
         {
             this.Model.ServiceClientLogConsole = e.First.From + ": " + e.First.Data;
 
             this.HandleInteraction(e.First);
+        }
+
+        private void ComboBox_ConnectionMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((ConnectionType)e.AddedItems[0] == ConnectionType.Bluetooth)
+            {
+                if (!this.Provider.IsBluetoothAvailable)
+                {
+                    this.Model.ServiceButtonEnabled = false;
+                    this.Model.ServiceButtonText = "No Bluetooth Available";
+                }
+                else
+                {
+                    this.Model.ServiceButtonEnabled = true;
+                    this.Model.ServiceButtonText = "Start Service";
+                }
+            }
+            else
+            {
+                this.Model.ServiceButtonEnabled = true;
+                this.Model.ServiceButtonText = "Start Service";
+            }
         }
 
         private async void InvokeService()
@@ -267,7 +229,7 @@
                 if (this.Model.ServiceEnabled)
                 {
                     this.StopService();
-                    this.Model.ServiceStartText = "Start Service";
+                    this.Model.ServiceButtonText = "Start Service";
                     this.Model.ContentVisibility = VisibilityEnum.Hidden;
 
                     this.Model.ServiceEnabled = false;
@@ -277,7 +239,7 @@
                     this.Model.ServiceEnabled = true;
 
                     this.StartService();
-                    this.Model.ServiceStartText = "End Service";
+                    this.Model.ServiceButtonText = "End Service";
                     this.Model.ContentVisibility = VisibilityEnum.Visible;
                 }
 
@@ -290,11 +252,11 @@
 
             if (this.Model.ServiceEnabled)
             {
-                this.Notifier.Notify("Bluetooth Service Started");
+                this.Notifier.Notify(this.Model.ConnectionType + " Service Started");
             }
             else
             {
-                this.Notifier.Notify("Bluetooth Service Stopped");
+                this.Notifier.Notify(this.Model.ConnectionType + " Service Stopped");
             }
         }
 
@@ -302,33 +264,11 @@
         {
             Thread.Sleep(1000);
 
-            if (this.ViewModel.ConnectionType == ConnectionType.Bluetooth)
-            {
-                this.CloseClients();
-
-                this.receiver.ClientReceived -= this.Receiver_ClientReceived;
-                this.receiver.Stop();
-                this.receiver = null;
-            }
-            else
-            {
-                this.localServer.Close();
-                this.localServer = null;
-            }
-        }
-
-        private void CloseClients()
-        {
-            this.Model.Handlers.ForEach(a =>
-            {
-                a.Value.Handler.Close();
-            });
-
-            Console.WriteLine();
-            Console.WriteLine(" --> All devices (" + this.Model.Handlers.Count + ") disconnected from server.");
-            Console.WriteLine();
-
-            this.Model.InvokeHandlerNotifyableAction(m => m.Clear());
+            this.localServer.Stop();
+            this.localServer.MessageReceived -= this.Server_MessageReceived;
+            this.localServer.ClientConnected -= this.Server_ClientConnected;
+            this.localServer.ClientDisconnected -= this.Server_ClientDisconnected;
+            this.localServer.Dispose();
         }
     }
 }
