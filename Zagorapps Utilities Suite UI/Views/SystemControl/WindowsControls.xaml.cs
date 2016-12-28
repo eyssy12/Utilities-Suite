@@ -42,7 +42,6 @@
             this.Model = new WindowsControlsViewModel();
             this.Model.AddProhibitCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.Model.AddProhibit(param));
 
-            // TODO: add this to WindowsControls and send event change to this view.
             SystemEvents.SessionSwitch += this.SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += this.SystemEvents_SessionEnding;
 
