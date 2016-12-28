@@ -17,7 +17,6 @@
     using Core.Library.Extensions;
     using Library;
     using Library.Communications;
-    using Microsoft.Win32;
     using Services;
     using SystemControl;
     using Utilities.Library;
@@ -58,19 +57,6 @@
             this.Model.Pin = ConnectionInteraction.Pin;
             this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeService());
 
-            // TODO: add this to WindowsControls and send event change to this view.
-            SystemEvents.SessionSwitch += (s, e) =>
-            {
-                if (e.Reason == SessionSwitchReason.SessionLock)
-                {
-                    this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, "machine_locked"));
-                }
-                else if (e.Reason == SessionSwitchReason.SessionUnlock)
-                {
-                    this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, "machine_unlocked"));
-                }
-            };
-
             this.DataContext = this;
         }
 
@@ -91,11 +77,24 @@
 
         public override void ProcessMessage(IUtilitiesDataMessage data)
         {
-            if (data.Data.ToString().Contains(':')) // TODO: create a custom object instead of string split
+            string received = data.Data.ToString();
+
+            if (received.Contains(':')) // TODO: create a custom object instead of string split
             {
-                string[] split = data.Data.ToString().Split(':');
+                string[] split = received.Split(':');
 
                 this.localServer.Send(new BasicDataMessage(split[0], split[1]));
+            }
+            else if (received == "machine_locked" || received == "machine_unlocked")
+            {
+                this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, received));
+            }
+            else if (received == "EndSession")
+            {
+                if (this.Model.ServiceEnabled)
+                {
+                    this.InvokeService();
+                }
             }
         }
 

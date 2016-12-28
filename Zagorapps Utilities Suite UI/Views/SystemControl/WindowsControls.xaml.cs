@@ -16,6 +16,7 @@
     using Library.Attributes;
     using Library.Communications;
     using MaterialDesignThemes.Wpf;
+    using Microsoft.Win32;
     using Utilities.Library.Factories;
     using ViewModels;
     using Zagorapps.Utilities.Suite.UI.Controls;
@@ -41,7 +42,28 @@
             this.Model = new WindowsControlsViewModel();
             this.Model.AddProhibitCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.Model.AddProhibit(param));
 
+            // TODO: add this to WindowsControls and send event change to this view.
+            SystemEvents.SessionSwitch += this.SystemEvents_SessionSwitch;
+            SystemEvents.SessionEnding += this.SystemEvents_SessionEnding;
+
             this.DataContext = this;
+        }
+
+        private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+        {
+            this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "EndSession");
+        }
+
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionLock)
+            {
+                this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "machine_locked");
+            }
+            else if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "machine_unlocked");
+            }
         }
 
         public WindowsControlsViewModel ViewModel
@@ -81,7 +103,6 @@
                 }
             }
         }
-
         private bool HandleOperation(string param)
         {
             if (this.Model.ControlsEnabled)
