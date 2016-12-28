@@ -23,7 +23,7 @@
     [DefaultNavigatable(WindowsControls.ViewName)]
     public partial class WindowsControls : DataFacilitatorViewControlBase
     {
-        private const string ViewName = nameof(WindowsControls);
+        private const string ViewName = nameof(WindowsControls); // TODO: maybe have enums for this instead
 
         protected readonly IWinSystemService WinService;
         protected readonly ITimer Timer;
