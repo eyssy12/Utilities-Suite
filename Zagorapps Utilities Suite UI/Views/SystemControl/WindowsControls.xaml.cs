@@ -48,23 +48,6 @@
             this.DataContext = this;
         }
 
-        private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
-        {
-            this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "EndSession");
-        }
-
-        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
-        {
-            if (e.Reason == SessionSwitchReason.SessionLock)
-            {
-                this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "machine_locked");
-            }
-            else if (e.Reason == SessionSwitchReason.SessionUnlock)
-            {
-                this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "machine_unlocked");
-            }
-        }
-
         public WindowsControlsViewModel ViewModel
         {
             get { return this.Model; }
@@ -102,6 +85,24 @@
                 }
             }
         }
+
+        private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+        {
+            this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "EndSession");
+        }
+
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionLock)
+            {
+                this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "machine_locked");
+            }
+            else if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                this.OnDataSendRequest(this, WindowsControls.ViewName, SuiteRoute.Connectivity, ViewBag.GetViewName<ConnectionInteraction>(), "machine_unlocked");
+            }
+        }
+
         private bool HandleOperation(string param)
         {
             if (this.Model.ControlsEnabled)
@@ -142,7 +143,6 @@
                 .Except(this.Model.Processes, new ProcessComparer());
 
             this.Model.AddProcesses(disctint);
-
             this.Model.VerifyControlsAvailability();
         }
 

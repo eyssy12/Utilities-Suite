@@ -104,47 +104,60 @@
 
             string data = message.Data.ToString();
 
-            ClientCommand command;
-            if (Enum.TryParse(data, out command))
+            if (string.IsNullOrWhiteSpace(data))
             {
-                if (command == ClientCommand.LeftClick)
-                {
-                    this.InputSimulator.Mouse.LeftButtonClick();
-                }
-                else if (command == ClientCommand.MiddleClick)
-                {
-                }
-                else if (command == ClientCommand.RightClick)
-                {
-                    this.InputSimulator.Mouse.RightButtonClick();
-                }
-                else if (command == ClientCommand.DoubleTap)
-                {
-                    this.InputSimulator.Mouse.LeftButtonDoubleClick();
-                }
-            }
-            else if (data.Contains(":"))
-            {
-                string[] newPositions = data.Split(':');
-
-                float xMovingUnits = float.Parse(newPositions[0]);
-                float yMovingUnits = float.Parse(newPositions[1]);
-
-                this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
-            }
-            else if (data.Contains("lock"))
-            {
-                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
-            }
-            else if (data == ServerCommand.Backspace.ToString())
-            {
-                this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
+                // raise error
             }
             else
             {
-                // KB
-                this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
+                ClientCommand command;
+                if (Enum.TryParse(data, out command))
+                {
+                    if (command == ClientCommand.LeftClick)
+                    {
+                        this.InputSimulator.Mouse.LeftButtonClick();
+                    }
+                    else if (command == ClientCommand.MiddleClick)
+                    {
+                    }
+                    else if (command == ClientCommand.RightClick)
+                    {
+                        this.InputSimulator.Mouse.RightButtonClick();
+                    }
+                    else if (command == ClientCommand.DoubleTap)
+                    {
+                        this.InputSimulator.Mouse.LeftButtonDoubleClick();
+                    }
+                }
+                else if (data.Contains(":"))
+                {
+                    string[] newPositions = data.Split(':');
+
+                    float xMovingUnits = float.Parse(newPositions[0]);
+                    float yMovingUnits = float.Parse(newPositions[1]);
+
+                    this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
+                }
+                else if (data.Contains("lock"))
+                {
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
+                }
+                else if (data == ServerCommand.Backspace.ToString())
+                {
+                    this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
+                }
+                else if (data.Length > 1)
+                {
+                    // KB
+                    // typing or whatever
+                }
+                else
+                {
+                    // KB char input
+                    this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
+                }
             }
+            
         }
 
         private void StartService()

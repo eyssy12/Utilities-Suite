@@ -90,7 +90,7 @@
                 throw new ArgumentNullException(nameof(message), "Data message not provided.");
             }
 
-            if (this.Clients.ContainsKey(message.From))
+            if (this.Clients.ContainsKey(message.From)) // TODO: misleading, should pass in a string value as the "To" representation.
             {
                 INetworkConnection connection = this.Clients[message.From];
 
@@ -163,10 +163,6 @@
         private void Connection_MessageReceived(object sender, EventArgs<IDataMessage> e)
         {
             string data = e.First.Data.ToString();
-
-            // Why do this logic here if something similar is already being done in the ConnectivityInteraction view?
-            // Because I want the server code to manage the connections internally,
-            // so that no other code has to call a method of the server that would be something on the lines of - "Hey, you should dispose this connection"
 
             ClientCommand command;
             if (Enum.TryParse(data, out command) && command == ClientCommand.EndSession) 

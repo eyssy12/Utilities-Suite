@@ -19,11 +19,16 @@
             startServiceButtonVisibility = Visibility.Visible,
             contentVisibility = Visibility.Hidden;
 
-        private StringBuilder serviceClientLogBuilder = new StringBuilder(),
-            serviceServerLogBuilder = new StringBuilder();
+        private LinkedList<string> serviceClientLogger = new LinkedList<string>();
+
+        // TOOD: apply linked list logic to this too
+        private StringBuilder serviceServerLogBuilder = new StringBuilder();
 
         private string serviceStartText;
         private string pin;
+
+        private int clientLogLinesAdded = 0,
+            clientLogMaxLines = 10;
 
         private ICommand serviceStartCommand;
         private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
@@ -80,10 +85,19 @@
 
         public string ServiceClientLogConsole
         {
-            get { return this.serviceClientLogBuilder.ToString(); }
+            get { return this.serviceClientLogger.Any() ? this.serviceClientLogger.Aggregate((a, b) => a + "\n" + b) : string.Empty; }
             set
             {
-                this.serviceClientLogBuilder.AppendLine(value);
+                if (this.clientLogLinesAdded == this.clientLogMaxLines)
+                {
+                    this.serviceClientLogger.RemoveFirst();
+                }
+                else
+                {
+                    this.clientLogLinesAdded++;
+                }
+
+                this.serviceClientLogger.AddLast(value);
 
                 this.OnPropertyChanged(nameof(ServiceClientLogConsole));
             }
