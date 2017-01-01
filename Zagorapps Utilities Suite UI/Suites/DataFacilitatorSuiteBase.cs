@@ -7,9 +7,10 @@
     using Core.Library.Communications;
     using Core.Library.Events;
     using Core.Library.Extensions;
-    using Library;
     using Library.Communications;
+    using Library.Communications.Suite;
     using Navigation;
+    using Utilities.Library;
 
     public abstract class DataFacilitatorSuiteBase : SuiteBase, IDataFacilitatorSuite
     {

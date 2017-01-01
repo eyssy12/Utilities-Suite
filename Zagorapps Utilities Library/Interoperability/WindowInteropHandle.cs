@@ -1,14 +1,14 @@
-﻿namespace Zagorapps.Utilities.Suite.Library.Interop
+﻿namespace Zagorapps.Utilities.Library.Interoperability
 {
     using System;
     using System.Windows;
     using System.Windows.Interop;
 
-    public class InteropHandle : IInteropHandle
+    public class WindowInteropHandle : IInteropHandle
     {
         protected readonly WindowInteropHelper InteropHelper;
 
-        public InteropHandle(Window window)
+        public WindowInteropHandle(Window window)
         {
             if (window == null)
             {

@@ -1,12 +1,12 @@
-﻿namespace Zagorapps.Utilities.Suite.Library.Exceptions
+﻿namespace Zagorapps.Utilities.Library.Exceptions
 {
     using System;
-    
+
     public class ViewNotFoundException : Exception
     {
         protected readonly string ViewName;
 
-        public ViewNotFoundException(string viewName, string message) 
+        public ViewNotFoundException(string viewName, string message)
             : base(message)
         {
             this.ViewName = viewName;

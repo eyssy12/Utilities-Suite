@@ -43,4 +43,12 @@
         Udp,
         Tcp
     }
+
+    public enum SuiteRoute : int
+    {
+        Organiser = 1,
+        Dashboard,
+        Connectivity,
+        SystemControl
+    }
 }

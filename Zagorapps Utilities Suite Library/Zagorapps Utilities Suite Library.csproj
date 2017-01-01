@@ -44,17 +44,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\DefaultNavigatableAttribute.cs" />
-    <Compile Include="Attributes\NavigatableAttribute.cs" />
-    <Compile Include="Attributes\SuiteAttribute.cs" />
     <Compile Include="Communications\IReceiveSuiteData.cs" />
     <Compile Include="Communications\ISendSuiteData.cs" />
     <Compile Include="Communications\IUtilitiesDataMessage.cs" />
     <Compile Include="Communications\UtilitiesDataMessage.cs" />
-    <Compile Include="Enumerations.cs" />
-    <Compile Include="Exceptions\ViewNotFoundException.cs" />
-    <Compile Include="Interop\IInteropHandle.cs" />
-    <Compile Include="Interop\InteropHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

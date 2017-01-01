@@ -4,7 +4,7 @@
     using System.Threading;
     using System.Windows;
     using Controls;
-    using Library.Interop;
+    using Library.Interoperability;
     using MaterialDesignThemes.Wpf;
     using Services;
     using SimpleInjector;
@@ -35,7 +35,7 @@
                 },
                 Lifestyle.Singleton);
 
-            ServiceLocator.Bind(typeof(IInteropHandle), () => { return new InteropHandle(Application.Current.MainWindow); }, Lifestyle.Singleton);
+            ServiceLocator.Bind(typeof(IInteropHandle), () => { return new WindowInteropHandle(Application.Current.MainWindow); }, Lifestyle.Singleton);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)

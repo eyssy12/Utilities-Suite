@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel;
     using System.Windows;
-    using Library.Interop;
+    using Library.Interoperability;
     using Managers;
     using Navigation;
     using Services;

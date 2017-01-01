@@ -42,7 +42,8 @@
         {
             this.Handler.SendMessage(new BasicStringMessage(message.Data.ToString()));
         }
-        
+
+        // TODO: this should be paseed in via the constructor as an IOperation or similar, we may want customized heatbeat handling for certain bluetooth connections
         private void Handler_HeartbeatInitiated(object sender, EventArgs<string, DateTime> e)
         {
             this.Handler.SendMessage(new BasicStringMessage("HBT_CHECK"));

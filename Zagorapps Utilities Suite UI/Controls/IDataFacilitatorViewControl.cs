@@ -2,9 +2,9 @@
 {
     using System;
     using Core.Library.Events;
-    using Library;
     using Library.Communications;
     using Navigation;
+    using Utilities.Library;
 
     public interface IDataFacilitatorViewControl : IViewControl
     {

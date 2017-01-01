@@ -7,7 +7,8 @@
     using Core.Library.Events;
     using Providers;
     using Services;
-    using Suite.Library.Communications;
+    using Utilities.Library.Communications;
+    using Utilities.Library.Communications.Suite;
     using Utilities.Library.Factories;
 
     public class WcfReceiveSuiteData : IReceiveSuiteData

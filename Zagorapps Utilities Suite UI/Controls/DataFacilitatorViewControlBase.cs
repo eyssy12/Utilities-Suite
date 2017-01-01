@@ -4,9 +4,9 @@
     using System.Threading.Tasks;
     using Commands;
     using Core.Library.Events;
-    using Library;
+    using Library.Communications;
+    using Utilities.Library;
     using Utilities.Library.Factories;
-    using Zagorapps.Utilities.Suite.Library.Communications;
 
     public abstract class DataFacilitatorViewControlBase : ViewControlBase, IDataFacilitatorViewControl
     {

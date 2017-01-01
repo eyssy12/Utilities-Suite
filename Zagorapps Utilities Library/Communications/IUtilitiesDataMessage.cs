@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Suite.Library.Communications
+﻿namespace Zagorapps.Utilities.Library.Communications
 {
     using Core.Library.Communications;
     using Utilities.Library;

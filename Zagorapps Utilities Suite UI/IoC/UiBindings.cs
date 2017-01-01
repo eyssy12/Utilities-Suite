@@ -5,14 +5,14 @@
     using System.Windows.Controls;
     using Commands;
     using Controls;
-    using Library;
-    using Library.Communications;
+    using Library.Communications.Suite;
     using Managers;
     using Navigation;
     using Newtonsoft.Json;
     using Services;
     using SimpleInjector;
     using Suites;
+    using Utilities.Library;
     using Views.Connectivity;
     using Views.Dashboard;
     using Views.Organiser;

@@ -61,10 +61,6 @@
       <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
       <Name>Zagorapps Utilities Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zagorapps Utilities Suite Library\Zagorapps Utilities Suite Library.csproj">
-      <Project>{8469bf2c-8ed2-4ec1-b3bd-d8e5ddaa8f53}</Project>
-      <Name>Zagorapps Utilities Suite Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

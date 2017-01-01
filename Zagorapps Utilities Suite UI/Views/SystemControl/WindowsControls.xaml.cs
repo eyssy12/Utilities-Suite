@@ -11,6 +11,7 @@
     using Commands;
     using Comparators;
     using Connectivity;
+    using Controls;
     using Core.Library.Events;
     using Core.Library.Timing;
     using Core.Library.Windows;
@@ -18,12 +19,11 @@
     using Library;
     using Library.Attributes;
     using Library.Communications;
-    using Library.Interop;
+    using Library.Factories;
+    using Library.Interoperability;
     using MaterialDesignThemes.Wpf;
     using Microsoft.Win32;
-    using Utilities.Library.Factories;
     using ViewModels;
-    using Zagorapps.Utilities.Suite.UI.Controls;
 
     [DefaultNavigatable(WindowsControls.ViewName)]
     public partial class WindowsControls : DataFacilitatorViewControlBase

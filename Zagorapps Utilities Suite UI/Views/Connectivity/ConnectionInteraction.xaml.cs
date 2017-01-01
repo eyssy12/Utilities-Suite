@@ -16,17 +16,16 @@
     using Core.Library.Events;
     using Core.Library.Extensions;
     using Library;
+    using Library.Attributes;
     using Library.Communications;
     using Services;
     using SystemControl;
-    using Utilities.Library;
     using Utilities.Library.Communications.Server;
     using Utilities.Library.Factories;
     using Utilities.Library.Providers;
     using ViewModels;
     using WindowsInput;
     using WindowsInput.Native;
-    using Zagorapps.Utilities.Suite.Library.Attributes;
     using VisibilityEnum = System.Windows.Visibility;
 
     [DefaultNavigatable(ConnectionInteraction.ViewName)]
