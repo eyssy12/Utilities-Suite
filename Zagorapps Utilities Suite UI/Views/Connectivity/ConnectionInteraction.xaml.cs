@@ -19,6 +19,7 @@
     using Library.Attributes;
     using Library.Communications;
     using Services;
+    using Suites;
     using Utilities.Suite.Library.Communications.Server;
     using Utilities.Suite.Library.Factories;
     using Utilities.Suite.Library.Providers;
@@ -176,10 +177,6 @@
                     {
                         this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":SyncClient");
                     }
-                    else if (data == "SyncResponseAck")
-                    {
-                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), data);
-                    }
                     else if (data == ServerCommand.Backspace.ToString())
                     {
                         this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
@@ -308,6 +305,8 @@
             {
                 this.Notifier.Notify(this.Model.ConnectionType + " Service Stopped");
             }
+
+            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), ConnectivitySuite.Name + ":" + this.Model.ServiceEnabled);
         }
 
         private void StopService()

@@ -23,6 +23,7 @@
     using Library.Interoperability;
     using MaterialDesignThemes.Wpf;
     using Microsoft.Win32;
+    using Suites;
     using ViewModels;
 
     [DefaultNavigatable(WindowsControls.ViewName)]
@@ -38,7 +39,7 @@
         protected readonly WindowsControlsViewModel Model;
         protected readonly ProcessViewModelComparator ProcessComparer;
 
-        private bool initialSyncWithClientPerformed;
+        private bool isConnectivitySuiteLive;
 
         public WindowsControls(IOrganiserFactory factory, ICommandProvider commandProvider)
             : base(WindowsControls.ViewName, factory, commandProvider)
@@ -106,6 +107,10 @@
                         this.AudioManager.Volume = volume;
                     }
                 }
+                else if (split[0] == ConnectivitySuite.Name)
+                {
+                    this.isConnectivitySuiteLive = bool.Parse(split[1]);
+                }
                 else
                 {
                     if (split[1].Contains("lock"))
@@ -128,15 +133,11 @@
                     }
                 }
             }
-            else if (messageData == "SyncResponseAck")
-            {
-                this.initialSyncWithClientPerformed = true;
-            }
         }
 
         private void PerformConnectivityRoutingAction(string data)
         {
-            if (this.initialSyncWithClientPerformed)
+            if (this.isConnectivitySuiteLive)
             {
                 this.OnDataSendRequest(
                     this,
