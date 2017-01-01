@@ -150,12 +150,20 @@
                 }
                 else if (data.Contains(":"))
                 {
-                    string[] newPositions = data.Split(':');
+                    string[] dataSplit = data.Split(':');
 
-                    float xMovingUnits = float.Parse(newPositions[0]);
-                    float yMovingUnits = float.Parse(newPositions[1]);
+                    if (dataSplit[0] == "vol")
+                    {
+                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + dataSplit[1]);
+                    }
+                    else
+                    {
 
-                    this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
+                        float xMovingUnits = float.Parse(dataSplit[0]);
+                        float yMovingUnits = float.Parse(dataSplit[1]);
+
+                        this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
+                    }
                 }
                 else if (data.Contains("lock"))
                 {
@@ -163,7 +171,7 @@
                 }
                 else if (data == "SyncRequest")
                 {
-                    // this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":syncClient");
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":SyncClient");
                 }
                 else if (data == "SyncResponseAck")
                 {

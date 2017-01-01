@@ -69,6 +69,8 @@
         {
             this.Model.MuteButtonText = e.IsMuted ? "Unmute" : "Mute";
             this.Model.Volume = e.Volume;
+
+            this.PerformConnectivityRoutingAction("br:vol:" + e.IsMuted);
         }
 
         private void MuteAudio()
@@ -112,23 +114,40 @@
             {
                 string[] split = messageData.Split(':');
 
-                if (split[1].Contains("lock"))
+                if (split[0] == "vol")
                 {
-                    if (!this.HandleOperation("Lock"))
+                    bool muted;
+                    if (bool.TryParse(split[1], out muted))
                     {
-                        this.PerformConnectivityRoutingAction(split[0] + ":Permitted Process Running");
+                        this.AudioManager.IsMuted = muted;
+                    }
+                    else
+                    {
+                        int volume = int.Parse(split[1]);
+
+                        this.AudioManager.Volume = volume;
                     }
                 }
-                else if (split[1] == "syncClient")
+                else
                 {
-                    string syncData = string.Empty;
+                    if (split[1].Contains("lock"))
+                    {
+                        if (!this.HandleOperation("Lock"))
+                        {
+                            this.PerformConnectivityRoutingAction(split[0] + ":Permitted Process Running");
+                        }
+                    }
+                    else if (split[1] == "SyncClient")
+                    {
+                        string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume;
 
-                    this.OnDataSendRequest(
-                        this,
-                        ViewBag.GetViewName<WindowsControls>(),
-                        SuiteRoute.Connectivity,
-                        ViewBag.GetViewName<ConnectionInteraction>(),
-                        split[0] + ":SyncResponse:" + syncData);
+                        this.OnDataSendRequest(
+                            this,
+                            ViewBag.GetViewName<WindowsControls>(),
+                            SuiteRoute.Connectivity,
+                            ViewBag.GetViewName<ConnectionInteraction>(),
+                            split[0] + ":SyncResponse:" + syncData);
+                    }
                 }
             }
             else if (messageData == "SyncResponseAck")

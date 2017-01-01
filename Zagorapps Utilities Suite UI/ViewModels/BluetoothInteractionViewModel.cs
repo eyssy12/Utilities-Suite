@@ -27,8 +27,7 @@
         private string serviceStartText;
         private string pin;
 
-        private int clientLogLinesAdded = 0,
-            clientLogMaxLines = 10;
+        private int clientLogMaxLines = 10;
 
         private ICommand serviceStartCommand;
         private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
@@ -88,13 +87,9 @@
             get { return this.serviceClientLogger.Any() ? this.serviceClientLogger.Aggregate((a, b) => a + "\n" + b) : string.Empty; }
             set
             {
-                if (this.clientLogLinesAdded == this.clientLogMaxLines)
+                if (this.serviceClientLogger.Count == this.clientLogMaxLines)
                 {
                     this.serviceClientLogger.RemoveFirst();
-                }
-                else
-                {
-                    this.clientLogLinesAdded++;
                 }
 
                 this.serviceClientLogger.AddLast(value);
