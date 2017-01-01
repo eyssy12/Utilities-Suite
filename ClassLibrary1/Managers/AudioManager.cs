@@ -10,13 +10,9 @@
         private readonly MMDeviceEnumerator deviceEnumerator = new MMDeviceEnumerator();
         private readonly MMDevice localAudioDevice;
 
-        private float lastMasterVolumeScalar;
-
         public AudioManager()
         {
             this.localAudioDevice = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-
-            this.lastMasterVolumeScalar = this.MasterVolumeScalar;
         }
 
         public int Volume
@@ -32,8 +28,7 @@
                 {
                     value = (int)AudioManager.MaximumVolume;
                 }
-
-                this.lastMasterVolumeScalar = this.MasterVolumeScalar;
+                
                 this.MasterVolumeScalar = value / AudioManager.MaximumVolume;
             }
         }
