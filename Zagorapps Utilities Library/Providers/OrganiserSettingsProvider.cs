@@ -27,12 +27,41 @@
             return this.Get<TSettings>(task.Identity);
         }
 
-        public void Save<TSettings>(TSettings settings) where TSettings : OrganiserSettingsBase
+        public bool Save<TSettings>(TSettings settings) where TSettings : OrganiserSettingsBase
         {
-            this.FileManager.Serialize<TSettings>(this.GenerateFilePath(settings.Reference), settings, (stream, instance) =>
+            try
             {
-                Serializer.Serialize(stream, instance);
-            });
+                this.FileManager.Serialize<TSettings>(this.GenerateFilePath(settings.Reference), settings, (stream, instance) =>
+                {
+                    Serializer.Serialize(stream, instance);
+                });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(Guid identity)
+        {
+            try
+            {
+                this.FileManager.Delete(this.GenerateFilePath(identity));
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+
+        public bool Delete(ITask task)
+        {
+            return this.Delete(task.Identity);
         }
 
         protected virtual string GenerateFilePath(Guid identity)

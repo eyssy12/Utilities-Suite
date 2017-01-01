@@ -218,7 +218,8 @@
                 return new SimpleTaskManager(
                     container.GetInstance<IOrganiserFactory>(),
                     container.GetInstance<ITaskProvider>(),
-                    container.GetInstance<ITaskHistoryProvider>());
+                    container.GetInstance<ITaskHistoryProvider>(),
+                    container.GetInstance<IOrganiserSettingsProvider>());
             }, lifestyle: Lifestyle.Singleton);
 
             this.Register<IApplicationConfigurationManager>(container =>

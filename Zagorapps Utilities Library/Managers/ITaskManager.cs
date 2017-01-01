@@ -2,10 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using Core.Library.Execution;
     using Tasks;
 
-    public interface ITaskManager : IExecute, ITerminate
+    public interface ITaskManager
     {
         bool Add(ITask task);
 

@@ -10,6 +10,10 @@
 
         TSettings Get<TSettings>(Guid identity) where TSettings : OrganiserSettingsBase;
 
-        void Save<TSettings>(TSettings settings) where TSettings : OrganiserSettingsBase;
+        bool Save<TSettings>(TSettings settings) where TSettings : OrganiserSettingsBase;
+
+        bool Delete(Guid identity);
+
+        bool Delete(ITask task);
     }
 }

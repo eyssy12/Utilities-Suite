@@ -59,7 +59,8 @@
                     this.Model.FileRootPathFiles = new List<RootPathFileViewModel>(files
                         .Select(file => new RootPathFileViewModel
                         {
-                            File = file,
+                            Path = file,
+                            FileName = Path.GetFileName(file),
                             Exempt = false
                         })
                         .ToArray());
@@ -76,7 +77,8 @@
                     this.Model.DirectoryRootPathFiles = new List<RootPathFileViewModel>(files
                         .Select(file => new RootPathFileViewModel
                         {
-                            File = file,
+                            Path = file,
+                            FileName = Path.GetFileName(file),
                             Exempt = false
                         })
                         .ToArray());
@@ -209,7 +211,7 @@
             this.SettingsProvider.Save(new FileOrganiserSettings
             {
                 Reference = identity,
-                FileExemptions = model.FileRootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
+                FileExemptions = model.FileRootPathFiles.Where(r => r.Exempt).Select(s => s.Path).ToArray(),
                 RootPath = model.RootPath,
                 ExtensionExemptions = model.ExemptedFileExtensions.Select(e => e.Value).ToArray()
             });

@@ -298,7 +298,7 @@
 
                                                 <DataGridTextColumn
                                                         Header="File Name"
-                                                        Binding="{Binding Path=File, Mode=OneWay}"
+                                                        Binding="{Binding Path=FileName, Mode=OneWay}"
                                                         IsReadOnly="True" />
                                             </DataGrid.Columns>
                                         </DataGrid>
@@ -326,7 +326,7 @@
 
                                                 <DataGridTextColumn
                                                         Header="File Name"
-                                                        Binding="{Binding Path=File, Mode=OneWay}"
+                                                        Binding="{Binding Path=FileName, Mode=OneWay}"
                                                         IsReadOnly="True" />
                                             </DataGrid.Columns>
                                         </DataGrid>

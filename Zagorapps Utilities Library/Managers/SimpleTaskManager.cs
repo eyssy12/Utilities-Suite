@@ -5,7 +5,6 @@
     using System.Linq;
     using Core.Library.Events;
     using Core.Library.Extensions;
-    using Core.Library.Managers;
     using Exceptions;
     using Factories;
     using Providers;
@@ -16,9 +15,10 @@
         protected readonly IOrganiserFactory Factory;
         protected readonly ITaskProvider TaskProvider;
         protected readonly ITaskHistoryProvider HistoryProvider;
+        protected readonly IOrganiserSettingsProvider SettingsProvider;
         protected readonly IList<TaskMetadata> Tasks;
 
-        public SimpleTaskManager(IOrganiserFactory factory, ITaskProvider taskProvider, ITaskHistoryProvider historyProvider)
+        public SimpleTaskManager(IOrganiserFactory factory, ITaskProvider taskProvider, ITaskHistoryProvider historyProvider, IOrganiserSettingsProvider settingsProvider)
         {
             if (factory == null)
             {
@@ -35,21 +35,17 @@
                 throw new ArgumentNullException(nameof(historyProvider), "task logger missing");
             }
 
+            if (settingsProvider == null)
+            {
+                throw new ArgumentNullException(nameof(settingsProvider), "settigns provider missing");
+            }
+
             this.Factory = factory;
             this.TaskProvider = taskProvider;
             this.HistoryProvider = historyProvider;
+            this.SettingsProvider = settingsProvider;
 
             this.Tasks = taskProvider.GetAll().Select(this.CreateMetadata).ToList();
-        }
-
-        public void Execute()
-        {
-            this.Tasks.ForEach(t => this.RunTask(t.Task));
-        }
-
-        public void Terminate()
-        {
-            // TODO: how to do this if possible...
         }
         
         public bool Add(ITask task)
@@ -77,11 +73,16 @@
                 return false;
             }
 
+            // remove traces of the task itself
             this.Tasks.Remove(metadata);
             this.TaskProvider.Delete(task);
 
-            metadata.Dispose();
+            // remove the settings the task is tied to
+            this.SettingsProvider.Delete(task);
 
+            metadata.Dispose();
+            
+            // keep the history
             this.HistoryProvider.Log(task, LogTaskType.Deleted, "Task was removed.");
 
             return true;
