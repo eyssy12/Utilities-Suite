@@ -69,12 +69,7 @@
 
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

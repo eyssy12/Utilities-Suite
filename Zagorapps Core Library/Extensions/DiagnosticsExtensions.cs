@@ -5,11 +5,11 @@
 
     public static class DiagnosticsExtensions
     {
-        public static bool IsProcessRunning(this Process process)
+        public static bool IsProcessRunning(this int processId)
         {
             try
             {
-                Process.GetProcessById(process.Id);
+                Process.GetProcessById(processId);
             }
             catch (InvalidOperationException)
             {
@@ -21,6 +21,11 @@
             }
 
             return true;
+        }
+
+        public static bool IsProcessRunning(this Process process)
+        {
+            return process.Id.IsProcessRunning();
         }
         
         public static string GetTotalProcessorTime(this Process process)

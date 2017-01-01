@@ -101,7 +101,7 @@
             this.KnownClients.ForEach(c => this.server.SendAsync(datagram, this.PacketSize, c.Value));
         }
 
-        public bool Send(IDataMessage message)
+        public bool Send(string to, IDataMessage message)
         {
             return true; // TODO: implement
         }

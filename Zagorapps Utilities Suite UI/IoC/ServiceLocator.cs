@@ -1,6 +1,7 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.IoC
 {
     using System;
+    using Audio.Configuration.Library;
     using Bluetooth.Configuration.Library;
     using Configuration.Library;
     using Configuration.Library.Extensions;
@@ -16,11 +17,15 @@
         {
             ServiceLocator.Container = new Container();
 
-            UiBindings ui = new UiBindings();
-            BluetoothBindings bluetooth = new BluetoothBindings();
-            CommonBindings common = new CommonBindings();
+            BindingsBase[] bindings = new BindingsBase[]
+            {
+                new CommonBindings(),
+                new UiBindings(),
+                new BluetoothBindings(),
+                new AudioBindings()
+            };
 
-            ServiceLocator.Container.RegisterBindings(ui, bluetooth, common);
+            ServiceLocator.Container.RegisterBindings(bindings);
 
             ServiceLocator.locked = false;
         }

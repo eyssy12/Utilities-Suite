@@ -1,6 +1,5 @@
 ﻿namespace Zagorapps.Core.Library.Windows
 {
-    using System;
     using System.Diagnostics;
 
     public class WinSystemService : IWinSystemService

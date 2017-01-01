@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}</ProjectGuid>
+    <ProjectGuid>{6BA8A2F2-041E-4E06-B0F8-CA0DEA738A9D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zagorapps.Utilities.Suite.Library</RootNamespace>
-    <AssemblyName>Zagorapps.Utilities.Suite.Library</AssemblyName>
+    <RootNamespace>Zagorapps.Audio.Library</RootNamespace>
+    <AssemblyName>Zagorapps.Audio.Library</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,42 +30,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\DefaultNavigatableAttribute.cs" />
-    <Compile Include="Attributes\NavigatableAttribute.cs" />
-    <Compile Include="Attributes\SuiteAttribute.cs" />
-    <Compile Include="Communications\IReceiveSuiteData.cs" />
-    <Compile Include="Communications\ISendSuiteData.cs" />
-    <Compile Include="Communications\IUtilitiesDataMessage.cs" />
-    <Compile Include="Communications\UtilitiesDataMessage.cs" />
-    <Compile Include="Enumerations.cs" />
-    <Compile Include="Exceptions\ViewNotFoundException.cs" />
-    <Compile Include="Interop\IInteropHandle.cs" />
-    <Compile Include="Interop\InteropHandle.cs" />
+    <Compile Include="Managers\AudioManager.cs" />
+    <Compile Include="Managers\IAudioManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Zagorapps Core Library\Zagorapps Core Library.csproj">
-      <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
-      <Name>Zagorapps Core Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zagorapps Utilities Library\Zagorapps Utilities Library.csproj">
-      <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
-      <Name>Zagorapps Utilities Library</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -14,7 +14,8 @@
         private List<string> prohibits;
 
         private int totalProcesses;
-        private string filter;
+        private int volume;
+        private string filter, muteButtonText;
 
         private bool controlsEnabled;
 
@@ -24,17 +25,24 @@
             this.prohibits = new List<string>();
             this.totalProcesses = this.processes.Count();
             this.filter = string.Empty;
-            this.controlsEnabled = true; //TODO: might change if i allow save/load feature
+            this.controlsEnabled = true; //TODO: will change if i allow save/load feature
         }
 
         public ICommand InvokeSystemOperation { get; set; }
 
         public ICommand AddProhibitCommand { get; set; }
 
+        public ICommand MuteAudioCommand { get; set; }
+
         public bool ControlsEnabled
         {
             get { return this.controlsEnabled; }
             set { this.SetFieldIfChanged(ref this.controlsEnabled, value, nameof(this.ControlsEnabled)); }
+        }
+
+        public void RemoveStaleProcesses()
+        {
+            this.Processes.RemoveAll(p => !p.ProcessId.IsProcessRunning());
         }
 
         public void AddProcesses(IEnumerable<ProcessViewModel> processes)
@@ -70,11 +78,11 @@
             {
                 if (string.IsNullOrWhiteSpace(this.Filter))
                 {
-                    return this.processes;
+                    return this.Processes;
                 }
                 else
                 {
-                    return this.processes.Where(p => p.ProcessName.Contains(this.Filter, StringComparison.OrdinalIgnoreCase));
+                    return this.Processes.Where(p => p.ProcessName.Contains(this.Filter, StringComparison.OrdinalIgnoreCase));
                 }
             }
         }
@@ -109,8 +117,9 @@
         public int TotalProcesses
         {
             get { return this.totalProcesses; }
+            set { this.SetFieldIfChanged(ref this.totalProcesses, value, nameof(this.TotalProcesses)); }
         }
-
+        
         public string Filter
         {
             get { return this.filter; }
@@ -122,24 +131,33 @@
             }
         }
 
+        public int Volume
+        {
+            get { return this.volume; }
+            set { this.SetFieldIfChanged(ref this.volume, value, nameof(this.Volume)); }
+        }
+
+        public string MuteButtonText
+        {
+            get { return this.muteButtonText; }
+            set { this.SetFieldIfChanged(ref this.muteButtonText, value, nameof(this.MuteButtonText)); }
+        }
+
         public void VerifyControlsAvailability()
         {
-            if (this.processes.Any(p => this.prohibits.Contains(p.ProcessName)))
+            if (this.Processes.Any(p => this.prohibits.Contains(p.ProcessName)))
             {
-                this.controlsEnabled = false;
+                this.ControlsEnabled = false;
             }
             else
             {
-                this.controlsEnabled = true;
+                this.ControlsEnabled = true;
             }
-
-            this.OnPropertyChanged(nameof(this.ControlsEnabled));
         }
 
         private void AdjustTotalProcessesCount()
         {
-            this.totalProcesses = this.processes.Count();
-            this.OnPropertyChanged(nameof(this.TotalProcesses));
+            this.TotalProcesses = this.Processes.Count();
         }
     }
 }

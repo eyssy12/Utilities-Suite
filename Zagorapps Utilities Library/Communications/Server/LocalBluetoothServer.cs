@@ -83,16 +83,16 @@
             this.Clients.ForEach(c => c.Value.Send(message));
         }
 
-        public bool Send(IDataMessage message)
+        public bool Send(string to, IDataMessage message)
         {
             if (message == null)
             {
                 throw new ArgumentNullException(nameof(message), "Data message not provided.");
             }
 
-            if (this.Clients.ContainsKey(message.From)) // TODO: misleading, should pass in a string value as the "To" representation.
+            if (this.Clients.ContainsKey(to))
             {
-                INetworkConnection connection = this.Clients[message.From];
+                INetworkConnection connection = this.Clients[to];
 
                 connection.Send(message);
 

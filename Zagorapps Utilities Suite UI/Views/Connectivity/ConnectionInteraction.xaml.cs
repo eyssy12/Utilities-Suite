@@ -75,6 +75,9 @@
             Console.WriteLine(ViewName + " - finalised");
         }
 
+        // TODO: internal messaging protocol is a mess - need to come up with a protocol (custom objects extending from BasicDataMessage) and refactor all "Process Message" implementations
+        // i.e. ClientBroadcastMessage
+        // i.e. TargetClientMessage
         public override void ProcessMessage(IUtilitiesDataMessage data)
         {
             string received = data.Data.ToString();
@@ -83,7 +86,23 @@
             {
                 string[] split = received.Split(':');
 
-                this.localServer.Send(new BasicDataMessage(split[0], split[1]));
+                // this.localServer.Send(message.From, new BasicDataMessage(ConnectionInteraction.ViewName, "SyncResponse:sync_data"));
+
+                if (split.Length == 2)
+                {
+                    this.localServer.Send(split[0], new BasicDataMessage(ConnectionInteraction.ViewName, split[1]));
+                }
+                else if (split.Length == 3) // index 0 = "br" = broadcast
+                {
+                    if (split[0] == "br")
+                    {
+                        this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, split[1] + ":" + split[2]));
+                    }
+                    else
+                    {
+                        this.localServer.Send(split[0], new BasicDataMessage(ConnectionInteraction.ViewName, split[1] + ":" + split[2]));
+                    }
+                }
             }
             else if (received == "machine_locked" || received == "machine_unlocked")
             {
@@ -141,6 +160,14 @@
                 else if (data.Contains("lock"))
                 {
                     this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
+                }
+                else if (data == "SyncRequest")
+                {
+                    // this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":syncClient");
+                }
+                else if (data == "SyncResponseAck")
+                {
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), data);
                 }
                 else if (data == ServerCommand.Backspace.ToString())
                 {

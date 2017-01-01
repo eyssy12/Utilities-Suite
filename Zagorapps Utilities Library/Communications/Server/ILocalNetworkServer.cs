@@ -18,6 +18,6 @@
 
         void Broadcast(IDataMessage message);
 
-        bool Send(IDataMessage message);
+        bool Send(string to, IDataMessage message);
     }
 }

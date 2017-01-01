@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel;
     using System.Windows;
+    using Library.Interop;
     using Managers;
     using Navigation;
     using Services;
@@ -50,6 +51,11 @@
         public IViewControl ActiveView
         {
             get { return this.SuiteManager.ActiveSuiteView; }
+        }
+
+        public IInteropHandle InteropHandle
+        {
+            get { return this.Factory.Create<IInteropHandle>(); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

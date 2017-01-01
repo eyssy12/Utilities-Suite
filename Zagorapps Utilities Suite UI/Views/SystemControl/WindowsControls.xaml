@@ -16,6 +16,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:ViewControlBase.Resources>
@@ -24,8 +25,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -110,8 +111,41 @@
         </Grid>
 
         <Border Margin="16" Grid.Row="1" Grid.Column="0" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
-        
-        <Grid Grid.Row="2" Grid.Column="0" Grid.RowSpan="2147483647" >
+
+        <Grid Margin="16" Grid.Row="2" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Slider Name="Slider_Volume"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Minimum="0"
+                    Maximum="100"
+                    TickPlacement="TopLeft"
+                    TickFrequency="1"
+                    Value="{Binding ViewModel.Volume}"
+                    ValueChanged="Slider_Volume_ValueChanged"
+                    Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    ToolTip="System Volume"/>
+
+            <Button Command="{Binding ViewModel.MuteAudioCommand}"
+                    Margin="8"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Content="{Binding ViewModel.MuteButtonText}" />
+        </Grid>
+
+        <Border Margin="16" Grid.Row="3" Grid.Column="0" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+
+        <Grid Grid.Row="4" Grid.Column="0" Grid.RowSpan="2147483647" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />

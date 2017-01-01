@@ -204,7 +204,7 @@
 
         protected virtual void RegisterWindows()
         {
-            this.Register<IMainWindow, MainWindow>();
+            this.Register<IMainWindow, MainWindow>(lifestyle: Lifestyle.Singleton);
         }
 
         protected virtual void RegisterViews()
