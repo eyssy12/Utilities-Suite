@@ -109,6 +109,7 @@
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="Commands\ICommandProvider.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Comparators\ProcessViewModelComparator.cs" />
     <Compile Include="Controls\ContentControlBehaviour.cs" />
     <Compile Include="Controls\DataFacilitatorViewControlBase.cs" />
     <Compile Include="Controls\IDataFacilitatorViewControl.cs" />

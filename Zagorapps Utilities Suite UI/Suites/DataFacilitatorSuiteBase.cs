@@ -15,7 +15,7 @@
     {
         private readonly IEnumerable<IReceiveSuiteData> receivers;
         private readonly IEnumerable<ISendSuiteData> senders;
-        private readonly IEnumerable<IDataFacilitatorViewControl> dataViews;
+        private readonly IEnumerable<IDataFacilitatorViewControl> dataFacilitatorViews;
 
         private readonly SuiteRoute route;
 
@@ -24,7 +24,7 @@
         {
             this.route = route;
 
-            this.dataViews = this.Navigatables.OfType<IDataFacilitatorViewControl>();
+            this.dataFacilitatorViews = this.Navigatables.OfType<IDataFacilitatorViewControl>();
             this.receivers = receivers ?? Enumerable.Empty<IReceiveSuiteData>();
             this.senders = senders ?? Enumerable.Empty<ISendSuiteData>();
         }
@@ -38,28 +38,37 @@
 
         public bool Start()
         {
-            this.receivers.ForEach(e =>
+            if (this.dataFacilitatorViews.Any())
             {
-                e.MessageReceived += this.Receiver_MessageReceived;
-                e.Start();
-            });
+                this.receivers.ForEach(e =>
+                {
+                    e.MessageReceived += this.Receiver_MessageReceived;
+                    e.Start();
+                });
 
-            this.dataViews.ForEach(dataView => dataView.DataSendRequest += this.DataView_DataSendRequest);
+                this.dataFacilitatorViews.ForEach(dataView => dataView.DataSendRequest += this.DataView_DataSendRequest);
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
 
         public bool Stop()
         {
-            this.receivers.ForEach(e =>
+            if (this.dataFacilitatorViews.Any())
             {
-                e.Stop();
-                e.MessageReceived -= this.Receiver_MessageReceived;
-            });
+                this.receivers.ForEach(e =>
+                {
+                    e.Stop();
+                    e.MessageReceived -= this.Receiver_MessageReceived;
+                });
 
-            this.dataViews.ForEach(dataView => dataView.DataSendRequest -= this.DataView_DataSendRequest);
+                this.dataFacilitatorViews.ForEach(dataView => dataView.DataSendRequest -= this.DataView_DataSendRequest);
 
-            return true;
+                return true;
+            }
+            return false;
         }
 
         public void Send(IDataMessage data)
@@ -81,7 +90,7 @@
 
         protected void HandleNeighbouringSend(IUtilitiesDataMessage message)
         {
-            IDataFacilitatorViewControl view = this.dataViews.FirstOrDefault(d => d.Identifier == message.ViewDestination);
+            IDataFacilitatorViewControl view = this.dataFacilitatorViews.FirstOrDefault(d => d.Identifier == message.ViewDestination);
 
             if (view != null)
             {

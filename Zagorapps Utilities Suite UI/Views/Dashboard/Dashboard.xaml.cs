@@ -36,7 +36,7 @@
                 {
                     Identifier = a.Item1.Name,
                     FriendlyName = (index + 1) + " - " + a.Item1.FriendlyName,
-                    ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param))
+                    ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(this.SuiteService.ChangeSuite)
                 })
                 .ToArray();
 
@@ -58,13 +58,9 @@
             Console.WriteLine(ViewName + " - View finalised");
         }
 
-        private void ChangeSuite(string identifier)
+        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
         {
-            this.SuiteService.ChangeSuite(identifier);
-        }
-
-        public override void ProcessMessage(IUtilitiesDataMessage data)
-        {
+            // TODO: perhaps implement logic for displaying the amount of new events that have occured in the suite since the users last visit to it
         }
     }
 }

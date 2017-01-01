@@ -9,6 +9,7 @@
     using Audio.Library.Events;
     using Audio.Library.Managers;
     using Commands;
+    using Comparators;
     using Connectivity;
     using Core.Library.Events;
     using Core.Library.Timing;
@@ -35,7 +36,7 @@
         protected readonly ITimer Timer;
 
         protected readonly WindowsControlsViewModel Model;
-        protected readonly ProcessComparer LocalProcessComparer;
+        protected readonly ProcessViewModelComparator ProcessComparer;
 
         private bool initialSyncWithClientPerformed;
 
@@ -49,15 +50,15 @@
             this.InteropHandle = this.Factory.Create<IInteropHandle>();
             this.Timer = this.Factory.Create<ITimer>();
 
-            this.AudioManager.OnVolumeChanged += AudioManager_OnVolumeChanged;
+            this.AudioManager.OnVolumeChanged += this.AudioManager_OnVolumeChanged;
+
+            this.ProcessComparer = new ProcessViewModelComparator();
 
             this.Model = new WindowsControlsViewModel();
             this.Model.AddProhibitCommand = this.CommandProvider.CreateRelayCommand<string>(this.Model.AddProhibit);
             this.Model.MuteAudioCommand = this.CommandProvider.CreateRelayCommand(this.MuteAudio);
             this.Model.MuteButtonText = this.AudioManager.IsMuted ? "Unmute" : "Mute";
             this.Model.Volume = this.AudioManager.Volume;
-
-            this.LocalProcessComparer = new ProcessComparer();
 
             SystemEvents.SessionSwitch += this.SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += this.SystemEvents_SessionEnding;
@@ -106,7 +107,7 @@
             this.Timer.TimeElapsed -= Timer_TimeElapsed;
         }
 
-        public override void ProcessMessage(IUtilitiesDataMessage data)
+        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
         {
             string messageData = data.Data.ToString();
 
@@ -221,7 +222,7 @@
                         ProcessName = p.ProcessName,
                         TimeRunning = "-1" //this.GetTotalProcessorTime(p)
                                 })
-                    .Except(this.Model.Processes, this.LocalProcessComparer);
+                    .Except(this.Model.Processes, this.ProcessComparer);
 
                 this.Model.RemoveStaleProcesses();
                 this.Model.AddProcesses(disctint);
@@ -249,19 +250,6 @@
             this.AudioManager.IsMuted = false;
 
             this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.Volume);
-        }
-
-        protected sealed class ProcessComparer : IEqualityComparer<ProcessViewModel>
-        {
-            public bool Equals(ProcessViewModel x, ProcessViewModel y)
-            {
-                return x.ProcessName == y.ProcessName;
-            }
-
-            public int GetHashCode(ProcessViewModel obj)
-            {
-                return 0;
-            }
         }
     }
 }
