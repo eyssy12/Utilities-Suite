@@ -86,7 +86,6 @@
 
                 IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
                 {
-                    new NoBluetoothAvailable(factory, commandProvider),
                     new ConnectionInteraction(factory, commandProvider)
                 };
 
