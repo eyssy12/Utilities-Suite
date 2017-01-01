@@ -10,7 +10,6 @@
     using Controls;
     using Events;
     using Library.Attributes;
-    using MaterialDesignThemes.Wpf;
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
@@ -50,10 +49,10 @@
 
         public override void InitialiseView(object arg)
         {
-            if (arg != null)
-            {
-                EventArgs<ITask, bool> eventArgs = arg as EventArgs<ITask, bool>;
+            EventArgs<ITask, bool> eventArgs = arg as EventArgs<ITask, bool>;
 
+            if (eventArgs != null)
+            {
                 ITask task = eventArgs.First;
                 bool immediateStart = eventArgs.Second;
 
@@ -69,9 +68,9 @@
                 {
                     this.Notifier.Notify(string.Format(UiResources.Message_TaskAdded, task.Identity));
                 }
-            }
 
-            this.OnPropertyChanged(nameof(this.Tasks));
+                this.OnPropertyChanged(nameof(this.Tasks));
+            }
         }
 
         public override void FinaliseView()

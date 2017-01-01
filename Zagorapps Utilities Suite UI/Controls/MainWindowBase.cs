@@ -26,26 +26,11 @@
             this.SuiteService = this.Factory.Create<ISuiteService>();
             this.SuiteManager = this.Factory.Create<IDataFacilitatorSuiteManager>();
 
-            this.SuiteManager.OnSuiteChanged += SuiteManager_OnSuiteChanged;
-            this.SuiteManager.OnSuiteViewChanged += SuiteManager_OnSuiteViewChanged;
-            this.SuiteService.OnSuiteChangeRequested += SuiteService_OnSuiteChangeRequested;
+            this.SuiteManager.OnSuiteChanged += this.SuiteManager_OnSuiteChanged;
+            this.SuiteManager.OnSuiteViewChanged += this.SuiteManager_OnSuiteViewChanged;
+            this.SuiteService.OnSuiteChangeRequested += this.SuiteService_OnSuiteChangeRequested;
 
             this.SuiteManager.Start();
-        }
-
-        private void SuiteService_OnSuiteChangeRequested(object sender, EventArgs<string> e)
-        {
-            this.SuiteManager.Navigate(e.First, null);
-        }
-
-        private void SuiteManager_OnSuiteViewChanged(object sender, EventArgs<IViewControl, object> e)
-        {
-            this.OnPropertyChanged(nameof(this.ActiveView));
-        }
-
-        private void SuiteManager_OnSuiteChanged(object sender, EventArgs<ISuite, object> e)
-        {
-            this.OnPropertyChanged(nameof(this.ActiveView));
         }
 
         public IViewControl ActiveView
@@ -76,6 +61,21 @@
         public virtual void CloseWindow()
         {
             this.Close();
+        }
+
+        protected virtual void SuiteService_OnSuiteChangeRequested(object sender, EventArgs<string> e)
+        {
+            this.SuiteManager.Navigate(e.First, null);
+        }
+
+        protected virtual void SuiteManager_OnSuiteViewChanged(object sender, EventArgs<IViewControl, object> e)
+        {
+            this.OnPropertyChanged(nameof(this.ActiveView));
+        }
+
+        protected virtual void SuiteManager_OnSuiteChanged(object sender, EventArgs<ISuite, object> e)
+        {
+            this.OnPropertyChanged(nameof(this.ActiveView));
         }
 
         protected void OnPropertyChanged(string name)

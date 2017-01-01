@@ -61,14 +61,12 @@
                             Header="State"
                             IsReadOnly="True" />
 
-                        <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
                         <materialDesign:MaterialDataGridTextColumn
                             Binding="{Binding TaskType}"
                             MinWidth="100"
                             Header="Type"
                             IsReadOnly="True" />
 
-                        <!-- set a max length to get an indicator in the editor -->
                         <materialDesign:MaterialDataGridTextColumn
                             Binding="{Binding Description}"
                             Header="Description"
