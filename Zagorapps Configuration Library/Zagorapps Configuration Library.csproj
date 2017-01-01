@@ -84,6 +84,10 @@
       <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
       <Name>Zagorapps Core Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zagorapps Utilities Suite Library\Zagorapps Utilities Suite Library.csproj">
+      <Project>{E9E63EDB-A33C-47B7-960F-F26225922A86}</Project>
+      <Name>Zagorapps Utilities Suite Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
