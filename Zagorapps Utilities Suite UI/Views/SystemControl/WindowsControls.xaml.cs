@@ -3,8 +3,10 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
+    using Audio.Library.Events;
     using Audio.Library.Managers;
     using Commands;
     using Connectivity;
@@ -47,6 +49,8 @@
             this.InteropHandle = this.Factory.Create<IInteropHandle>();
             this.Timer = this.Factory.Create<ITimer>();
 
+            this.AudioManager.OnVolumeChanged += AudioManager_OnVolumeChanged;
+
             this.Model = new WindowsControlsViewModel();
             this.Model.AddProhibitCommand = this.CommandProvider.CreateRelayCommand<string>(this.Model.AddProhibit);
             this.Model.MuteAudioCommand = this.CommandProvider.CreateRelayCommand(this.MuteAudio);
@@ -59,6 +63,12 @@
             SystemEvents.SessionEnding += this.SystemEvents_SessionEnding;
 
             this.DataContext = this;
+        }
+
+        private void AudioManager_OnVolumeChanged(object sender, VolumeChangeEvent e)
+        {
+            this.Model.MuteButtonText = e.IsMuted ? "Unmute" : "Mute";
+            this.Model.Volume = e.Volume;
         }
 
         private void MuteAudio()
@@ -182,19 +192,22 @@
 
         private void Timer_TimeElapsed(object sender, EventArgs<int> e)
         {
-            var disctint = Process
-                .GetProcesses()
-                .Select(p => new ProcessViewModel
-                {
-                    ProcessId = p.Id,
-                    ProcessName = p.ProcessName,
-                    TimeRunning = "-1" //this.GetTotalProcessorTime(p)
-                })
-                .Except(this.Model.Processes, this.LocalProcessComparer);
+            Task.Run(() =>
+            {
+                IEnumerable<ProcessViewModel> disctint = Process
+                    .GetProcesses()
+                    .Select(p => new ProcessViewModel
+                    {
+                        ProcessId = p.Id,
+                        ProcessName = p.ProcessName,
+                        TimeRunning = "-1" //this.GetTotalProcessorTime(p)
+                                })
+                    .Except(this.Model.Processes, this.LocalProcessComparer);
 
-            this.Model.RemoveStaleProcesses();
-            this.Model.AddProcesses(disctint);
-            this.Model.VerifyControlsAvailability();
+                this.Model.RemoveStaleProcesses();
+                this.Model.AddProcesses(disctint);
+                this.Model.VerifyControlsAvailability();
+            });
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
