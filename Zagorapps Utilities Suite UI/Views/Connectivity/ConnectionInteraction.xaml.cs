@@ -301,13 +301,13 @@
 
         private void StopService()
         {
-            Thread.Sleep(1000);
-
             this.localServer.Stop();
             this.localServer.MessageReceived -= this.Server_MessageReceived;
             this.localServer.ClientConnected -= this.Server_ClientConnected;
             this.localServer.ClientDisconnected -= this.Server_ClientDisconnected;
             this.localServer.Dispose();
+
+            Thread.Sleep(1000);
         }
     }
 }
