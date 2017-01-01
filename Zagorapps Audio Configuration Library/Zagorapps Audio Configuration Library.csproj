@@ -48,6 +48,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Zagorapps Audio Library\Zagorapps Audio Library.csproj">
+      <Project>{6BA8A2F2-041E-4E06-B0F8-CA0DEA738A9D}</Project>
+      <Name>Zagorapps Audio Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zagorapps Configuration Library\Zagorapps Configuration Library.csproj">
       <Project>{B9AD6C67-B9C3-45DC-A666-08820523B347}</Project>
       <Name>Zagorapps Configuration Library</Name>
