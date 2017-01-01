@@ -2,7 +2,7 @@
 {
     using Library.Communications;
     using Library.Communications.Suite;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
 
     public interface IDataFacilitatorSuite : ISuite, IReceiveSuiteData, ISendData
     {

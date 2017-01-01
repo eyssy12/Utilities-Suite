@@ -4,7 +4,7 @@
     using Library.Attributes;
     using Library.Communications.Suite;
     using Navigation;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
 
     [Suite(SystemSuite.Name, "System Control")]
     public class SystemSuite : DataFacilitatorSuiteBase

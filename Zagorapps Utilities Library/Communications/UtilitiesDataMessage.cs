@@ -1,10 +1,9 @@
-﻿namespace Zagorapps.Utilities.Library.Communications
+﻿namespace Zagorapps.Utilities.Suite.Library.Communications
 {
     using System;
     using System.Runtime.Serialization;
     using System.Security.Permissions;
     using Core.Library.Communications;
-    using Utilities.Library;
 
     [Serializable]
     public class UtilitiesDataMessage : BasicDataMessage, IUtilitiesDataMessage

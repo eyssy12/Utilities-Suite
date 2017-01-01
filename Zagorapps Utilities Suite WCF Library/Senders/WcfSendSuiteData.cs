@@ -7,9 +7,9 @@
     using Core.Library.Communications;
     using Providers;
     using Services;
-    using Utilities.Library;
-    using Utilities.Library.Communications;
-    using Utilities.Library.Communications.Suite;
+    using Utilities.Suite.Library;
+    using Utilities.Suite.Library.Communications;
+    using Utilities.Suite.Library.Communications.Suite;
 
     public class WcfSendSuiteData : ISendSuiteData
     {

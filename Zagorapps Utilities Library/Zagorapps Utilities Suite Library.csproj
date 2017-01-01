@@ -7,8 +7,8 @@
     <ProjectGuid>{E9E63EDB-A33C-47B7-960F-F26225922A86}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zagorapps.Utilities.Library</RootNamespace>
-    <AssemblyName>Zagorapps.Utilities.Library</AssemblyName>
+    <RootNamespace>Zagorapps.Utilities.Suite.Library</RootNamespace>
+    <AssemblyName>Zagorapps.Utilities.Suite.Library</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

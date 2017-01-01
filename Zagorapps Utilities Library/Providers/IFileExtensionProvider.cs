@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library.Providers
+﻿namespace Zagorapps.Utilities.Suite.Library.Providers
 {
     using System.Collections.Generic;
     using Models.Organiser;

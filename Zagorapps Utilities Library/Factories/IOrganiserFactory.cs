@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library.Factories
+﻿namespace Zagorapps.Utilities.Suite.Library.Factories
 {
     using Core.Library.Factories;
 

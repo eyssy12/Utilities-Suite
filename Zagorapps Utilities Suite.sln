@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{27B033A6
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Library", "Zagorapps Utilities Library\Zagorapps Utilities Library.csproj", "{E9E63EDB-A33C-47B7-960F-F26225922A86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Suite Library", "Zagorapps Utilities Library\Zagorapps Utilities Suite Library.csproj", "{E9E63EDB-A33C-47B7-960F-F26225922A86}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zagorapps Utilities Suite WCF Library", "Zagorapps Utilities Suite WCF Library\Zagorapps Utilities Suite WCF Library.csproj", "{223BC2FB-2039-46AE-8620-948045B76B0D}"
 EndProject

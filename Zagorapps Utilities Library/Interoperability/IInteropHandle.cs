@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library.Interoperability
+﻿namespace Zagorapps.Utilities.Suite.Library.Interoperability
 {
     using System;
 

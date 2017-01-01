@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library.Tasks
+﻿namespace Zagorapps.Utilities.Suite.Library.Tasks
 {
     using System;
     using Core.Library.Events;

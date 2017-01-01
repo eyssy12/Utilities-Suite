@@ -20,9 +20,9 @@
     using Library.Communications;
     using Services;
     using SystemControl;
-    using Utilities.Library.Communications.Server;
-    using Utilities.Library.Factories;
-    using Utilities.Library.Providers;
+    using Utilities.Suite.Library.Communications.Server;
+    using Utilities.Suite.Library.Factories;
+    using Utilities.Suite.Library.Providers;
     using ViewModels;
     using WindowsInput;
     using WindowsInput.Native;

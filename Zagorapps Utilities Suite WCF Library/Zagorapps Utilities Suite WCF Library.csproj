@@ -57,9 +57,9 @@
       <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
       <Name>Zagorapps Core Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zagorapps Utilities Library\Zagorapps Utilities Library.csproj">
+    <ProjectReference Include="..\Zagorapps Utilities Library\Zagorapps Utilities Suite Library.csproj">
       <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
-      <Name>Zagorapps Utilities Library</Name>
+      <Name>Zagorapps Utilities Suite Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

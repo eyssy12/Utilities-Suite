@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library.Communications.Suite
+﻿namespace Zagorapps.Utilities.Suite.Library.Communications.Suite
 {
     using System;
     using Core.Library.Events;

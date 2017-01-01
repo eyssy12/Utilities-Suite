@@ -10,7 +10,7 @@
     using Library.Communications;
     using Library.Communications.Suite;
     using Navigation;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
 
     public abstract class DataFacilitatorSuiteBase : SuiteBase, IDataFacilitatorSuite
     {

@@ -13,9 +13,9 @@
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Utilities.Library.Factories;
-    using Zagorapps.Utilities.Library.Managers;
-    using Zagorapps.Utilities.Library.Tasks;
+    using Zagorapps.Utilities.Suite.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Managers;
+    using Zagorapps.Utilities.Suite.Library.Tasks;
 
     [DefaultNavigatable(Home.ViewName)]
     public partial class Home : ViewControlBase

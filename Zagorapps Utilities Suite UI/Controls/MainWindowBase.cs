@@ -9,7 +9,7 @@
     using Services;
     using Suites;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Factories;
 
     public abstract class MainWindowBase : Window, IMainWindow
     {

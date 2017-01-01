@@ -5,8 +5,8 @@
     using Commands;
     using Core.Library.Events;
     using Library.Communications;
-    using Utilities.Library;
-    using Utilities.Library.Factories;
+    using Utilities.Suite.Library;
+    using Utilities.Suite.Library.Factories;
 
     public abstract class DataFacilitatorViewControlBase : ViewControlBase, IDataFacilitatorViewControl
     {

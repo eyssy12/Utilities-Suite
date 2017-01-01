@@ -4,7 +4,7 @@
     using Library.Attributes;
     using Library.Communications.Suite;
     using Navigation;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
 
     [Suite(ConnectivitySuite.Name, "Connectivity")]
     public class ConnectivitySuite : DataFacilitatorSuiteBase

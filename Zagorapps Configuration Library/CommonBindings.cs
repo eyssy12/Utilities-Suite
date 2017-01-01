@@ -6,7 +6,7 @@
     using Core.Library.Windows;
     using Core.Library.Windows.Registry;
     using SimpleInjector;
-    using Utilities.Library.Factories;
+    using Utilities.Suite.Library.Factories;
 
     public class CommonBindings : BindingsBase
     {

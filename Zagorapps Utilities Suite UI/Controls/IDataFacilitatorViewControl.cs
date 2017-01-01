@@ -4,7 +4,7 @@
     using Core.Library.Events;
     using Library.Communications;
     using Navigation;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
 
     public interface IDataFacilitatorViewControl : IViewControl
     {

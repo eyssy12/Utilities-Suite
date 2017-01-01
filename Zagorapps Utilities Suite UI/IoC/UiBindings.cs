@@ -12,7 +12,7 @@
     using Services;
     using SimpleInjector;
     using Suites;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
     using Views.Connectivity;
     using Views.Dashboard;
     using Views.Organiser;
@@ -23,10 +23,10 @@
     using WindowsInput;
     using Zagorapps.Configuration.Library;
     using Zagorapps.Core.Library.Managers;
-    using Zagorapps.Utilities.Library.Factories;
-    using Zagorapps.Utilities.Library.Managers;
-    using Zagorapps.Utilities.Library.Models.Organiser;
-    using Zagorapps.Utilities.Library.Providers;
+    using Zagorapps.Utilities.Suite.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Managers;
+    using Zagorapps.Utilities.Suite.Library.Models.Organiser;
+    using Zagorapps.Utilities.Suite.Library.Providers;
     using FileIO = System.IO.File;
     using IWcfCommunicationsProvider = Zagorapps.Utilities.Suite.WCF.Library.Providers.ICommunicationsProvider;
     using PathIO = System.IO.Path;

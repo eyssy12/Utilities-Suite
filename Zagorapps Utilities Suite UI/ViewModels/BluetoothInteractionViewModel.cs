@@ -9,7 +9,7 @@
     using System.Windows.Input;
     using Controls;
     using Core.Library.Extensions;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
 
     public class BluetoothInteractionViewModel : ViewModelBase
     {

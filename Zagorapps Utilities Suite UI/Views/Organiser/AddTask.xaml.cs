@@ -16,12 +16,12 @@
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Core.Library.Managers;
     using Zagorapps.Core.Library.Timing;
-    using Zagorapps.Utilities.Library;
-    using Zagorapps.Utilities.Library.Factories;
-    using Zagorapps.Utilities.Library.Managers;
-    using Zagorapps.Utilities.Library.Models.Settings;
-    using Zagorapps.Utilities.Library.Providers;
-    using Zagorapps.Utilities.Library.Tasks;
+    using Zagorapps.Utilities.Suite.Library;
+    using Zagorapps.Utilities.Suite.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Managers;
+    using Zagorapps.Utilities.Suite.Library.Models.Settings;
+    using Zagorapps.Utilities.Suite.Library.Providers;
+    using Zagorapps.Utilities.Suite.Library.Tasks;
 
     [Navigatable(AddTask.ViewName)]
     public partial class AddTask : ViewControlBase

@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library.Communications.Server
+﻿namespace Zagorapps.Utilities.Suite.Library.Communications.Server
 {
     using System;
     using System.Collections.Concurrent;

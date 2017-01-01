@@ -1,7 +1,6 @@
-﻿namespace Zagorapps.Utilities.Library.Communications
+﻿namespace Zagorapps.Utilities.Suite.Library.Communications
 {
     using Core.Library.Communications;
-    using Utilities.Library;
 
     public interface IUtilitiesDataMessage : IDataMessage
     {

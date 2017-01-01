@@ -1,4 +1,4 @@
-﻿namespace Zagorapps.Utilities.Library.Exceptions
+﻿namespace Zagorapps.Utilities.Suite.Library.Exceptions
 {
     using System;
     using System.Collections.Generic;

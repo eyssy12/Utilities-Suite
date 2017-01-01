@@ -7,9 +7,9 @@
     using Core.Library.Events;
     using Providers;
     using Services;
-    using Utilities.Library.Communications;
-    using Utilities.Library.Communications.Suite;
-    using Utilities.Library.Factories;
+    using Utilities.Suite.Library.Communications;
+    using Utilities.Suite.Library.Communications.Suite;
+    using Utilities.Suite.Library.Factories;
 
     public class WcfReceiveSuiteData : IReceiveSuiteData
     {

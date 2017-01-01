@@ -1,8 +1,5 @@
-﻿namespace Zagorapps.Utilities.Library.Communications.Suite
+﻿namespace Zagorapps.Utilities.Suite.Library.Communications.Suite
 {
-    using Utilities.Library;
-    using Utilities.Library.Communications;
-
     public interface ISendSuiteData : ISendData
     {
         SuiteRoute Route { get; }

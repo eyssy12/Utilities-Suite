@@ -19,7 +19,7 @@
     using Suites;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Factories;
 
     public partial class MainWindow : MainWindowBase
     {

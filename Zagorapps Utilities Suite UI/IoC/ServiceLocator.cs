@@ -6,7 +6,7 @@
     using Configuration.Library;
     using Configuration.Library.Extensions;
     using SimpleInjector;
-    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Factories;
 
     public static class ServiceLocator
     {

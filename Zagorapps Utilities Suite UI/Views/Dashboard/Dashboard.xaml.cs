@@ -9,7 +9,7 @@
     using Services;
     using Suites;
     using ViewModels;
-    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Commands;
     using Zagorapps.Utilities.Suite.UI.Controls;
 

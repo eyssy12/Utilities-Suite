@@ -8,7 +8,7 @@
     using MaterialDesignThemes.Wpf;
     using Services;
     using SimpleInjector;
-    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.IoC;
     using ApplicationMainWindow = Zagorapps.Utilities.Suite.UI.MainWindow;
 

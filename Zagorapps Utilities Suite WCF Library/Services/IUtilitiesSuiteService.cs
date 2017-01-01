@@ -4,7 +4,7 @@
     using System.ServiceModel;
     using Core.Library.Events;
     using Providers;
-    using Utilities.Library.Communications;
+    using Utilities.Suite.Library.Communications;
 
     [ServiceContract]
     [ServiceKnownType("GetTypes", typeof(KnownTypeProvider<UtilitiesDataMessage>))]

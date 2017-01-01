@@ -2,7 +2,7 @@
 {
     using System;
     using Controls;
-    using Utilities.Library;
+    using Utilities.Suite.Library;
 
     public class ConnectedClientViewModel : ViewModelBase
     {

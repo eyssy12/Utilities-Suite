@@ -3,8 +3,8 @@
     using System;
     using Controls;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Utilities.Library;
-    using Zagorapps.Utilities.Library.Tasks;
+    using Zagorapps.Utilities.Suite.Library;
+    using Zagorapps.Utilities.Suite.Library.Tasks;
 
     public class TaskViewModel : ViewModelBase
     {
