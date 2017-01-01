@@ -20,7 +20,7 @@
 
             this.DefaultView.IsActive = true;
             this.Navigatables.ForEach(e => e.OnChangeView += this.ChangeView);
-            this.OnNavigatableChanged += SuiteBase_OnNavigatableChanged;
+            this.OnNavigatableChanged += this.SuiteBase_OnNavigatableChanged;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

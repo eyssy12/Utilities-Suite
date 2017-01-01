@@ -16,7 +16,9 @@
 
         public TSettings Get<TSettings>(Guid identity) where TSettings : OrganiserSettingsBase
         {
-            return this.FileManager.Read(this.GenerateFilePath(identity), stream =>
+            return this.FileManager.Read(
+                this.GenerateFilePath(identity), 
+                stream =>
             {
                 return Serializer.Deserialize<TSettings>(stream);
             });
@@ -31,7 +33,10 @@
         {
             try
             {
-                this.FileManager.Serialize<TSettings>(this.GenerateFilePath(settings.Reference), settings, (stream, instance) =>
+                this.FileManager.Serialize<TSettings>(
+                    this.GenerateFilePath(settings.Reference),
+                    settings,
+                    (stream, instance) =>
                 {
                     Serializer.Serialize(stream, instance);
                 });
@@ -56,7 +61,6 @@
             {
                 return false;
             }
-            
         }
 
         public bool Delete(ITask task)

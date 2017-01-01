@@ -104,7 +104,7 @@
 
         protected void ViewTask_Click(object sender, RoutedEventArgs e)
         {
-            TaskViewModel task = ((sender as Button).DataContext as TaskViewModel);
+            TaskViewModel task = (sender as Button).DataContext as TaskViewModel;
 
             this.OnViewChange(ViewBag.GetViewName<IndividualTask>(), task);
         }

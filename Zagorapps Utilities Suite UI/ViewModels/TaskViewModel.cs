@@ -18,12 +18,7 @@
             }
 
             this.task = task;
-            this.task.StateChanged += Task_StateChanged;
-        }
-
-        private void Task_StateChanged(object sender, EventArgs<TaskState> e)
-        {
-            this.OnPropertyChanged(nameof(this.State));
+            this.task.StateChanged += this.Task_StateChanged;
         }
 
         public string Identity
@@ -54,6 +49,11 @@
         public ITask Reference
         {
             get { return this.task; }
+        }
+
+        private void Task_StateChanged(object sender, EventArgs<TaskState> e)
+        {
+            this.OnPropertyChanged(nameof(this.State));
         }
     }
 }

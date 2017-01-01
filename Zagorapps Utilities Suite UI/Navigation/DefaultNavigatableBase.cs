@@ -35,9 +35,9 @@
             this.DefaultNavigatable = defaultNavigatable.Single();
         }
 
-        public TNavigatable DefaultNavigatable { get; private set; }
-       
         protected event EventHandler<EventArgs<TNavigatable, object>> OnNavigatableChanged;
+
+        public TNavigatable DefaultNavigatable { get; private set; }
 
         protected void Navigate(TNavigatable navigatable, object args)
         {

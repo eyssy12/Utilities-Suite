@@ -19,10 +19,10 @@
     using Library.Attributes;
     using Library.Communications;
     using Services;
-    using SystemControl;
     using Utilities.Suite.Library.Communications.Server;
     using Utilities.Suite.Library.Factories;
     using Utilities.Suite.Library.Providers;
+    using Utilities.Suite.UI.Views.SystemControl;
     using ViewModels;
     using WindowsInput;
     using WindowsInput.Native;
@@ -81,7 +81,8 @@
         {
             string received = data.Data.ToString();
 
-            if (received.Contains(':')) // TODO: create a custom object instead of string split
+            // TODO: create a custom object instead of string split
+            if (received.Contains(':'))
             {
                 string[] split = received.Split(':');
 
@@ -91,8 +92,10 @@
                 {
                     this.localServer.Send(split[0], new BasicDataMessage(ConnectionInteraction.ViewName, split[1]));
                 }
-                else if (split.Length == 3) // index 0 = "br" = broadcast
+                else if (split.Length == 3)
                 {
+                    // index 0 = "br" = broadcast
+
                     if (split[0] == "br")
                     {
                         this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, split[1] + ":" + split[2]));
@@ -159,7 +162,6 @@
                         }
                         else
                         {
-
                             float xMovingUnits = float.Parse(dataSplit[0]);
                             float yMovingUnits = float.Parse(dataSplit[1]);
 

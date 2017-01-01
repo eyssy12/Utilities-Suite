@@ -107,7 +107,6 @@
 
         public override void InitialiseView(object arg)
         {
-            
         }
 
         public override void FinaliseView()

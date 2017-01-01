@@ -42,10 +42,13 @@
                 TaskType = task.TaskType
             };
 
-            this.FileManager.Serialize<TaskMetadata>(this.GenerateFilePath(task), metadata, (stream, entity) =>
-            {
-                Serializer.Serialize(stream, entity);
-            });
+            this.FileManager.Serialize<TaskMetadata>(
+                this.GenerateFilePath(task), 
+                metadata, 
+                (stream, entity) =>
+                {
+                    Serializer.Serialize(stream, entity);
+                });
         }
 
         public void Delete(ITask task)
@@ -86,7 +89,8 @@
                     metadata.Name, 
                     metadata.Description,
                     settingsProvider, 
-                    provider, fileManager, 
+                    provider,
+                    fileManager, 
                     directoryManager,
                     identity: metadata.Identity);
             }

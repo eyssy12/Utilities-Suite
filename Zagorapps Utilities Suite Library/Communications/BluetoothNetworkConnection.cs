@@ -27,14 +27,14 @@
         public void Close()
         {
             this.Handler.Finish();
-            this.Handler.DataReceived -= Handler_DataReceived;
-            this.Handler.HeartbeatInitiated -= Handler_HeartbeatInitiated;
+            this.Handler.DataReceived -= this.Handler_DataReceived;
+            this.Handler.HeartbeatInitiated -= this.Handler_HeartbeatInitiated;
         }
 
         public void Start()
         {
-            this.Handler.DataReceived += Handler_DataReceived;
-            this.Handler.HeartbeatInitiated += Handler_HeartbeatInitiated;
+            this.Handler.DataReceived += this.Handler_DataReceived;
+            this.Handler.HeartbeatInitiated += this.Handler_HeartbeatInitiated;
             this.Handler.Begin();
         }
 

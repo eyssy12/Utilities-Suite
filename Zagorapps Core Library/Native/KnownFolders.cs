@@ -2,18 +2,40 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
+
+    /// <summary>
+    /// Standard folders registered with the system. These folders are installed with Windows Vista
+    /// and later operating systems, and a computer will have only folders appropriate to it
+    /// installed.
+    /// </summary>
+    public enum KnownFolder
+    {
+        Contacts,
+        Desktop,
+        Documents,
+        Downloads,
+        Favorites,
+        Links,
+        Music,
+        Pictures,
+        SavedGames,
+        SavedSearches,
+        Videos
+    }
 
     /// <summary>
     /// Class containing methods to retrieve specific file system paths.
     /// </summary>
+    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Better to leave native method metadata identitical to the original")]
     public static class KnownFolders
     {
-        private static IReadOnlyDictionary<KnownFolder, string> KnownFolderGuids;
+        private static IReadOnlyDictionary<KnownFolder, string> knownFolderGuids;
         
         static KnownFolders()
         {
-            KnownFolders.KnownFolderGuids = new Dictionary<KnownFolder, string>
+            KnownFolders.knownFolderGuids = new Dictionary<KnownFolder, string>
             {
                 { KnownFolder.Contacts, "{56784854-C6CB-462B-8169-88E350ACB882}" },
                 { KnownFolder.Desktop, "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}" },
@@ -27,6 +49,21 @@
                 { KnownFolder.SavedSearches, "{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}" },
                 { KnownFolder.Videos, "{18989B1D-99B5-455B-841C-AB7C74E4DDFC}" }
             };
+        }
+
+        [Flags]
+        private enum KnownFolderFlags : uint
+        {
+            SimpleIDList = 0x00000100,
+            NotParentRelative = 0x00000200,
+            DefaultPath = 0x00000400,
+            Init = 0x00000800,
+            NoAlias = 0x00001000,
+            DontUnexpand = 0x00002000,
+            DontVerify = 0x00004000,
+            Create = 0x00008000,
+            NoAppcontainerRedirection = 0x00010000,
+            AliasOnly = 0x80000000
         }
 
         /// <summary>
@@ -61,7 +98,7 @@
         {
             IntPtr outPath;
             int result = KnownFolders.SHGetKnownFolderPath(
-                new Guid(KnownFolderGuids[knownFolder]),
+                new Guid(knownFolderGuids[knownFolder]),
                 (uint)flags, 
                 new IntPtr(defaultUser ? -1 : 0), 
                 out outPath);
@@ -72,8 +109,7 @@
             }
             else
             {
-                throw new ExternalException("Unable to retrieve the known folder path. It may not "
-                    + "be available on this system.", result);
+                throw new ExternalException("Unable to retrieve the known folder path. It may not be available on this system.", result);
             }
         }
 
@@ -83,40 +119,5 @@
             uint dwFlags, 
             IntPtr hToken,
             out IntPtr ppszPath);
-
-        [Flags]
-        private enum KnownFolderFlags : uint
-        {
-            SimpleIDList = 0x00000100,
-            NotParentRelative = 0x00000200,
-            DefaultPath = 0x00000400,
-            Init = 0x00000800,
-            NoAlias = 0x00001000,
-            DontUnexpand = 0x00002000,
-            DontVerify = 0x00004000,
-            Create = 0x00008000,
-            NoAppcontainerRedirection = 0x00010000,
-            AliasOnly = 0x80000000
-        }
-    }
-
-    /// <summary>
-    /// Standard folders registered with the system. These folders are installed with Windows Vista
-    /// and later operating systems, and a computer will have only folders appropriate to it
-    /// installed.
-    /// </summary>
-    public enum KnownFolder
-    {
-        Contacts,
-        Desktop,
-        Documents,
-        Downloads,
-        Favorites,
-        Links,
-        Music,
-        Pictures,
-        SavedGames,
-        SavedSearches,
-        Videos
     }
 }

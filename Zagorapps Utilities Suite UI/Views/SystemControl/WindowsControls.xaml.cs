@@ -66,30 +66,6 @@
             this.DataContext = this;
         }
 
-        private void AudioManager_OnVolumeChanged(object sender, VolumeChangeEvent e)
-        {
-            this.Model.MuteButtonText = e.IsMuted ? "Unmute" : "Mute";
-            this.Model.Volume = e.Volume;
-
-            this.PerformConnectivityRoutingAction("br:vol:" + e.IsMuted);
-        }
-
-        private void MuteAudio()
-        {
-            if (this.AudioManager.IsMuted)
-            {
-                this.Model.MuteButtonText = "Mute";
-                this.AudioManager.IsMuted = false;
-            }
-            else
-            {
-                this.Model.MuteButtonText = "Unmute";
-                this.AudioManager.IsMuted = true;
-            }
-
-            this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.IsMuted);
-        }
-
         public WindowsControlsViewModel ViewModel
         {
             get { return this.Model; }
@@ -97,21 +73,22 @@
 
         public override void InitialiseView(object arg)
         {
-            this.Timer.TimeElapsed += Timer_TimeElapsed;
+            this.Timer.TimeElapsed += this.Timer_TimeElapsed;
             this.Timer.Start(1000, 1000);
         }
 
         public override void FinaliseView()
         {
             this.Timer.Stop();
-            this.Timer.TimeElapsed -= Timer_TimeElapsed;
+            this.Timer.TimeElapsed -= this.Timer_TimeElapsed;
         }
 
         protected override void HandleProcessMessage(IUtilitiesDataMessage data)
         {
             string messageData = data.Data.ToString();
 
-            if (messageData.Contains(":")) // TODO:custom object
+             // TODO:custom object
+            if (messageData.Contains(":"))
             {
                 string[] split = messageData.Split(':');
 
@@ -168,6 +145,30 @@
                     ViewBag.GetViewName<ConnectionInteraction>(),
                     data);
             }
+        }
+
+        private void AudioManager_OnVolumeChanged(object sender, VolumeChangeEvent e)
+        {
+            this.Model.MuteButtonText = e.IsMuted ? "Unmute" : "Mute";
+            this.Model.Volume = e.Volume;
+
+            this.PerformConnectivityRoutingAction("br:vol:" + e.IsMuted);
+        }
+
+        private void MuteAudio()
+        {
+            if (this.AudioManager.IsMuted)
+            {
+                this.Model.MuteButtonText = "Mute";
+                this.AudioManager.IsMuted = false;
+            }
+            else
+            {
+                this.Model.MuteButtonText = "Unmute";
+                this.AudioManager.IsMuted = true;
+            }
+
+            this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.IsMuted);
         }
 
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)

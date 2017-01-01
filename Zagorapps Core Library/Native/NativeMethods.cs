@@ -1,8 +1,11 @@
 ﻿namespace Zagorapps.Core.Library.Native
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
 
+    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Better to leave native method metadata identitical to the original")]
+    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Better to leave native method metadata identitical to the original")]
     internal struct LASTINPUTINFO
     {
         public uint cbSize;
@@ -37,7 +40,7 @@
             lastInPut.cbSize = (uint)Marshal.SizeOf(lastInPut);
             NativeMethods.GetLastInputInfo(ref lastInPut);
 
-            uint idleTime = ((uint)Environment.TickCount - lastInPut.dwTime);
+            uint idleTime = (uint)Environment.TickCount - lastInPut.dwTime;
 
             return TimeSpan.FromMilliseconds(idleTime);
         }

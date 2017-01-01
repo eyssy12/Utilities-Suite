@@ -87,9 +87,10 @@
             {
                 return this.rootPath;
             }
+
             set
             {
-                this.SetField(ref rootPath, value, nameof(this.RootPath));
+                this.SetField(ref this.rootPath, value, nameof(this.RootPath));
 
                 if (this.initialized)
                 {

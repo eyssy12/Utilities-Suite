@@ -29,10 +29,7 @@
         {
             this.Register<IFileManager, LocalFileManager>();
             this.Register<IDirectoryManager, LocalDirectoryManager>();
-            this.Register<IApplicationRegistryManager>(container =>
-            {
-                return new ApplicationRegistryManager("File-Organiser");
-            }, Lifestyle.Singleton);
+            this.Register<IApplicationRegistryManager>(container => new ApplicationRegistryManager("File-Organiser"), Lifestyle.Singleton);
         }
 
         protected virtual void RegisterFactories()

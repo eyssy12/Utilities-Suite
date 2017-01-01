@@ -54,7 +54,7 @@
 
         public void Begin()
         {
-            this.Timer.TimeElapsed += Timer_TimeElapsed;
+            this.Timer.TimeElapsed += this.Timer_TimeElapsed;
             this.Timer.Start(BluetoothConnectionHandlerBase.DefaultHeartbeatInterval, BluetoothConnectionHandlerBase.DefaultHeartbeatInterval);
 
             this.HandleIncoming();

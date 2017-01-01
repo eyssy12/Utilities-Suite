@@ -44,6 +44,116 @@
             this.ServiceButtonEnabled = true;
         }
 
+        public ConcurrentDictionary<string, ConnectedClientViewModel> ClientModels
+        {
+            get { return this.connectedClients; }
+        }
+
+        public IEnumerable<ConnectedClientViewModel> ConnectedClients
+        {
+            get { return this.ClientModels.Select(h => h.Value).ToArray(); }
+        }
+
+        public string ServiceClientLogConsole
+        {
+            get
+            {
+                return this.serviceClientLogger.Any() ? this.serviceClientLogger.Aggregate((a, b) => a + "\n" + b) : string.Empty;
+            }
+
+            set
+            {
+                if (this.serviceClientLogger.Count == this.clientLogMaxLines)
+                {
+                    this.serviceClientLogger.RemoveFirst();
+                }
+
+                this.serviceClientLogger.AddLast(value);
+
+                this.OnPropertyChanged(nameof(this.ServiceClientLogConsole));
+            }
+        }
+
+        public string ServiceServerLogConsole
+        {
+            get
+            {
+                return this.serviceServerLogBuilder.ToString();
+            }
+
+            set
+            {
+                this.serviceServerLogBuilder.AppendLine(value);
+
+                this.OnPropertyChanged(nameof(this.ServiceServerLogConsole));
+            }
+        }
+
+        public string Pin
+        {
+            get { return this.pin; }
+            set { this.SetField(ref this.pin, value, nameof(this.Pin)); }
+        }
+
+        public bool ServiceEnabled
+        {
+            get { return this.serviceEnabled; }
+            set { this.SetField(ref this.serviceEnabled, value, nameof(this.ServiceEnabled)); }
+        }
+
+        public bool ContentEnabled
+        {
+            get { return this.contentEnabled; }
+            set { this.SetField(ref this.contentEnabled, value, nameof(this.ContentEnabled)); }
+        }
+
+        public bool ServiceButtonEnabled
+        {
+            get { return this.serviceStartButtonEnabled; }
+            set { this.SetField(ref this.serviceStartButtonEnabled, value, nameof(this.ServiceButtonEnabled)); }
+        }
+
+        public string ServiceButtonText
+        {
+            get { return this.serviceStartText; }
+            set { this.SetField(ref this.serviceStartText, value, nameof(this.ServiceButtonText)); }
+        }
+
+        public Visibility ContentVisibility
+        {
+            get { return this.contentVisibility; }
+            set { this.SetField(ref this.contentVisibility, value, nameof(this.ContentVisibility)); }
+        }
+
+        public Visibility ProgressBarVisibility
+        {
+            get { return this.progressBarVisibility; }
+            set { this.SetField(ref this.progressBarVisibility, value, nameof(this.ProgressBarVisibility)); }
+        }
+
+        public Visibility StartServiceButtonVisibility
+        {
+            get { return this.startServiceButtonVisibility; }
+            set { this.SetFieldIfChanged(ref this.startServiceButtonVisibility, value, nameof(this.StartServiceButtonVisibility)); }
+        }
+
+        public ICommand ServiceStartCommand
+        {
+            get { return this.serviceStartCommand; }
+            set { this.SetFieldIfChanged(ref this.serviceStartCommand, value, nameof(this.ServiceStartCommand)); }
+        }
+
+        public ConnectionType ConnectionType
+        {
+            get { return this.conenctionType; }
+            set { this.SetFieldIfChanged(ref this.conenctionType, value, nameof(this.ConnectionType)); }
+        }
+
+        public IEnumerable<ConnectionType> ConnectionTypes
+        {
+            get { return this.GetValues<ConnectionType>(); }
+        }
+
         public void UpdateConnectionClientHeartbeat(string name, DateTime time)
         {
             this.connectedClients[name].NextHeartbeatTimestamp = time;
@@ -70,108 +180,6 @@
         public void InvokeConnectedClientNotifyableAction(Action<ConcurrentDictionary<string, ConnectedClientViewModel>> action)
         {
             this.NotifyableAction(this.connectedClients, action, nameof(this.ConnectedClients));
-        }
-
-        public ConcurrentDictionary<string, ConnectedClientViewModel> ClientModels
-        {
-            get { return this.connectedClients; }
-        }
-
-        public IEnumerable<ConnectedClientViewModel> ConnectedClients
-        {
-            get { return this.ClientModels.Select(h => h.Value).ToArray(); }
-        }
-
-        public string ServiceClientLogConsole
-        {
-            get { return this.serviceClientLogger.Any() ? this.serviceClientLogger.Aggregate((a, b) => a + "\n" + b) : string.Empty; }
-            set
-            {
-                if (this.serviceClientLogger.Count == this.clientLogMaxLines)
-                {
-                    this.serviceClientLogger.RemoveFirst();
-                }
-
-                this.serviceClientLogger.AddLast(value);
-
-                this.OnPropertyChanged(nameof(ServiceClientLogConsole));
-            }
-        }
-
-        public string ServiceServerLogConsole
-        {
-            get { return this.serviceServerLogBuilder.ToString(); }
-            set
-            {
-                this.serviceServerLogBuilder.AppendLine(value);
-
-                this.OnPropertyChanged(nameof(ServiceServerLogConsole));
-            }
-        }
-
-        public string Pin
-        {
-            get { return this.pin; }
-            set { this.SetField(ref pin, value, nameof(this.Pin)); }
-        }
-
-        public bool ServiceEnabled
-        {
-            get { return this.serviceEnabled; }
-            set { this.SetField(ref serviceEnabled, value, nameof(this.ServiceEnabled)); }
-        }
-
-        public bool ContentEnabled
-        {
-            get { return this.contentEnabled; }
-            set { this.SetField(ref contentEnabled, value, nameof(this.ContentEnabled)); }
-        }
-
-        public bool ServiceButtonEnabled
-        {
-            get { return this.serviceStartButtonEnabled; }
-            set { this.SetField(ref serviceStartButtonEnabled, value, nameof(this.ServiceButtonEnabled)); }
-        }
-
-        public string ServiceButtonText
-        {
-            get { return this.serviceStartText; }
-            set { this.SetField(ref serviceStartText, value, nameof(this.ServiceButtonText)); }
-        }
-
-        public Visibility ContentVisibility
-        {
-            get { return this.contentVisibility; }
-            set { this.SetField(ref contentVisibility, value, nameof(this.ContentVisibility)); }
-        }
-
-        public Visibility ProgressBarVisibility
-        {
-            get { return this.progressBarVisibility; }
-            set { this.SetField(ref progressBarVisibility, value, nameof(this.ProgressBarVisibility)); }
-        }
-
-        public Visibility StartServiceButtonVisibility
-        {
-            get { return this.startServiceButtonVisibility; }
-            set { this.SetFieldIfChanged(ref startServiceButtonVisibility, value, nameof(this.StartServiceButtonVisibility)); }
-        }
-
-        public ICommand ServiceStartCommand
-        {
-            get { return this.serviceStartCommand; }
-            set { this.SetFieldIfChanged(ref serviceStartCommand, value, nameof(this.ServiceStartCommand)); }
-        }
-
-        public ConnectionType ConnectionType
-        {
-            get { return this.conenctionType; }
-            set { this.SetFieldIfChanged(ref conenctionType, value, nameof(this.ConnectionType)); }
-        }
-
-        public IEnumerable<ConnectionType> ConnectionTypes
-        {
-            get { return this.GetValues<ConnectionType>(); }
         }
     }
 }

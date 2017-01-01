@@ -30,12 +30,12 @@
             this.senders = senders ?? Enumerable.Empty<ISendSuiteData>();
         }
 
+        public event EventHandler<EventArgs<IUtilitiesDataMessage>> MessageReceived;
+
         public SuiteRoute Route
         {
             get { return this.route; }
         }
-
-        public event EventHandler<EventArgs<IUtilitiesDataMessage>> MessageReceived;
 
         public bool Start()
         {
@@ -69,6 +69,7 @@
 
                 return true;
             }
+
             return false;
         }
 

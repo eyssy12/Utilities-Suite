@@ -12,7 +12,7 @@
 
     public class LocalUdpServer : ILocalNetworkServer
     {
-        protected ConcurrentDictionary<string, IPEndPoint> KnownClients;
+        protected readonly ConcurrentDictionary<string, IPEndPoint> KnownClients;
 
         protected readonly int EndpointPort, PacketSize;
         protected readonly IPEndPoint Endpoint;

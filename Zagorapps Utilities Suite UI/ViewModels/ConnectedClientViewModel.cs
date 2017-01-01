@@ -30,7 +30,7 @@
         public DateTime NextHeartbeatTimestamp
         {
             get { return this.nextHeartbeatTimestamp; }
-            set { this.SetField(ref nextHeartbeatTimestamp, value, nameof(this.NextHeartbeatTimestamp)); }
+            set { this.SetField(ref this.nextHeartbeatTimestamp, value, nameof(this.NextHeartbeatTimestamp)); }
         }
     }
 }

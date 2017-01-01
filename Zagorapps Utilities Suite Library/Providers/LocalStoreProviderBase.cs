@@ -13,17 +13,17 @@
         {
             if (fileManager == null)
             {
-                throw new ArgumentNullException(nameof(fileManager), ""); // TODO: resources
+                throw new ArgumentNullException(nameof(fileManager), "No file manager provided"); // TODO: resources
             }
 
             if (directoryManager == null)
             {
-                throw new ArgumentNullException(nameof(directoryManager), "");
+                throw new ArgumentNullException(nameof(directoryManager), "No directory manager provided.");
             }
 
             if (string.IsNullOrWhiteSpace(baseDirectory))
             {
-                throw new ArgumentNullException(nameof(baseDirectory), "");
+                throw new ArgumentNullException(nameof(baseDirectory), "No base directory provided for the local store");
             }
 
             this.FileManager = fileManager;

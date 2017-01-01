@@ -28,16 +28,16 @@
             this.TrayIcon.Visibility = Visibility.Hidden;
             this.TrayIcon.Icon = icon;
             this.TrayIcon.ToolTipText = toolTipText;
-            this.TrayIcon.TrayMouseDoubleClick += TrayIcon_TrayMouseDoubleClick;
+            this.TrayIcon.TrayMouseDoubleClick += this.TrayIcon_TrayMouseDoubleClick;
             this.TrayIcon.ContextMenu = menu;
 
             MenuItem open = this.FindMenuItem(menu, App.MenuItemOpenApplication);
             open.Header = "Open " + App.Name;
-            open.Click += Open_Click;
+            open.Click += this.Open_Click;
 
             MenuItem close = this.FindMenuItem(menu, App.MenuItemCloseApplication);
             close.Header = "Terminate";
-            close.Click += Close_Click;
+            close.Click += this.Close_Click;
         }
 
         public event EventHandler<EventArgs<TrayState>> StateChanged;

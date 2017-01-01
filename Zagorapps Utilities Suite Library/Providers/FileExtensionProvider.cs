@@ -10,7 +10,7 @@
         // TODO: this will only suffice for starters - we don't want to store this kind of data in memory
         protected readonly FileExtensionDatabaseModel Database;
 
-        private readonly Lazy<IEnumerable<FileExtensionMetadata>> Metadatas;
+        protected readonly Lazy<IEnumerable<FileExtensionMetadata>> Metadatas;
 
         public FileExtensionProvider(FileExtensionDatabaseModel database)
         {

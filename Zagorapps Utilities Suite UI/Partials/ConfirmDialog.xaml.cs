@@ -23,6 +23,10 @@
             this.DataContext = this;
         }
 
+        public event EventHandler<ConfirmDialogEventArgs> OnConfirm;
+
+        public event EventHandler<ConfirmDialogEventArgs> OnCancel;
+
         public string ConfirmationText
         {
             get { return (string)this.GetValue(ConfirmDialog.ConfirmationTextProperty); }
@@ -40,10 +44,6 @@
             get { return (string)this.GetValue(ConfirmDialog.CancelParamaterProperty); }
             set { this.SetValue(ConfirmDialog.CancelParamaterProperty, value); }
         }
-
-        public event EventHandler<ConfirmDialogEventArgs> OnConfirm;
-
-        public event EventHandler<ConfirmDialogEventArgs> OnCancel;
 
         private void Button_Cancel_Click(object sender, RoutedEventArgs e)
         {

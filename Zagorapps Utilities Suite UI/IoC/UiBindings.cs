@@ -62,83 +62,87 @@
 
         protected virtual void RegisterMisc()
         {
-            this.Register<IInputSimulator>(container =>
-            {
-                return new InputSimulator();
-            }, lifestyle: Lifestyle.Transient);
+            this.Register<IInputSimulator>(
+                container =>
+                {
+                    return new InputSimulator();
+                }, 
+                lifestyle: Lifestyle.Transient);
         }
 
         protected virtual void RegisterDataFacilitatorManager()
         {
-            this.Register<IDataFacilitatorSuiteManager>(container =>
-            {
-                IOrganiserFactory factory = container.GetInstance<IOrganiserFactory>();
-                IWcfCommunicationsProvider commsProvider = container.GetInstance<IWcfCommunicationsProvider>();
-                ICommandProvider commandProvider = container.GetInstance<ICommandProvider>();
-
-                // TODO: maybe use app.config based declaration and construction in here
-                IEnumerable<IViewControl> organiserControls = new List<IViewControl>
+            this.Register<IDataFacilitatorSuiteManager>(
+                container =>
                 {
-                    new Home(factory, commandProvider),
-                    new AddTask(factory, commandProvider),
-                    new IndividualTask(factory, commandProvider)
-                };
+                    IOrganiserFactory factory = container.GetInstance<IOrganiserFactory>();
+                    IWcfCommunicationsProvider commsProvider = container.GetInstance<IWcfCommunicationsProvider>();
+                    ICommandProvider commandProvider = container.GetInstance<ICommandProvider>();
 
-                IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
-                {
-                    new ConnectionInteraction(factory, commandProvider)
-                };
+                    // TODO: maybe use app.config based declaration and construction in here
+                    IEnumerable<IViewControl> organiserControls = new List<IViewControl>
+                    {
+                        new Home(factory, commandProvider),
+                        new AddTask(factory, commandProvider),
+                        new IndividualTask(factory, commandProvider)
+                    };
 
-                IEnumerable<IViewControl> dashboardControls = new List<IViewControl>
-                {
-                    new Dashboard(factory, commandProvider)
-                };
+                    IEnumerable<IViewControl> connectivityControls = new List<IViewControl>
+                    {
+                        new ConnectionInteraction(factory, commandProvider)
+                    };
 
-                IEnumerable<IViewControl> systemControls = new List<IViewControl>
-                {
-                    new WindowsControls(factory, commandProvider)
-                };
+                    IEnumerable<IViewControl> dashboardControls = new List<IViewControl>
+                    {
+                        new Dashboard(factory, commandProvider)
+                    };
 
-                IEnumerable<IReceiveSuiteData> systemReceivers = new List<IReceiveSuiteData>
-                {
-                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeySystemControlTcp))
-                };
+                    IEnumerable<IViewControl> systemControls = new List<IViewControl>
+                    {
+                        new WindowsControls(factory, commandProvider)
+                    };
 
-                IEnumerable<ISendSuiteData> systemSenders = new List<ISendSuiteData>
-                {
-                    new WcfSendSuiteData(commsProvider, SuiteRoute.Connectivity, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyConnectivityTcp))
-                };
+                    IEnumerable<IReceiveSuiteData> systemReceivers = new List<IReceiveSuiteData>
+                    {
+                        new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeySystemControlTcp))
+                    };
 
-                IEnumerable<IReceiveSuiteData> dashboardReceivers = new List<IReceiveSuiteData>
-                {
-                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyDashboardTcp))
-                };
+                    IEnumerable<ISendSuiteData> systemSenders = new List<ISendSuiteData>
+                    {
+                        new WcfSendSuiteData(commsProvider, SuiteRoute.Connectivity, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeyConnectivityTcp))
+                    };
 
-                IEnumerable<ISendSuiteData> dashboardSenders = new List<ISendSuiteData>
-                {
-                    new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlTcp))
-                };
+                    IEnumerable<IReceiveSuiteData> dashboardReceivers = new List<IReceiveSuiteData>
+                    {
+                        new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyDashboardTcp))
+                    };
 
-                IEnumerable<IReceiveSuiteData> connectivityReceivers = new List<IReceiveSuiteData>
-                {
-                    new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyConnectivityTcp))
-                };
+                    IEnumerable<ISendSuiteData> dashboardSenders = new List<ISendSuiteData>
+                    {
+                        new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlTcp))
+                    };
 
-                IEnumerable<ISendSuiteData> connectivitySenders = new List<ISendSuiteData>
-                {
-                    new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlTcp))
-                };
+                    IEnumerable<IReceiveSuiteData> connectivityReceivers = new List<IReceiveSuiteData>
+                    {
+                        new WcfReceiveSuiteData(factory, commsProvider, this.GetValue(UiBindings.KeyConnectivityTcp))
+                    };
 
-                IEnumerable<ISuite> suites = new List<ISuite>
-                {
-                    new DashboardSuite(dashboardControls, dashboardReceivers, dashboardSenders),
-                    new FileOrganiserSuite(organiserControls),
-                    new ConnectivitySuite(connectivityControls, connectivityReceivers, connectivitySenders),
-                    new SystemSuite(systemControls, systemReceivers, systemSenders)
-                };
+                    IEnumerable<ISendSuiteData> connectivitySenders = new List<ISendSuiteData>
+                    {
+                        new WcfSendSuiteData(commsProvider, SuiteRoute.SystemControl, this.GetValue(UiBindings.KeyUtilitiesEndpoint), this.GetValue(UiBindings.KeySystemControlTcp))
+                    };
 
-                return new DataFacilitatorSuiteManager(suites);
-            }, lifestyle: Lifestyle.Transient);
+                    IEnumerable<ISuite> suites = new List<ISuite>
+                    {
+                        new DashboardSuite(dashboardControls, dashboardReceivers, dashboardSenders),
+                        new FileOrganiserSuite(organiserControls),
+                        new ConnectivitySuite(connectivityControls, connectivityReceivers, connectivitySenders),
+                        new SystemSuite(systemControls, systemReceivers, systemSenders)
+                    };
+
+                    return new DataFacilitatorSuiteManager(suites);
+                }, 
+                lifestyle: Lifestyle.Transient);
         }
 
         protected virtual void RegisterCommunications()
@@ -153,42 +157,50 @@
         {
             this.Register<ICommandProvider, CommandProvider>();
 
-            this.Register<IFileExtensionProvider>((container) =>
-            {
-                string fileExtensionJson = ConfigurationManager.AppSettings[UiBindings.KeyFileExtensionJsonFile];
-                string filePath = PathIO.Combine(this.GetApplicationPath(), fileExtensionJson);
+            this.Register<IFileExtensionProvider>(
+                container =>
+                {
+                    string fileExtensionJson = ConfigurationManager.AppSettings[UiBindings.KeyFileExtensionJsonFile];
+                    string filePath = PathIO.Combine(this.GetApplicationPath(), fileExtensionJson);
 
-                string data = FileIO.ReadAllText(filePath);
+                    string data = FileIO.ReadAllText(filePath);
 
-                FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
+                    FileExtensionDatabaseModel result = JsonConvert.DeserializeObject<FileExtensionDatabaseModel>(data);
 
-                return new FileExtensionProvider(result);
-            }, lifestyle: Lifestyle.Singleton);
+                    return new FileExtensionProvider(result);
+                }, 
+                lifestyle: Lifestyle.Singleton);
 
-            this.Register<ITaskHistoryProvider>(container =>
-            {
-                return new TaskHistoryProvider(
-                    ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore],
-                    container.GetInstance<IFileManager>(),
-                    container.GetInstance<IDirectoryManager>());
-            }, lifestyle: Lifestyle.Transient);
+            this.Register<ITaskHistoryProvider>(
+                container =>
+                {
+                    return new TaskHistoryProvider(
+                        ConfigurationManager.AppSettings[UiBindings.KeyHistoryStore],
+                        container.GetInstance<IFileManager>(),
+                        container.GetInstance<IDirectoryManager>());
+                }, 
+                lifestyle: Lifestyle.Transient);
 
-            this.Register<IOrganiserSettingsProvider>(container =>
-            {
-                return new OrganiserSettingsProvider(
-                    ConfigurationManager.AppSettings[UiBindings.KeySettingsStore],
-                    container.GetInstance<IFileManager>(),
-                    container.GetInstance<IDirectoryManager>());
-            }, lifestyle: Lifestyle.Transient);
+            this.Register<IOrganiserSettingsProvider>(
+                container =>
+                {
+                    return new OrganiserSettingsProvider(
+                        ConfigurationManager.AppSettings[UiBindings.KeySettingsStore],
+                        container.GetInstance<IFileManager>(),
+                        container.GetInstance<IDirectoryManager>());
+                },
+                lifestyle: Lifestyle.Transient);
 
-            this.Register<ITaskProvider>(container =>
-            {
-                return new TaskProvider(
-                    ConfigurationManager.AppSettings[UiBindings.KeyTasksStore],
-                    container.GetInstance<IOrganiserFactory>(),
-                    container.GetInstance<IFileManager>(),
-                    container.GetInstance<IDirectoryManager>());
-            }, lifestyle: Lifestyle.Transient);
+            this.Register<ITaskProvider>(
+                container =>
+                {
+                    return new TaskProvider(
+                        ConfigurationManager.AppSettings[UiBindings.KeyTasksStore],
+                        container.GetInstance<IOrganiserFactory>(),
+                        container.GetInstance<IFileManager>(),
+                        container.GetInstance<IDirectoryManager>());
+                }, 
+                lifestyle: Lifestyle.Transient);
 
             this.Register<IWcfCommunicationsProvider, WcfCommunicationsProvider>(lifestyle: Lifestyle.Transient);
             this.Register<INetworkConnectionProvider, NetworkConnectionProvider>(lifestyle: Lifestyle.Transient);
@@ -213,34 +225,40 @@
 
         protected virtual void RegisterManagers()
         {
-            this.Register<ITaskManager>(container =>
-            {
-                return new SimpleTaskManager(
-                    container.GetInstance<IOrganiserFactory>(),
-                    container.GetInstance<ITaskProvider>(),
-                    container.GetInstance<ITaskHistoryProvider>(),
-                    container.GetInstance<IOrganiserSettingsProvider>());
-            }, lifestyle: Lifestyle.Singleton);
+            this.Register<ITaskManager>(
+                container =>
+                {
+                    return new SimpleTaskManager(
+                        container.GetInstance<IOrganiserFactory>(),
+                        container.GetInstance<ITaskProvider>(),
+                        container.GetInstance<ITaskHistoryProvider>(),
+                        container.GetInstance<IOrganiserSettingsProvider>());
+                },
+                lifestyle: Lifestyle.Singleton);
 
-            this.Register<IApplicationConfigurationManager>(container =>
-            {
-                string configName = ConfigurationManager.AppSettings[UiBindings.KeyConfigurationFileName];
+            this.Register<IApplicationConfigurationManager>(
+                container =>
+                {
+                    string configName = ConfigurationManager.AppSettings[UiBindings.KeyConfigurationFileName];
 
-                return new ApplicationConfigurationManager(PathIO.Combine(this.GetApplicationPath(), configName));
-            }, lifestyle: Lifestyle.Singleton);
+                    return new ApplicationConfigurationManager(PathIO.Combine(this.GetApplicationPath(), configName));
+                }, 
+                lifestyle: Lifestyle.Singleton);
         }
 
         protected virtual void RegisterControls()
         {
-            this.Register<ISystemTrayControl>(container =>
-            {
-                ContextMenu menu = App.Current.TryFindResource(App.ControlTrayContextMenu) as ContextMenu;
+            this.Register<ISystemTrayControl>(
+                container =>
+                {
+                    ContextMenu menu = App.Current.TryFindResource(App.ControlTrayContextMenu) as ContextMenu;
 
-                return new SystemTrayControl(
-                    menu,
-                    UiResources.App,
-                    App.Name);
-            }, Lifestyle.Singleton);
+                    return new SystemTrayControl(
+                        menu,
+                        UiResources.App,
+                        App.Name);
+                }, 
+                Lifestyle.Singleton);
         }
 
         private string GetApplicationPath()

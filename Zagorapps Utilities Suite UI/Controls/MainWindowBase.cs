@@ -33,6 +33,8 @@
             this.SuiteManager.Start();
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public IViewControl ActiveView
         {
             get { return this.SuiteManager.ActiveSuiteView; }
@@ -42,8 +44,6 @@
         {
             get { return this.Factory.Create<IInteropHandle>(); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public object TryRetrieveResource(string name)
         {

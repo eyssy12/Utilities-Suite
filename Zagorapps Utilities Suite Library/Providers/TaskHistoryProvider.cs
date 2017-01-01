@@ -54,80 +54,88 @@
 
         protected void Failure(ITask task, string message)
         {
-            this.PerformLoggingAction(task, t =>
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.Append(this.GetCurrentTimeStamp());
-                builder.Append(" -- [ERROR] -> ");
-
-                if (string.IsNullOrWhiteSpace(message))
+            this.PerformLoggingAction(
+                task,
+                t =>
                 {
-                    message = "There was an error with the task";
-                }
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append(this.GetCurrentTimeStamp());
+                    builder.Append(" -- [ERROR] -> ");
 
-                builder.Append(message);
-                builder.AppendLine();
+                    if (string.IsNullOrWhiteSpace(message))
+                    {
+                        message = "There was an error with the task";
+                    }
 
-                return builder.ToString();
-            });
+                    builder.Append(message);
+                    builder.AppendLine();
+
+                    return builder.ToString();
+                });
         }
 
         protected void StateChanged(ITask task)
         {
-            this.PerformLoggingAction(task, t =>
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.Append(this.GetCurrentTimeStamp());
-                builder.Append(" -- ");
-                builder.Append(t.State.ToString());
-                builder.AppendLine();
+            this.PerformLoggingAction(
+                task,
+                t =>
+                {
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append(this.GetCurrentTimeStamp());
+                    builder.Append(" -- ");
+                    builder.Append(t.State.ToString());
+                    builder.AppendLine();
 
-                return builder.ToString();
-            });
+                    return builder.ToString();
+                });
         }
 
         protected void TaskDeleted(ITask task, string message)
         {
-            this.PerformLoggingAction(task, t =>
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.Append(this.GetCurrentTimeStamp());
-                builder.Append(" --> ");
-
-                if (string.IsNullOrWhiteSpace(message))
+            this.PerformLoggingAction(
+                task, 
+                t =>
                 {
-                    message = "Task was deleted";
-                }
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append(this.GetCurrentTimeStamp());
+                    builder.Append(" --> ");
 
-                builder.Append(message);
-                builder.AppendLine();
-                builder.AppendLine(this.GetLogSection());
-                builder.AppendLine();
+                    if (string.IsNullOrWhiteSpace(message))
+                    {
+                        message = "Task was deleted";
+                    }
 
-                return builder.ToString();
-            });
+                    builder.Append(message);
+                    builder.AppendLine();
+                    builder.AppendLine(this.GetLogSection());
+                    builder.AppendLine();
+
+                    return builder.ToString();
+                });
         }
 
         protected void TaskCreated(ITask task, string message)
         {
-            this.PerformLoggingAction(task, t =>
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.AppendLine();
-                builder.AppendLine(this.GetLogSection());
-                builder.Append(this.GetCurrentTimeStamp());
-                builder.Append(" --> ");
-
-                if (string.IsNullOrWhiteSpace(message))
+            this.PerformLoggingAction(
+                task, 
+                t =>
                 {
-                    message = "Task was deleted";
-                }
+                    StringBuilder builder = new StringBuilder();
+                    builder.AppendLine();
+                    builder.AppendLine(this.GetLogSection());
+                    builder.Append(this.GetCurrentTimeStamp());
+                    builder.Append(" --> ");
 
-                builder.Append(message);
-                builder.AppendLine();
+                    if (string.IsNullOrWhiteSpace(message))
+                    {
+                        message = "Task was deleted";
+                    }
 
-                return builder.ToString();
-            });
+                    builder.Append(message);
+                    builder.AppendLine();
+
+                    return builder.ToString();
+                });
         }
 
         protected void PerformLoggingAction(ITask task, Func<ITask, string> contentBuilder)

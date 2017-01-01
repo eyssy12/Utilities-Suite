@@ -52,7 +52,6 @@
 
         public override void FinaliseView()
         {
-            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

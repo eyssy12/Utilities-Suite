@@ -159,8 +159,8 @@
         protected class TaskMetadata : IDisposable
         {
             private readonly ITask task;
-            private readonly EventHandler<EventArgs<TaskState>> StateHandler;
-            private readonly EventHandler<EventArgs<Exception>> FailureHandler;
+            private readonly EventHandler<EventArgs<TaskState>> stateHandler;
+            private readonly EventHandler<EventArgs<Exception>> failureHandler;
 
             public TaskMetadata(
                 ITask task, 
@@ -168,8 +168,8 @@
                 EventHandler<EventArgs<Exception>> failureHandler)
             {
                 this.task = task;
-                this.StateHandler = stateHandler;
-                this.FailureHandler = failureHandler;
+                this.stateHandler = stateHandler;
+                this.failureHandler = failureHandler;
 
                 this.task.StateChanged += stateHandler;
                 this.task.FailureRaised += failureHandler;
@@ -191,8 +191,8 @@
             {
                 if (disposing)
                 {
-                    this.task.StateChanged -= this.StateHandler;
-                    this.task.FailureRaised -= this.FailureHandler;
+                    this.task.StateChanged -= this.stateHandler;
+                    this.task.FailureRaised -= this.failureHandler;
                 }
             }
         }

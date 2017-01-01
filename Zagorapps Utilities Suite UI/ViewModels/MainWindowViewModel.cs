@@ -20,7 +20,7 @@
         public string MainColorzoneText
         {
             get { return this.mainColorzoneText; }
-            set { SetFieldIfChanged(ref this.mainColorzoneText, value, nameof(this.MainColorzoneText)); }
+            set { this.SetFieldIfChanged(ref this.mainColorzoneText, value, nameof(this.MainColorzoneText)); }
         }
 
         public void FormatAndSetMainColorzoneText(string suiteName)
