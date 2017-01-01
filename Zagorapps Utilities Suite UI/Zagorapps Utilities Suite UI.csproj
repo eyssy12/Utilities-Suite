@@ -305,13 +305,13 @@
     <Resource Include="Resources\app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\Zagorapps Audio Library.csproj">
-      <Project>{6BA8A2F2-041E-4E06-B0F8-CA0DEA738A9D}</Project>
-      <Name>Zagorapps Audio Library</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Zagorapps Audio Configuration Library\Zagorapps Audio Configuration Library.csproj">
       <Project>{05877D8C-2FF1-4C74-9200-3F5B245151C8}</Project>
       <Name>Zagorapps Audio Configuration Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zagorapps Audio Library\Zagorapps Audio Library.csproj">
+      <Project>{6BA8A2F2-041E-4E06-B0F8-CA0DEA738A9D}</Project>
+      <Name>Zagorapps Audio Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zagorapps Bluetooth Configuration Library\Zagorapps Bluetooth Configuration Library.csproj">
       <Project>{4ea2548b-16cc-4506-a3be-779b063961de}</Project>

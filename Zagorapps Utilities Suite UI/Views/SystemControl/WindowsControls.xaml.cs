@@ -35,7 +35,7 @@
         protected readonly WindowsControlsViewModel Model;
         protected readonly ProcessComparer LocalProcessComparer;
 
-        private bool initialSyncPerformed;
+        private bool initialSyncWithClientPerformed;
 
         public WindowsControls(IOrganiserFactory factory, ICommandProvider commandProvider)
             : base(WindowsControls.ViewName, factory, commandProvider)
@@ -57,8 +57,6 @@
 
             SystemEvents.SessionSwitch += this.SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += this.SystemEvents_SessionEnding;
-
-            this.initialSyncPerformed = false;
 
             this.DataContext = this;
         }
@@ -125,13 +123,13 @@
             }
             else if (messageData == "SyncResponseAck")
             {
-                this.initialSyncPerformed = true;
+                this.initialSyncWithClientPerformed = true;
             }
         }
 
         private void PerformConnectivityRoutingAction(string data)
         {
-            if (this.initialSyncPerformed)
+            if (this.initialSyncWithClientPerformed)
             {
                 this.OnDataSendRequest(
                     this,

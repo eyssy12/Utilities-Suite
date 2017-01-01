@@ -18,31 +18,19 @@
         public int Volume
         {
             get { return (int)(this.MasterVolumeScalar * AudioManager.MaximumVolume); }
-            set
-            {
-                if (value < AudioManager.MinimumVolume)
-                {
-                    value = (int)AudioManager.MinimumVolume;
-                }
-                else if (value > AudioManager.MaximumVolume)
-                {
-                    value = (int)AudioManager.MaximumVolume;
-                }
-                
-                this.MasterVolumeScalar = value / AudioManager.MaximumVolume;
-            }
+            set { this.MasterVolumeScalar = this.EnsureVolumeIsInRange(value) / AudioManager.MaximumVolume; }
+        }
+        
+        public bool IsMuted
+        {
+            get { return this.localAudioDevice.AudioEndpointVolume.Mute; }
+            set { this.localAudioDevice.AudioEndpointVolume.Mute = value; }
         }
 
         private float MasterVolumeScalar
         {
             get { return this.localAudioDevice.AudioEndpointVolume.MasterVolumeLevelScalar; }
             set { this.localAudioDevice.AudioEndpointVolume.MasterVolumeLevelScalar = value; }
-        }
-
-        public bool IsMuted
-        {
-            get { return this.localAudioDevice.AudioEndpointVolume.Mute; }
-            set { this.localAudioDevice.AudioEndpointVolume.Mute = value; }
         }
 
         public void Dispose()
@@ -56,6 +44,21 @@
             {
                 this.deviceEnumerator.Dispose();
             }
+        }
+
+        protected int EnsureVolumeIsInRange(float proposed)
+        {
+            if (proposed < AudioManager.MinimumVolume)
+            {
+                return (int)AudioManager.MinimumVolume;
+            }
+
+            if (proposed > AudioManager.MaximumVolume)
+            {
+                return (int)AudioManager.MaximumVolume;
+            }
+
+            return (int)proposed;
         }
     }
 }
