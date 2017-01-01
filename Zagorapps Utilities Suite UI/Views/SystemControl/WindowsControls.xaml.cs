@@ -224,6 +224,7 @@
                                 })
                     .Except(this.Model.Processes, this.ProcessComparer);
 
+                // TODO: investigate - sometimes there is item inconsistency with the model and the ItemsSource in the view which throws InvalidOperationException
                 this.Model.RemoveStaleProcesses();
                 this.Model.AddProcesses(disctint);
                 this.Model.VerifyControlsAvailability();

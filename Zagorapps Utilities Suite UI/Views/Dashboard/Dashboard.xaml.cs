@@ -1,6 +1,5 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.Dashboard
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -8,6 +7,7 @@
     using Library.Attributes;
     using Library.Communications;
     using Services;
+    using Suites;
     using ViewModels;
     using Zagorapps.Utilities.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Commands;
@@ -31,11 +31,12 @@
 
             this.items = Assembly
                 .GetExecutingAssembly()
-                .GetAllSuitesOrderByDefaultNavigatable()
+                .GetAllSuitesOrderByDefaultNavigatable(exclusions: DashboardSuite.Name)
                 .Select((a, index) => new DashboardItemViewModel
                 {
                     Identifier = a.Item1.Name,
-                    FriendlyName = (index + 1) + " - " + a.Item1.FriendlyName,
+                    FriendlyName = a.Item1.FriendlyName,
+                    FriendlyNameWithIndex = (index + 1) + " - " + a.Item1.FriendlyName,
                     ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(this.SuiteService.ChangeSuite)
                 })
                 .ToArray();
@@ -50,12 +51,10 @@
 
         public override void InitialiseView(object arg)
         {
-            Console.WriteLine(ViewName + " - initialised");
         }
 
         public override void FinaliseView()
         {
-            Console.WriteLine(ViewName + " - View finalised");
         }
 
         protected override void HandleProcessMessage(IUtilitiesDataMessage data)
