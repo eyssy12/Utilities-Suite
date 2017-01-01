@@ -8,6 +8,7 @@
     using System.Windows.Controls.Primitives;
     using Commands;
     using Controls;
+    using Events;
     using Library.Attributes;
     using MaterialDesignThemes.Wpf;
     using Services;
@@ -108,19 +109,14 @@
 
             this.OnViewChange(ViewBag.GetViewName<IndividualTask>(), task);
         }
-
-        protected void Dialog_DeleteTask_OnClosing(object sender, DialogClosingEventArgs eventArgs)
+        
+        private void ConfirmDialog_OnConfirm(object sender, ConfirmDialogEventArgs e)
         {
-            if (eventArgs.Parameter.ToString() == "Confirm")
-            {
-                string id = ((eventArgs.Session.Content as Grid).DataContext as TaskViewModel).Identity;
+            this.Manager.DeleteById(Guid.Parse(e.First));
 
-                this.Manager.DeleteById(Guid.Parse(id));
+            this.Notifier.Notify(string.Format(UiResources.Message_TaskDeleted, e.First));
 
-                this.Notifier.Notify(string.Format(UiResources.Message_TaskDeleted, id));
-
-                this.OnPropertyChanged(nameof(this.Tasks));
-            }
+            this.OnPropertyChanged(nameof(this.Tasks));
         }
     }
 }

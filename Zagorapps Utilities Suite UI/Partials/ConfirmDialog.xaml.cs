@@ -10,6 +10,10 @@
     {
         protected const string DefaultConfirmationTitle = "Are you sure you want to invoke this operation?";
 
+        private static readonly DependencyProperty ConfirmationTextProperty = DependencyProperty.Register(nameof(ConfirmationText), typeof(string), typeof(ConfirmDialog)),
+            ConfirmParamaterProperty = DependencyProperty.Register(nameof(ConfirmParameter), typeof(string), typeof(ConfirmDialog)),
+            CancelParamaterProperty = DependencyProperty.Register(nameof(CancelParameter), typeof(string), typeof(ConfirmDialog));
+
         public ConfirmDialog()
         {
             this.InitializeComponent();
@@ -19,11 +23,23 @@
             this.DataContext = this;
         }
 
-        public string ConfirmationText { get; set; }
+        public string ConfirmationText
+        {
+            get { return (string)this.GetValue(ConfirmDialog.ConfirmationTextProperty); }
+            set { this.SetValue(ConfirmDialog.ConfirmationTextProperty, value); }
+        }
 
-        public string ConfirmParameter { get; set; }
+        public string ConfirmParameter
+        {
+            get { return (string)this.GetValue(ConfirmDialog.ConfirmParamaterProperty); }
+            set { this.SetValue(ConfirmDialog.ConfirmParamaterProperty, value); }
+        }
 
-        public string CancelParameter { get; set; }
+        public string CancelParameter
+        {
+            get { return (string)this.GetValue(ConfirmDialog.CancelParamaterProperty); }
+            set { this.SetValue(ConfirmDialog.CancelParamaterProperty, value); }
+        }
 
         public event EventHandler<ConfirmDialogEventArgs> OnConfirm;
 
