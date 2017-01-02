@@ -17,6 +17,7 @@
     using Core.Library.Extensions;
     using Graphics.Library.Extensions;
     using Graphics.Library.ZXing;
+    using InTheHand.Net;
     using Library;
     using Library.Attributes;
     using Library.Communications;
@@ -258,7 +259,9 @@
             {
                 this.Model.ServiceButtonEnabled = true;
                 this.Model.ServiceButtonText = "Start Service";
-                this.Model.QRCodeSource = this.QRCodeProvider.GenerateImage(this.Model.Pin, 500, 500).ToSource();
+
+                BluetoothAddress address = this.Provider.LocalAddress;
+                this.Model.QRCodeSource = this.QRCodeProvider.GenerateImage(address.ToString() + ":" + this.Model.Pin, 500, 500).ToSource();
             }
         }
 

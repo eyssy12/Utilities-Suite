@@ -5,6 +5,7 @@
     using Client.Models;
     using Core.Library.Timing;
     using Handlers;
+    using InTheHand.Net;
     using InTheHand.Net.Bluetooth;
     using InTheHand.Net.Sockets;
     using Messaging;
@@ -15,6 +16,11 @@
         public bool IsBluetoothAvailable
         {
             get { return BluetoothRadio.PrimaryRadio != null; }
+        }
+
+        public BluetoothAddress LocalAddress
+        {
+            get { return BluetoothRadio.PrimaryRadio.LocalAddress; }
         }
 
         public ISimpleBluetoothClientReceiver CreateReceiver(ConnectionSettings settings, IBluetoothServicesProvider provider)

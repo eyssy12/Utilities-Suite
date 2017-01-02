@@ -5,6 +5,7 @@
     using Client.Models;
     using Core.Library.Timing;
     using Handlers;
+    using InTheHand.Net;
     using InTheHand.Net.Sockets;
     using Messaging;
     using Networking;
@@ -12,6 +13,8 @@
     public interface IBluetoothServicesProvider
     {
         bool IsBluetoothAvailable { get; }
+
+        BluetoothAddress LocalAddress { get; }
 
         IBluetoothClient CreateServerClient();
 
