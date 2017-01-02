@@ -9,14 +9,10 @@
 
     public abstract class BluetoothClientReceiverBase : IBluetoothClientReceiver<BluetoothDeviceInfo>
     {
-        public event EventHandler<EventArgs<IBluetoothClient>> ClientReceived;
-
         protected readonly ConnectionSettings Settings;
         protected readonly IBluetoothServicesProvider Provider;
 
-        protected IBluetoothListener listener;
-
-        private bool initialiseAttempted = false;
+        private IBluetoothListener listener;
 
         protected BluetoothClientReceiverBase(ConnectionSettings settings, IBluetoothServicesProvider provider)
         {
@@ -42,6 +38,13 @@
 
             this.Provider = provider;
             this.Settings = settings;
+        }
+
+        public event EventHandler<EventArgs<IBluetoothClient>> ClientReceived;
+
+        protected IBluetoothListener Listener
+        {
+            get { return this.listener; }
         }
 
         public bool TryInitialise()

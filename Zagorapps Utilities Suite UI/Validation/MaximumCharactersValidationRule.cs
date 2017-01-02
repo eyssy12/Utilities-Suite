@@ -9,7 +9,7 @@
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            string data = (value ?? "").ToString();
+            string data = (value ?? string.Empty).ToString();
 
             if (this.MaximumCharactersAllowed < data.Length)
             {

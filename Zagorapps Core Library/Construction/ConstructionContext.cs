@@ -32,7 +32,6 @@
                 catch
                 {
                 }
-                
             }
 
             return default(T);

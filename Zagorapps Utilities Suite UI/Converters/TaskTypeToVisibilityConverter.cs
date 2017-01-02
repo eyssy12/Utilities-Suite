@@ -4,7 +4,7 @@
     using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
-    using Zagorapps.Utilities.Library;
+    using Zagorapps.Utilities.Suite.Library;
 
     public class TaskTypeToVisibilityConverter : IValueConverter
     {

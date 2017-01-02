@@ -7,24 +7,24 @@
 
     public class DataFacilitatorSuiteManager : SuiteManager, IDataFacilitatorSuiteManager
     {
-        protected readonly IEnumerable<IDataFacilitatorSuite> dataSuites;
+        protected readonly IEnumerable<IDataFacilitatorSuite> DataSuites;
 
         public DataFacilitatorSuiteManager(IEnumerable<ISuite> suites)
             : base(suites)
         {
-            this.dataSuites = this.Navigatables.OfType<IDataFacilitatorSuite>();
+            this.DataSuites = this.Navigatables.OfType<IDataFacilitatorSuite>();
         }
 
         public bool Start()
         {
-            this.dataSuites.ForEach(d => d.Start());
+            this.DataSuites.ForEach(d => d.Start());
 
             return true;
         }
 
         public bool Stop()
         {
-            this.dataSuites.ForEach(d => d.Stop());
+            this.DataSuites.ForEach(d => d.Stop());
 
             return true;
         }

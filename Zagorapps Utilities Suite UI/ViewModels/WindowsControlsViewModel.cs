@@ -40,30 +40,13 @@
             set { this.SetFieldIfChanged(ref this.controlsEnabled, value, nameof(this.ControlsEnabled)); }
         }
 
-        public void RemoveStaleProcesses()
-        {
-            this.Processes.RemoveAll(p => !p.ProcessId.IsProcessRunning());
-        }
-
-        public void AddProcesses(IEnumerable<ProcessViewModel> processes)
-        {
-            this.Processes.AddRange(processes);
-
-            this.OnPropertyChanged(nameof(this.FilteredProcesses));
-            this.AdjustTotalProcessesCount();
-        }
-
-        public void AddProcess(ProcessViewModel process)
-        {
-            this.Processes.Add(process);
-
-            this.OnPropertyChanged(nameof(this.FilteredProcesses));
-            this.AdjustTotalProcessesCount();
-        }
-
         public List<ProcessViewModel> Processes
         {
-            get { return this.processes; }
+            get
+            {
+                return this.processes;
+            }
+
             set
             {
                 this.SetFieldIfChanged(ref this.processes, value, nameof(this.Processes));
@@ -92,28 +75,6 @@
             get { return this.prohibits.ToArray(); }
         }
 
-        public void AddProhibit(string prohibit)
-        {
-            if (!this.prohibits.Contains(prohibit))
-            {
-                this.prohibits.Add(prohibit);
-                this.OnPropertyChanged(nameof(this.Prohibits));
-            }
-
-            this.VerifyControlsAvailability();
-        }
-
-        public void RemoveProhibit(string prohibit)
-        {
-            if (this.prohibits.Contains(prohibit))
-            {
-                this.prohibits.Remove(prohibit);
-                this.OnPropertyChanged(nameof(this.Prohibits));
-            }
-
-            this.VerifyControlsAvailability();
-        }
-
         public int TotalProcesses
         {
             get { return this.totalProcesses; }
@@ -122,7 +83,11 @@
         
         public string Filter
         {
-            get { return this.filter; }
+            get
+            {
+                return this.filter;
+            }
+
             set
             {
                 this.SetField(ref this.filter, value, nameof(this.Filter));
@@ -153,6 +118,49 @@
             {
                 this.ControlsEnabled = true;
             }
+        }
+
+        public void RemoveStaleProcesses()
+        {
+            this.Processes.RemoveAll(p => !p.ProcessId.IsProcessRunning());
+        }
+
+        public void AddProcesses(IEnumerable<ProcessViewModel> processes)
+        {
+            this.Processes.AddRange(processes);
+
+            this.OnPropertyChanged(nameof(this.FilteredProcesses));
+            this.AdjustTotalProcessesCount();
+        }
+
+        public void AddProcess(ProcessViewModel process)
+        {
+            this.Processes.Add(process);
+
+            this.OnPropertyChanged(nameof(this.FilteredProcesses));
+            this.AdjustTotalProcessesCount();
+        }
+
+        public void AddProhibit(string prohibit)
+        {
+            if (!this.prohibits.Contains(prohibit))
+            {
+                this.prohibits.Add(prohibit);
+                this.OnPropertyChanged(nameof(this.Prohibits));
+            }
+
+            this.VerifyControlsAvailability();
+        }
+
+        public void RemoveProhibit(string prohibit)
+        {
+            if (this.prohibits.Contains(prohibit))
+            {
+                this.prohibits.Remove(prohibit);
+                this.OnPropertyChanged(nameof(this.Prohibits));
+            }
+
+            this.VerifyControlsAvailability();
         }
 
         private void AdjustTotalProcessesCount()

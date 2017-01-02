@@ -2,9 +2,6 @@
 {
     using System.Threading.Tasks;
     using Core.Library.Events;
-    using InTheHand.Net;
-    using InTheHand.Net.Bluetooth;
-    using InTheHand.Net.Sockets;
     using Models;
     using Networking;
     using Providers;
@@ -27,7 +24,7 @@
                 {
                     try
                     {
-                        IBluetoothClient client = this.Provider.CreateClient(this.listener.AcceptBluetoothClient());
+                        IBluetoothClient client = this.Provider.CreateClient(this.Listener.AcceptBluetoothClient());
 
                         this.OnClientReceived(this, new EventArgs<IBluetoothClient>(client));
                     }

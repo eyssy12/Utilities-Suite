@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8469BF2C-8ED2-4EC1-B3BD-D8E5DDAA8F53}</ProjectGuid>
+    <ProjectGuid>{E9E63EDB-A33C-47B7-960F-F26225922A86}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Zagorapps.Utilities.Suite.Library</RootNamespace>
@@ -30,41 +30,177 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL">
+      <HintPath>..\packages\32feet.NET.3.5.0.0\lib\net\InTheHand.Net.Personal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.6.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.6\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.1.3.2\lib\net35-Client\NodaTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.1.0\lib\net451\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.1.0\lib\net46\System.AppContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.NonGeneric, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.NonGeneric.4.0.1\lib\net46\System.Collections.NonGeneric.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Console, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.0.0\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Diagnostics.Process, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.Process.4.1.0\lib\net461\System.Diagnostics.Process.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.StackTrace.4.0.1\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Diagnostics.TraceSource, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.TraceSource.4.0.0\lib\net46\System.Diagnostics.TraceSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.0.1\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Watcher, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Watcher.4.0.0\lib\net46\System.IO.FileSystem.Watcher.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.NameResolution, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.NameResolution.4.0.0\lib\net46\System.Net.NameResolution.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Sockets.4.1.0\lib\net46\System.Net.Sockets.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.TypeExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.TypeExtensions.4.1.0\lib\net46\System.Reflection.TypeExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Serialization.Formatters.4.3.0\lib\net46\System.Runtime.Serialization.Formatters.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Thread.4.0.0\lib\net46\System.Threading.Thread.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.XmlDocument, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XmlDocument.4.0.1\lib\net46\System.Xml.XmlDocument.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DefaultNavigatableAttribute.cs" />
     <Compile Include="Attributes\NavigatableAttribute.cs" />
     <Compile Include="Attributes\SuiteAttribute.cs" />
-    <Compile Include="Communications\IReceiveSuiteData.cs" />
-    <Compile Include="Communications\ISendSuiteData.cs" />
+    <Compile Include="Communications\BluetoothNetworkConnection.cs" />
+    <Compile Include="Communications\HybridNetworkConnection.cs" />
+    <Compile Include="Communications\IReceiveData.cs" />
+    <Compile Include="Communications\ISendData.cs" />
     <Compile Include="Communications\IUtilitiesDataMessage.cs" />
+    <Compile Include="Communications\Server\ILocalNetworkServer.cs" />
+    <Compile Include="Communications\Server\LocalBluetoothServer.cs" />
+    <Compile Include="Communications\Server\LocalUdpServer.cs" />
+    <Compile Include="Communications\Suite\IReceiveSuiteData.cs" />
+    <Compile Include="Communications\Suite\ISendSuiteData.cs" />
+    <Compile Include="Communications\TcpNetworkConnection.cs" />
+    <Compile Include="Communications\UdpNetworkConnection.cs" />
     <Compile Include="Communications\UtilitiesDataMessage.cs" />
+    <Compile Include="Exceptions\DuplicateFileException.cs" />
     <Compile Include="Enumerations.cs" />
+    <Compile Include="Exceptions\UnknownTaskException.cs" />
     <Compile Include="Exceptions\ViewNotFoundException.cs" />
-    <Compile Include="Interop\IInteropHandle.cs" />
-    <Compile Include="Interop\InteropHandle.cs" />
+    <Compile Include="Factories\IOrganiserFactory.cs" />
+    <Compile Include="Interoperability\IInteropHandle.cs" />
+    <Compile Include="Interoperability\WindowInteropHandle.cs" />
+    <Compile Include="Providers\NetworkConnectionProvider.cs" />
+    <Compile Include="Providers\INetworkConnectionProvider.cs" />
+    <Compile Include="Providers\IOrganiserSettingsProvider.cs" />
+    <Compile Include="Providers\ITaskHistoryProvider.cs" />
+    <Compile Include="Managers\ITaskManager.cs" />
+    <Compile Include="Managers\SimpleTaskManager.cs" />
+    <Compile Include="Providers\ITaskProvider.cs" />
+    <Compile Include="Providers\LocalStoreProviderBase.cs" />
+    <Compile Include="Providers\OrganiserSettingsProvider.cs" />
+    <Compile Include="Providers\TaskHistoryProvider.cs" />
+    <Compile Include="Models\Organiser\FileExtensionCategory.cs" />
+    <Compile Include="Models\Organiser\FileExtensionDatabaseModel.cs" />
+    <Compile Include="Models\Organiser\FileExtensionMetadata.cs" />
+    <Compile Include="Models\Settings\DirectoryOrganiserSettings.cs" />
+    <Compile Include="Models\Settings\FileOrganiserSettings.cs" />
+    <Compile Include="Models\Settings\OrganiserSettingsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\FileExtensionProvider.cs" />
+    <Compile Include="Providers\IFileExtensionProvider.cs" />
+    <Compile Include="Providers\TaskProvider.cs" />
+    <Compile Include="Tasks\FileOrganiserTask.cs" />
+    <Compile Include="Tasks\IOrganiserTask.cs" />
+    <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Tasks\OrganiserTaskBase.cs" />
+    <Compile Include="Tasks\ScheduledTask.cs" />
+    <Compile Include="Tasks\DirectoryOrganiserTask.cs" />
+    <Compile Include="Tasks\TaskBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="file_extension_db.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Messaging\" />
+    <Folder Include="Models\Communications\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zagorapps Bluetooth Library\Zagorapps Bluetooth Library.csproj">
+      <Project>{43e2b14f-ebbc-4299-9abc-5a4ac78a0f22}</Project>
+      <Name>Zagorapps Bluetooth Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zagorapps Core Library\Zagorapps Core Library.csproj">
       <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
       <Name>Zagorapps Core Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Zagorapps Utilities Library\Zagorapps Utilities Library.csproj">
-      <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
-      <Name>Zagorapps Utilities Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

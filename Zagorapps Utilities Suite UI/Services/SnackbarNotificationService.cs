@@ -11,7 +11,7 @@
         {
             if (snackbar == null)
             {
-                throw new ArgumentNullException(nameof(snackbar), ""); //TODO: message
+                throw new ArgumentNullException(nameof(snackbar), "No snackbar reference provided."); //TODO: message
             }
 
             this.Snackbar = snackbar;

@@ -16,9 +16,10 @@
     using IoC;
     using MaterialDesignColors;
     using MaterialDesignThemes.Wpf;
+    using Suites;
     using ViewModels;
     using Zagorapps.Core.Library.Events;
-    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Factories;
 
     public partial class MainWindow : MainWindowBase
     {
@@ -40,15 +41,15 @@
             this.RegistryManager = this.Factory.Create<IApplicationRegistryManager>();
             this.ConfigManager = this.Factory.Create<IApplicationConfigurationManager>();
             this.Tray = this.Factory.Create<ISystemTrayControl>();
-            this.Tray.StateChanged += Tray_StateChanged;
+            this.Tray.StateChanged += this.Tray_StateChanged;
 
             this.Model = new MainWindowViewModel();
 
             this.DataContext = this;
 
             this.Notifier.Notify("Hello, " + Environment.UserName + "!");
-
-            this.Model.FormatAndSetMainColorzoneText(this.SuiteManager.ActiveSuite.Identifier);
+            
+            this.Model.FormatAndSetMainColorzoneText(this.SuiteItems.First(s => s.Identifier == this.SuiteManager.ActiveSuite.Identifier).FriendlyName);
         }
 
         public MainWindowViewModel ViewModel
@@ -66,7 +67,8 @@
                     .Select((a, index) => new SuiteViewModel
                     { 
                         Identifier = a.Item1.Name,
-                        FriendlyName = (index + 1) + " - " + a.Item1.FriendlyName
+                        FriendlyNameWithIndex = (index + 1) + " - " + a.Item1.FriendlyName,
+                        FriendlyName = a.Item1.FriendlyName
                     })
                     .ToArray();
             }
@@ -83,6 +85,13 @@
             base.ShowWindow();
 
             this.Tray.SetVisibility(Visibility.Hidden);
+        }
+
+        protected override void SuiteManager_OnSuiteChanged(object sender, EventArgs<ISuite, object> e)
+        {
+            base.SuiteManager_OnSuiteChanged(sender, e);
+
+            this.Model.FormatAndSetMainColorzoneText(this.SuiteItems.First(s => s.Identifier == e.First.Identifier).FriendlyName);
         }
 
         protected void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -106,7 +115,6 @@
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
-
             
             this.Hide();
             
@@ -144,6 +152,7 @@
                 this.Model.SuiteIndex = listbox.SelectedIndex;
 
                 this.SuiteManager.Navigate(suite.Identifier, null);
+                this.Model.FormatAndSetMainColorzoneText(suite.FriendlyName);
             }
         }
 
@@ -151,8 +160,10 @@
         {
             if (this.Model.IsSuiteChangeWithKeyboardShortcutApplied(e, this.SuiteItems.Count() - 1))
             {
-                this.SuiteManager.Navigate(this.SuiteItems.ElementAt(this.Model.SuiteIndex).Identifier, null);
-                this.Model.FormatAndSetMainColorzoneText(this.SuiteManager.ActiveSuite.Identifier);
+                SuiteViewModel suite = this.SuiteItems.ElementAt(this.Model.SuiteIndex);
+
+                this.SuiteManager.Navigate(suite.Identifier, null);
+                this.Model.FormatAndSetMainColorzoneText(suite.FriendlyName);
             }
         }
 

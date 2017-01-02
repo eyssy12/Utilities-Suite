@@ -10,7 +10,7 @@
         {
             if (value != null)
             {
-                switch(parameter.ToString())
+                switch (parameter.ToString())
                 {
                     case "InitialWaitTime":
                         return "Initial Wait Time (" + value.ToString() + " seconds)";

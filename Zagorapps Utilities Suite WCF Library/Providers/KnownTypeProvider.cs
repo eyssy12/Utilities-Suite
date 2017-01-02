@@ -6,7 +6,7 @@
     using System.Reflection;
     using System.Runtime.Serialization;
     using Core.Library.Communications;
-    using Suite.Library;
+    using Utilities.Suite.Library;
 
     public static class KnownTypeProvider<TCentralisedType>
     {

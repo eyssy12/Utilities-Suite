@@ -9,7 +9,9 @@
     using Audio.Library.Events;
     using Audio.Library.Managers;
     using Commands;
+    using Comparators;
     using Connectivity;
+    using Controls;
     using Core.Library.Events;
     using Core.Library.Timing;
     using Core.Library.Windows;
@@ -17,12 +19,12 @@
     using Library;
     using Library.Attributes;
     using Library.Communications;
-    using Library.Interop;
+    using Library.Factories;
+    using Library.Interoperability;
     using MaterialDesignThemes.Wpf;
     using Microsoft.Win32;
-    using Utilities.Library.Factories;
+    using Suites;
     using ViewModels;
-    using Zagorapps.Utilities.Suite.UI.Controls;
 
     [DefaultNavigatable(WindowsControls.ViewName)]
     public partial class WindowsControls : DataFacilitatorViewControlBase
@@ -35,9 +37,9 @@
         protected readonly ITimer Timer;
 
         protected readonly WindowsControlsViewModel Model;
-        protected readonly ProcessComparer LocalProcessComparer;
+        protected readonly ProcessViewModelComparator ProcessComparer;
 
-        private bool initialSyncWithClientPerformed;
+        private bool isConnectivitySuiteLive;
 
         public WindowsControls(IOrganiserFactory factory, ICommandProvider commandProvider)
             : base(WindowsControls.ViewName, factory, commandProvider)
@@ -49,7 +51,9 @@
             this.InteropHandle = this.Factory.Create<IInteropHandle>();
             this.Timer = this.Factory.Create<ITimer>();
 
-            this.AudioManager.OnVolumeChanged += AudioManager_OnVolumeChanged;
+            this.AudioManager.OnVolumeChanged += this.AudioManager_OnVolumeChanged;
+
+            this.ProcessComparer = new ProcessViewModelComparator();
 
             this.Model = new WindowsControlsViewModel();
             this.Model.AddProhibitCommand = this.CommandProvider.CreateRelayCommand<string>(this.Model.AddProhibit);
@@ -57,12 +61,91 @@
             this.Model.MuteButtonText = this.AudioManager.IsMuted ? "Unmute" : "Mute";
             this.Model.Volume = this.AudioManager.Volume;
 
-            this.LocalProcessComparer = new ProcessComparer();
-
             SystemEvents.SessionSwitch += this.SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += this.SystemEvents_SessionEnding;
 
             this.DataContext = this;
+        }
+
+        public WindowsControlsViewModel ViewModel
+        {
+            get { return this.Model; }
+        }
+
+        public override void InitialiseView(object arg)
+        {
+            this.Timer.TimeElapsed += this.Timer_TimeElapsed;
+            this.Timer.Start(1000, 1000);
+        }
+
+        public override void FinaliseView()
+        {
+            this.Timer.Stop();
+            this.Timer.TimeElapsed -= this.Timer_TimeElapsed;
+        }
+
+        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
+        {
+            string messageData = data.Data.ToString();
+
+             // TODO:custom object
+            if (messageData.Contains(":"))
+            {
+                string[] split = messageData.Split(':');
+
+                if (split[0] == "vol")
+                {
+                    bool muted;
+                    if (bool.TryParse(split[1], out muted))
+                    {
+                        this.AudioManager.IsMuted = muted;
+                    }
+                    else
+                    {
+                        int volume = int.Parse(split[1]);
+
+                        this.AudioManager.Volume = volume;
+                    }
+                }
+                else if (split[0] == ConnectivitySuite.Name)
+                {
+                    this.isConnectivitySuiteLive = bool.Parse(split[1]);
+                }
+                else
+                {
+                    if (split[1].Contains("lock"))
+                    {
+                        if (!this.HandleOperation("Lock"))
+                        {
+                            this.PerformConnectivityRoutingAction(split[0] + ":Permitted Process Running");
+                        }
+                    }
+                    else if (split[1] == "SyncClient")
+                    {
+                        string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume;
+
+                        this.OnDataSendRequest(
+                            this,
+                            ViewBag.GetViewName<WindowsControls>(),
+                            SuiteRoute.Connectivity,
+                            ViewBag.GetViewName<ConnectionInteraction>(),
+                            split[0] + ":SyncResponse:" + syncData);
+                    }
+                }
+            }
+        }
+
+        private void PerformConnectivityRoutingAction(string data)
+        {
+            if (this.isConnectivitySuiteLive)
+            {
+                this.OnDataSendRequest(
+                    this,
+                    ViewBag.GetViewName<WindowsControls>(),
+                    SuiteRoute.Connectivity,
+                    ViewBag.GetViewName<ConnectionInteraction>(),
+                    data);
+            }
         }
 
         private void AudioManager_OnVolumeChanged(object sender, VolumeChangeEvent e)
@@ -87,86 +170,6 @@
             }
 
             this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.IsMuted);
-        }
-
-        public WindowsControlsViewModel ViewModel
-        {
-            get { return this.Model; }
-        }
-
-        public override void InitialiseView(object arg)
-        {
-            this.Timer.TimeElapsed += Timer_TimeElapsed;
-            this.Timer.Start(1000, 1000);
-        }
-
-        public override void FinaliseView()
-        {
-            this.Timer.Stop();
-            this.Timer.TimeElapsed -= Timer_TimeElapsed;
-        }
-
-        public override void ProcessMessage(IUtilitiesDataMessage data)
-        {
-            string messageData = data.Data.ToString();
-
-            if (messageData.Contains(":")) // TODO:custom object
-            {
-                string[] split = messageData.Split(':');
-
-                if (split[0] == "vol")
-                {
-                    bool muted;
-                    if (bool.TryParse(split[1], out muted))
-                    {
-                        this.AudioManager.IsMuted = muted;
-                    }
-                    else
-                    {
-                        int volume = int.Parse(split[1]);
-
-                        this.AudioManager.Volume = volume;
-                    }
-                }
-                else
-                {
-                    if (split[1].Contains("lock"))
-                    {
-                        if (!this.HandleOperation("Lock"))
-                        {
-                            this.PerformConnectivityRoutingAction(split[0] + ":Permitted Process Running");
-                        }
-                    }
-                    else if (split[1] == "SyncClient")
-                    {
-                        string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume;
-
-                        this.OnDataSendRequest(
-                            this,
-                            ViewBag.GetViewName<WindowsControls>(),
-                            SuiteRoute.Connectivity,
-                            ViewBag.GetViewName<ConnectionInteraction>(),
-                            split[0] + ":SyncResponse:" + syncData);
-                    }
-                }
-            }
-            else if (messageData == "SyncResponseAck")
-            {
-                this.initialSyncWithClientPerformed = true;
-            }
-        }
-
-        private void PerformConnectivityRoutingAction(string data)
-        {
-            if (this.initialSyncWithClientPerformed)
-            {
-                this.OnDataSendRequest(
-                    this,
-                    ViewBag.GetViewName<WindowsControls>(),
-                    SuiteRoute.Connectivity,
-                    ViewBag.GetViewName<ConnectionInteraction>(),
-                    data);
-            }
         }
 
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
@@ -221,8 +224,9 @@
                         ProcessName = p.ProcessName,
                         TimeRunning = "-1" //this.GetTotalProcessorTime(p)
                                 })
-                    .Except(this.Model.Processes, this.LocalProcessComparer);
+                    .Except(this.Model.Processes, this.ProcessComparer);
 
+                // TODO: investigate - sometimes there is item inconsistency with the model and the ItemsSource in the view which throws InvalidOperationException
                 this.Model.RemoveStaleProcesses();
                 this.Model.AddProcesses(disctint);
                 this.Model.VerifyControlsAvailability();
@@ -249,19 +253,6 @@
             this.AudioManager.IsMuted = false;
 
             this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.Volume);
-        }
-
-        protected sealed class ProcessComparer : IEqualityComparer<ProcessViewModel>
-        {
-            public bool Equals(ProcessViewModel x, ProcessViewModel y)
-            {
-                return x.ProcessName == y.ProcessName;
-            }
-
-            public int GetHashCode(ProcessViewModel obj)
-            {
-                return 0;
-            }
         }
     }
 }

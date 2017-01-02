@@ -3,7 +3,7 @@
     using System;
     using System.ServiceModel;
     using Core.Library.Events;
-    using Suite.Library.Communications;
+    using Utilities.Suite.Library.Communications;
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class UtilitiesSuiteService : IUtilitiesSuiteService

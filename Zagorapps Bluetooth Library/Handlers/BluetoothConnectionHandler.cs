@@ -71,7 +71,7 @@
 
         protected override void CloseStreams()
         {
-            continueReadingData = false;
+            this.continueReadingData = false;
 
             base.CloseStreams();
         }

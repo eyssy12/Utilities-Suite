@@ -1,6 +1,6 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
-    using Library.Interop;
+    using Library.Interoperability;
 
     public interface IMainWindow : IWindow
     {

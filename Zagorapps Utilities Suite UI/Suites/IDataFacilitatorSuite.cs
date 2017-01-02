@@ -1,8 +1,8 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Suites
 {
-    using Library;
     using Library.Communications;
-    using Utilities.Library.Communications;
+    using Library.Communications.Suite;
+    using Utilities.Suite.Library;
 
     public interface IDataFacilitatorSuite : ISuite, IReceiveSuiteData, ISendData
     {

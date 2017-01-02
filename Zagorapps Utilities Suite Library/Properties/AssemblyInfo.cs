@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Zagorapps Utilities Suite Library")]
+[assembly: AssemblyTitle("Organiser Library")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Zagorapps Utilities Suite Library")]
+[assembly: AssemblyProduct("Organiser Library")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8469bf2c-8ed2-4ec1-b3bd-d8e5ddaa8f53")]
+[assembly: Guid("e9e63edb-a33c-47b7-960f-f26225922a86")]
 
 // Version information for an assembly consists of the following four values:
 //

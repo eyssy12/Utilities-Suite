@@ -16,17 +16,17 @@
     using Core.Library.Events;
     using Core.Library.Extensions;
     using Library;
+    using Library.Attributes;
     using Library.Communications;
     using Services;
-    using SystemControl;
-    using Utilities.Library;
-    using Utilities.Library.Communications.Server;
-    using Utilities.Library.Factories;
-    using Utilities.Library.Providers;
+    using Suites;
+    using Utilities.Suite.Library.Communications.Server;
+    using Utilities.Suite.Library.Factories;
+    using Utilities.Suite.Library.Providers;
+    using Utilities.Suite.UI.Views.SystemControl;
     using ViewModels;
     using WindowsInput;
     using WindowsInput.Native;
-    using Zagorapps.Utilities.Suite.Library.Attributes;
     using VisibilityEnum = System.Windows.Visibility;
 
     [DefaultNavigatable(ConnectionInteraction.ViewName)]
@@ -78,11 +78,12 @@
         // TODO: internal messaging protocol is a mess - need to come up with a protocol (custom objects extending from BasicDataMessage) and refactor all "Process Message" implementations
         // i.e. ClientBroadcastMessage
         // i.e. TargetClientMessage
-        public override void ProcessMessage(IUtilitiesDataMessage data)
+        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
         {
             string received = data.Data.ToString();
 
-            if (received.Contains(':')) // TODO: create a custom object instead of string split
+            // TODO: create a custom object instead of string split
+            if (received.Contains(':'))
             {
                 string[] split = received.Split(':');
 
@@ -92,8 +93,10 @@
                 {
                     this.localServer.Send(split[0], new BasicDataMessage(ConnectionInteraction.ViewName, split[1]));
                 }
-                else if (split.Length == 3) // index 0 = "br" = broadcast
+                else if (split.Length == 3)
                 {
+                    // index 0 = "br" = broadcast
+
                     if (split[0] == "br")
                     {
                         this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, split[1] + ":" + split[2]));
@@ -119,80 +122,77 @@
 
         private void HandleInteraction(IDataMessage message)
         {
-            // TODO: implement the below code into some sort of a decision tree
-
-            string data = message.Data.ToString();
-
-            if (string.IsNullOrWhiteSpace(data))
+            Task.Run(() =>
             {
-                // raise error
-            }
-            else
-            {
-                ClientCommand command;
-                if (Enum.TryParse(data, out command))
-                {
-                    if (command == ClientCommand.LeftClick)
-                    {
-                        this.InputSimulator.Mouse.LeftButtonClick();
-                    }
-                    else if (command == ClientCommand.MiddleClick)
-                    {
-                    }
-                    else if (command == ClientCommand.RightClick)
-                    {
-                        this.InputSimulator.Mouse.RightButtonClick();
-                    }
-                    else if (command == ClientCommand.DoubleTap)
-                    {
-                        this.InputSimulator.Mouse.LeftButtonDoubleClick();
-                    }
-                }
-                else if (data.Contains(":"))
-                {
-                    string[] dataSplit = data.Split(':');
+                // TODO: implement the below code into some sort of a decision tree
 
-                    if (dataSplit[0] == "vol")
-                    {
-                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + dataSplit[1]);
-                    }
-                    else
-                    {
+                string data = message.Data.ToString();
 
-                        float xMovingUnits = float.Parse(dataSplit[0]);
-                        float yMovingUnits = float.Parse(dataSplit[1]);
-
-                        this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
-                    }
-                }
-                else if (data.Contains("lock"))
+                if (string.IsNullOrWhiteSpace(data))
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
-                }
-                else if (data == "SyncRequest")
-                {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":SyncClient");
-                }
-                else if (data == "SyncResponseAck")
-                {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), data);
-                }
-                else if (data == ServerCommand.Backspace.ToString())
-                {
-                    this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
-                }
-                else if (data.Length > 1)
-                {
-                    // KB
-                    // typing or whatever
+                    // raise error
                 }
                 else
                 {
-                    // KB char input
-                    this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
+                    ClientCommand command;
+                    if (Enum.TryParse(data, out command))
+                    {
+                        if (command == ClientCommand.LeftClick)
+                        {
+                            this.InputSimulator.Mouse.LeftButtonClick();
+                        }
+                        else if (command == ClientCommand.MiddleClick)
+                        {
+                        }
+                        else if (command == ClientCommand.RightClick)
+                        {
+                            this.InputSimulator.Mouse.RightButtonClick();
+                        }
+                        else if (command == ClientCommand.DoubleTap)
+                        {
+                            this.InputSimulator.Mouse.LeftButtonDoubleClick();
+                        }
+                    }
+                    else if (data.Contains(":"))
+                    {
+                        string[] dataSplit = data.Split(':');
+
+                        if (dataSplit[0] == "vol")
+                        {
+                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + dataSplit[1]);
+                        }
+                        else
+                        {
+                            float xMovingUnits = float.Parse(dataSplit[0]);
+                            float yMovingUnits = float.Parse(dataSplit[1]);
+
+                            this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
+                        }
+                    }
+                    else if (data.Contains("lock"))
+                    {
+                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
+                    }
+                    else if (data == "SyncRequest")
+                    {
+                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":SyncClient");
+                    }
+                    else if (data == ServerCommand.Backspace.ToString())
+                    {
+                        this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
+                    }
+                    else if (data.Length > 1)
+                    {
+                        // KB
+                        // typing or whatever
+                    }
+                    else
+                    {
+                        // KB char input
+                        this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
+                    }
                 }
-            }
-            
+            });
         }
 
         private void StartService()
@@ -305,6 +305,8 @@
             {
                 this.Notifier.Notify(this.Model.ConnectionType + " Service Stopped");
             }
+
+            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), ConnectivitySuite.Name + ":" + this.Model.ServiceEnabled);
         }
 
         private void StopService()

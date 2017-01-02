@@ -16,12 +16,12 @@
     using Zagorapps.Core.Library.Events;
     using Zagorapps.Core.Library.Managers;
     using Zagorapps.Core.Library.Timing;
-    using Zagorapps.Utilities.Library;
-    using Zagorapps.Utilities.Library.Factories;
-    using Zagorapps.Utilities.Library.Managers;
-    using Zagorapps.Utilities.Library.Models.Settings;
-    using Zagorapps.Utilities.Library.Providers;
-    using Zagorapps.Utilities.Library.Tasks;
+    using Zagorapps.Utilities.Suite.Library;
+    using Zagorapps.Utilities.Suite.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Managers;
+    using Zagorapps.Utilities.Suite.Library.Models.Settings;
+    using Zagorapps.Utilities.Suite.Library.Providers;
+    using Zagorapps.Utilities.Suite.Library.Tasks;
 
     [Navigatable(AddTask.ViewName)]
     public partial class AddTask : ViewControlBase
@@ -59,7 +59,8 @@
                     this.Model.FileRootPathFiles = new List<RootPathFileViewModel>(files
                         .Select(file => new RootPathFileViewModel
                         {
-                            File = file,
+                            Path = file,
+                            FileName = Path.GetFileName(file),
                             Exempt = false
                         })
                         .ToArray());
@@ -76,7 +77,8 @@
                     this.Model.DirectoryRootPathFiles = new List<RootPathFileViewModel>(files
                         .Select(file => new RootPathFileViewModel
                         {
-                            File = file,
+                            Path = file,
+                            FileName = Path.GetFileName(file),
                             Exempt = false
                         })
                         .ToArray());
@@ -105,7 +107,6 @@
 
         public override void InitialiseView(object arg)
         {
-            
         }
 
         public override void FinaliseView()
@@ -209,7 +210,7 @@
             this.SettingsProvider.Save(new FileOrganiserSettings
             {
                 Reference = identity,
-                FileExemptions = model.FileRootPathFiles.Where(r => r.Exempt).Select(s => s.File).ToArray(),
+                FileExemptions = model.FileRootPathFiles.Where(r => r.Exempt).Select(s => s.Path).ToArray(),
                 RootPath = model.RootPath,
                 ExtensionExemptions = model.ExemptedFileExtensions.Select(e => e.Value).ToArray()
             });

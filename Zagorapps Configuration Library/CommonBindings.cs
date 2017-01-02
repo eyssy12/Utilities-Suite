@@ -6,7 +6,7 @@
     using Core.Library.Windows;
     using Core.Library.Windows.Registry;
     using SimpleInjector;
-    using Utilities.Library.Factories;
+    using Utilities.Suite.Library.Factories;
 
     public class CommonBindings : BindingsBase
     {
@@ -29,10 +29,7 @@
         {
             this.Register<IFileManager, LocalFileManager>();
             this.Register<IDirectoryManager, LocalDirectoryManager>();
-            this.Register<IApplicationRegistryManager>(container =>
-            {
-                return new ApplicationRegistryManager("File-Organiser");
-            }, Lifestyle.Singleton);
+            this.Register<IApplicationRegistryManager>(container => new ApplicationRegistryManager("File-Organiser"), Lifestyle.Singleton);
         }
 
         protected virtual void RegisterFactories()

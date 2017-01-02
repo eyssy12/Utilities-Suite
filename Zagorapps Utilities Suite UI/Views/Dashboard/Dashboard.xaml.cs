@@ -1,6 +1,5 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.Dashboard
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -8,8 +7,9 @@
     using Library.Attributes;
     using Library.Communications;
     using Services;
+    using Suites;
     using ViewModels;
-    using Zagorapps.Utilities.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Factories;
     using Zagorapps.Utilities.Suite.UI.Commands;
     using Zagorapps.Utilities.Suite.UI.Controls;
 
@@ -31,12 +31,13 @@
 
             this.items = Assembly
                 .GetExecutingAssembly()
-                .GetAllSuitesOrderByDefaultNavigatable()
+                .GetAllSuitesOrderByDefaultNavigatable(exclusions: DashboardSuite.Name)
                 .Select((a, index) => new DashboardItemViewModel
                 {
                     Identifier = a.Item1.Name,
-                    FriendlyName = (index + 1) + " - " + a.Item1.FriendlyName,
-                    ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(param => this.ChangeSuite(param))
+                    FriendlyName = a.Item1.FriendlyName,
+                    FriendlyNameWithIndex = (index + 1) + " - " + a.Item1.FriendlyName,
+                    ChangeSuiteCommand = this.CommandProvider.CreateRelayCommand<string>(this.SuiteService.ChangeSuite)
                 })
                 .ToArray();
 
@@ -50,21 +51,16 @@
 
         public override void InitialiseView(object arg)
         {
-            Console.WriteLine(ViewName + " - initialised");
         }
 
         public override void FinaliseView()
         {
-            Console.WriteLine(ViewName + " - View finalised");
         }
 
-        private void ChangeSuite(string identifier)
+        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
         {
-            this.SuiteService.ChangeSuite(identifier);
-        }
-
-        public override void ProcessMessage(IUtilitiesDataMessage data)
-        {
+            // TODO: perhaps implement logic for displaying the amount of new events that have occured in the suite since the users last visit to it
+            // what classifies as an event in a suite and view? 
         }
     }
 }

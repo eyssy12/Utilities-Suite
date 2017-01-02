@@ -8,8 +8,8 @@
     using Services;
     using ViewModels;
     using Zagorapps.Core.Library.Windows;
-    using Zagorapps.Utilities.Library.Factories;
-    using Zagorapps.Utilities.Library.Providers;
+    using Zagorapps.Utilities.Suite.Library.Factories;
+    using Zagorapps.Utilities.Suite.Library.Providers;
 
     [Navigatable(IndividualTask.ViewName)]
     public partial class IndividualTask : ViewControlBase
@@ -52,7 +52,6 @@
 
         public override void FinaliseView()
         {
-            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

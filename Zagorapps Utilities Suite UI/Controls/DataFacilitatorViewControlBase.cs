@@ -1,11 +1,12 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Controls
 {
     using System;
+    using System.Threading.Tasks;
     using Commands;
     using Core.Library.Events;
-    using Library;
-    using Utilities.Library.Factories;
-    using Zagorapps.Utilities.Suite.Library.Communications;
+    using Library.Communications;
+    using Utilities.Suite.Library;
+    using Utilities.Suite.Library.Factories;
 
     public abstract class DataFacilitatorViewControlBase : ViewControlBase, IDataFacilitatorViewControl
     {
@@ -16,7 +17,15 @@
 
         public event EventHandler<EventArgs<string, SuiteRoute, string, object>> DataSendRequest;
 
-        public abstract void ProcessMessage(IUtilitiesDataMessage data);
+        public void ProcessMessage(IUtilitiesDataMessage data)
+        {
+            Task.Run(() =>
+            {
+                this.HandleProcessMessage(data);
+            });
+        }
+
+        protected abstract void HandleProcessMessage(IUtilitiesDataMessage data);
 
         protected void OnDataSendRequest(object sender, string from, SuiteRoute suiteDestination, string viewDestination, object data)
         {
