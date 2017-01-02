@@ -23,6 +23,11 @@
             get { return BluetoothRadio.PrimaryRadio.LocalAddress; }
         }
 
+        public string Name
+        {
+            get { return BluetoothRadio.PrimaryRadio.Name; }
+        }
+
         public ISimpleBluetoothClientReceiver CreateReceiver(ConnectionSettings settings, IBluetoothServicesProvider provider)
         {
             return new SimpleBluetoothClientReceiver(settings, provider);

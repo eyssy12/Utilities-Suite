@@ -1,4 +1,5 @@
-﻿<controls:DataFacilitatorViewControlBase x:Class="Zagorapps.Utilities.Suite.UI.Views.Connectivity.ConnectionInteraction"
+﻿<controls:DataFacilitatorViewControlBase 
+             x:Class="Zagorapps.Utilities.Suite.UI.Views.Connectivity.ConnectionInteraction"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,7 +24,7 @@
             <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
                 <Setter Property="Margin" Value="0 8 0 8" />
             </Style>
-            <converters:InvertBoolConverter x:Key="InvertBool" />
+            <converters:InvertBoolConverter x:Key="InvertBool" /> 
         </ResourceDictionary>
 
     </controls:DataFacilitatorViewControlBase.Resources>

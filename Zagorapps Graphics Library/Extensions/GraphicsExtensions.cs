@@ -32,13 +32,13 @@
             [SecurityCritical]
             public SafeHBitmapHandle(Bitmap bitmap) : base(true)
             {
-                SetHandle(bitmap.GetHbitmap());
+                this.SetHandle(bitmap.GetHbitmap());
             }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
             protected override bool ReleaseHandle()
             {
-                return DeleteObject(handle) > 0;
+                return GraphicsExtensions.DeleteObject(this.handle) > 0;
             }
         }
     }

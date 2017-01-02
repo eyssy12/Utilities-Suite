@@ -16,6 +16,8 @@
 
         BluetoothAddress LocalAddress { get; }
 
+        string Name { get; }
+
         IBluetoothClient CreateServerClient();
 
         IBluetoothClient CreateClient(BluetoothClient client);

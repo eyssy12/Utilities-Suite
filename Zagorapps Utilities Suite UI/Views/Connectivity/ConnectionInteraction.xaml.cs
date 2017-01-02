@@ -17,7 +17,6 @@
     using Core.Library.Extensions;
     using Graphics.Library.Extensions;
     using Graphics.Library.ZXing;
-    using InTheHand.Net;
     using Library;
     using Library.Attributes;
     using Library.Communications;
@@ -39,8 +38,8 @@
             ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
             Pin = "12345";
 
-        protected readonly IBluetoothServicesProvider Provider;
-        protected readonly IQRCodeServiceProvider QRCodeProvider;
+        protected readonly IBluetoothServicesProvider BTServiceProvider;
+        protected readonly IQRCodeServiceProvider QRCodeServiceProvider;
         protected readonly ISnackbarNotificationService Notifier;
         protected readonly IInputSimulator InputSimulator;
 
@@ -53,8 +52,8 @@
         {
             this.InitializeComponent();
 
-            this.Provider = this.Factory.Create<IBluetoothServicesProvider>();
-            this.QRCodeProvider = this.Factory.Create<IQRCodeServiceProvider>();
+            this.BTServiceProvider = this.Factory.Create<IBluetoothServicesProvider>();
+            this.QRCodeServiceProvider = this.Factory.Create<IQRCodeServiceProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.InputSimulator = this.Factory.Create<IInputSimulator>();
 
@@ -191,7 +190,7 @@
                     else if (data.Length > 1)
                     {
                         // KB
-                        // typing or whatever
+                        // typing/data streaming
                     }
                     else
                     {
@@ -210,7 +209,7 @@
             {
                 ConnectionSettings settings = new ConnectionSettings { ServiceID = Encoding.UTF8.GetBytes(this.Model.Pin).CreateJavaUUIDBasedGuid(), Pin = this.Model.Pin };
 
-                this.localServer = new LocalBluetoothServer(this.Provider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>()), this.Factory.Create<INetworkConnectionProvider>());
+                this.localServer = new LocalBluetoothServer(this.BTServiceProvider.CreateReceiver(settings, this.Factory.Create<IBluetoothServicesProvider>()), this.Factory.Create<INetworkConnectionProvider>());
             }
             else if (this.ViewModel.ConnectionType == ConnectionType.Udp)
             {
@@ -250,18 +249,27 @@
 
         private void ComboBox_ConnectionMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((ConnectionType)e.AddedItems[0] == ConnectionType.Bluetooth && !this.Provider.IsBluetoothAvailable)
+            ConnectionType type = (ConnectionType)e.AddedItems[0];
+
+            if (type == ConnectionType.Bluetooth && !this.BTServiceProvider.IsBluetoothAvailable)
             {
                 this.Model.ServiceButtonEnabled = false;
                 this.Model.ServiceButtonText = "No Bluetooth Available";
             }
             else
             {
+                if (type == ConnectionType.Bluetooth)
+                {
+                    this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage(this.BTServiceProvider.Name + "-" + this.BTServiceProvider.LocalAddress.ToString("C") + "-" + this.Model.Pin, 500, 500).ToSource();
+                }
+                else if (type == ConnectionType.Tcp || type == ConnectionType.Udp)
+                {
+                    this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage("localaddress and port", 500, 500).ToSource();
+                }
+
                 this.Model.ServiceButtonEnabled = true;
                 this.Model.ServiceButtonText = "Start Service";
-
-                BluetoothAddress address = this.Provider.LocalAddress;
-                this.Model.QRCodeSource = this.QRCodeProvider.GenerateImage(address.ToString() + ":" + this.Model.Pin, 500, 500).ToSource();
+                
             }
         }
 
