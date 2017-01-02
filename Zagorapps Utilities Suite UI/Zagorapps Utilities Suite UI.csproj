@@ -392,6 +392,14 @@
       <Project>{da5e6e4e-d994-4476-a53c-4a575fda86a3}</Project>
       <Name>Zagorapps Core Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zagorapps Graphics Configuration Library\Zagorapps Graphics Configuration Library.csproj">
+      <Project>{E4CBACED-F057-495E-9B73-BD8BA0296C58}</Project>
+      <Name>Zagorapps Graphics Configuration Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zagorapps Graphics Library\Zagorapps Graphics Library.csproj">
+      <Project>{5F4C2785-26C0-4806-BABF-F7BE07024FA1}</Project>
+      <Name>Zagorapps Graphics Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zagorapps Utilities Suite Library\Zagorapps Utilities Suite Library.csproj">
       <Project>{e9e63edb-a33c-47b7-960f-f26225922a86}</Project>
       <Name>Zagorapps Utilities Suite Library</Name>

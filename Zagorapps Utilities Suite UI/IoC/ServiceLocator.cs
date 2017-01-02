@@ -5,6 +5,7 @@
     using Bluetooth.Configuration.Library;
     using Configuration.Library;
     using Configuration.Library.Extensions;
+    using Graphics.Configuration.Library;
     using SimpleInjector;
     using Zagorapps.Utilities.Suite.Library.Factories;
 
@@ -22,7 +23,8 @@
                 new CommonBindings(),
                 new UiBindings(),
                 new BluetoothBindings(),
-                new AudioBindings()
+                new AudioBindings(),
+                new GraphicsBindings()
             };
 
             ServiceLocator.Container.RegisterBindings(bindings);

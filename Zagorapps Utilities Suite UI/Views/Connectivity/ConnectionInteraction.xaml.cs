@@ -15,6 +15,8 @@
     using Core.Library.Communications;
     using Core.Library.Events;
     using Core.Library.Extensions;
+    using Graphics.Library.Extensions;
+    using Graphics.Library.ZXing;
     using Library;
     using Library.Attributes;
     using Library.Communications;
@@ -37,6 +39,7 @@
             Pin = "12345";
 
         protected readonly IBluetoothServicesProvider Provider;
+        protected readonly IQRCodeServiceProvider QRCodeProvider;
         protected readonly ISnackbarNotificationService Notifier;
         protected readonly IInputSimulator InputSimulator;
 
@@ -50,12 +53,15 @@
             this.InitializeComponent();
 
             this.Provider = this.Factory.Create<IBluetoothServicesProvider>();
+            this.QRCodeProvider = this.Factory.Create<IQRCodeServiceProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.InputSimulator = this.Factory.Create<IInputSimulator>();
 
             this.Model = new BluetoothInteractionViewModel();
             this.Model.Pin = ConnectionInteraction.Pin;
             this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeService());
+
+            // TODO: add additional method to IViewControl and ISuite interfaces to initiate shutdown on controls - this will be called whenever the user terminates the application
 
             this.DataContext = this;
         }
@@ -243,23 +249,16 @@
 
         private void ComboBox_ConnectionMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((ConnectionType)e.AddedItems[0] == ConnectionType.Bluetooth)
+            if ((ConnectionType)e.AddedItems[0] == ConnectionType.Bluetooth && !this.Provider.IsBluetoothAvailable)
             {
-                if (!this.Provider.IsBluetoothAvailable)
-                {
-                    this.Model.ServiceButtonEnabled = false;
-                    this.Model.ServiceButtonText = "No Bluetooth Available";
-                }
-                else
-                {
-                    this.Model.ServiceButtonEnabled = true;
-                    this.Model.ServiceButtonText = "Start Service";
-                }
+                this.Model.ServiceButtonEnabled = false;
+                this.Model.ServiceButtonText = "No Bluetooth Available";
             }
             else
             {
                 this.Model.ServiceButtonEnabled = true;
                 this.Model.ServiceButtonText = "Start Service";
+                this.Model.QRCodeSource = this.QRCodeProvider.GenerateImage(this.Model.Pin, 500, 500).ToSource();
             }
         }
 
@@ -278,6 +277,7 @@
                     this.StopService();
                     this.Model.ServiceButtonText = "Start Service";
                     this.Model.ContentVisibility = VisibilityEnum.Hidden;
+                    this.Model.QRCodeButtonVisiblity = VisibilityEnum.Hidden;
 
                     this.Model.ServiceEnabled = false;
                 }
@@ -288,6 +288,7 @@
                     this.StartService();
                     this.Model.ServiceButtonText = "End Service";
                     this.Model.ContentVisibility = VisibilityEnum.Visible;
+                    this.Model.QRCodeButtonVisiblity = VisibilityEnum.Visible;
                 }
 
                 this.Model.ContentEnabled = true;

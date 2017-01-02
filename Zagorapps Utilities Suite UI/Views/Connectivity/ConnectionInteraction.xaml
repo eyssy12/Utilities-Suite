@@ -7,6 +7,7 @@
              xmlns:converters="clr-namespace:Zagorapps.Utilities.Suite.UI.Converters"
              xmlns:controls="clr-namespace:Zagorapps.Utilities.Suite.UI.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1280">
 
@@ -46,6 +47,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -103,14 +105,70 @@
                     </Grid>
                 </DockPanel>
 
+                <Button Grid.Row="0"
+                        Grid.Column="3"
+                        Margin="16"
+                        Visibility="{Binding ViewModel.QRCodeButtonVisiblity}"
+                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        Content="QR Code" >
+                    
+                    <Button.CommandParameter>
+                        <Grid Margin="16" HorizontalAlignment="Center">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Margin="0 8 0 8"
+                                       FontSize="32"
+                                       HorizontalAlignment="Center"
+                                       Text="Scan the code below using the barcode scanner."/>
+
+                            <Border Grid.Row="1"
+                                    Grid.Column="0"
+                                    BorderThickness="0 1 0 0"
+                                    Margin="0 8 0 8"
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}" />
+
+                            <Image Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Source="{Binding ViewModel.QRCodeSource}" />
+
+                            <Border Grid.Row="3"
+                                    Grid.Column="0"
+                                    BorderThickness="0 1 0 0"
+                                    Margin="0 8 0 8"
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}" />
+
+                            <Button Grid.Row="4"
+                                    Grid.Column="0"
+                                    Margin="0 8 0 8"
+                                    Content="Dismiss" 
+                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" />
+
+                        </Grid>
+                    </Button.CommandParameter>
+                </Button>
+
             </Grid>
         </materialDesign:Card>
 
         <Grid Grid.Row="1"
-            Grid.Column="0"
-              
-            Visibility="{Binding ViewModel.ContentVisibility}"
-            IsEnabled="{Binding ViewModel.ContentEnabled}">
+              Grid.Column="0"
+              Visibility="{Binding ViewModel.ContentVisibility}"
+              IsEnabled="{Binding ViewModel.ContentEnabled}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -121,19 +179,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DataGrid
-                Margin="0 16 0 0"
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="0"
-                    Name="ListBox_ConnectedClients"
-                    ItemsSource="{Binding ViewModel.ConnectedClients}"
-                    CanUserSortColumns="True"
-                    CanUserAddRows="False" 
-                    AutoGenerateColumns="False"
-                    materialDesign:DataGridAssist.CellPadding="13 8 8 8"
-                    materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-
+            <DataGrid Margin="0 16 0 0"
+                      Grid.Row="0"
+                      Grid.RowSpan="2"
+                      Grid.Column="0"
+                      Name="ListBox_ConnectedClients"
+                      ItemsSource="{Binding ViewModel.ConnectedClients}"
+                      CanUserSortColumns="True"
+                      CanUserAddRows="False" 
+                      AutoGenerateColumns="False"
+                      materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+                      
                 <DataGrid.Columns>
 
                     <DataGridTextColumn
@@ -146,22 +203,24 @@
             </DataGrid>
 
             <DockPanel Grid.Row="0"
-                    Grid.Column="1">
+                       Grid.Column="1">
 
-                <TextBlock Margin="16 16 16 8" DockPanel.Dock="Top" >
+                <TextBlock Margin="16 16 16 8" 
+                           DockPanel.Dock="Top" >
+                    
                     Client Log
                 </TextBlock>
 
                 <Border Background="{DynamicResource PrimaryHueDarkBrush}" 
-                    Margin="16 8 16 16"
-                    BorderBrush="DarkGray" 
-                    BorderThickness="1"
-                    ClipToBounds="True">
+                        Margin="16 8 16 16"
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1"
+                        ClipToBounds="True">
 
                     <Border Background="Transparent" 
-                        BorderBrush="Black" 
-                        BorderThickness="1"
-                        Margin="-2">
+                            BorderBrush="Black" 
+                            BorderThickness="1"
+                            Margin="-2">
 
                         <DockPanel Margin="8">
                             <TextBlock TextWrapping="Wrap" Foreground="Yellow" Text="{Binding ViewModel.ServiceClientLogConsole}" />

@@ -7,6 +7,7 @@
     using System.Text;
     using System.Windows;
     using System.Windows.Input;
+    using System.Windows.Media.Imaging;
     using Controls;
     using Core.Library.Extensions;
     using Utilities.Suite.Library;
@@ -17,7 +18,8 @@
 
         private Visibility progressBarVisibility = Visibility.Hidden,
             startServiceButtonVisibility = Visibility.Visible,
-            contentVisibility = Visibility.Hidden;
+            contentVisibility = Visibility.Hidden,
+            qrCodeVisibiliity = Visibility.Hidden;
 
         private LinkedList<string> serviceClientLogger = new LinkedList<string>();
 
@@ -28,11 +30,12 @@
         private string pin;
 
         private int clientLogMaxLines = 10;
-
-        private ICommand serviceStartCommand;
+        
         private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
 
         private ConnectionType conenctionType;
+
+        private BitmapSource qrCodeSource;
 
         public BluetoothInteractionViewModel()
         {
@@ -137,11 +140,19 @@
             set { this.SetFieldIfChanged(ref this.startServiceButtonVisibility, value, nameof(this.StartServiceButtonVisibility)); }
         }
 
-        public ICommand ServiceStartCommand
+        public Visibility QRCodeButtonVisiblity
         {
-            get { return this.serviceStartCommand; }
-            set { this.SetFieldIfChanged(ref this.serviceStartCommand, value, nameof(this.ServiceStartCommand)); }
+            get { return this.qrCodeVisibiliity; }
+            set { this.SetFieldIfChanged(ref this.qrCodeVisibiliity, value, nameof(this.QRCodeButtonVisiblity)); }
         }
+
+        public BitmapSource QRCodeSource
+        {
+            get { return this.qrCodeSource; }
+            set { this.SetFieldIfChanged(ref this.qrCodeSource, value, nameof(this.QRCodeSource)); }
+        }
+
+        public ICommand ServiceStartCommand { get; set; }
 
         public ConnectionType ConnectionType
         {
