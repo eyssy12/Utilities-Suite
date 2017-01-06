@@ -1,6 +1,8 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.Connectivity
 {
     using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -20,6 +22,8 @@
     using Library;
     using Library.Attributes;
     using Library.Communications;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using Services;
     using Suites;
     using Utilities.Suite.Library.Communications.Server;
@@ -128,74 +132,103 @@
 
         private void HandleInteraction(IDataMessage message)
         {
+            // TODO:all incoming data is JSON
+
             Task.Run(() =>
             {
                 // TODO: implement the below code into some sort of a decision tree
 
                 string data = message.Data.ToString();
+                string from = message.From;
 
                 if (string.IsNullOrWhiteSpace(data))
                 {
                     // raise error
                 }
-                else
-                {
-                    ClientCommand command;
-                    if (Enum.TryParse(data, out command))
-                    {
-                        if (command == ClientCommand.LeftClick)
-                        {
-                            this.InputSimulator.Mouse.LeftButtonClick();
-                        }
-                        else if (command == ClientCommand.MiddleClick)
-                        {
-                        }
-                        else if (command == ClientCommand.RightClick)
-                        {
-                            this.InputSimulator.Mouse.RightButtonClick();
-                        }
-                        else if (command == ClientCommand.DoubleTap)
-                        {
-                            this.InputSimulator.Mouse.LeftButtonDoubleClick();
-                        }
-                    }
-                    else if (data.Contains(":"))
-                    {
-                        string[] dataSplit = data.Split(':');
 
-                        if (dataSplit[0] == "vol")
+                IDictionary<string, object> dictionary;
+                try
+                {
+                    dictionary = JsonConvert.DeserializeObject<ExpandoObject>(data, new ExpandoObjectConverter());
+                }
+                catch
+                {
+                    dictionary = null;
+                }
+
+                if (dictionary != null)
+                {
+                    // get the battery state
+                    if (dictionary.ContainsKey("batCharge"))
+                    {
+                        bool value = (bool)dictionary["batCharge"];
+                    }
+
+                    if (dictionary.ContainsKey("chargeType"))
+                    {
+                        string type = (string)dictionary["chargeType"];
+                    }
+                    
+                    if (dictionary.ContainsKey("batState"))
+                    {
+                        string state = (string)dictionary["batState"];
+                    }
+
+                    if (dictionary.ContainsKey("cmd"))
+                    {
+                        ClientCommand command;
+                        if (Enum.TryParse((string)dictionary["cmd"], out command))
                         {
-                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + dataSplit[1]);
+                            if (command == ClientCommand.LeftClick)
+                            {
+                                this.InputSimulator.Mouse.LeftButtonClick();
+                            }
+                            else if (command == ClientCommand.MiddleClick)
+                            {
+                            }
+                            else if (command == ClientCommand.RightClick)
+                            {
+                                this.InputSimulator.Mouse.RightButtonClick();
+                            }
+                            else if (command == ClientCommand.DoubleTap)
+                            {
+                                this.InputSimulator.Mouse.LeftButtonDoubleClick();
+                            }
+                            else if (command == ClientCommand.Backspace)
+                            {
+                                this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
+                            }
                         }
                         else
                         {
-                            float xMovingUnits = float.Parse(dataSplit[0]);
-                            float yMovingUnits = float.Parse(dataSplit[1]);
-
-                            this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
+                            this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
                         }
                     }
-                    else if (data.Contains("lock"))
+                    else if (dictionary.ContainsKey("motion"))
                     {
-                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
+                        float xMovingUnits = float.Parse((string)dictionary["x"]);
+                        float yMovingUnits = float.Parse((string)dictionary["y"]);
+
+                        this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
                     }
-                    else if (data == "SyncRequest")
+                    else if (dictionary.ContainsKey("voice"))
                     {
+                        if (((string)dictionary["voice"]).Contains("lock"))
+                        {
+                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
+                        }
+                    }
+                    else if (dictionary.ContainsKey("vol"))
+                    {
+                        string value = (string)dictionary["vol"];
+
+                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + value);
+                    }
+                    else if (dictionary.ContainsKey("syncState"))
+                    {
+                        string value = (string)dictionary["syncState"];
+
                         this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":SyncClient");
-                    }
-                    else if (data == ServerCommand.Backspace.ToString())
-                    {
-                        this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
-                    }
-                    else if (data.Length > 1)
-                    {
-                        // KB
-                        // typing/data streaming
-                    }
-                    else
-                    {
-                        // KB char input
-                        this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
                     }
                 }
             });
@@ -214,9 +247,6 @@
             else if (this.ViewModel.ConnectionType == ConnectionType.Udp)
             {
                 this.localServer = new LocalUdpServer(30301);
-
-                //ConstructionContext context = new ConstructionContext(); // TODO: this approach is bullshit, i should just have a method for the corresponding connection type
-                //context.AddValue("endpointPort", 30301);
             }
 
             this.localServer.ClientConnected += this.Server_ClientConnected;
@@ -242,7 +272,7 @@
 
         private void Server_MessageReceived(object sender, EventArgs<IDataMessage> e)
         {
-            this.Model.ServiceClientLogConsole = e.First.From + ": " + e.First.Data;
+            this.Model.ServiceClientLogConsole = DateTime.UtcNow + " -) " + e.First.From + ": " + e.First.Data;
 
             this.HandleInteraction(e.First);
         }

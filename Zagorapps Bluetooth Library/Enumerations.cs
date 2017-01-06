@@ -6,12 +6,12 @@
         RightClick,
         MiddleClick,
         DoubleTap,
-        EndSession
+        EndSession,
+        Backspace
     }
 
     public enum ServerCommand
     {
-        Backspace,
         Close
     }
 }
