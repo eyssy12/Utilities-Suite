@@ -165,7 +165,6 @@
                     ToolTip="{Binding ViewModel.VolumeSliderToolTipText}" />
 
             <Button Command="{Binding ViewModel.MuteAudioCommand}"
-                    Margin="8"
                     Grid.Row="2"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
@@ -242,15 +241,12 @@
                        Margin="0 8 0 8"
                        FontSize="22"
                        TextAlignment="Center"
-                       Text="Windows Tasks" />
-            
+                       Text="{Binding ViewModel.WindowsTasksText}" />
+
             <StackPanel 
                 Grid.Row="1"
                 Grid.Column="0"
-                Margin="16" 
                 Orientation="Vertical">
-
-                <TextBlock Margin="8" Text="{Binding ViewModel.TotalProcesses}" />
 
                 <Button 
                     Margin="0 8 0 8"
@@ -288,9 +284,12 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <DataGrid
-                    Grid.Row="3"
+            <Border Grid.Row="3"
                     Grid.Column="0"
+                    BorderBrush="{DynamicResource MaterialDesignDivider}" 
+                    BorderThickness="1">
+                
+                <DataGrid
                     MaxHeight="768"
                     ItemsSource="{Binding Path=ViewModel.FilteredProcesses}" 
                     CanUserSortColumns="True"
@@ -299,22 +298,27 @@
                     materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                     materialDesign:DataGridAssist.ColumnHeaderPadding="8">
 
-                <DataGrid.Columns>
+                    <DataGrid.Columns>
 
-                    <DataGridTextColumn
+                        <!-- TODO: maybe add a context menu on right click (e.g. to allow copy text) -->
+                        <DataGridTextColumn
                             Binding="{Binding ProcessName}"
-                            MinWidth="140"
+                            MinWidth="200"
+                            MaxWidth="300"
+                            CanUserResize="true"
                             Header="Name"
                             IsReadOnly="True" />
 
-                    <DataGridTextColumn
+                        <DataGridTextColumn
                             Binding="{Binding TimeRunning}"
                             MinWidth="140"
                             Header="Total Run Time (seconds)"
                             IsReadOnly="True" />
 
-                </DataGrid.Columns>
-            </DataGrid>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+            
         </Grid>
         <!-- End Column 3-->
     </Grid>

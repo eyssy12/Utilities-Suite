@@ -16,6 +16,7 @@
             ClassMethodSetBrightness = "WmiSetBrightness",
             ClassPropertyInstanceName = "InstanceName",
             ClassPropertyActive = "Active",
+            ClassPropertyBrightness = "Brightness",
             ClassPropertyCurrentBrightness = "CurrentBrightness";
 
         private ManagementEventWatcher watcher;
@@ -152,11 +153,23 @@
         private void Watcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
             WmiEventArgs args = new WmiEventArgs(
-                (bool)e.NewEvent.Properties[WmiManagementService.ClassPropertyActive].Value,
-                (byte)e.NewEvent.Properties[WmiManagementService.ClassPropertyCurrentBrightness].Value,
-                (string)e.NewEvent.Properties[WmiManagementService.ClassPropertyInstanceName].Value);
+                this.GetPropertyValue<bool>(e, WmiManagementService.ClassPropertyActive),
+                this.GetPropertyValue<byte>(e, WmiManagementService.ClassPropertyBrightness),
+                this.GetPropertyValue<string>(e, WmiManagementService.ClassPropertyInstanceName));
 
             this.EventReceived(sender, args);
+        }
+
+        private T GetPropertyValue<T>(EventArrivedEventArgs args, string propertyName)
+        {
+            try
+            {
+                return (T)args.NewEvent.Properties[propertyName].Value;
+            }
+            catch
+            {
+                return default(T);
+            }
         }
     }
 }

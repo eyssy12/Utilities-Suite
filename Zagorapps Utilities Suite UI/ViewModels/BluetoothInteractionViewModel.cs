@@ -16,10 +16,11 @@
     {
         private readonly ConcurrentDictionary<string, ConnectedClientViewModel> connectedClients;
 
-        private Visibility progressBarVisibility = Visibility.Hidden,
-            startServiceButtonVisibility = Visibility.Visible,
-            contentVisibility = Visibility.Hidden,
-            qrCodeVisibiliity = Visibility.Hidden;
+        private Visibility progressBarVisibility,
+            startServiceButtonVisibility,
+            contentVisibility,
+            pinFieldVisiblity,
+            qrCodeVisibiliity;
 
         private LinkedList<string> serviceClientLogger = new LinkedList<string>();
 
@@ -42,6 +43,12 @@
             this.connectedClients = new ConcurrentDictionary<string, ConnectedClientViewModel>();
 
             this.ServiceButtonText = "Start Service";
+            this.ConnectionType = ConnectionType.Bluetooth;
+            this.ProgressBarVisibility = Visibility.Hidden;
+            this.StartServiceButtonVisibility = Visibility.Visible;
+            this.ContentVisibility = Visibility.Hidden;
+            this.PinFieldVisibility = Visibility.Visible;
+            this.QRCodeButtonVisiblity = Visibility.Hidden;
             this.ContentEnabled = false;
             this.ServiceEnabled = false;
             this.ServiceButtonEnabled = true;
@@ -128,6 +135,12 @@
             set { this.SetField(ref this.contentVisibility, value, nameof(this.ContentVisibility)); }
         }
 
+        public Visibility PinFieldVisibility
+        {
+            get { return this.pinFieldVisiblity; }
+            set { this.SetField(ref this.pinFieldVisiblity, value, nameof(this.PinFieldVisibility)); }
+        }
+
         public Visibility ProgressBarVisibility
         {
             get { return this.progressBarVisibility; }
@@ -173,6 +186,12 @@
         public TResult InvokeConnectedClientNotifyableAction<TResult>(Func<ConcurrentDictionary<string, ConnectedClientViewModel>, TResult> action)
         {
             return this.NotifyableAction(this.connectedClients, action, nameof(this.ConnectedClients));
+        }
+
+        public void ClearClients()
+        {
+            this.connectedClients.Clear();
+            this.OnPropertyChanged(nameof(this.ConnectedClients));
         }
 
         public bool TryRemoveClient(string clientName)

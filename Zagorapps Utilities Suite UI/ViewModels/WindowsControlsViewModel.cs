@@ -71,6 +71,11 @@
             }
         }
 
+        public string WindowsTasksText
+        {
+            get { return "Windows Tasks (" + this.TotalProcesses + ")"; }
+        }
+
         public IEnumerable<string> Prohibits
         {
             get { return this.prohibits.ToArray(); }
@@ -79,7 +84,7 @@
         public int TotalProcesses
         {
             get { return this.totalProcesses; }
-            set { this.SetFieldIfChanged(ref this.totalProcesses, value, nameof(this.TotalProcesses)); }
+            set { this.SetFieldIfChanged(ref this.totalProcesses, value, nameof(this.WindowsTasksText)); }
         }
 
         public int Brightness

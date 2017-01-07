@@ -409,6 +409,12 @@
       <Name>Zagorapps Utilities Suite WCF Library</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\wallpaper.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\wallpaper2.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

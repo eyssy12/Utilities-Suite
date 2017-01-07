@@ -290,65 +290,72 @@
             {
                 if (type == ConnectionType.Bluetooth)
                 {
+                    this.Model.PinFieldVisibility = VisibilityEnum.Visible;
                     this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage(this.BTServiceProvider.Name + "-" + this.BTServiceProvider.LocalAddress.ToString("C") + "-" + this.Model.Pin, 500, 500).ToSource();
                 }
-                else if (type == ConnectionType.Tcp || type == ConnectionType.Udp)
+                else
                 {
+                    this.Model.PinFieldVisibility = VisibilityEnum.Hidden;
                     this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage("localaddress and port", 500, 500).ToSource();
                 }
 
                 this.Model.ServiceButtonEnabled = true;
                 this.Model.ServiceButtonText = "Start Service";
-                
             }
         }
 
         private async void InvokeService()
         {
-            await Task.Run(() =>
+            if (this.Model.ConnectionType != ConnectionType.Tcp)
             {
-                this.Model.ProgressBarVisibility = VisibilityEnum.Visible;
-                this.Model.StartServiceButtonVisibility = VisibilityEnum.Hidden;
+                await Task.Run(() =>
+                {
+                    this.Model.ProgressBarVisibility = VisibilityEnum.Visible;
+                    this.Model.StartServiceButtonVisibility = VisibilityEnum.Hidden;
 
-                this.Model.ContentEnabled = false;
-                this.Model.ServiceButtonEnabled = false;
+                    this.Model.ContentEnabled = false;
+                    this.Model.ServiceButtonEnabled = false;
+
+                    if (this.Model.ServiceEnabled)
+                    {
+                        this.StopService();
+
+                        this.Model.ServiceEnabled = false;
+
+                        this.Model.ClearClients();
+                        this.Model.ServiceButtonText = "Start Service";
+                        this.Model.ContentVisibility = VisibilityEnum.Hidden;
+                        this.Model.QRCodeButtonVisiblity = VisibilityEnum.Hidden;
+                    }
+                    else
+                    {
+                        this.StartService();
+
+                        this.Model.ServiceEnabled = true;
+
+                        this.Model.ServiceButtonText = "End Service";
+                        this.Model.ContentVisibility = VisibilityEnum.Visible;
+                        this.Model.QRCodeButtonVisiblity = VisibilityEnum.Visible;
+                    }
+
+                    this.Model.ContentEnabled = true;
+                    this.Model.ServiceButtonEnabled = true;
+
+                    this.Model.ProgressBarVisibility = VisibilityEnum.Hidden;
+                    this.Model.StartServiceButtonVisibility = VisibilityEnum.Visible;
+                });
 
                 if (this.Model.ServiceEnabled)
                 {
-                    this.StopService();
-                    this.Model.ServiceButtonText = "Start Service";
-                    this.Model.ContentVisibility = VisibilityEnum.Hidden;
-                    this.Model.QRCodeButtonVisiblity = VisibilityEnum.Hidden;
-
-                    this.Model.ServiceEnabled = false;
+                    this.Notifier.Notify(this.Model.ConnectionType + " Service Started");
                 }
                 else
                 {
-                    this.Model.ServiceEnabled = true;
-
-                    this.StartService();
-                    this.Model.ServiceButtonText = "End Service";
-                    this.Model.ContentVisibility = VisibilityEnum.Visible;
-                    this.Model.QRCodeButtonVisiblity = VisibilityEnum.Visible;
+                    this.Notifier.Notify(this.Model.ConnectionType + " Service Stopped");
                 }
 
-                this.Model.ContentEnabled = true;
-                this.Model.ServiceButtonEnabled = true;
-
-                this.Model.ProgressBarVisibility = VisibilityEnum.Hidden;
-                this.Model.StartServiceButtonVisibility = VisibilityEnum.Visible;
-            });
-
-            if (this.Model.ServiceEnabled)
-            {
-                this.Notifier.Notify(this.Model.ConnectionType + " Service Started");
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), ConnectivitySuite.Name + ":" + this.Model.ServiceEnabled);
             }
-            else
-            {
-                this.Notifier.Notify(this.Model.ConnectionType + " Service Stopped");
-            }
-
-            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), ConnectivitySuite.Name + ":" + this.Model.ServiceEnabled);
         }
 
         private void StopService()

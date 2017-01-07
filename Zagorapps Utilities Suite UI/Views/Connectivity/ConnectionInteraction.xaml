@@ -40,6 +40,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Top action bar -->
         <materialDesign:Card Grid.Row="0" Grid.Column="0">
 
             <Grid>
@@ -51,7 +52,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Button Margin="16"
@@ -77,9 +78,11 @@
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                         materialDesign:HintAssist.Hint="Connection Mode" />
 
+                <!-- TODO: add hover hint for text box, so that it aligns nicely with the rest of the components -->
                 <DockPanel Grid.Row="0" 
                            Grid.Column="2"
                            MinWidth="400"
+                           Visibility="{Binding ViewModel.PinFieldVisibility}"
                            IsEnabled="{Binding ViewModel.ServiceEnabled, Converter={StaticResource InvertBool}}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -108,6 +111,7 @@
 
                 <Button Grid.Row="0"
                         Grid.Column="3"
+                        HorizontalAlignment="Right"
                         Margin="16"
                         Visibility="{Binding ViewModel.QRCodeButtonVisiblity}"
                         Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
@@ -165,9 +169,12 @@
 
             </Grid>
         </materialDesign:Card>
+        <!-- End Top action bar -->
 
+        <!-- Center content -->
         <Grid Grid.Row="1"
               Grid.Column="0"
+              Margin="16"
               Visibility="{Binding ViewModel.ContentVisibility}"
               IsEnabled="{Binding ViewModel.ContentEnabled}">
 
@@ -180,10 +187,13 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DataGrid Margin="0 16 0 0"
-                      Grid.Row="0"
+            <Border Grid.Row="0"
                       Grid.RowSpan="2"
                       Grid.Column="0"
+                    BorderBrush="{DynamicResource MaterialDesignDivider}" 
+                    BorderThickness="1">
+                <DataGrid 
+                      
                       Name="ListBox_ConnectedClients"
                       ItemsSource="{Binding ViewModel.ConnectedClients}"
                       CanUserSortColumns="True"
@@ -191,23 +201,28 @@
                       AutoGenerateColumns="False"
                       materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                       materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-                      
-                <DataGrid.Columns>
 
-                    <DataGridTextColumn
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn
                             Binding="{Binding Name}"
                             MinWidth="140"
                             Header="Client"
                             IsReadOnly="True" />
 
-                </DataGrid.Columns>
-            </DataGrid>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+            
+            
 
             <DockPanel Grid.Row="0"
                        Grid.Column="1">
 
                 <TextBlock Margin="16 16 16 8" 
-                           DockPanel.Dock="Top" >
+                           DockPanel.Dock="Top" 
+                           FontSize="22"
+                           HorizontalAlignment="Center">
                     
                     Client Log
                 </TextBlock>
@@ -234,7 +249,10 @@
             <DockPanel Grid.Row="1"
                     Grid.Column="1">
 
-                <TextBlock Margin="16 8 16 8" DockPanel.Dock="Top" >
+                <TextBlock Margin="16 8 16 8" 
+                           DockPanel.Dock="Top"
+                           FontSize="22"
+                           HorizontalAlignment="Center">
                 Server Log
                 </TextBlock>
 
@@ -267,6 +285,7 @@
                      VerticalAlignment="Center"
                      HorizontalAlignment="Center"
                      Margin="16" />
-
+        <!-- End Center content -->
+        
     </Grid>
 </controls:DataFacilitatorViewControlBase>

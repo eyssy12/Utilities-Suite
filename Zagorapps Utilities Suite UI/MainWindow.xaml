@@ -67,7 +67,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
+                
+                <Grid.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/wallpaper2.jpg" Stretch="UniformToFill" Opacity="0.1" />
+                </Grid.Background>
                 
                 <DockPanel Grid.Row="0" Grid.Column="0">
                     <materialDesign:ColorZone Padding="16"
