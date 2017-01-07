@@ -84,6 +84,7 @@
       <HintPath>..\packages\System.IO.FileSystem.Watcher.4.0.0\lib\net46\System.IO.FileSystem.Watcher.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.NameResolution, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.NameResolution.4.0.0\lib\net46\System.Net.NameResolution.dll</HintPath>
       <Private>True</Private>
@@ -135,6 +136,7 @@
     <Compile Include="Events\EventArgs`3.cs" />
     <Compile Include="Events\EventArgs`4.cs" />
     <Compile Include="Events\Invoker.cs" />
+    <Compile Include="Events\Windows\WmiEventArgs.cs" />
     <Compile Include="Execution\IExecute.cs" />
     <Compile Include="Execution\IExecute`1.cs" />
     <Compile Include="Execution\IProcess.cs" />
@@ -143,6 +145,7 @@
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\EnumerationExtensions.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
+    <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\PathExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -152,6 +155,7 @@
     <Compile Include="Managers\LocalDirectoryManager.cs" />
     <Compile Include="Managers\LocalFileManager.cs" />
     <Compile Include="Messaging\INotificationService.cs" />
+    <Compile Include="Models\WmiDeviceInfo.cs" />
     <Compile Include="Native\KnownFolders.cs" />
     <Compile Include="Native\NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -162,7 +166,9 @@
     <Compile Include="Windows\ApplicationRegistryManager.cs" />
     <Compile Include="Windows\IApplicationRegistryManager.cs" />
     <Compile Include="Windows\IWinSystemService.cs" />
+    <Compile Include="Windows\IWmiManagementService.cs" />
     <Compile Include="Windows\WinSystemService.cs" />
+    <Compile Include="Windows\WmiManagementService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -21,20 +21,25 @@
         </ResourceDictionary>
     </controls:ViewControlBase.Resources>
 
-    <Grid Margin="16">
+    <Grid Margin="16" MinHeight="1264" MaxHeight="1264" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Column 1 -->
+        <!-- Power Commands -->
         <Grid Margin="8" Grid.Row="0" Grid.Column="0" IsEnabled="{Binding ViewModel.ControlsEnabled}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -45,7 +50,16 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" 
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="123544543"
+                       Margin="0 8 0 8"
+                       FontSize="22"
+                       TextAlignment="Center"
+                       Text="Power" />
+
+            <Button Grid.Row="1"
+                    Grid.Column="0"
                     Margin="8" 
                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
                 Lock
@@ -57,7 +71,8 @@
                 </Button.CommandParameter>
             </Button>
 
-            <Button Grid.Column="1"
+            <Button Grid.Row="1"
+                    Grid.Column="1"
                     Margin="8"
                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
                 Log Off
@@ -69,7 +84,8 @@
                 </Button.CommandParameter>
             </Button>
 
-            <Button Grid.Column="2"
+            <Button Grid.Row="1"
+                    Grid.Column="2"
                     Margin="8"
                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
                 Restart
@@ -81,7 +97,8 @@
                 </Button.CommandParameter>
             </Button>
 
-            <Button Grid.Column="3" 
+            <Button Grid.Row="1"
+                    Grid.Column="3" 
                     Margin="8" 
                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                     Background="OrangeRed"
@@ -96,11 +113,12 @@
                 </Button.CommandParameter>
             </Button>
 
-            <Button Grid.Column="4"
+            <Button Grid.Row="1"
+                    Grid.Column="4"
                     Margin="8" 
                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                     IsEnabled="False">
-                Cancel Restart/Shutdown
+                Cancel
 
                 <Button.CommandParameter>
                     <partials:ConfirmDialog 
@@ -112,8 +130,10 @@
 
         <Border Margin="16" Grid.Row="1" Grid.Column="0" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
 
+        <!-- Volume Control -->
         <Grid Margin="16" Grid.Row="2" Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -122,8 +142,16 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       FontSize="22"
+                       Margin="0 8 0 8"
+                       TextAlignment="Center"
+                       Text="System Volume" />
+
             <Slider Name="Slider_Volume"
-                    Grid.Row="0"
+                    Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Minimum="0"
@@ -133,11 +161,12 @@
                     Value="{Binding ViewModel.Volume}"
                     ValueChanged="Slider_Volume_ValueChanged"
                     Style="{StaticResource MaterialDesignDiscreteSlider}" 
-                    ToolTip="System Volume"/>
+                    ToolTipService.Placement="Center"
+                    ToolTip="{Binding ViewModel.VolumeSliderToolTipText}" />
 
             <Button Command="{Binding ViewModel.MuteAudioCommand}"
                     Margin="8"
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Content="{Binding ViewModel.MuteButtonText}" />
@@ -145,8 +174,60 @@
 
         <Border Margin="16" Grid.Row="3" Grid.Column="0" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
 
-        <Grid Grid.Row="4" Grid.Column="0" Grid.RowSpan="2147483647" >
+        <!-- Brightness Control -->
+        <Grid Margin="16" Grid.Row="4" Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Margin="0 8 0 8"
+                       FontSize="22"
+                       TextAlignment="Center"
+                       Text="Screen Brightness" />
+
+            <Slider Name="Slider_Window_Brightness"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Minimum="0"
+                    Maximum="100"
+                    TickPlacement="TopLeft"
+                    TickFrequency="1"
+                    Value="{Binding ViewModel.Brightness}"
+                    ValueChanged="Slider_Window_Brightness_ValueChanged"
+                    Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    ToolTipService.Placement="Center"
+                    ToolTip="{Binding ViewModel.BrightnessSliderToolTipText}" />
+        </Grid>
+        <!-- End Column 1 -->
+        
+        <!-- Column 2 -->
+        <Border Margin="16"
+                Grid.Row="0"
+                Grid.RowSpan="2147483647"
+                Grid.Column="1"
+                BorderThickness="1 0 0 0" 
+                BorderBrush="{DynamicResource MaterialDesignDivider}" />
+        <!-- End Column 2 -->
+        
+        <!-- Column 3-->
+        <Grid Margin="16"
+              Grid.Row="0" 
+              Grid.Column="2" 
+              MinHeight="512"
+              MaxHeight="512"
+              Grid.RowSpan="2147483647" >
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -155,8 +236,16 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Margin="0 8 0 8"
+                       FontSize="22"
+                       TextAlignment="Center"
+                       Text="Windows Tasks" />
+            
             <StackPanel 
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.Column="0"
                 Margin="16" 
                 Orientation="Vertical">
@@ -177,7 +266,7 @@
             </StackPanel>
 
             <ListBox Margin="0 8 0 8"
-                     Grid.Row="1"
+                     Grid.Row="2"
                      Grid.Column="0"
                      Name="ListBox_PermittingChips" 
                      ItemsSource="{Binding Path=ViewModel.Prohibits}">
@@ -200,8 +289,9 @@
             </ListBox>
 
             <DataGrid
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.Column="0"
+                    MaxHeight="768"
                     ItemsSource="{Binding Path=ViewModel.FilteredProcesses}" 
                     CanUserSortColumns="True"
                     CanUserAddRows="False" 
@@ -226,5 +316,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
+        <!-- End Column 3-->
     </Grid>
 </controls:DataFacilitatorViewControlBase>

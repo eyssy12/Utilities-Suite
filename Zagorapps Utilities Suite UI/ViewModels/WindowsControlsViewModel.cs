@@ -15,6 +15,7 @@
 
         private int totalProcesses;
         private int volume;
+        private int brightness;
         private string filter, muteButtonText;
 
         private bool controlsEnabled;
@@ -80,6 +81,19 @@
             get { return this.totalProcesses; }
             set { this.SetFieldIfChanged(ref this.totalProcesses, value, nameof(this.TotalProcesses)); }
         }
+
+        public int Brightness
+        {
+            get
+            {
+                return this.brightness;
+            }
+            set
+            {
+                this.SetFieldIfChanged(ref this.brightness, value, nameof(this.brightness));
+                this.OnPropertyChanged(nameof(this.BrightnessSliderToolTipText));
+            }
+        }
         
         public string Filter
         {
@@ -98,14 +112,31 @@
 
         public int Volume
         {
-            get { return this.volume; }
-            set { this.SetFieldIfChanged(ref this.volume, value, nameof(this.Volume)); }
+            get
+            {
+                return this.volume;
+            }
+            set
+            {
+                this.SetFieldIfChanged(ref this.volume, value, nameof(this.Volume));
+                this.OnPropertyChanged(nameof(this.VolumeSliderToolTipText));
+            }
         }
 
         public string MuteButtonText
         {
             get { return this.muteButtonText; }
             set { this.SetFieldIfChanged(ref this.muteButtonText, value, nameof(this.MuteButtonText)); }
+        }
+
+        public string BrightnessSliderToolTipText
+        {
+            get { return string.Format("Brightness ({0})", this.Brightness); }
+        }
+
+        public string VolumeSliderToolTipText
+        {
+            get { return string.Format("Volume ({0})", this.Volume); }
         }
 
         public void VerifyControlsAvailability()

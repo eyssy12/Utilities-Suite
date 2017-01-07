@@ -23,6 +23,7 @@
         {
             this.Register<IIniFileManager, IniFileManager>();
             this.Register<IWinSystemService, WinSystemService>();
+            this.Register<IWmiManagementService, WmiManagementService>();
         }
 
         protected virtual void RegisterManagers()

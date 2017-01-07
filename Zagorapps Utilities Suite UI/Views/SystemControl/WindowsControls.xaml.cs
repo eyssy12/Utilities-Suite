@@ -13,6 +13,7 @@
     using Connectivity;
     using Controls;
     using Core.Library.Events;
+    using Core.Library.Events.Windows;
     using Core.Library.Timing;
     using Core.Library.Windows;
     using Events;
@@ -32,6 +33,7 @@
         private const string ViewName = nameof(WindowsControls); // TODO: maybe have enums for this instead
 
         protected readonly IWinSystemService WinService;
+        protected readonly IWmiManagementService WmiService;
         protected readonly IAudioManager AudioManager;
         protected readonly IInteropHandle InteropHandle;
         protected readonly ITimer Timer;
@@ -49,9 +51,8 @@
             this.WinService = this.Factory.Create<IWinSystemService>();
             this.AudioManager = this.Factory.Create<IAudioManager>();
             this.InteropHandle = this.Factory.Create<IInteropHandle>();
+            this.WmiService = this.Factory.Create<IWmiManagementService>();
             this.Timer = this.Factory.Create<ITimer>();
-
-            this.AudioManager.OnVolumeChanged += this.AudioManager_OnVolumeChanged;
 
             this.ProcessComparer = new ProcessViewModelComparator();
 
@@ -60,6 +61,22 @@
             this.Model.MuteAudioCommand = this.CommandProvider.CreateRelayCommand(this.MuteAudio);
             this.Model.MuteButtonText = this.AudioManager.IsMuted ? "Unmute" : "Mute";
             this.Model.Volume = this.AudioManager.Volume;
+
+            this.AudioManager.OnVolumeChanged += this.AudioManager_OnVolumeChanged;
+            this.WmiService.EventReceived += this.WmiService_EventReceived;
+
+            if (!this.WmiService.Start())
+            {
+                // Not supported - may not be a laptop.
+
+                this.WmiService.Stop();
+                this.WmiService.EventReceived -= this.WmiService_EventReceived;
+                this.WmiService.Dispose();
+            }
+            else
+            {
+                this.Model.Brightness = this.WmiService.GetBrightnesses().First().Brightness;
+            }
 
             SystemEvents.SessionSwitch += this.SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += this.SystemEvents_SessionEnding;
@@ -176,6 +193,20 @@
         {
             this.PerformConnectivityRoutingAction("EndSession");
         }
+        
+        private void WmiService_EventReceived(object sender, WmiEventArgs e)
+        {
+            this.Model.Brightness = e.Brightness;
+
+            if (e.IsActive)
+            {
+                this.PerformConnectivityRoutingAction("br:brightnes:" + true);
+            }
+            else
+            {
+                this.PerformConnectivityRoutingAction("br:brightnes:" + false + "_value:" + e.Brightness);
+            }
+        }
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
@@ -253,6 +284,13 @@
             this.AudioManager.IsMuted = false;
 
             this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.Volume);
+        }
+
+        private void Slider_Window_Brightness_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            this.WmiService.SetBrightness(this.Model.Brightness);
+
+            this.PerformConnectivityRoutingAction("br:brightness:" + this.Model.Brightness);
         }
     }
 }
