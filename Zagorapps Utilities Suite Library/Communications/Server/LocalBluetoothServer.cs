@@ -164,8 +164,9 @@
         {
             string data = e.First.Data.ToString();
 
-            ClientCommand command;
-            if (Enum.TryParse(data, out command) && command == ClientCommand.EndSession) 
+            bool endSession = data.Contains("EndSession");
+
+            if (endSession) 
             {
                 INetworkConnection connection;
                 if (this.Clients.TryRemove(e.First.From, out connection))

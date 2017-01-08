@@ -124,6 +124,10 @@
                         this.AudioManager.Volume = volume;
                     }
                 }
+                else if (split[0] == "screen")
+                {
+                    this.WmiService.SetBrightness(int.Parse(split[1]));
+                }
                 else if (split[0] == ConnectivitySuite.Name)
                 {
                     this.isConnectivitySuiteLive = bool.Parse(split[1]);
@@ -139,7 +143,7 @@
                     }
                     else if (split[1] == "syncClient")
                     {
-                        string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume;
+                        string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume + "_" + this.WmiService.GetBrightnesses().First().Brightness;
 
                         this.OnDataSendRequest(
                             this,
@@ -290,7 +294,7 @@
         {
             this.WmiService.SetBrightness(this.Model.Brightness);
 
-            this.PerformConnectivityRoutingAction("br:brightness:" + this.Model.Brightness);
+            this.PerformConnectivityRoutingAction("br:screen:" + this.Model.Brightness);
         }
     }
 }

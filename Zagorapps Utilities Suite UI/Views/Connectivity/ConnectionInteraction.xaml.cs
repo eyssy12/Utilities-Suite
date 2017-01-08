@@ -405,6 +405,13 @@
                 }
             };
 
+            Action<string, IDictionary<string, object>> screenAction = (from, json) =>
+            {
+                long value = (long)json["value"];
+
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "screen:" + value);
+            };
+
             ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> messageActions = new ConcurrentDictionary<string, Action<string, IDictionary<string, object>>>();
             messageActions.TryAdd("cmd", commandAction);
             messageActions.TryAdd("motion", motionAction);
@@ -412,6 +419,7 @@
             messageActions.TryAdd("vol", volumeAction);
             messageActions.TryAdd("battery", batteryAction);
             messageActions.TryAdd("syncState", syncStateAction);
+            messageActions.TryAdd("screen", screenAction);
 
             return messageActions;
         }
