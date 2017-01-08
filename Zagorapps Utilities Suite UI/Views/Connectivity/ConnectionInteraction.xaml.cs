@@ -201,13 +201,15 @@
                         }
                         else
                         {
-                            this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(data));
+                            string character = (string)dictionary["cmd"];
+
+                            this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(character));
                         }
                     }
                     else if (dictionary.ContainsKey("motion"))
                     {
-                        float xMovingUnits = float.Parse((string)dictionary["x"]);
-                        float yMovingUnits = float.Parse((string)dictionary["y"]);
+                        double xMovingUnits = (double)dictionary["x"];
+                        double yMovingUnits = (double)dictionary["y"];
 
                         this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
                     }
@@ -215,20 +217,46 @@
                     {
                         if (((string)dictionary["voice"]).Contains("lock"))
                         {
-                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":" + data);
+                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":lock");
                         }
                     }
                     else if (dictionary.ContainsKey("vol"))
                     {
-                        string value = (string)dictionary["vol"];
+                        bool volumeEnabled = (bool)dictionary["vol"];
 
-                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + value);
+                        long value;
+
+                        try
+                        {
+                            value = (long)dictionary["value"];
+                        }
+                        catch
+                        {
+                            value = -1;
+                        }
+
+                        if (value == -1)
+                        {
+                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + volumeEnabled);
+                        }
+                        else
+                        {
+                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + value);
+                        }
                     }
                     else if (dictionary.ContainsKey("syncState"))
                     {
                         string value = (string)dictionary["syncState"];
 
-                        this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":SyncClient");
+                        if (value == "syncRequest")
+                        {
+                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":syncClient");
+                        }
+                        else if (value == "syncResponseAck")
+                        {
+                            // we're done - should only enter here once per client
+                            Console.WriteLine(from + " - " + value);
+                        }
                     }
                 }
             });

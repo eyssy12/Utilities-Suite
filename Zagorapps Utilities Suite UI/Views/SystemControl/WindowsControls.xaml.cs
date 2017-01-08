@@ -137,7 +137,7 @@
                             this.PerformConnectivityRoutingAction(split[0] + ":Permitted Process Running");
                         }
                     }
-                    else if (split[1] == "SyncClient")
+                    else if (split[1] == "syncClient")
                     {
                         string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume;
 
@@ -146,7 +146,7 @@
                             ViewBag.GetViewName<WindowsControls>(),
                             SuiteRoute.Connectivity,
                             ViewBag.GetViewName<ConnectionInteraction>(),
-                            split[0] + ":SyncResponse:" + syncData);
+                            split[0] + ":syncResponse:" + syncData);
                     }
                 }
             }
