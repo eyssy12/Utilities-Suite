@@ -57,7 +57,7 @@
         {
         }
 
-        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
+        protected override void HandleSuiteMessageAsync(IUtilitiesDataMessage data)
         {
             // TODO: perhaps implement logic for displaying the amount of new events that have occured in the suite since the users last visit to it
             // what classifies as an event in a suite and view? 

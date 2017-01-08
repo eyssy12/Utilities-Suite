@@ -1,6 +1,7 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.Connectivity
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Dynamic;
     using System.Linq;
@@ -42,6 +43,9 @@
             ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
             Pin = "12345";
 
+        // Has to be concurrent because this is used in a Task.
+        protected readonly ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> MessageActions;
+
         protected readonly IBluetoothServicesProvider BTServiceProvider;
         protected readonly IQRCodeServiceProvider QRCodeServiceProvider;
         protected readonly ISnackbarNotificationService Notifier;
@@ -63,9 +67,11 @@
 
             this.Model = new BluetoothInteractionViewModel();
             this.Model.Pin = ConnectionInteraction.Pin;
-            this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeService());
+            this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeConnectivityService());
 
             // TODO: add additional method to IViewControl and ISuite interfaces to initiate shutdown on controls - this will be called whenever the user terminates the application
+
+            this.MessageActions = this.CreateActionDictionary();
 
             this.DataContext = this;
         }
@@ -88,7 +94,7 @@
         // TODO: internal messaging protocol is a mess - need to come up with a protocol (custom objects extending from BasicDataMessage) and refactor all "Process Message" implementations
         // i.e. ClientBroadcastMessage
         // i.e. TargetClientMessage
-        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
+        protected override void HandleSuiteMessageAsync(IUtilitiesDataMessage data)
         {
             string received = data.Data.ToString();
 
@@ -125,19 +131,17 @@
             {
                 if (this.Model.ServiceEnabled)
                 {
-                    this.InvokeService();
+                    this.InvokeConnectivityService();
                 }
             }
         }
-
-        private void HandleInteraction(IDataMessage message)
+        
+        private void HandleClientMessage(IDataMessage message)
         {
             // TODO:all incoming data is JSON
 
             Task.Run(() =>
             {
-                // TODO: implement the below code into some sort of a decision tree
-
                 string data = message.Data.ToString();
                 string from = message.From;
 
@@ -156,108 +160,10 @@
                     dictionary = null;
                 }
 
-                if (dictionary != null)
+                Action<string, IDictionary<string, object>> action;
+                if (this.MessageActions.TryGetValue(dictionary["id"].ToString(), out action))
                 {
-                    // get the battery state
-                    if (dictionary.ContainsKey("batCharge"))
-                    {
-                        bool value = (bool)dictionary["batCharge"];
-                    }
-
-                    if (dictionary.ContainsKey("chargeType"))
-                    {
-                        string type = (string)dictionary["chargeType"];
-                    }
-                    
-                    if (dictionary.ContainsKey("batState"))
-                    {
-                        string state = (string)dictionary["batState"];
-                    }
-
-                    if (dictionary.ContainsKey("cmd"))
-                    {
-                        ClientCommand command;
-                        if (Enum.TryParse((string)dictionary["cmd"], out command))
-                        {
-                            if (command == ClientCommand.LeftClick)
-                            {
-                                this.InputSimulator.Mouse.LeftButtonClick();
-                            }
-                            else if (command == ClientCommand.MiddleClick)
-                            {
-                            }
-                            else if (command == ClientCommand.RightClick)
-                            {
-                                this.InputSimulator.Mouse.RightButtonClick();
-                            }
-                            else if (command == ClientCommand.DoubleTap)
-                            {
-                                this.InputSimulator.Mouse.LeftButtonDoubleClick();
-                            }
-                            else if (command == ClientCommand.Backspace)
-                            {
-                                this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
-                            }
-                        }
-                        else
-                        {
-                            string character = (string)dictionary["cmd"];
-
-                            this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(character));
-                        }
-                    }
-                    else if (dictionary.ContainsKey("motion"))
-                    {
-                        double xMovingUnits = (double)dictionary["x"];
-                        double yMovingUnits = (double)dictionary["y"];
-
-                        this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
-                    }
-                    else if (dictionary.ContainsKey("voice"))
-                    {
-                        if (((string)dictionary["voice"]).Contains("lock"))
-                        {
-                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":lock");
-                        }
-                    }
-                    else if (dictionary.ContainsKey("vol"))
-                    {
-                        bool volumeEnabled = (bool)dictionary["vol"];
-
-                        long value;
-
-                        try
-                        {
-                            value = (long)dictionary["value"];
-                        }
-                        catch
-                        {
-                            value = -1;
-                        }
-
-                        if (value == -1)
-                        {
-                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + volumeEnabled);
-                        }
-                        else
-                        {
-                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + value);
-                        }
-                    }
-                    else if (dictionary.ContainsKey("syncState"))
-                    {
-                        string value = (string)dictionary["syncState"];
-
-                        if (value == "syncRequest")
-                        {
-                            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), message.From + ":syncClient");
-                        }
-                        else if (value == "syncResponseAck")
-                        {
-                            // we're done - should only enter here once per client
-                            Console.WriteLine(from + " - " + value);
-                        }
-                    }
+                    action(message.From, dictionary);
                 }
             });
         }
@@ -302,7 +208,7 @@
         {
             this.Model.ServiceClientLogConsole = DateTime.UtcNow + " -) " + e.First.From + ": " + e.First.Data;
 
-            this.HandleInteraction(e.First);
+            this.HandleClientMessage(e.First);
         }
 
         private void ComboBox_ConnectionMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -332,7 +238,7 @@
             }
         }
 
-        private async void InvokeService()
+        private async void InvokeConnectivityService()
         {
             if (this.Model.ConnectionType != ConnectionType.Tcp)
             {
@@ -395,6 +301,119 @@
             this.localServer.Dispose();
 
             Thread.Sleep(1000);
+        }
+
+        private ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> CreateActionDictionary()
+        {
+            // TODO: implement the below code into some sort of a decision tree
+            // it would be better if individual actions were encapsulated into their own classes
+            // however, the classes relying on inter Suite messaging, i don't want to expose the OnDataSendRequest
+            // Maybe create a service that the action in the tree may raise and that the facilitators will listen to...
+
+            Action<string, IDictionary<string, object>> commandAction = (from, json) =>
+            {
+                ClientCommand command;
+                if (Enum.TryParse((string)json["value"], out command))
+                {
+                    if (command == ClientCommand.LeftClick)
+                    {
+                        this.InputSimulator.Mouse.LeftButtonClick();
+                    }
+                    else if (command == ClientCommand.MiddleClick)
+                    {
+                    }
+                    else if (command == ClientCommand.RightClick)
+                    {
+                        this.InputSimulator.Mouse.RightButtonClick();
+                    }
+                    else if (command == ClientCommand.DoubleTap)
+                    {
+                        this.InputSimulator.Mouse.LeftButtonDoubleClick();
+                    }
+                    else if (command == ClientCommand.Backspace)
+                    {
+                        this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
+                    }
+                }
+                else
+                {
+                    string character = (string)json["value"];
+
+                    this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(character));
+                }
+            };
+
+            Action<string, IDictionary<string, object>> motionAction = (from, json) =>
+            {
+                double xMovingUnits = (double)json["x"];
+                double yMovingUnits = (double)json["y"];
+
+                this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
+            };
+
+            Action<string, IDictionary<string, object>> voiceAction = (from, json) =>
+            {
+                if (((string)json["value"]).Contains("lock"))
+                {
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), from + ":lock");
+                }
+            };
+
+            Action<string, IDictionary<string, object>> volumeAction = (from, json) =>
+            {
+                bool volumeEnabled = (bool)json["volOn"];
+
+                object volume;
+                if (json.TryGetValue("value", out volume))
+                {
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + (long)volume);
+                }
+                else
+                {
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + volumeEnabled);
+                }
+            };
+
+            Action<string, IDictionary<string, object>> batteryAction = (from, json) =>
+            {
+                if (json.ContainsKey("batCharge"))
+                {
+                    bool value = (bool)json["batCharge"];
+                }
+
+                if (json.ContainsKey("chargeType"))
+                {
+                    string type = (string)json["chargeType"];
+                }
+
+                if (json.ContainsKey("batState"))
+                {
+                    string state = (string)json["batState"];
+                }
+            };
+
+            Action<string, IDictionary<string, object>> syncStateAction = (from, json) =>
+            {
+                string value = (string)json["value"];
+
+                if (value == "syncRequest")
+                {
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), from + ":syncClient");
+                }
+                else if (value == "syncResponseAck")
+                {
+                }
+            };
+
+            ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> messageActions = new ConcurrentDictionary<string, Action<string, IDictionary<string, object>>>();
+            messageActions.TryAdd("cmd", commandAction);
+            messageActions.TryAdd("motion", motionAction);
+            messageActions.TryAdd("voice", voiceAction);
+            messageActions.TryAdd("vol", volumeAction);
+            messageActions.TryAdd("battery", batteryAction);
+            messageActions.TryAdd("syncState", syncStateAction);
+
+            return messageActions;
         }
     }
 }

@@ -101,7 +101,7 @@
             this.Timer.TimeElapsed -= this.Timer_TimeElapsed;
         }
 
-        protected override void HandleProcessMessage(IUtilitiesDataMessage data)
+        protected override void HandleSuiteMessageAsync(IUtilitiesDataMessage data)
         {
             string messageData = data.Data.ToString();
 

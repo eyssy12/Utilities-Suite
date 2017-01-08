@@ -21,11 +21,11 @@
         {
             Task.Run(() =>
             {
-                this.HandleProcessMessage(data);
+                this.HandleSuiteMessageAsync(data);
             });
         }
 
-        protected abstract void HandleProcessMessage(IUtilitiesDataMessage data);
+        protected abstract void HandleSuiteMessageAsync(IUtilitiesDataMessage data);
 
         protected void OnDataSendRequest(object sender, string from, SuiteRoute suiteDestination, string viewDestination, object data)
         {
