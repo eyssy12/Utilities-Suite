@@ -22,6 +22,10 @@
 
         void Write(string filePath, string contents, bool append = false);
 
+        void WriteAllBytes(string filePath, byte[] bytes);
+
+        void WriteAllText(string filePath, string contents);
+
         void Delete(string filePath);
     }
 }

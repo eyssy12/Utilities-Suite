@@ -40,6 +40,7 @@
             KeyHistoryStore = "Store_History",
             KeySettingsStore = "Store_Settings",
             KeyTasksStore = "Store_Tasks",
+            KeyConnectivityStore = "Store_Connectivity",
             KeyOrganiserTcp = "Tcp_Organiser",
             KeyDashboardTcp = "Tcp_Dashboard",
             KeyConnectivityTcp = "Tcp_Connectivity",
@@ -58,6 +59,20 @@
             this.RegisterMisc();
             this.RegisterServices();
             this.RegisterManagers();
+            this.RegisterStores();
+        }
+
+        protected virtual void RegisterStores()
+        {
+            this.Register<IConnectivityStore>(
+                container =>
+                {
+                    return new ConnectivityStore(
+                        ConfigurationManager.AppSettings[UiBindings.KeyConnectivityStore],
+                        container.GetInstance<IFileManager>(),
+                        container.GetInstance<IDirectoryManager>());
+                },
+                lifestyle: Lifestyle.Transient);
         }
 
         protected virtual void RegisterMisc()

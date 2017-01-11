@@ -64,5 +64,15 @@
         {
             File.Delete(filePath);
         }
+
+        public void WriteAllText(string filePath, string contents)
+        {
+            File.WriteAllText(filePath, contents);
+        }
+
+        public void WriteAllBytes(string filePath, byte[] bytes)
+        {
+            File.WriteAllBytes(filePath, bytes);
+        }
     }
 }

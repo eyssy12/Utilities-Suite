@@ -49,6 +49,7 @@
         protected readonly IBluetoothServicesProvider BTServiceProvider;
         protected readonly IQRCodeServiceProvider QRCodeServiceProvider;
         protected readonly ISnackbarNotificationService Notifier;
+        protected readonly IConnectivityStore Store;
         protected readonly IInputSimulator InputSimulator;
 
         protected readonly BluetoothInteractionViewModel Model;
@@ -63,6 +64,7 @@
             this.BTServiceProvider = this.Factory.Create<IBluetoothServicesProvider>();
             this.QRCodeServiceProvider = this.Factory.Create<IQRCodeServiceProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
+            this.Store = this.Factory.Create<IConnectivityStore>();
             this.InputSimulator = this.Factory.Create<IInputSimulator>();
 
             this.Model = new BluetoothInteractionViewModel();
@@ -154,16 +156,16 @@
                 try
                 {
                     dictionary = JsonConvert.DeserializeObject<ExpandoObject>(data, new ExpandoObjectConverter());
+
+                    Action<string, IDictionary<string, object>> action;
+                    if (this.MessageActions.TryGetValue(dictionary["id"].ToString(), out action))
+                    {
+                        action(message.From, dictionary);
+                    }
                 }
                 catch
                 {
                     dictionary = null;
-                }
-
-                Action<string, IDictionary<string, object>> action;
-                if (this.MessageActions.TryGetValue(dictionary["id"].ToString(), out action))
-                {
-                    action(message.From, dictionary);
                 }
             });
         }
@@ -412,6 +414,14 @@
                 this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "screen:" + value);
             };
 
+            Action<string, IDictionary<string, object>> fileAction = (from, json) =>
+            {
+                string name = (string)json["name"];
+                string contents = (string)json["value"];
+
+                this.Store.SaveFile(contents, name, from);
+            };
+
             ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> messageActions = new ConcurrentDictionary<string, Action<string, IDictionary<string, object>>>();
             messageActions.TryAdd("cmd", commandAction);
             messageActions.TryAdd("motion", motionAction);
@@ -420,6 +430,7 @@
             messageActions.TryAdd("battery", batteryAction);
             messageActions.TryAdd("syncState", syncStateAction);
             messageActions.TryAdd("screen", screenAction);
+            messageActions.TryAdd("file", fileAction);
 
             return messageActions;
         }
