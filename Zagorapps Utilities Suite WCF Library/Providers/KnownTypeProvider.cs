@@ -43,6 +43,7 @@
                     typeof(SyncMessage),
                     typeof(VoiceMessage),
                     typeof(VolumeMessage),
+                    typeof(BroadcastMessage),
                     typeof(ConnectionInteractionMessage)
                 })
                 .Distinct()

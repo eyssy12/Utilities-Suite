@@ -97,7 +97,13 @@
             string received = data.Data.ToString();
 
             // TODO: create a custom object instead of string split
-            if (received.Contains(':'))
+            if (data.Data is BroadcastMessage)
+            {
+                BroadcastMessage message = data.Data as BroadcastMessage;
+
+                this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, message.Id + ":" + message.Value));
+            }
+            else if (received.Contains(':'))
             {
                 string[] split = received.Split(':');
 
@@ -109,16 +115,7 @@
                 }
                 else if (split.Length == 3)
                 {
-                    // index 0 = "br" = broadcast
-
-                    if (split[0] == "br")
-                    {
-                        this.localServer.Broadcast(new BasicDataMessage(ConnectionInteraction.ViewName, split[1] + ":" + split[2]));
-                    }
-                    else
-                    {
-                        this.localServer.Send(split[0], new BasicDataMessage(ConnectionInteraction.ViewName, split[1] + ":" + split[2]));
-                    }
+                    this.localServer.Send(split[0], new BasicDataMessage(ConnectionInteraction.ViewName, split[1] + ":" + split[2]));
                 }
             }
             else if (received == "machine_locked" || received == "machine_unlocked")

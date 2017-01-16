@@ -225,7 +225,7 @@
             this.Model.MuteButtonText = e.IsMuted ? "Unmute" : "Mute";
             this.Model.Volume = e.Volume;
 
-            this.PerformConnectivityRoutingAction("br:vol:" + e.IsMuted);
+            this.PerformConnectivityRoutingAction(new BroadcastMessage { Id = "vol", Value = e.IsMuted });
         }
 
         private void MuteAudio()
@@ -241,7 +241,7 @@
                 this.AudioManager.IsMuted = true;
             }
 
-            this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.IsMuted);
+            this.PerformConnectivityRoutingAction(new BroadcastMessage { Id = "vol", Value = this.AudioManager.IsMuted });
         }
 
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
@@ -255,11 +255,11 @@
 
             if (e.IsActive)
             {
-                this.PerformConnectivityRoutingAction("br:brightnes:" + true);
+                this.PerformConnectivityRoutingAction(new BroadcastMessage { Id = "brightnes", Value = true});
             }
             else
             {
-                this.PerformConnectivityRoutingAction("br:brightnes:" + false + "_value:" + e.Brightness);
+                this.PerformConnectivityRoutingAction(new BroadcastMessage { Id = "brightnes", Value = false + "_value:" + e.Brightness });
             }
         }
 
@@ -342,14 +342,14 @@
         {
             this.AudioManager.Volume = this.Model.Volume;
 
-            this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.Volume);
+            this.PerformConnectivityRoutingAction(new BroadcastMessage { Id = "vol", Value = this.AudioManager.Volume });
         }
 
         private void Slider_Window_Brightness_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             this.WmiService.SetBrightness(this.Model.Brightness);
 
-            this.PerformConnectivityRoutingAction("br:screen:" + this.Model.Brightness);
+            this.PerformConnectivityRoutingAction(new BroadcastMessage { Id = "screen", Value = this.Model.Brightness });
         }
     }
 }

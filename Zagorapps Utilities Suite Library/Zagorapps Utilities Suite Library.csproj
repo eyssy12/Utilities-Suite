@@ -155,7 +155,7 @@
     <Compile Include="Factories\IOrganiserFactory.cs" />
     <Compile Include="Interoperability\IInteropHandle.cs" />
     <Compile Include="Interoperability\WindowInteropHandle.cs" />
-    <Compile Include="Messaging\BroadcastMessage.cs" />
+    <Compile Include="Messaging\Suite\BroadcastMessage.cs" />
     <Compile Include="Messaging\Client\CommandMessage.cs" />
     <Compile Include="Messaging\Client\KeyboardMessage.cs" />
     <Compile Include="Messaging\Client\MotionMessage.cs" />
