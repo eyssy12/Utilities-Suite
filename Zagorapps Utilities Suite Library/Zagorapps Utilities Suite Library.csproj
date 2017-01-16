@@ -155,6 +155,15 @@
     <Compile Include="Factories\IOrganiserFactory.cs" />
     <Compile Include="Interoperability\IInteropHandle.cs" />
     <Compile Include="Interoperability\WindowInteropHandle.cs" />
+    <Compile Include="Messaging\BroadcastMessage.cs" />
+    <Compile Include="Messaging\Client\CommandMessage.cs" />
+    <Compile Include="Messaging\Client\KeyboardMessage.cs" />
+    <Compile Include="Messaging\Client\MotionMessage.cs" />
+    <Compile Include="Messaging\Client\ScreenMessage.cs" />
+    <Compile Include="Messaging\Suite\ConnectionInteractionMessage.cs" />
+    <Compile Include="Messaging\Client\SyncMessage.cs" />
+    <Compile Include="Messaging\Client\VoiceMessage.cs" />
+    <Compile Include="Messaging\Client\VolumeMessage.cs" />
     <Compile Include="Providers\ConnectivityStore.cs" />
     <Compile Include="Providers\IConnectivityStore.cs" />
     <Compile Include="Providers\NetworkConnectionProvider.cs" />
@@ -192,7 +201,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Messaging\" />
     <Folder Include="Models\Communications\" />
   </ItemGroup>
   <ItemGroup>

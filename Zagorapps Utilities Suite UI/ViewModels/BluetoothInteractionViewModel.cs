@@ -9,6 +9,7 @@
     using System.Windows.Input;
     using System.Windows.Media.Imaging;
     using Controls;
+    using Core.Library.Data.Structures;
     using Core.Library.Extensions;
     using Utilities.Suite.Library;
 
@@ -22,15 +23,13 @@
             pinFieldVisiblity,
             qrCodeVisibiliity;
 
-        private LinkedList<string> serviceClientLogger = new LinkedList<string>();
+        private FixedQueue<string> serviceClientLogger, serviceServerLogger;
 
         // TOOD: apply linked list logic to this too
         private StringBuilder serviceServerLogBuilder = new StringBuilder();
 
         private string serviceStartText;
         private string pin;
-
-        private int clientLogMaxLines = 10;
         
         private bool serviceEnabled, serviceStartButtonEnabled, contentEnabled;
 
@@ -41,6 +40,8 @@
         public BluetoothInteractionViewModel()
         {
             this.connectedClients = new ConcurrentDictionary<string, ConnectedClientViewModel>();
+            this.serviceClientLogger = new FixedQueue<string>(10);
+            this.serviceServerLogger = new FixedQueue<string>(10);
 
             this.ServiceButtonText = "Start Service";
             this.ConnectionType = ConnectionType.Bluetooth;
@@ -68,17 +69,11 @@
         {
             get
             {
-                return this.serviceClientLogger.Any() ? this.serviceClientLogger.Aggregate((a, b) => a + "\n" + b) : string.Empty;
+                return this.serviceClientLogger.Any() ? this.serviceClientLogger.GetAll().Aggregate((a, b) => a + "\n" + b) : string.Empty;
             }
-
             set
             {
-                if (this.serviceClientLogger.Count == this.clientLogMaxLines)
-                {
-                    this.serviceClientLogger.RemoveFirst();
-                }
-
-                this.serviceClientLogger.AddLast(value);
+                this.serviceClientLogger.Enqueue(value);
 
                 this.OnPropertyChanged(nameof(this.ServiceClientLogConsole));
             }
@@ -88,12 +83,11 @@
         {
             get
             {
-                return this.serviceServerLogBuilder.ToString();
+                return this.serviceServerLogger.Any() ? this.serviceServerLogger.GetAll().Aggregate((a, b) => a + "\n" + b) : string.Empty;
             }
-
             set
             {
-                this.serviceServerLogBuilder.AppendLine(value);
+                this.serviceServerLogger.Enqueue(value);
 
                 this.OnPropertyChanged(nameof(this.ServiceServerLogConsole));
             }

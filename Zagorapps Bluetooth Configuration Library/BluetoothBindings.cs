@@ -16,15 +16,15 @@
 
         protected virtual void RegisterProviders()
         {
-            this.Register<IBluetoothServicesProvider, BluetoothServicesProvider>(lifestyle: Lifestyle.Transient);
-            this.Register<IMessageProvider, MessageProvider>(lifestyle: Lifestyle.Transient);
-            this.Register<IStreamProvider, StreamProvider>(lifestyle: Lifestyle.Transient);
-            this.Register<ICommandOperationsProvider, CommandOperationsProvider>(lifestyle: Lifestyle.Transient);
+            this.Register<IBluetoothServicesProvider, BluetoothServicesProvider>();
+            this.Register<IMessageProvider, MessageProvider>();
+            this.Register<IStreamProvider, StreamProvider>();
+            this.Register<ICommandOperationsProvider, CommandOperationsProvider>();
         }
 
         protected virtual void RegisterHandlers()
         {
-            this.Register<IMessageHandler<IMessage>, BluetoothMessageHandler>(lifestyle: Lifestyle.Transient);
+            this.Register<IMessageHandler<IMessage>, BluetoothMessageHandler>();
         }
     }
 }

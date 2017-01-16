@@ -4,7 +4,6 @@
     using System.Collections.Concurrent;
     using System.Linq;
     using System.Threading.Tasks;
-    using Bluetooth.Library;
     using Bluetooth.Library.Client;
     using Bluetooth.Library.Networking;
     using Core.Library.Communications;
@@ -39,6 +38,8 @@
         }
 
         public event EventHandler<EventArgs<IDataMessage>> MessageReceived;
+
+        public event EventHandler<EventArgs<IDataMessage>> MessageSent;
 
         public event EventHandler<EventArgs<ConnectionType, string>> ClientConnected;
 
@@ -81,6 +82,8 @@
             }
 
             this.Clients.ForEach(c => c.Value.Send(message));
+
+            Invoker.Raise(ref this.MessageSent, this, message);
         }
 
         public bool Send(string to, IDataMessage message)
@@ -95,6 +98,8 @@
                 INetworkConnection connection = this.Clients[to];
 
                 connection.Send(message);
+
+                Invoker.Raise(ref this.MessageSent, this, message);
 
                 return true;
             }

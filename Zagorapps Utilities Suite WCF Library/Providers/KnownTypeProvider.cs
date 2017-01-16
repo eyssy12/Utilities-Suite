@@ -6,7 +6,9 @@
     using System.Reflection;
     using System.Runtime.Serialization;
     using Core.Library.Communications;
-    using Utilities.Suite.Library;
+    using Suite.Library.Messaging.Client;
+    using Suite.Library.Messaging.Suite;
+    using Suite.Library;
 
     public static class KnownTypeProvider<TCentralisedType>
     {
@@ -29,11 +31,22 @@
                 serializableType.IsAssignableFrom(ta) &&
                 baseType.IsAssignableFrom(ta));
 
-            return knownTypes.Union(new[]
-            {
-                typeof(SuiteRoute),
-                typeof(SuiteRoute[])
-            }).Distinct().ToArray();
+            return knownTypes
+                .Union(new[]
+                {
+                    typeof(SuiteRoute),
+                    typeof(SuiteRoute[]),
+                    typeof(CommandMessage), // TODO: implement ISerializable so that these are found automatically
+                    typeof(KeyboardMessage),
+                    typeof(MotionMessage),
+                    typeof(ScreenMessage),
+                    typeof(SyncMessage),
+                    typeof(VoiceMessage),
+                    typeof(VolumeMessage),
+                    typeof(ConnectionInteractionMessage)
+                })
+                .Distinct()
+                .ToArray();
         }
     }
 }

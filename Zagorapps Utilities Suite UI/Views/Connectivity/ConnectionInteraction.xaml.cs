@@ -23,25 +23,23 @@
     using Library;
     using Library.Attributes;
     using Library.Communications;
+    using Library.Messaging.Client;
+    using Library.Messaging.Suite;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using Services;
-    using Suites;
     using Utilities.Suite.Library.Communications.Server;
     using Utilities.Suite.Library.Factories;
     using Utilities.Suite.Library.Providers;
     using Utilities.Suite.UI.Views.SystemControl;
     using ViewModels;
-    using WindowsInput;
-    using WindowsInput.Native;
     using VisibilityEnum = System.Windows.Visibility;
 
     [DefaultNavigatable(ConnectionInteraction.ViewName)]
     public partial class ConnectionInteraction : DataFacilitatorViewControlBase
     {
         private const string ViewName = nameof(ConnectionInteraction),
-            ServiceID = "1f1aa577-32d6-4c59-b9a2-f262994783e9",
-            Pin = "12345";
+            DefaultPin = "12345";
 
         // Has to be concurrent because this is used in a Task.
         protected readonly ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> MessageActions;
@@ -50,7 +48,6 @@
         protected readonly IQRCodeServiceProvider QRCodeServiceProvider;
         protected readonly ISnackbarNotificationService Notifier;
         protected readonly IConnectivityStore Store;
-        protected readonly IInputSimulator InputSimulator;
 
         protected readonly BluetoothInteractionViewModel Model;
 
@@ -65,10 +62,9 @@
             this.QRCodeServiceProvider = this.Factory.Create<IQRCodeServiceProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.Store = this.Factory.Create<IConnectivityStore>();
-            this.InputSimulator = this.Factory.Create<IInputSimulator>();
 
             this.Model = new BluetoothInteractionViewModel();
-            this.Model.Pin = ConnectionInteraction.Pin;
+            this.Model.Pin = ConnectionInteraction.DefaultPin; // TODO: allow save/load via ini configurator
             this.Model.ServiceStartCommand = this.CommandProvider.CreateRelayCommand(() => this.InvokeConnectivityService());
 
             // TODO: add additional method to IViewControl and ISuite interfaces to initiate shutdown on controls - this will be called whenever the user terminates the application
@@ -188,7 +184,13 @@
             this.localServer.ClientConnected += this.Server_ClientConnected;
             this.localServer.ClientDisconnected += this.Server_ClientDisconnected;
             this.localServer.MessageReceived += this.Server_MessageReceived;
+            this.localServer.MessageSent += this.Server_MessageSent;
             this.localServer.Start();
+        }
+
+        private void Server_MessageSent(object sender, EventArgs<IDataMessage> e)
+        {
+            this.Model.ServiceServerLogConsole = DateTime.UtcNow + " -) " + e.First.Data;
         }
 
         private void Server_ClientDisconnected(object sender, EventArgs<ConnectionType, string> e)
@@ -290,7 +292,7 @@
                     this.Notifier.Notify(this.Model.ConnectionType + " Service Stopped");
                 }
 
-                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), ConnectivitySuite.Name + ":" + this.Model.ServiceEnabled);
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new ConnectionInteractionMessage { ServiceLive = this.Model.ServiceEnabled });
             }
         }
 
@@ -298,6 +300,7 @@
         {
             this.localServer.Stop();
             this.localServer.MessageReceived -= this.Server_MessageReceived;
+            this.localServer.MessageSent -= this.Server_MessageSent;
             this.localServer.ClientConnected -= this.Server_ClientConnected;
             this.localServer.ClientDisconnected -= this.Server_ClientDisconnected;
             this.localServer.Dispose();
@@ -315,64 +318,49 @@
             Action<string, IDictionary<string, object>> commandAction = (from, json) =>
             {
                 ClientCommand command;
-                if (Enum.TryParse((string)json["value"], out command))
+                string value = (string)json["value"];
+                if (Enum.TryParse(value, out command))
                 {
-                    if (command == ClientCommand.LeftClick)
-                    {
-                        this.InputSimulator.Mouse.LeftButtonClick();
-                    }
-                    else if (command == ClientCommand.MiddleClick)
-                    {
-                    }
-                    else if (command == ClientCommand.RightClick)
-                    {
-                        this.InputSimulator.Mouse.RightButtonClick();
-                    }
-                    else if (command == ClientCommand.DoubleTap)
-                    {
-                        this.InputSimulator.Mouse.LeftButtonDoubleClick();
-                    }
-                    else if (command == ClientCommand.Backspace)
-                    {
-                        this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
-                    }
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new CommandMessage { Command = command });
                 }
                 else
                 {
-                    string character = (string)json["value"];
-
-                    this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(character));
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new KeyboardMessage { Character = Convert.ToChar(value) });
                 }
             };
 
             Action<string, IDictionary<string, object>> motionAction = (from, json) =>
             {
-                double xMovingUnits = (double)json["x"];
-                double yMovingUnits = (double)json["y"];
+                int xMovingUnits = Convert.ToInt32(json["x"]);
+                int yMovingUnits = Convert.ToInt32(json["y"]);
 
-                this.InputSimulator.Mouse.MoveMouseBy((int)xMovingUnits, (int)yMovingUnits);
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new MotionMessage { X = xMovingUnits, Y = yMovingUnits });
             };
 
             Action<string, IDictionary<string, object>> voiceAction = (from, json) =>
             {
-                if (((string)json["value"]).Contains("lock"))
+                string value = (string)json["value"];
+
+                if (value.Contains("lock"))
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), from + ":lock");
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new VoiceMessage { From = from, Value = "lock_machine" });
                 }
             };
 
             Action<string, IDictionary<string, object>> volumeAction = (from, json) =>
             {
                 bool volumeEnabled = (bool)json["volOn"];
-
-                object volume;
-                if (json.TryGetValue("value", out volume))
+                
+                object value;
+                if (json.TryGetValue("value", out value))
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + (long)volume);
+                    int volume = Convert.ToInt32(value);
+
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new VolumeMessage { Enabled = volumeEnabled, Value = volume });
                 }
                 else
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "vol:" + volumeEnabled);
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new VolumeMessage { Enabled = volumeEnabled });
                 }
             };
 
@@ -396,13 +384,13 @@
 
             Action<string, IDictionary<string, object>> syncStateAction = (from, json) =>
             {
-                string value = (string)json["value"];
+                SyncState state = (SyncState)Enum.Parse(typeof(SyncState), (string)json["value"]);
 
-                if (value == "syncRequest")
+                if (state == SyncState.Request)
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), from + ":syncClient");
+                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new SyncMessage { From = from, State = state });
                 }
-                else if (value == "syncResponseAck")
+                else if (state == SyncState.ResponseAck)
                 {
                 }
             };
@@ -411,13 +399,16 @@
             {
                 long value = (long)json["value"];
 
-                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), "screen:" + value);
+                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new ScreenMessage { Value = Convert.ToInt32(value) });
             };
 
             Action<string, IDictionary<string, object>> fileAction = (from, json) =>
             {
                 string name = (string)json["name"];
                 string contents = (string)json["value"];
+
+                // TODO: add file receiver service that will read in packets/chunks of a file until a file is fully received
+                // when received, raise an event for "file completed" 
 
                 this.Store.SaveFile(contents, name, from);
             };

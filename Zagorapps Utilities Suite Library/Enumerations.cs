@@ -11,6 +11,13 @@
         All = 4
     }
 
+    public enum SyncState : byte
+    {
+        Request,
+        Response,
+        ResponseAck
+    }
+
     public enum TaskType : byte
     {
         Scheduled = 0,

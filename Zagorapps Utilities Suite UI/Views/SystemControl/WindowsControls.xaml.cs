@@ -1,5 +1,6 @@
 ﻿namespace Zagorapps.Utilities.Suite.UI.Views.SystemControl
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -8,6 +9,7 @@
     using System.Windows.Controls;
     using Audio.Library.Events;
     using Audio.Library.Managers;
+    using Bluetooth.Library;
     using Commands;
     using Comparators;
     using Connectivity;
@@ -22,10 +24,13 @@
     using Library.Communications;
     using Library.Factories;
     using Library.Interoperability;
+    using Library.Messaging.Client;
+    using Library.Messaging.Suite;
     using MaterialDesignThemes.Wpf;
     using Microsoft.Win32;
-    using Suites;
     using ViewModels;
+    using WindowsInput;
+    using WindowsInput.Native;
 
     [DefaultNavigatable(WindowsControls.ViewName)]
     public partial class WindowsControls : DataFacilitatorViewControlBase
@@ -36,7 +41,8 @@
         protected readonly IWmiManagementService WmiService;
         protected readonly IAudioManager AudioManager;
         protected readonly IInteropHandle InteropHandle;
-        protected readonly ITimer Timer;
+        protected readonly IInputSimulator InputSimulator;
+        protected readonly ITimer TaskRetrieveTimer, WinServiceTimer;
 
         protected readonly WindowsControlsViewModel Model;
         protected readonly ProcessViewModelComparator ProcessComparer;
@@ -52,7 +58,9 @@
             this.AudioManager = this.Factory.Create<IAudioManager>();
             this.InteropHandle = this.Factory.Create<IInteropHandle>();
             this.WmiService = this.Factory.Create<IWmiManagementService>();
-            this.Timer = this.Factory.Create<ITimer>();
+            this.InputSimulator = this.Factory.Create<IInputSimulator>();
+            this.WinServiceTimer = this.Factory.Create<ITimer>();
+            this.TaskRetrieveTimer = this.Factory.Create<ITimer>();
 
             this.ProcessComparer = new ProcessViewModelComparator();
 
@@ -62,6 +70,7 @@
             this.Model.MuteButtonText = this.AudioManager.IsMuted ? "Unmute" : "Mute";
             this.Model.Volume = this.AudioManager.Volume;
 
+            this.WinServiceTimer.TimeElapsed += this.WinServiceTimer_TimeElapsed;
             this.AudioManager.OnVolumeChanged += this.AudioManager_OnVolumeChanged;
             this.WmiService.EventReceived += this.WmiService_EventReceived;
 
@@ -91,72 +100,114 @@
 
         public override void InitialiseView(object arg)
         {
-            this.Timer.TimeElapsed += this.Timer_TimeElapsed;
-            this.Timer.Start(1000, 1000);
+            this.TaskRetrieveTimer.TimeElapsed += this.TaskRetrieveTimer_TimeElapsed;
+            this.TaskRetrieveTimer.Start(1000, 1000);
         }
 
         public override void FinaliseView()
         {
-            this.Timer.Stop();
-            this.Timer.TimeElapsed -= this.Timer_TimeElapsed;
+            this.TaskRetrieveTimer.Stop();
+            this.TaskRetrieveTimer.TimeElapsed -= this.TaskRetrieveTimer_TimeElapsed;
         }
 
         protected override void HandleSuiteMessageAsync(IUtilitiesDataMessage data)
         {
-            string messageData = data.Data.ToString();
-
-             // TODO:custom object
-            if (messageData.Contains(":"))
+            if (data.Data is SyncMessage)
             {
-                string[] split = messageData.Split(':');
+                SyncMessage message = data.Data as SyncMessage;
 
-                if (split[0] == "vol")
+                if (message.State == SyncState.Request)
                 {
-                    bool muted;
-                    if (bool.TryParse(split[1], out muted))
-                    {
-                        this.AudioManager.IsMuted = muted;
-                    }
-                    else
-                    {
-                        int volume = int.Parse(split[1]);
+                    string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume + "_" + this.WmiService.GetBrightnesses().First().Brightness;
 
-                        this.AudioManager.Volume = volume;
+                    this.OnDataSendRequest(
+                        this,
+                        ViewBag.GetViewName<WindowsControls>(),
+                        SuiteRoute.Connectivity,
+                        ViewBag.GetViewName<ConnectionInteraction>(),
+                        message.From + ":" + SyncState.Response + ":" + syncData);
+                }
+            }
+            else if (data.Data is ConnectionInteractionMessage)
+            {
+                this.isConnectivitySuiteLive = (data.Data as ConnectionInteractionMessage).ServiceLive;
+            }
+            else if (data.Data is VoiceMessage)
+            {
+                VoiceMessage message = data.Data as VoiceMessage;
+
+                if (message.Value == "lock_machine")
+                {
+                    if (!this.HandleOperation("Lock"))
+                    {
+                        this.PerformConnectivityRoutingAction(message.From + ":Permitted Process Running");
                     }
                 }
-                else if (split[0] == "screen")
-                {
-                    this.WmiService.SetBrightness(int.Parse(split[1]));
-                }
-                else if (split[0] == ConnectivitySuite.Name)
-                {
-                    this.isConnectivitySuiteLive = bool.Parse(split[1]);
-                }
-                else
-                {
-                    if (split[1].Contains("lock"))
-                    {
-                        if (!this.HandleOperation("Lock"))
-                        {
-                            this.PerformConnectivityRoutingAction(split[0] + ":Permitted Process Running");
-                        }
-                    }
-                    else if (split[1] == "syncClient")
-                    {
-                        string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume + "_" + this.WmiService.GetBrightnesses().First().Brightness;
+            }
+            else if (data.Data is KeyboardMessage)
+            {
+                char character = (data.Data as KeyboardMessage).Character;
 
-                        this.OnDataSendRequest(
-                            this,
-                            ViewBag.GetViewName<WindowsControls>(),
-                            SuiteRoute.Connectivity,
-                            ViewBag.GetViewName<ConnectionInteraction>(),
-                            split[0] + ":syncResponse:" + syncData);
-                    }
+                this.InputSimulator.Keyboard.TextEntry(Convert.ToChar(character));
+            }
+            else if (data.Data is MotionMessage)
+            {
+                MotionMessage message = data.Data as MotionMessage;
+
+                this.InputSimulator.Mouse.MoveMouseBy(message.X, message.Y);
+            }
+            else if (data.Data is ScreenMessage)
+            {
+                ScreenMessage message = data.Data as ScreenMessage;
+
+                this.Slider_Window_Brightness.ValueChanged -= this.Slider_Window_Brightness_ValueChanged;
+                this.WmiService.SetBrightness(message.Value);
+                this.Slider_Window_Brightness.ValueChanged += this.Slider_Window_Brightness_ValueChanged;
+            }
+            else if (data.Data is VolumeMessage)
+            {
+                VolumeMessage message = data.Data as VolumeMessage;
+
+                this.Slider_Volume.ValueChanged -= this.Slider_Volume_ValueChanged;
+                this.AudioManager.OnVolumeChanged -= this.AudioManager_OnVolumeChanged;
+
+                this.AudioManager.IsMuted = message.Enabled;
+
+                if (message.Value.HasValue)
+                {
+                    this.AudioManager.Volume = message.Value.Value;
+                }
+
+                this.AudioManager.OnVolumeChanged += this.AudioManager_OnVolumeChanged;
+                this.Slider_Volume.ValueChanged += this.Slider_Volume_ValueChanged;
+            }
+            else if (data.Data is CommandMessage)
+            {
+                ClientCommand command = (data.Data as CommandMessage).Command;
+
+                if (command == ClientCommand.LeftClick)
+                {
+                    this.InputSimulator.Mouse.LeftButtonClick();
+                }
+                else if (command == ClientCommand.MiddleClick)
+                {
+                }
+                else if (command == ClientCommand.RightClick)
+                {
+                    this.InputSimulator.Mouse.RightButtonClick();
+                }
+                else if (command == ClientCommand.DoubleTap)
+                {
+                    this.InputSimulator.Mouse.LeftButtonDoubleClick();
+                }
+                else if (command == ClientCommand.Backspace)
+                {
+                    this.InputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
                 }
             }
         }
 
-        private void PerformConnectivityRoutingAction(string data)
+        private void PerformConnectivityRoutingAction(object data)
         {
             if (this.isConnectivitySuiteLive)
             {
@@ -247,7 +298,7 @@
             this.HandleOperation(e.First);
         }
 
-        private void Timer_TimeElapsed(object sender, EventArgs<int> e)
+        private void TaskRetrieveTimer_TimeElapsed(object sender, EventArgs<int> e)
         {
             Task.Run(() =>
             {
@@ -258,7 +309,7 @@
                         ProcessId = p.Id,
                         ProcessName = p.ProcessName,
                         TimeRunning = "-1" //this.GetTotalProcessorTime(p)
-                                })
+                    })
                     .Except(this.Model.Processes, this.ProcessComparer);
 
                 // TODO: investigate - sometimes there is item inconsistency with the model and the ItemsSource in the view which throws InvalidOperationException
@@ -266,6 +317,11 @@
                 this.Model.AddProcesses(disctint);
                 this.Model.VerifyControlsAvailability();
             });
+        }
+
+        private void WinServiceTimer_TimeElapsed(object sender, EventArgs<int> e)
+        {
+
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -285,7 +341,6 @@
         private void Slider_Volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             this.AudioManager.Volume = this.Model.Volume;
-            this.AudioManager.IsMuted = false;
 
             this.PerformConnectivityRoutingAction("br:vol:" + this.AudioManager.Volume);
         }

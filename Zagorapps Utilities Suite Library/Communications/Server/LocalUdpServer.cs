@@ -33,6 +33,8 @@
 
         public event EventHandler<EventArgs<IDataMessage>> MessageReceived;
 
+        public event EventHandler<EventArgs<IDataMessage>> MessageSent;
+
         public event EventHandler<EventArgs<ConnectionType, string>> ClientConnected;
 
         public event EventHandler<EventArgs<ConnectionType, string>> ClientDisconnected; // will not be called, UDP originally has no concept of connected/disconnected clients

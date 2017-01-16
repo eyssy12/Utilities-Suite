@@ -8,6 +8,8 @@
     {
         event EventHandler<EventArgs<IDataMessage>> MessageReceived;
 
+        event EventHandler<EventArgs<IDataMessage>> MessageSent;
+
         event EventHandler<EventArgs<ConnectionType, string>> ClientConnected;
 
         event EventHandler<EventArgs<ConnectionType, string>> ClientDisconnected;

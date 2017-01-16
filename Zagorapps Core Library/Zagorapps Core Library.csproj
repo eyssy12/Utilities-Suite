@@ -131,6 +131,7 @@
     <Compile Include="Communications\INetworkConnection.cs" />
     <Compile Include="Construction\ConstructionContext.cs" />
     <Compile Include="Construction\IContext.cs" />
+    <Compile Include="Data\Structures\FixedQueue.cs" />
     <Compile Include="Events\EventArgs%271.cs" />
     <Compile Include="Events\EventArgs%272.cs" />
     <Compile Include="Events\EventArgs`3.cs" />
