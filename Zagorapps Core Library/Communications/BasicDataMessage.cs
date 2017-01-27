@@ -2,6 +2,7 @@
 {
     using System;
     using System.Runtime.Serialization;
+    using System.Security;
     using System.Security.Permissions;
 
     [Serializable]
@@ -44,8 +45,8 @@
         {
             get { return this.from; }
         }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        
+        [SecurityCritical]
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(BasicDataMessage.CreateTimeKey, this.createdTime);

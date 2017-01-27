@@ -25,7 +25,7 @@
         [DllImport(NativeMethods.User32)]
         public static extern bool PostMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam);
 
-        [DllImport(NativeMethods.User32)]
+        [DllImport(NativeMethods.User32, CharSet = CharSet.Unicode)]
         public static extern int RegisterWindowMessage(string message);
 
         [DllImport(NativeMethods.User32)]

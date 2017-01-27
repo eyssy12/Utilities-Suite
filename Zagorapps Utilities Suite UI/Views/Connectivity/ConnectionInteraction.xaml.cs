@@ -318,11 +318,11 @@
                 string value = (string)json["value"];
                 if (Enum.TryParse(value, out command))
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new CommandMessage { Command = command });
+                    this.SendToWindowsControls(new CommandMessage { Command = command });
                 }
                 else
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new KeyboardMessage { Character = Convert.ToChar(value) });
+                    this.SendToWindowsControls(new KeyboardMessage { Character = Convert.ToChar(value) });
                 }
             };
 
@@ -330,8 +330,8 @@
             {
                 int xMovingUnits = Convert.ToInt32(json["x"]);
                 int yMovingUnits = Convert.ToInt32(json["y"]);
-
-                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new MotionMessage { X = xMovingUnits, Y = yMovingUnits });
+                
+                this.SendToWindowsControls(new MotionMessage { X = xMovingUnits, Y = yMovingUnits });
             };
 
             Action<string, IDictionary<string, object>> voiceAction = (from, json) =>
@@ -340,7 +340,7 @@
 
                 if (value.Contains("lock"))
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new VoiceMessage { From = from, Value = "lock_machine" });
+                    this.SendToWindowsControls(new VoiceMessage { From = from, Value = "lock_machine" });
                 }
             };
 
@@ -352,12 +352,12 @@
                 if (json.TryGetValue("value", out value))
                 {
                     int volume = Convert.ToInt32(value);
-
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new VolumeMessage { Enabled = volumeEnabled, Value = volume });
+                    
+                    this.SendToWindowsControls(new VolumeMessage { Enabled = volumeEnabled, Value = volume });
                 }
                 else
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new VolumeMessage { Enabled = volumeEnabled });
+                    this.SendToWindowsControls(new VolumeMessage { Enabled = volumeEnabled });
                 }
             };
 
@@ -385,7 +385,7 @@
 
                 if (state == SyncState.Request)
                 {
-                    this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new SyncMessage { From = from, State = state });
+                    this.SendToWindowsControls(new SyncMessage { From = from, State = state });
                 }
                 else if (state == SyncState.ResponseAck)
                 {
@@ -396,7 +396,7 @@
             {
                 long value = (long)json["value"];
 
-                this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new ScreenMessage { Value = Convert.ToInt32(value) });
+                this.SendToWindowsControls(new ScreenMessage { Value = Convert.ToInt32(value) });
             };
 
             Action<string, IDictionary<string, object>> fileAction = (from, json) =>
@@ -421,6 +421,11 @@
             messageActions.TryAdd("file", fileAction);
 
             return messageActions;
+        }
+
+        private void SendToWindowsControls(object data)
+        {
+            this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), data);
         }
     }
 }

@@ -3,7 +3,7 @@
     using System;
     using Events;
 
-    public interface ITimer
+    public interface ITimer : IDisposable
     {
         event EventHandler<EventArgs<int>> TimeElapsed;
 
