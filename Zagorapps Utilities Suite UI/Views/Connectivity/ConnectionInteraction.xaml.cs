@@ -18,6 +18,7 @@
     using Core.Library.Communications;
     using Core.Library.Events;
     using Core.Library.Extensions;
+    using Core.Library.Windows;
     using Graphics.Library.Extensions;
     using Graphics.Library.ZXing;
     using Library;
@@ -47,6 +48,7 @@
         protected readonly IBluetoothServicesProvider BTServiceProvider;
         protected readonly IQRCodeServiceProvider QRCodeServiceProvider;
         protected readonly ISnackbarNotificationService Notifier;
+        protected readonly IWinSystemService WinSystem;
         protected readonly IConnectivityStore Store;
 
         protected readonly BluetoothInteractionViewModel Model;
@@ -62,6 +64,7 @@
             this.QRCodeServiceProvider = this.Factory.Create<IQRCodeServiceProvider>();
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.Store = this.Factory.Create<IConnectivityStore>();
+            this.WinSystem = this.Factory.Create<IWinSystemService>();
 
             this.Model = new BluetoothInteractionViewModel();
             this.Model.Pin = ConnectionInteraction.DefaultPin; // TODO: allow save/load via ini configurator
@@ -202,12 +205,12 @@
 
         private void Server_ClientConnected(object sender, EventArgs<ConnectionType, string> e)
         {
-            this.Model.InvokeConnectedClientNotifyableAction(c => c.TryAdd(e.Second, new ConnectedClientViewModel(e.Second, e.First)));
+            this.Model.InvokeConnectedClientNotifyableAction(c => c.TryAdd(e.Second, new ConnectedClientViewModel(e.Second, e.First, this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Store.GetClientStorePath(e.Second))))));
         }
 
         private void Server_MessageReceived(object sender, EventArgs<IDataMessage> e)
         {
-            this.Model.ServiceClientLogConsole = DateTime.UtcNow + " -) " + e.First.From + ": " + e.First.Data;
+            // this.Model.ServiceClientLogConsole = DateTime.UtcNow + " -) " + e.First.From + ": " + e.First.Data;
 
             this.HandleClientMessage(e.First);
         }
@@ -308,6 +311,7 @@
         private ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> CreateActionDictionary()
         {
             // TODO: implement the below code into some sort of a decision tree
+            // TODO: add the strings to resources or consts at some stage.
             // it would be better if individual actions were encapsulated into their own classes
             // however, the classes relying on inter Suite messaging, i don't want to expose the OnDataSendRequest
             // Maybe create a service that the action in the tree may raise and that the facilitators will listen to...
@@ -401,13 +405,35 @@
 
             Action<string, IDictionary<string, object>> fileAction = (from, json) =>
             {
-                string name = (string)json["name"];
-                string contents = (string)json["value"];
+                string action = (string)json["action"];
 
-                // TODO: add file receiver service that will read in packets/chunks of a file until a file is fully received
-                // when received, raise an event for "file completed" 
+                if (action == "beginFileTransfer")
+                {
+                    long checksum = (long)json["checksum"];
+                    string name = (string)json["name"];
 
-                this.Store.SaveFile(contents, name, from);
+                    this.localServer.Send(from, new BasicDataMessage(ConnectionInteraction.ViewName, "file:" + checksum + "_readyForSending"));
+                }
+                else if (action == "fileSending")
+                {
+                    long checksum = (long)json["checksum"];
+                    string name = (string)json["name"];
+                    string contents = (string)json["value"];
+                    long remaining = (long)json["remaining"];
+
+                    byte[] bytes = Convert.FromBase64String(contents);
+
+                    this.Store.SaveFile(bytes, name, from, append: true);
+
+                    if (remaining > 0)
+                    {
+                        this.localServer.Send(from, new BasicDataMessage(ConnectionInteraction.ViewName, "file:" + checksum + "_chunkAccepted"));
+                    }
+                    else
+                    {
+                        this.localServer.Send(from, new BasicDataMessage(ConnectionInteraction.ViewName, "file:" + checksum + "_finished"));
+                    }
+                }
             };
 
             ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> messageActions = new ConcurrentDictionary<string, Action<string, IDictionary<string, object>>>();

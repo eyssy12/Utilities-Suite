@@ -29,7 +29,7 @@
 
     </controls:DataFacilitatorViewControlBase.Resources>
 
-    <Grid>
+    <Grid Name="Base">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -188,12 +188,12 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
-                      Grid.RowSpan="2"
-                      Grid.Column="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
                     BorderBrush="{DynamicResource MaterialDesignDivider}" 
                     BorderThickness="1">
+                
                 <DataGrid 
-                      
                       Name="ListBox_ConnectedClients"
                       ItemsSource="{Binding ViewModel.ConnectedClients}"
                       CanUserSortColumns="True"
@@ -210,6 +210,17 @@
                             Header="Client"
                             IsReadOnly="True" />
 
+                        <DataGridTemplateColumn CanUserSort="False" CanUserResize="False" CanUserReorder="False" Header="Drop Folder">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button VerticalAlignment="Top"
+                                            HorizontalAlignment="Left"
+                                            Content="Open"
+                                            Command="{Binding OpenDropFolder}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

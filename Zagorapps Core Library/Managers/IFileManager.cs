@@ -22,7 +22,7 @@
 
         void Write(string filePath, string contents, bool append = false);
 
-        void WriteAllBytes(string filePath, byte[] bytes);
+        void WriteAllBytes(string filePath, byte[] bytes, bool append = false);
 
         void WriteAllText(string filePath, string contents);
 

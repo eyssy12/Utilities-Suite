@@ -30,13 +30,12 @@
         {
             if (append)
             {
-                using (StreamWriter writer = File.AppendText(filePath))
-                {
-                    writer.WriteLine(contents);
-                }
+                File.AppendAllText(filePath, contents);
             }
-
-            File.WriteAllText(filePath, contents);
+            else
+            {
+                File.WriteAllText(filePath, contents);
+            }
         }
 
         public string ReadAllText(string filePath)
@@ -70,9 +69,19 @@
             File.WriteAllText(filePath, contents);
         }
 
-        public void WriteAllBytes(string filePath, byte[] bytes)
+        public void WriteAllBytes(string filePath, byte[] bytes, bool append = false)
         {
-            File.WriteAllBytes(filePath, bytes);
+            if (append)
+            {
+                using (FileStream stream = new FileStream(filePath, FileMode.Append))
+                {
+                    stream.Write(bytes, 0, bytes.Length);
+                }
+            }
+            else
+            {
+                File.WriteAllBytes(filePath, bytes);
+            }
         }
     }
 }

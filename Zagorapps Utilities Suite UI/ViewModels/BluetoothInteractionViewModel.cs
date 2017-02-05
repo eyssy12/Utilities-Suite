@@ -161,6 +161,8 @@
 
         public ICommand ServiceStartCommand { get; set; }
 
+        public ICommand OpenClientDropFolderCommand { get; set; }
+
         public ConnectionType ConnectionType
         {
             get { return this.conenctionType; }
