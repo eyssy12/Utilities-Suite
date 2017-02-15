@@ -22,6 +22,10 @@
         {
             this.Factory = factory;
 
+            Application.Current.Exit += this.Application_Exiting;
+            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            AppDomain.CurrentDomain.UnhandledException += this.Domain_UnhandledException;
+
             this.Notifier = this.Factory.Create<ISnackbarNotificationService>();
             this.SuiteService = this.Factory.Create<ISuiteService>();
             this.SuiteManager = this.Factory.Create<IDataFacilitatorSuiteManager>();
@@ -86,6 +90,18 @@
         protected void TerminateApplication(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void Domain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            // TODO: initiate shutdown procedure on all modules in the application (e.g. close connectivity view and active connections)
+            Console.WriteLine("exiting");
+        }
+
+        private void Application_Exiting(object sender, ExitEventArgs e)
+        {
+            // TODO: initiate shutdown procedure on all modules in the application
+            Console.WriteLine("exiting");
         }
     }
 }

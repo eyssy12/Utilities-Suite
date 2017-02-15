@@ -21,5 +21,7 @@
         void NavigateToDefault();
 
         void Navigate(string suiteName, object args);
+
+        // TODO: add a method to notify all IViewControl's to finalise for the final time
     }
 }

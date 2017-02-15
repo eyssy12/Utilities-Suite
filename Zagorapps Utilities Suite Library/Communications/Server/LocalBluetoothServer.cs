@@ -107,6 +107,26 @@
             return false;
         }
 
+        public bool DisconnectClient(string who)
+        {
+            if (string.IsNullOrWhiteSpace(who) && !this.Clients.ContainsKey(who))
+            {
+                return false;
+            }
+
+            INetworkConnection client;
+            if (this.Clients.TryRemove(who, out client))
+            {
+                client.Close();
+
+                Invoker.Raise(ref this.ClientDisconnected, this, ConnectionType.Bluetooth, who);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public void Dispose()
         {
             this.Disposing(true);

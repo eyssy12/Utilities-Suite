@@ -43,10 +43,8 @@
 
                 return updated;
             }
-            else
-            {
-                throw new InvalidOperationException("stop cannot be done");
-            }
+
+            return false;
         }
 
         public void Dispose()

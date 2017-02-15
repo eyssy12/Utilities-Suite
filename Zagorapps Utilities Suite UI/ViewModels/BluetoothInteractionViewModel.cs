@@ -179,6 +179,11 @@
             this.connectedClients[name].NextHeartbeatTimestamp = time;
         }
 
+        public void UpdateConnectionClientChargeState(string name, bool chargeState)
+        {
+            this.connectedClients[name].Charging = chargeState;
+        }
+
         public TResult InvokeConnectedClientNotifyableAction<TResult>(Func<ConcurrentDictionary<string, ConnectedClientViewModel>, TResult> action)
         {
             return this.NotifyableAction(this.connectedClients, action, nameof(this.ConnectedClients));

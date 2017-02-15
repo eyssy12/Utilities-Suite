@@ -205,12 +205,21 @@
 
         private void Server_ClientConnected(object sender, EventArgs<ConnectionType, string> e)
         {
-            this.Model.InvokeConnectedClientNotifyableAction(c => c.TryAdd(e.Second, new ConnectedClientViewModel(e.Second, e.First, this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Store.GetClientStorePath(e.Second))))));
+            this.Model.InvokeConnectedClientNotifyableAction(c =>
+            {
+                return c.TryAdd(
+                    e.Second,
+                    new ConnectedClientViewModel(
+                        e.Second,
+                        e.First,
+                        this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Store.GetClientStorePath(e.Second))),
+                        this.CommandProvider.CreateRelayCommand(() => this.localServer.DisconnectClient(e.Second))));
+            });
         }
 
         private void Server_MessageReceived(object sender, EventArgs<IDataMessage> e)
         {
-            // this.Model.ServiceClientLogConsole = DateTime.UtcNow + " -) " + e.First.From + ": " + e.First.Data;
+            this.Model.ServiceClientLogConsole = DateTime.UtcNow + " -) " + e.First.From + ": " + e.First.Data;
 
             this.HandleClientMessage(e.First);
         }
@@ -305,7 +314,7 @@
             this.localServer.ClientDisconnected -= this.Server_ClientDisconnected;
             this.localServer.Dispose();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
         }
 
         private ConcurrentDictionary<string, Action<string, IDictionary<string, object>>> CreateActionDictionary()
@@ -370,6 +379,7 @@
                 if (json.ContainsKey("batCharge"))
                 {
                     bool value = (bool)json["batCharge"];
+                    this.Model.UpdateConnectionClientChargeState(from, value);
                 }
 
                 if (json.ContainsKey("chargeType"))

@@ -108,6 +108,11 @@
             return true; // TODO: implement
         }
 
+        public bool DisconnectClient(string who)
+        {
+            return true; // TODO: implement
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

@@ -24,7 +24,8 @@
             <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
                 <Setter Property="Margin" Value="0 8 0 8" />
             </Style>
-            <converters:InvertBoolConverter x:Key="InvertBool" /> 
+            <converters:InvertBoolConverter x:Key="InvertBool" />
+            <converters:BatteryChargeConverter x:Key="BatteryChargeConverter" />
         </ResourceDictionary>
 
     </controls:DataFacilitatorViewControlBase.Resources>
@@ -204,11 +205,30 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            MinWidth="140"
-                            Header="Client"
-                            IsReadOnly="True" />
+                        <DataGridTemplateColumn CanUserSort="False" CanUserResize="False" CanUserReorder="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+                                        <Button Command="{Binding DisconnectClient}" Margin="8" Padding="8" Foreground="Red" Background="Transparent" BorderBrush="Transparent">
+                                            <materialDesign:PackIcon Kind="Close" />
+                                        </Button>
+                                        <materialDesign:PackIcon 
+                                            Kind="BatteryCharging"
+                                            Width="24" 
+                                            Height="24"
+                                            Opacity="{Binding Charging, Converter={StaticResource BatteryChargeConverter}}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn MinWidth="140" CanUserSort="False" CanUserResize="False" CanUserReorder="False" Header="Client" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                         <DataGridTemplateColumn CanUserSort="False" CanUserResize="False" CanUserReorder="False" Header="Drop Folder">
                             <DataGridTemplateColumn.CellTemplate>
@@ -225,8 +245,6 @@
                 </DataGrid>
             </Border>
             
-            
-
             <DockPanel Grid.Row="0"
                        Grid.Column="1">
 

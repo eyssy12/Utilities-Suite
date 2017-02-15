@@ -9,15 +9,18 @@
     {
         private readonly ConnectionType connectionType;
         private readonly string name;
-        private readonly ICommand openDropFolder;
+        private readonly ICommand openDropFolder, disconnectClient;
+        private bool charging;
 
         private DateTime nextHeartbeatTimestamp;
 
-        public ConnectedClientViewModel(string clientName, ConnectionType connectionType, ICommand openDropFolder)
+        public ConnectedClientViewModel(string clientName, ConnectionType connectionType, ICommand openDropFolder, ICommand disconnectClient)
         {
             this.name = clientName;
             this.connectionType = connectionType;
             this.openDropFolder = openDropFolder;
+            this.disconnectClient = disconnectClient;
+            this.charging = false;
         }
 
         public ConnectionType ConnectionType
@@ -30,9 +33,19 @@
             get { return this.name; }
         }
 
+        public bool Charging
+        {
+            get { return this.charging; }
+            set { this.SetField(ref this.charging, value, nameof(this.Charging)); }
+        }
         public ICommand OpenDropFolder
         {
             get { return this.openDropFolder; }
+        }
+
+        public ICommand DisconnectClient
+        {
+            get { return this.disconnectClient; }
         }
 
         public DateTime NextHeartbeatTimestamp

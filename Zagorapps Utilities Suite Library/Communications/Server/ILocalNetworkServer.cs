@@ -21,5 +21,7 @@
         void Broadcast(IDataMessage message);
 
         bool Send(string to, IDataMessage message);
+
+        bool DisconnectClient(string who);
     }
 }
