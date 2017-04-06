@@ -1,2 +1,9 @@
 # Utilities Suite
-The application will have a suite of tools to help the user with managing their PC and performing tasks that are not available out of the box on Windows.
+A windows application to test out various technologies, libraries and design standards as an exercise:
+
+* SOLID principles
+* [SimpleInjector](https://github.com/simpleinjector/SimpleInjector) - dependency injection
+* [Protobuf](https://github.com/mgravell/protobuf-net) - data serialization
+* WPF (UI)
+* WCF (tcp.net)
+* [32feet.NET](https://32feet.codeplex.com/) - Bluetooth connectivity
