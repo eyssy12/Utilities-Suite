@@ -174,7 +174,7 @@
         <Border Margin="16" Grid.Row="3" Grid.Column="0" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
 
         <!-- Brightness Control -->
-        <Grid Margin="16" Grid.Row="4" Grid.Column="0">
+        <Grid Margin="16" Grid.Row="4" Grid.Column="0" IsEnabled="{Binding ViewModel.WmiSupported}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />

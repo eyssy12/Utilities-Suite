@@ -213,7 +213,7 @@
                         e.Second,
                         e.First,
                         this.CommandProvider.CreateRelayCommand(() => this.WinSystem.OpenFolder(this.Store.GetClientStorePath(e.Second))),
-                        this.CommandProvider.CreateRelayCommand(() => this.localServer.DisconnectClient(e.Second))));
+                        this.CommandProvider.CreateRelayCommand(() => this.localServer.DisconnectClient(e.Second)))); // TODO: add a prompt when this is invoked when critical actions are being performed (e.g. file transfer)
             });
         }
 
@@ -238,16 +238,16 @@
                 if (type == ConnectionType.Bluetooth)
                 {
                     this.Model.PinFieldVisibility = VisibilityEnum.Visible;
-                    this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage(this.BTServiceProvider.Name + "-" + this.BTServiceProvider.LocalAddress.ToString("C") + "-" + this.Model.Pin, 500, 500).ToSource();
+                    this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage(this.BTServiceProvider.Name + "-" + this.BTServiceProvider.LocalAddress.ToString("C") + "-" + this.Model.Pin, 500, 500).ToBitmapSource();
                 }
                 else
                 {
                     this.Model.PinFieldVisibility = VisibilityEnum.Hidden;
-                    this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage("localaddress and port", 500, 500).ToSource();
+                    this.Model.QRCodeSource = this.QRCodeServiceProvider.GenerateImage("localaddress and port", 500, 500).ToBitmapSource();
                 }
 
                 this.Model.ServiceButtonEnabled = true;
-                this.Model.ServiceButtonText = "Start Service";
+                this.Model.ServiceButtonText = UiResources.Label_StartService;
             }
         }
 
@@ -270,7 +270,7 @@
                         this.Model.ServiceEnabled = false;
 
                         this.Model.ClearClients();
-                        this.Model.ServiceButtonText = "Start Service";
+                        this.Model.ServiceButtonText = UiResources.Label_StartService;
                         this.Model.ContentVisibility = VisibilityEnum.Hidden;
                         this.Model.QRCodeButtonVisiblity = VisibilityEnum.Hidden;
                     }
@@ -280,7 +280,7 @@
 
                         this.Model.ServiceEnabled = true;
 
-                        this.Model.ServiceButtonText = "End Service";
+                        this.Model.ServiceButtonText = UiResources.Label_EndService;
                         this.Model.ContentVisibility = VisibilityEnum.Visible;
                         this.Model.QRCodeButtonVisiblity = VisibilityEnum.Visible;
                     }
@@ -294,11 +294,11 @@
 
                 if (this.Model.ServiceEnabled)
                 {
-                    this.Notifier.Notify(this.Model.ConnectionType + " Service Started");
+                    this.Notifier.Notify(this.Model.ConnectionType + " " + UiResources.Message_ServiceStarted);
                 }
                 else
                 {
-                    this.Notifier.Notify(this.Model.ConnectionType + " Service Stopped");
+                    this.Notifier.Notify(this.Model.ConnectionType + " " + UiResources.Message_ServiceStopped);
                 }
 
                 this.OnDataSendRequest(this, ConnectionInteraction.ViewName, SuiteRoute.SystemControl, ViewBag.GetViewName<WindowsControls>(), new ConnectionInteractionMessage { ServiceLive = this.Model.ServiceEnabled });

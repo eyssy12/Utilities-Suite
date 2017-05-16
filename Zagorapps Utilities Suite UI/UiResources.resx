@@ -124,6 +124,24 @@
   <data name="Format_ConfigurationFile" xml:space="preserve">
     <value>{0}{1}.{2}</value>
   </data>
+  <data name="Label_EndService" xml:space="preserve">
+    <value>End Service</value>
+  </data>
+  <data name="Label_Mute" xml:space="preserve">
+    <value>Mute</value>
+  </data>
+  <data name="Label_StartService" xml:space="preserve">
+    <value>Start Service</value>
+  </data>
+  <data name="Label_Unmute" xml:space="preserve">
+    <value>Unmute</value>
+  </data>
+  <data name="Message_ServiceStarted" xml:space="preserve">
+    <value>Service Started</value>
+  </data>
+  <data name="Message_ServiceStopped" xml:space="preserve">
+    <value>Service Stopped</value>
+  </data>
   <data name="Message_TaskAdded" xml:space="preserve">
     <value>New task with identity '{0}' added.</value>
   </data>

@@ -67,7 +67,7 @@
             this.Model = new WindowsControlsViewModel();
             this.Model.AddProhibitCommand = this.CommandProvider.CreateRelayCommand<string>(this.Model.AddProhibit);
             this.Model.MuteAudioCommand = this.CommandProvider.CreateRelayCommand(this.MuteAudio);
-            this.Model.MuteButtonText = this.AudioManager.IsMuted ? "Unmute" : "Mute";
+            this.Model.MuteButtonText = this.AudioManager.IsMuted ? UiResources.Label_Unmute : UiResources.Label_Mute;
             this.Model.Volume = this.AudioManager.Volume;
 
             this.WinServiceTimer.TimeElapsed += this.WinServiceTimer_TimeElapsed;
@@ -81,9 +81,12 @@
                 this.WmiService.Stop();
                 this.WmiService.EventReceived -= this.WmiService_EventReceived;
                 this.WmiService.Dispose();
+
+                this.Model.WmiSupported = false;
             }
             else
             {
+                // TODO: add a dropdown to allow to specify monitors
                 this.Model.Brightness = this.WmiService.GetBrightnesses().First().Brightness;
             }
 
@@ -118,7 +121,7 @@
 
                 if (message.State == SyncState.Request)
                 {
-                    string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume + "_" + this.WmiService.GetBrightnesses().First().Brightness;
+                    string syncData = this.AudioManager.IsMuted + "_" + this.AudioManager.Volume + "_" + (this.WmiService.IsWmiSupported ? this.WmiService.GetBrightnesses().First().Brightness : default(int));
 
                     this.OnDataSendRequest(
                         this,

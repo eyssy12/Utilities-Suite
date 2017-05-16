@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Zagorapps.Utilities.Suite.UI
-{
-
-
+namespace Zagorapps.Utilities.Suite.UI {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -76,6 +76,60 @@ namespace Zagorapps.Utilities.Suite.UI
         internal static string Format_ConfigurationFile {
             get {
                 return ResourceManager.GetString("Format_ConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Service.
+        /// </summary>
+        internal static string Label_EndService {
+            get {
+                return ResourceManager.GetString("Label_EndService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mute.
+        /// </summary>
+        internal static string Label_Mute {
+            get {
+                return ResourceManager.GetString("Label_Mute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Service.
+        /// </summary>
+        internal static string Label_StartService {
+            get {
+                return ResourceManager.GetString("Label_StartService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unmute.
+        /// </summary>
+        internal static string Label_Unmute {
+            get {
+                return ResourceManager.GetString("Label_Unmute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Started.
+        /// </summary>
+        internal static string Message_ServiceStarted {
+            get {
+                return ResourceManager.GetString("Message_ServiceStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Stopped.
+        /// </summary>
+        internal static string Message_ServiceStopped {
+            get {
+                return ResourceManager.GetString("Message_ServiceStopped", resourceCulture);
             }
         }
         

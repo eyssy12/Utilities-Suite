@@ -18,7 +18,7 @@
         private int brightness;
         private string filter, muteButtonText;
 
-        private bool controlsEnabled;
+        private bool controlsEnabled, wmiSupported;
 
         public WindowsControlsViewModel()
         {
@@ -85,6 +85,12 @@
         {
             get { return this.totalProcesses; }
             set { this.SetFieldIfChanged(ref this.totalProcesses, value, nameof(this.WindowsTasksText)); }
+        }
+
+        public bool WmiSupported
+        {
+            get { return this.wmiSupported; }
+            set { this.SetFieldIfChanged(ref this.wmiSupported, value, nameof(this.WmiSupported)); }
         }
 
         public int Brightness

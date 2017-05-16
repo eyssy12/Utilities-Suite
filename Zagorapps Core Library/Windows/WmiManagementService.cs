@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Management;
     using Events.Windows;
     using Extensions;
     using Models;
+    using Zagorapps.Core.Library.Events;
 
     public class WmiManagementService : IWmiManagementService
     {
@@ -22,6 +24,8 @@
         private ManagementEventWatcher watcher;
         private ManagementScope scope;
 
+        private Lazy<bool> isWmiSupported;
+
         private bool isStarted = false;
 
         public WmiManagementService()
@@ -35,16 +39,26 @@
             }
             else
             {
-                ConnectionOptions Conn = new ConnectionOptions();
-                Conn.Username = string.Empty;
-                Conn.Password = string.Empty;
-                Conn.Authority = "ntlmdomain:DOMAIN";
-
+                ConnectionOptions Conn = new ConnectionOptions
+                {
+                    Username = string.Empty,
+                    Password = string.Empty,
+                    Authority = "ntlmdomain:DOMAIN"
+                };
                 this.scope = new ManagementScope(path, Conn);
             }
+
+            this.isWmiSupported = new Lazy<bool>(() => this.GetBrightnesses().ToArray().Any());
         }
 
         public event EventHandler<WmiEventArgs> EventReceived;
+
+        public event EventHandler<EventArgs<Exception>> FailureRaised;
+
+        public bool IsWmiSupported
+        {
+            get { return this.isWmiSupported.Value; }
+        }
 
         public bool Start()
         {
@@ -56,9 +70,7 @@
                 this.watcher.EventArrived += this.Watcher_EventArrived;
                 this.watcher.Start();
 
-                this.isStarted = true;
-
-                return true;
+                return this.IsWmiSupported;
             }
             catch (Exception e)
             {
@@ -86,7 +98,7 @@
             ObjectQuery query = new ObjectQuery(string.Format(WmiManagementService.QuerySelectAllTemplate, WmiManagementService.ClassNameMonitorBrightness));
 
             return this.InvokeWmiOperation(
-                query, 
+                query,
                 @object =>
                 {
                     return new WmiDeviceInfo
@@ -94,7 +106,8 @@
                         Identity = (string)@object[WmiManagementService.ClassPropertyInstanceName],
                         Brightness = (byte)@object[WmiManagementService.ClassPropertyCurrentBrightness]
                     };
-                });
+                })
+                .ToArray();
         }
 
         public void SetBrightness(int value)
@@ -120,36 +133,57 @@
         {
             if (disposing)
             {
-                this.watcher.Dispose();
+                if (this.watcher != null)
+                {
+                    this.watcher.Dispose();
+                }
             }
         }
 
         protected void InvokeWmiOperation(ObjectQuery query, Action<ManagementObject> operation)
         {
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(this.scope, query))
+            try
             {
-                using (ManagementObjectCollection objectCollection = searcher.Get())
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(this.scope, query))
                 {
-                    foreach (ManagementObject @object in objectCollection)
+                    using (ManagementObjectCollection objectCollection = searcher.Get())
                     {
-                        operation(@object);
+                        foreach (ManagementObject @object in objectCollection)
+                        {
+                            operation(@object);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Invoker.Raise(ref this.FailureRaised, this, ex);
             }
         }
 
         protected IEnumerable<T> InvokeWmiOperation<T>(ObjectQuery query, Func<ManagementObject, T> operation)
         {
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(this.scope, query))
+            try
             {
-                using (ManagementObjectCollection objectCollection = searcher.Get())
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(this.scope, query))
                 {
-                    foreach (ManagementObject @object in objectCollection)
+                    using (ManagementObjectCollection objectCollection = searcher.Get())
                     {
-                        yield return operation(@object);
+                        foreach (ManagementObject @object in objectCollection)
+                        {
+                            return new[] { operation(@object) };
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Invoker.Raise(ref this.FailureRaised, this, ex);
+
+                return Enumerable.Empty<T>();
+            }
+
+            return Enumerable.Empty<T>();
         }
 
         private void Watcher_EventArrived(object sender, EventArrivedEventArgs e)

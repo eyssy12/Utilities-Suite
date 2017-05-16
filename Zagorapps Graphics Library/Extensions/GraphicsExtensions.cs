@@ -12,7 +12,7 @@
 
     public static class GraphicsExtensions
     {
-        public static BitmapSource ToSource(this Bitmap source)
+        public static BitmapSource ToBitmapSource(this Bitmap source)
         {
             using (SafeHBitmapHandle handle = new SafeHBitmapHandle(source))
             {
