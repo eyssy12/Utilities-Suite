@@ -49,9 +49,8 @@
 
         public override void InitialiseView(object arg)
         {
-            EventArgs<ITask, bool> eventArgs = arg as EventArgs<ITask, bool>;
-
-            if (eventArgs != null)
+            // TODO: create model (TaskStateHolder or something) that eventArgs will use as type and let the model contain the members which will allow to easily add more members in the future.
+            if (arg is EventArgs<ITask, bool> eventArgs)
             {
                 ITask task = eventArgs.First;
                 bool immediateStart = eventArgs.Second;
@@ -61,7 +60,7 @@
                 if (immediateStart)
                 {
                     this.Manager.RunTaskById(task.Identity);
-                    
+
                     this.Notifier.Notify(string.Format(UiResources.Message_TaskAddedAndStarted, task.Identity));
                 }
                 else
@@ -80,6 +79,8 @@
 
         protected void RunTask(object sender, RoutedEventArgs e)
         {
+            // TODO: should add a new date time column for "Last Ran"
+            // TODO: and for scheduled tasks to have 2 columns "Last Ran" and "Next Scheduled"
             if (sender is Button)
             {
                 Button runTask = sender as Button;
@@ -92,6 +93,7 @@
             }
         }
 
+        // TODO: change these to be ICommand implementations
         protected void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
         {
             this.Notifier.Notify(((ButtonBase)sender).Content.ToString());
