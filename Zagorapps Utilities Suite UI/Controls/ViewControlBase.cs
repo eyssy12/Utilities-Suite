@@ -17,6 +17,7 @@
 
         protected ViewControlBase(string viewName, IOrganiserFactory factory, ICommandProvider commandProvider)
         {
+            // TODO: add static Guard class.
             if (factory == null)
             {
                 throw new ArgumentNullException(nameof(factory), "No factory has been provided.");
