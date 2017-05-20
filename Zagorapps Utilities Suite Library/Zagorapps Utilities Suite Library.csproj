@@ -43,9 +43,8 @@
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NodaTime.1.3.2\lib\net35-Client\NodaTime.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NodaTime, Version=2.0.1.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.2.0.1\lib\net45\NodaTime.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -189,6 +188,7 @@
     <Compile Include="Providers\TaskProvider.cs" />
     <Compile Include="Tasks\FileOrganiserTask.cs" />
     <Compile Include="Tasks\IOrganiserTask.cs" />
+    <Compile Include="Tasks\IScheduledTask.cs" />
     <Compile Include="Tasks\ITask.cs" />
     <Compile Include="Tasks\OrganiserTaskBase.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />

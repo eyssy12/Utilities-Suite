@@ -182,8 +182,8 @@
             this.FileRootPathFiles = new List<RootPathFileViewModel>();
             this.DirectoryRootPathFiles = new List<RootPathFileViewModel>();
             this.ExemptedFileExtensions = new List<FileExtensionViewModel>();
-            this.InitialWaitTime = new TimeSpan(0, 0, 0, 0, ScheduledTask.MinimumInitialWaitTime).TotalSeconds;
-            this.Interval = new TimeSpan(0, 0, 0, 0, ScheduledTask.MinimumTimerPeriod).TotalSeconds;
+            this.InitialWaitTime = new TimeSpan(0, 0, 0, 0, ScheduledTask.MinimumInitialWaitTimeInMs).TotalSeconds;
+            this.Interval = new TimeSpan(0, 0, 0, 0, ScheduledTask.MinimumTimerPeriodInMs).TotalSeconds;
 
             this.initialized = true;
         }

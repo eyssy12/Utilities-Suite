@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using Core.Library.Events;
-    using Core.Library.Extensions;
     using Exceptions;
     using Factories;
     using Providers;

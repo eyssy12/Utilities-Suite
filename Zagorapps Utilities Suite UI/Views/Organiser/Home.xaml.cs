@@ -79,7 +79,6 @@
 
         protected void RunTask(object sender, RoutedEventArgs e)
         {
-            // TODO: should add a new date time column for "Last Ran"
             // TODO: and for scheduled tasks to have 2 columns "Last Ran" and "Next Scheduled"
             if (sender is Button)
             {

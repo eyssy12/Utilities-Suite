@@ -10,6 +10,8 @@
     {
         private readonly ITask task;
 
+        private Lazy<bool> isScheduled;
+
         public TaskViewModel(ITask task)
         {
             if (task == null)
@@ -19,6 +21,8 @@
 
             this.task = task;
             this.task.StateChanged += this.Task_StateChanged;
+
+            this.isScheduled = new Lazy<bool>(() => this.task.GetType() == typeof(IScheduledTask));
         }
 
         public string Identity
@@ -46,6 +50,26 @@
             get { return this.Reference.Description; }
         }
 
+        public string LastRan
+        {
+            get { return this.Reference.LastRan.HasValue ? this.Reference.LastRan.Value.ToString() :  "-"; }
+        }
+
+        public string NextScheduled
+        {
+            get
+            {
+                if (this.isScheduled.Value)
+                {
+                    IScheduledTask scheduled = task as IScheduledTask;
+
+                    return scheduled.NextScheduled.HasValue ? scheduled.NextScheduled.Value.ToString() : "-";
+                }
+
+                return "N/A";
+            }
+        }
+
         public ITask Reference
         {
             get { return this.task; }
@@ -54,6 +78,8 @@
         private void Task_StateChanged(object sender, EventArgs<TaskState> e)
         {
             this.OnPropertyChanged(nameof(this.State));
+            this.OnPropertyChanged(nameof(this.LastRan));
+            this.OnPropertyChanged(nameof(this.NextScheduled));
         }
     }
 }

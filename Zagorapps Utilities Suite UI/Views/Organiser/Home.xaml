@@ -50,6 +50,18 @@
                         </DataGridTemplateColumn>
 
                         <DataGridTextColumn
+                            Binding="{Binding LastRan}"
+                            MinWidth="140"
+                            Header="Last Ran"
+                            IsReadOnly="True" />
+
+                        <DataGridTextColumn
+                            Binding="{Binding NextScheduled}"
+                            MinWidth="140"
+                            Header="Next Scheduled"
+                            IsReadOnly="True" />
+
+                        <DataGridTextColumn
                             Binding="{Binding Name}"
                             MinWidth="140"
                             Header="Name"

@@ -3,6 +3,7 @@
     using System;
     using Core.Library.Events;
     using Core.Library.Execution;
+    using NodaTime;
 
     public interface ITask : IExecute, ITerminate, IRaiseFailures
     {
@@ -17,5 +18,7 @@
         TaskState State { get; }
 
         TaskType TaskType { get; }
+
+        Instant? LastRan { get; }
     }
 }

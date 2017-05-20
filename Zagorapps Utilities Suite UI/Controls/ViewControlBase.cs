@@ -50,15 +50,15 @@
 
         public bool IsActive { get; set; }
 
-        public abstract void InitialiseView(object arg); // gets called when user explicitly navigates to the view
+        public abstract void InitialiseView(object stateHolder); // gets called when user explicitly navigates to the view
 
         public abstract void FinaliseView(); // gets called when user switches to a different view (close procedure effectively)
 
-        protected void OnViewChange(string viewName, object args = null)
+        protected void OnViewChange(string viewName, object state = null)
         {
             this.FinaliseView();
 
-            Invoker.Raise(ref this.OnChangeView, this, viewName, args);
+            Invoker.Raise(ref this.OnChangeView, this, viewName, state);
         }
 
         protected void NotifyableAction<T>(T item, Action<T> action, string propertyName)

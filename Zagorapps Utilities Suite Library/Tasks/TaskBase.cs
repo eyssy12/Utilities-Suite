@@ -2,6 +2,7 @@
 {
     using System;
     using Core.Library.Events;
+    using NodaTime;
 
     public abstract class TaskBase : ITask
     {
@@ -9,6 +10,7 @@
         private readonly string name, description;
         private readonly TaskType taskType;
 
+        private Instant? lastRan;
         private TaskState state;
 
         protected TaskBase(Guid? identity, string name, string description, TaskType taskType)
@@ -29,6 +31,7 @@
             this.taskType = taskType;
 
             this.state = TaskState.NotStarted;
+            this.lastRan = null;
         }
 
         public event EventHandler<EventArgs<TaskState>> StateChanged;
@@ -60,8 +63,15 @@
             get { return this.taskType; }
         }
 
+        public Instant? LastRan
+        {
+            get { return this.lastRan; }
+        }
+
         public void Execute()
         {
+            this.lastRan = SystemClock.Instance.GetCurrentInstant();
+
             this.OnStateChanged(TaskState.Started);
 
             try
