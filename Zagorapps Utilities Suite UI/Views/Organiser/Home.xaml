@@ -83,6 +83,7 @@
                             Binding="{Binding Description}"
                             Header="Description"
                             MinWidth="100"
+                            MaxWidth="100"
                             MaxLength="200"
                             IsReadOnly="True" />
 

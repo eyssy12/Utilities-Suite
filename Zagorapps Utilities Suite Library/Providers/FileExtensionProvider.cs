@@ -30,6 +30,8 @@
 
         public FileExtensionCategory GetCategoryForExtension(string extension)
         {
+            extension = extension.Replace(".", string.Empty);
+
             return this.Database.Categories.FirstOrDefault(c => c.Extensions.Any(e => e.Value == extension));
         }
     }

@@ -30,8 +30,6 @@
 
         protected override void HandleExecute()
         {
-            this.OnStateChanged(TaskState.Started);
-
             // TODO: don't forget exemptions - don't try to add the folders to the folders we're moving them to
             // i.e. Test => Folders
             // i.e. Folders => Folders (shouldnt happen)
@@ -50,8 +48,6 @@
             {
                 directories.ForEach(d => this.DirectoryManager.Move(d, targetDirectoryPath));
             }
-
-            this.OnStateChanged(TaskState.Finished);
         }
 
         protected override void HandleTerminate()

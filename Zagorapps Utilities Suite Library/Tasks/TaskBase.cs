@@ -82,7 +82,11 @@
             {
                 this.OnStateChanged(TaskState.Failed);
                 this.OnFailureRaised(ex);
+
+                return;
             }
+
+            this.OnStateChanged(TaskState.Finished);
         }
 
         public void Terminate()

@@ -192,7 +192,7 @@
                 return task;
             }
 
-            return this.CreateScheduledTask("scheduled", task, 5000, 7000);
+            return this.CreateScheduledTask(this.Model.Name, task, 5000, 7000);
         }
 
         protected IOrganiserTask CreateTask(Guid identity, OrganiseType type)

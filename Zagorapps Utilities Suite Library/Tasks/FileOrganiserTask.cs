@@ -40,8 +40,6 @@
 
         protected override void HandleExecute()
         {
-            this.OnStateChanged(TaskState.Started);
-
             FileOrganiserSettings settings = this.SettingsProvider.Get<FileOrganiserSettings>(this.Identity);
 
             this.FilterFiles(
@@ -52,7 +50,7 @@
                 .GroupBy(f => Path.GetExtension(f))
                 .ForEach(filePaths =>
                 {
-                    FileExtensionCategory category = this.ExtensionProvider.GetCategoryForExtension(new string(filePaths.Key.Skip(1).ToArray())); // key is the extension, with the '.'
+                    FileExtensionCategory category = this.ExtensionProvider.GetCategoryForExtension(filePaths.Key); // key is the extension, with the '.'
 
                     string categoryPath;
                     if (category == null)
@@ -66,8 +64,6 @@
 
                     this.MoveFiles(filePaths, categoryPath);
                 });
-
-            this.OnStateChanged(TaskState.Finished);
         }
 
         protected override void HandleTerminate()
